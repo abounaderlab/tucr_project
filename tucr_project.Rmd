@@ -30,24 +30,25 @@ For this first programming assignment I wrote three functions that are meant to 
 ## Data
 
 ```{bash, eval = FALSE}
-mkdir stringtie_outputs
-
-####Only use one of these files####
+mkdir stringtie
 
 wget ftp://ftp.ensembl.org/pub/release-99/gtf/homo_sapiens/Homo_sapiens.GRCh38.99.gtf.gz
-
-##################################
+mv Homo_sapiens.GRCh38.99.gtf.gz stringtie
+gunzip stringtie/Homo_sapiens.GRCh38.99.gtf.gz
 
 wget https://hgdownload.cse.ucsc.edu/goldenpath/hg38/bigZips/hg38.fa.gz
+mv hg38.fa.gz stringtie
+gunzip stringtie/hg38.fa.gz
 
-gunzip Homo_sapiens.GRCh38.99.gtf.gz
-
-for bam in $(find */ -name '*.bam')
+for bam in $(find GBM-RNASEQ-RAW/* -name '*.bam')
 do
-name=$(~/stringtie_outputs/ | echo $bam | awk -F "GRCh38.99.gtf" '{print $1}')
+name=$(echo $bam | awk -F ".bam" '{print $1}')
 echo $name
-stringtie $bam -o $name
+stringtie $bam -o $name.GRCh38.99.gtf
+mv $name.GRCh38.99.gtf ./stringtie
 done
+
+cd stringtie
 
 stringtie --merge -p 8 -G Homo_sapiens.GRCh38.99.gtf -o stringtie_merged.gtf mergelist.txt
 
