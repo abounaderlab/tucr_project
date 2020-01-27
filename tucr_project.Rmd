@@ -29,7 +29,7 @@ For this first programming assignment I wrote three functions that are meant to 
 
 ## Data
 
-```{bash, eval = FALSE}
+```{bash stringtie, eval = FALSE}
 mkdir stringtie
 
 wget ftp://ftp.ensembl.org/pub/release-99/gtf/homo_sapiens/Homo_sapiens.GRCh38.99.gtf.gz
@@ -61,6 +61,32 @@ cp stringtie_merged.gtf > stringtie_merged.txt
 intersectBed -a genes.bed -b stringtie_merged.gtf -wa -wb > intersect_ptns.txt
 
 intersectBed -a genes.bed -b hg38.ultraConserved.bed -wa -wb > intersect_ptns_TUCR.txt
+```
+
+```{bash tcga, eval = FALSE}
+mkdir tcga_analysis 
+
+for X in $(cat ids.txt | grep TCGA | cut -f 1)
+do 
+BAM=$(grep $X ids.txt | cut -f 2)
+BAMPATH=$(find ../tcga_data/* | grep $BAM | grep -v ".bai")
+ln -s $BAMPATH ./${X}.bam
+done
+
+#Write header line
+echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" > TUCR_counts.txt 
+#Counts
+multiBamCov -bams *bam -bed hg19.ultraConserved.bed -q 10 >> TUCR_counts.txt
+
+#Write header line
+echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" > gene_counts.txt 
+#Counts
+multiBamCov -bams *bam -bed hg19.ultraConserved.bed -q 10 >> gene_counts.txt
+
+#Write header line
+echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" > transcript_counts.txt 
+#Counts
+multiBamCov -bams *bam -bed hg19.ultraConserved.bed -q 10 >> transcript_counts.txt
 ```
 
 
