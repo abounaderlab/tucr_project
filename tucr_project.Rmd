@@ -30,21 +30,35 @@ For this first programming assignment I wrote three functions that are meant to 
 ## Data
 
 ```{bash, eval = FALSE}
-wget ftp://ftp.ensembl.org/pub/release-84/gff3/homo_sapiens/Homo_sapiens.GRCh38.84.gff3.gz
+mkdir stringtie_outputs
+
+####Only use one of these files####
 
 wget ftp://ftp.ensembl.org/pub/release-99/gtf/homo_sapiens/Homo_sapiens.GRCh38.99.gtf.gz
 
-wget ftp://ftp.ensembl.org/pub/release-99/gff3/homo_sapiens/Homo_sapiens.GRCh38.99.gff3.gz
+##################################
 
 wget https://hgdownload.cse.ucsc.edu/goldenpath/hg38/bigZips/hg38.fa.gz
 
-stringtie input.bam -o output.gtf
-stringtie --merge -p 8 -G Homo_sapiens.GRCh38.84.gff3 -o stringtie_merged.gtf mergelist.txt
+gunzip Homo_sapiens.GRCh38.99.gtf.gz
+
+for bam in $(find */ -name '*.bam')
+do
+name=$(~/stringtie_outputs/ | echo $bam | awk -F "GRCh38.99.gtf" '{print $1}')
+echo $name
+stringtie $bam -o $name
+done
+
+stringtie --merge -p 8 -G Homo_sapiens.GRCh38.99.gtf -o stringtie_merged.gtf mergelist.txt
 
 intersectBed -a hg38.ultraConserved.bed -b stringtie_merged.gtf -wa -wb > intersect_TUCRs.txt
+
 intersectBed -a stringtie_merged.gtf -b hg38.ultraConserved.bed > intersect_Transcripts.txt
+
 cp stringtie_merged.gtf > stringtie_merged.txt
+
 intersectBed -a genes.bed -b stringtie_merged.gtf -wa -wb > intersect_ptns.txt
+
 intersectBed -a genes.bed -b hg38.ultraConserved.bed -wa -wb > intersect_ptns_TUCR.txt
 ```
 
