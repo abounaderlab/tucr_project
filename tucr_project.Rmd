@@ -30,63 +30,120 @@ For this first programming assignment I wrote three functions that are meant to 
 ## Data
 
 ```{bash stringtie, eval = FALSE}
-mkdir stringtie
-
 wget ftp://ftp.ensembl.org/pub/release-99/gtf/homo_sapiens/Homo_sapiens.GRCh38.99.gtf.gz
 mv Homo_sapiens.GRCh38.99.gtf.gz stringtie
 gunzip stringtie/Homo_sapiens.GRCh38.99.gtf.gz
 
-wget https://hgdownload.cse.ucsc.edu/goldenpath/hg38/bigZips/hg38.fa.gz
-mv hg38.fa.gz stringtie
-gunzip stringtie/hg38.fa.gz
+module load gcc/7.1.0
+module load stringtie/2.0.6
 
 for bam in $(find GBM-RNASEQ-RAW/* -name '*.bam')
 do
 name=$(echo $bam | awk -F ".bam" '{print $1}')
 echo $name
-stringtie $bam -o $name.GRCh38.99.gtf
-mv $name.GRCh38.99.gtf ./stringtie
+stringtie $bam -o $name.gtf
+mv $name.gtf ./stringtie
 done
 
 cd stringtie
 
-stringtie --merge -p 8 -G Homo_sapiens.GRCh38.99.gtf -o stringtie_merged.gtf mergelist.txt
+stringtie --merge *rehead.gtf -G Homo_sapiens.GRCh38.99.gtf -o stringtie_merged.gtf
 
-intersectBed -a hg38.ultraConserved.bed -b stringtie_merged.gtf -wa -wb > intersect_TUCRs.txt
+intersectBed -a hg38.ultraConserved.bed -b CHESSgenes.bed -wa -wb > intersectchess_TUCRs.bed
 
-intersectBed -a stringtie_merged.gtf -b hg38.ultraConserved.bed > intersect_Transcripts.txt
+intersectBed -a hg38.ultraConserved.bed -b stringtie_merged.gtf -wa -wb > intersectstringtie_TUCRs.bed
 
-cp stringtie_merged.gtf > stringtie_merged.txt
-
-intersectBed -a genes.bed -b stringtie_merged.gtf -wa -wb > intersect_ptns.txt
-
-intersectBed -a genes.bed -b hg38.ultraConserved.bed -wa -wb > intersect_ptns_TUCR.txt
+cp stringtie_merged.gtf stringtie_merged.bed
 ```
 
 ```{bash tcga, eval = FALSE}
-mkdir tcga_analysis 
+## Create directory for all outputs from TCGA analysis data
+mkdir tcga_analysis/
+```
 
-for X in $(cat ids.txt | grep TCGA | cut -f 1)
-do 
-BAM=$(grep $X ids.txt | cut -f 2)
-BAMPATH=$(find ../tcga_data/* | grep $BAM | grep -v ".bai")
-ln -s $BAMPATH ./${X}.bam
+```{bash tcgaheader, eval = FALSE}
+## Extract header information from BAM files
+# Create directory for extracted headerfiles
+mkdir tcga_analysis/head/
+
+# Create extracted header files
+for bam in $(find GBM-RNASEQ-RAW/* -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+echo $name
+samtools view -H $bam > $name.headerids.txt
+mv $name.headerids.txt ./tcga_analysis/head/
 done
+```
+
+```{bash tcgaids, eval = FALSE}
+## Get new file names for BAM files using TCGA IDs from extracted header
+mkdir tcga_analysis/ids/
+
+# Initialize summary file with TCGA IDs
+echo "RAWID,TCGAID" > tcga_analysis/ids/tcgaIDs.csv 
+
+# Extract IDs from header files
+for header in $(find tcga_analysis/head/* -name '*headerids.txt')
+do
+name=$(echo $header | awk -F ".headerids.txt" '{print $1}')
+name2=$(echo $name | cut -c20-)
+ids1=$(awk '$1=="@RG"{print $3}' $header)
+ids2=$(echo $ids1 | cut -c4-)
+echo "$name2.bam,$ids2.bam"
+echo "$name2.bam,$ids2.bam" > $name.tcgaid.csv
+echo "$name2.bam,$ids2.bam" >> tcga_analysis/ids/tcgaIDs.csv 
+mv $name.tcgaid.csv ./tcga_analysis/ids/
+done
+```
+
+```{bash tcgaindex, eval = FALSE}
+
+##Rename BAM files using TCGA ids
+# Create folder for new files
+mkdir /tcga_analysis/reindex/
+# Copy BAM files into new directory with updated names
+
+while IFS=, read orig target; do
+orig2=$(find RNA_Seq_BAM/* -name $orig)
+echo $orig2
+cp $orig2 $target
+mv $target ./tcga_analysis/reindex/
+done < tcga_analysis/ids/tcgaIDs.csv
+
+# Reindex the renamed files using samtools.
+for bam in $(find tcga_analysis/reindex/ -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+echo $name
+samtools index $bam
+done
+```
+
+```{bash tcgacounts, eval = FALSE}
+mkdir tcga_analysis/foldchange
 
 #Write header line
-echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" > TUCR_counts.txt 
+echo -e chrom"\t"start"\t"end"\t"id tcga_analysis/reindex/*bam | sed -e "s/ /\t/g" > tcga_analysis/foldchange/TUCR_counts.txt
+
 #Counts
-multiBamCov -bams *bam -bed hg19.ultraConserved.bed -q 10 >> TUCR_counts.txt
+multiBamCov -bams tcga_analysis/reindex/*bam -bed tucr_project/hg38.ultraConserved.bed -q 10 >> tcga_analysis/foldchange/TUCR_counts.txt
+
+echo tcga_analysis/reindex/*bam > tcga_analysis/foldchange/TUCR_bamIDs.txt
 
 #Write header line
 echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" > gene_counts.txt 
 #Counts
-multiBamCov -bams *bam -bed hg19.ultraConserved.bed -q 10 >> gene_counts.txt
+multiBamCov -bams *bam -bed genes.bed -q 10 >> gene_counts.txt
+
+echo tcga_analysis/reindex/*bam > tcga_analysis/foldchange/gene_bamIDs.txt
 
 #Write header line
 echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" > transcript_counts.txt 
 #Counts
-multiBamCov -bams *bam -bed hg19.ultraConserved.bed -q 10 >> transcript_counts.txt
+multiBamCov -bams *bam -bed INPUT.bed -q 10 >> transcript_counts.txt
+
+echo tcga_analysis/reindex/*bam > tcga_analysis/foldchange/transcript_bamIDs.txt
 ```
 
 
