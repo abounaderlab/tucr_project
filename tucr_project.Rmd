@@ -49,6 +49,11 @@ then
 else
     echo "$name2.gtf exists... skipping"
 fi
+=======
+if [ ! -f $name.gtf ]; then
+  stringtie $bam -o $name.gtf
+fi
+mv $name.gtf ./stringtie
 done
 
 cd stringtie
