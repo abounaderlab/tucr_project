@@ -40,9 +40,15 @@ module load stringtie/2.0.6
 for bam in $(find GBM-RNASEQ-RAW/* -name '*.bam')
 do
 name=$(echo $bam | awk -F ".bam" '{print $1}')
-echo $name
-stringtie $bam -o $name.gtf
-mv $name.gtf ./stringtie
+name2=$(basename "$name")
+if [ ! -f stringtie/$name2.gtf ] 
+then
+    echo "$name2.gtf does not exist"
+    stringtie $bam -o $name.gtf
+    mv $name.gtf ./stringtie
+else
+    echo "$name2.gtf exists... skipping"
+fi
 done
 
 cd stringtie
@@ -101,14 +107,14 @@ done
 
 ##Rename BAM files using TCGA ids
 # Create folder for new files
-mkdir /tcga_analysis/reindex/
+mkdir tcga_analysis/reindex/
 # Copy BAM files into new directory with updated names
 
 while IFS=, read orig target; do
-orig2=$(find RNA_Seq_BAM/* -name $orig)
+orig2=$(find GBM-RNASEQ-RAW/* -name $orig)
 echo $orig2
 cp $orig2 $target
-mv $target ./tcga_analysis/reindex/
+mv $target tcga_analysis/reindex/
 done < tcga_analysis/ids/tcgaIDs.csv
 
 # Reindex the renamed files using samtools.
