@@ -40,8 +40,9 @@ module load stringtie/2.0.6
 for bam in $(find GBM-RNASEQ-RAW/* -name '*.bam')
 do
 name=$(echo $bam | awk -F ".bam" '{print $1}')
-echo $name
-stringtie $bam -o $name.gtf
+if [ ! -f $name.gtf ]; then
+  stringtie $bam -o $name.gtf
+fi
 mv $name.gtf ./stringtie
 done
 
