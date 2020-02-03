@@ -6,8 +6,12 @@ output: pdf_document
 toc: true
 ---
 
-```{r setup, include=FALSE}
+```{r setup, results="hide"}
 knitr::opts_chunk$set(echo = TRUE)
+
+if (!require("tidyverse")) install.packages("tidyverse")
+library("tidyverse")
+
 ```
 
 ```{r tinytex, include=FALSE}
@@ -138,23 +142,36 @@ mkdir tcga_analysis/foldchange
 echo -e chrom"\t"start"\t"end"\t"id tcga_analysis/reindex/*bam | sed -e "s/ /\t/g" > tcga_analysis/foldchange/TUCR_counts.txt
 
 #Counts
-multiBamCov -bams tcga_analysis/reindex/*bam -bed tucr_project/hg38.ultraConserved.bed -q 10 >> tcga_analysis/foldchange/TUCR_counts.txt
-
-echo tcga_analysis/reindex/*bam > tcga_analysis/foldchange/TUCR_bamIDs.txt
+multiBamCov -bams tcga_analysis/reindex/*bam -bed hg38.ultraConserved.bed -q 10 >> tcga_analysis/foldchange/TUCR_counts.txt
 
 #Write header line
-echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" > gene_counts.txt 
+echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" > gene_counts.txt
+
 #Counts
-multiBamCov -bams *bam -bed genes.bed -q 10 >> gene_counts.txt
-
-echo tcga_analysis/reindex/*bam > tcga_analysis/foldchange/gene_bamIDs.txt
-
-#Write header line
-echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" > transcript_counts.txt 
-#Counts
-multiBamCov -bams *bam -bed INPUT.bed -q 10 >> transcript_counts.txt
-
-echo tcga_analysis/reindex/*bam > tcga_analysis/foldchange/transcript_bamIDs.txt
+multiBamCov -bams *bam -bed CHESSgenes.bed -q 10 >> gene_counts.txt
 ```
 
+```{bash, eval = FALSE}
+
+wget http://gdac.broadinstitute.org/runs/stddata__2016_01_28/data/GBM/20160128/gdac.broadinstitute.org_GBM.Merge_Clinical.Level_1.2016012800.0.0.tar.gz
+
+tar -xvzf gdac.broadinstitute.org_GBM.Merge_Clinical.Level_1.2016012800.0.0.tar.gz
+
+mv gdac.broadinstitute.org_GBM.Merge_Clinical.Level_1.2016012800.0.0 GBM.Merge_Clinical
+
+```
+
+## Unzipping the data
+
+For this programming assignment I needed to unzip this file and create the directory 'specdata'. Once I unzipped the zip file, I did not make any modifications to the files in the 'specdata' directory. In each file you'll notice that there are many days where either sulfate or nitrate (or both) are missing (coded as NA). This is common with air pollution monitoring data in the United States.
+
+```{r survival}
+if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
+
+tucrcounts <- read.table("TUCR_counts.txt",header = TRUE)
+
+survdata <- read.table("GBM.clin.merged.txt",fill = TRUE)
+survdata <- survdata %>% select(patient.bcr_patient_barcode,patient.days_to_death)
+
+```
 
