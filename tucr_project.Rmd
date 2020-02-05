@@ -12,6 +12,10 @@ knitr::opts_chunk$set(echo = TRUE)
 if (!require("tidyverse")) install.packages("tidyverse")
 library("tidyverse")
 
+source("http://bioconductor.org/biocLite.R")
+if (!require("DESeq2")) biocLite("DESeq2")
+library(DESeq2)
+
 ```
 
 ```{r tinytex, include=FALSE}
@@ -199,4 +203,23 @@ survdata <- read.table("GBM.clin.merged.txt",header = TRUE)
 survdata$survival <- as.numeric(survdata$survival)
 
 ```
+
+```{r DESeq2}
+
+metadata <- read_csv(file = "TUCR_counts_metadata.csv")
+
+tucrcounts2 <- as.matrix(tucrcounts)
+
+
+dds_TUCR <- DESeqDataSetFromMatrix(countData = tucrcounts,
+                              colData = metadata,
+                              design = ~dex)
+dds_TUCR <- DESeq(dds_TUCR)
+res_TUCR <- results(dds_TUCR, tidy=TRUE)
+res_TUCR <- as_tibble(res_TUCR)
+
+write.csv(res_TUCR, file = "results_TUCR.csv")
+
+```
+
 
