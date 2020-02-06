@@ -12,9 +12,10 @@ knitr::opts_chunk$set(echo = TRUE)
 if (!require("tidyverse")) install.packages("tidyverse")
 library("tidyverse")
 
-source("http://bioconductor.org/biocLite.R")
-if (!require("DESeq2")) biocLite("DESeq2")
-library(DESeq2)
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+BiocManager::install("DESeq2")
+
+library("DESeq2")
 
 ```
 
@@ -208,10 +209,11 @@ survdata$survival <- as.numeric(survdata$survival)
 
 metadata <- read_csv(file = "TUCR_counts_metadata.csv")
 
-tucrcounts2 <- as.matrix(tucrcounts)
+tucrcounts2 <- tucrcounts[,5:ncol(tucrcounts)]
+rownames(tucrcounts2) <- tucrcounts[,4]
 
 
-dds_TUCR <- DESeqDataSetFromMatrix(countData = tucrcounts,
+dds_TUCR <- DESeqDataSetFromMatrix(countData = tucrcounts2,
                               colData = metadata,
                               design = ~dex)
 dds_TUCR <- DESeq(dds_TUCR)
