@@ -6,15 +6,33 @@ output: pdf_document
 toc: true
 ---
 
-```{r setup, results="hide"}
+## Introduction
+For this first programming assignment I wrote three functions that are meant to interact with dataset that accompanies this assignment. The dataset is contained in a zip file specdata.zip that is included in the GitHub repository.
+
+## Set parameters
+
+```{r parameters}
+
+makerpkmboxplots <- FALSE
+
+```
+
+## Install required programs
+
+```{r setup, message = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
 if (!require("tidyverse")) install.packages("tidyverse")
 library("tidyverse")
 
-if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
-BiocManager::install("DESeq2")
+if (!require("ggplot2")) install.packages("ggplot2")
+library("ggplot2")
 
+if (!require("ggrepel")) install.packages("ggrepel")
+library("ggrepel")
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
 library("DESeq2")
 
 ```
@@ -33,10 +51,7 @@ tinytex::install_tinytex()
 }
 ```
 
-## Introduction
-For this first programming assignment I wrote three functions that are meant to interact with dataset that accompanies this assignment. The dataset is contained in a zip file specdata.zip that is included in the GitHub repository.
-
-## Data
+## Stringtie
 
 ```{bash stringtie, eval = FALSE}
 wget ftp://ftp.ensembl.org/pub/release-99/gtf/homo_sapiens/Homo_sapiens.GRCh38.99.gtf.gz
@@ -76,10 +91,14 @@ intersectBed -a hg38.ultraConserved.bed -b stringtie_merged.gtf -wa -wb > inters
 cp stringtie_merged.gtf stringtie_merged.bed
 ```
 
+## Setup for TCGA RNA-Seq analysis
+
 ```{bash tcga, eval = FALSE}
 ## Create directory for all outputs from TCGA analysis data
 mkdir tcga_analysis/
 ```
+
+## Extract headers from BAM files
 
 ```{bash tcgaheader, eval = FALSE}
 ## Extract header information from BAM files
@@ -95,6 +114,8 @@ samtools view -H $bam > $name.headerids.txt
 mv $name.headerids.txt ./tcga_analysis/head/
 done
 ```
+
+## Extract TCGA patient barcodes from BAM headers
 
 ```{bash tcgaids, eval = FALSE}
 ## Get new file names for BAM files using TCGA IDs from extracted header
@@ -187,7 +208,6 @@ echo "$name,$reads" >> tcga_analysis/readcounts/mergedcounts.csv
 done
 
 ```
-
 
 ## Acquiring clinical survival data
 
@@ -301,11 +321,9 @@ bedtools random -g hg38.genome -n 481 -l 243 -seed 71346
 ```
 
 
-## Unzipping the data
+## Completing survival analysis
 
-For this programming assignment I needed to unzip this file and create the directory 'specdata'. Once I unzipped the zip file, I did not make any modifications to the files in the 'specdata' directory. In each file you'll notice that there are many days where either sulfate or nitrate (or both) are missing (coded as NA). This is common with air pollution monitoring data in the United States.
-
-```{r survival}
+```{r surcor, eval = FALSE, message = FALSE}
 if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
 
 tucrcounts <- read.table("TUCR_counts.txt",header = TRUE)
@@ -330,8 +348,8 @@ scal.exp <- function(x){
 scaledata <- tucrcounts[,5:length(colnames(tucrcounts))]
 rowdata <- tucrcounts[,1:4]
 scaledata <- as.matrix(scaledata)
-countdata.exp <- scal.exp(scaledata)
-countdata.exp2 <- cbind(rowdata,countdata.exp)
+#countdata.exp <- scal.exp(scaledata)
+#countdata.exp2 <- cbind(rowdata,countdata.exp)
 
 write.csv(countdata.exp2,"countdataexp.csv")
 
@@ -340,12 +358,15 @@ survdata$survival <- as.numeric(survdata$survival)
 
 ```
 
-```{r DESeq2}
+## Identifying differentially expressed TUCRs with DESeq2
 
+```{r DESeq2, results="hide", message = FALSE}
+
+tucrcounts <- read.table("TUCR_counts.txt",header = TRUE)
 metadata <- read_csv(file = "TUCR_counts_metadata.csv")
 
-tucrcounts2 <- tucrcounts[,5:ncol(tucrcounts)]
-rownames(tucrcounts2) <- tucrcounts[,4]
+tucrcounts2 <- tucrcounts[,6:ncol(tucrcounts)]
+rownames(tucrcounts2) <- tucrcounts[,5]
 
 
 dds_TUCR <- DESeqDataSetFromMatrix(countData = tucrcounts2,
@@ -359,11 +380,109 @@ write.csv(res_TUCR, file = "results_TUCR.csv")
 
 ```
 
+## Generating volcano plot to visualize DE genes
+
+```{r DESeq2plots, message = FALSE}
+
+### Volcano plot
+
+volcanoplot <- function (res,genes = "all",title = "Deregulated Genes", output = "results_volcanoplot.png"){
+  #res <- res_TUCR
+  #genes = c("uc.110","uc.62")
+  #title = "Deregulated Genes"
+  vres <- res
+  vres <- vres %>% mutate(filter1 = abs(log2FoldChange)>=1,filter2 = padj <=0.05,filter3="",gene="")
+  for (i in 1:length(vres$row)){
+    if(is.na(vres$padj[i])){vres$filter3[i] <- "black"}else{
+    if(vres$filter1[i] == TRUE && vres$filter2[i] == TRUE){
+    vres$filter3[i] <- "red"
+  }else{
+      if(vres$filter1[i] == TRUE){
+    vres$filter3[i] <- "blue"
+      }else{vres$filter3[i] <- "black"}
+  }}
+    ifelse(genes!="all",ifelse(!is.na(match(vres$row[i],genes)),vres$gene[i] <- vres$row[i], ""),vres$gene[i] <- vres$row[i])
+    }
+  
+  
+  
+  ## plot
+  p <- ggplot(vres) +
+        geom_point(aes(x=log2FoldChange, y=-log10(padj),col=filter3)) +
+        scale_color_manual(values = c("black","blue","red")) +
+        ggtitle(title) +
+        xlab("log2 fold change") + 
+        ylab("-log10 adjusted p-value") +
+        theme(legend.position = "none",
+              plot.title = element_text(size = rel(1.5), hjust = 0.5),
+              axis.title = element_text(size = rel(1.25))) +
+        geom_text_repel(aes(x=log2FoldChange, y=-log10(padj),label = gene),force=50)
+  
+  ggsave(output)
+}
+
+volcanoplot(res_TUCR,genes=c("uc.62","uc.110","uc.193","uc.210","uc.427"),title = "TUCR deregulation in GBM", output = "tucr_results_volcanoplot.png")
+
+```
+
 ## Generate RPKMs for filtering
 
-```{r RPKM}
+```{r RPKM, results="hide"}
 
+rpkmcounts <- tucrcounts[,6:ncol(tucrcounts)]
+rpkmcounts.info <- tucrcounts[,1:5]
+rownames(rpkmcounts) <- tucrcounts$id
 
+genelength <- tucrcounts$length
+
+seqdepth <- read.csv(file = "mergedcounts.csv",row.names=1)
+
+seqdepth <- as.vector(seqdepth$counts)
+
+rpkm <- function(counts,len,dep){
+  x <- counts/len
+  return(t(t(x)/dep))
+}
+
+rpkm.TUCRs <- rpkm(rpkmcounts,genelength,seqdepth)
+rpkm.TUCRs2 <- cbind(rpkmcounts.info,rpkm.TUCRs)
+
+write.csv(rpkm.TUCRs2,"rpkm.TUCRs.csv")
+```
+
+## Generate RPKM Box Plots for each TUCR
+
+```{r boxplot, results = "hide"}
+if(makerpkmboxplots == TRUE){
+  
+if(!dir.exists("RPKMboxplots")){
+  dir.create("RPKMboxplots")
+}
+rpkm.dotplot <- rpkm.TUCRs2[,5:ncol(rpkm.TUCRs2)]
+TUCRids <- rpkm.dotplot[,1]
+
+i = 1
+for(i in 1:length(TUCRids)){
+TUCR <- "uc.110"
+TUCR <- TUCRids[i]
+print(i)
+rpkm.dotplot2 <- rpkm.dotplot %>% 
+  gather(key = "Sample", value = "RPKM",-id) %>%
+  filter(id == TUCR)
+
+p<- ggplot(rpkm.dotplot2, aes(x=id, y=RPKM)) +
+  geom_boxplot() +
+  geom_dotplot(binaxis='y', stackdir='center',
+               stackratio=0.75, dotsize=0.5) + 
+  ggtitle(paste("RPKM expression of ",TUCR)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(y="Reads per kilobase million (RPKM)", x = "TUCR") +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=10, color="red", fill="red")
+
+ggsave(p,file=paste("RPKMboxplots/",TUCR,"_rpkm_boxplot.png",sep = ""))
+}
+
+}
 
 ```
 
