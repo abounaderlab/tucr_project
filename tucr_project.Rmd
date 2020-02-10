@@ -35,6 +35,20 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocMana
 if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
 library("DESeq2")
 
+if (!require("ggthemes")) install.packages('ggthemes', dependencies = TRUE)
+library(ggthemes)
+
+if (!require("gplots")) 
+  install.packages("gplots")
+library(gplots)
+
+if (!require("heatmap.plus")) 
+  install.packages("heatmap.plus")
+library(heatmap.plus)
+
+if (!require("RColorBrewer")) 
+  install.packages("RColorBrewer")
+library(RColorBrewer)
 ```
 
 ```{r tinytex, include=FALSE}
@@ -486,3 +500,45 @@ ggsave(p,file=paste("RPKMboxplots/",TUCR,"_rpkm_boxplot.png",sep = ""))
 
 ```
 
+```{r heatmap}
+heatmap.TUCRs <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
+TUCRids <- rpkm.TUCRs2[,5]
+means <- apply(heatmap.TUCRs,1,mean)
+
+heatmap.TUCRs2 <- as.data.frame(apply(heatmap.TUCRs,1:2,function(x) {ifelse(x>=10,10,x)}))
+heatmap.TUCRs2 <- cbind(TUCRids,means,heatmap.TUCRs2)
+
+heatmap.TUCRs2 <- heatmap.TUCRs2 %>% 
+  gather(key = "Sample", value = "RPKM",-TUCRids,-means)
+
+p <- ggplot(data = heatmap.TUCRs2,mapping = aes(x = Sample,y = reorder(TUCRids,means), fill = RPKM)) +
+  geom_tile() +
+  scale_fill_gradientn(colours = c("blue", "white", "red"), values = c(0,0.1,1)) +
+  theme(panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+ggsave(p,file="TUCR_heatmap.png")
+```
+
+```{r heatmap}
+heatmap.TUCRs <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
+TUCRids <- rpkm.TUCRs2[,5]
+means <- apply(heatmap.TUCRs,1,mean)
+
+heatmap.TUCRs2 <- as.data.frame(apply(heatmap.TUCRs,1:2,function(x) {ifelse(x>=10,10,x)}))
+heatmap.TUCRs2 <- cbind(TUCRids,means,heatmap.TUCRs2)
+
+heatmap.TUCRs2 <- heatmap.TUCRs2 %>% 
+  gather(key = "Sample", value = "RPKM",-TUCRids,-means) %>% 
+  filter(TUCRids == "uc.62"|TUCRids == "uc.110"|TUCRids == "uc.193"|TUCRids == "uc.210"|TUCRids == "uc.427")
+
+p <- ggplot(data = heatmap.TUCRs2,mapping = aes(x = Sample,y = reorder(TUCRids,means), fill = RPKM)) +
+  geom_tile() +
+  scale_fill_gradientn(colours = c("blue", "white", "red"), values = c(0,0.1,1)) +
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks = element_blank())
+
+ggsave(p,file="Myron_heatmap.png")
+```
