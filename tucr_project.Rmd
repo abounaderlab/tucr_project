@@ -13,7 +13,7 @@ For this first programming assignment I wrote three functions that are meant to 
 
 ```{r parameters}
 
-makerpkmboxplots <- FALSE
+makeRPKMboxplots <- FALSE
 
 ```
 
@@ -467,7 +467,7 @@ write.csv(rpkm.TUCRs2,"rpkm.TUCRs.csv")
 ## Generate RPKM Box Plots for each TUCR
 
 ```{r boxplot, results = "hide"}
-if(makerpkmboxplots == TRUE){
+if(makeRPKMboxplots == TRUE){
   
 if(!dir.exists("RPKMboxplots")){
   dir.create("RPKMboxplots")
