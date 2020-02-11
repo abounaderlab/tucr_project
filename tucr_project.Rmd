@@ -13,7 +13,9 @@ For this first programming assignment I wrote three functions that are meant to 
 
 ```{r parameters}
 
-makeRPKMboxplots <- FALSE
+makeRPKMboxplots <- TRUE
+
+outputdir <- "Outputs"
 
 ```
 
@@ -34,22 +36,14 @@ library("ggrepel")
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
 library("DESeq2")
-
-if (!require("ggthemes")) install.packages('ggthemes', dependencies = TRUE)
-library(ggthemes)
-
-if (!require("gplots")) 
-  install.packages("gplots")
-library(gplots)
-
-if (!require("heatmap.plus")) 
-  install.packages("heatmap.plus")
-library(heatmap.plus)
-
-if (!require("RColorBrewer")) 
-  install.packages("RColorBrewer")
-library(RColorBrewer)
 ```
+
+```{r outputs}
+if(!dir.exists(outputdir)){
+  dir.create(outputdir)
+}
+```
+
 
 ```{r tinytex, include=FALSE}
 ## INSTALLING LATEX FOR RMARKDOWN
@@ -374,7 +368,7 @@ survdata$survival <- as.numeric(survdata$survival)
 
 ## Identifying differentially expressed TUCRs with DESeq2
 
-```{r DESeq2, results="hide", message = FALSE}
+```{r DESeq2_TUCRs, results="hide", message = FALSE}
 
 tucrcounts <- read.table("TUCR_counts.txt",header = TRUE)
 metadata <- read_csv(file = "TUCR_counts_metadata.csv")
@@ -390,13 +384,13 @@ dds_TUCR <- DESeq(dds_TUCR)
 res_TUCR <- results(dds_TUCR, tidy=TRUE)
 res_TUCR <- as_tibble(res_TUCR)
 
-write.csv(res_TUCR, file = "results_TUCR.csv")
+write.csv(res_TUCR, file = paste(outputdir,"/results_TUCR.csv",sep=""))
 
 ```
 
 ## Generating volcano plot to visualize DE genes
 
-```{r DESeq2plots, message = FALSE}
+```{r DESeq2plots_TUCRs, message = FALSE}
 
 ### Volcano plot
 
@@ -435,13 +429,13 @@ volcanoplot <- function (res,genes = "all",title = "Deregulated Genes", output =
   ggsave(output)
 }
 
-volcanoplot(res_TUCR,genes=c("uc.62","uc.110","uc.193","uc.210","uc.427"),title = "TUCR deregulation in GBM", output = "tucr_results_volcanoplot.png")
+volcanoplot(res_TUCR,genes=c("uc.62","uc.110","uc.193","uc.210","uc.427"),title = "TUCR deregulation in GBM", output = paste(outputdir,"/tucr_results_volcanoplot.png",sep=""))
 
 ```
 
 ## Generate RPKMs for filtering
 
-```{r RPKM, results="hide"}
+```{r RPKM_TUCRs, results="hide"}
 
 rpkmcounts <- tucrcounts[,6:ncol(tucrcounts)]
 rpkmcounts.info <- tucrcounts[,1:5]
@@ -461,16 +455,16 @@ rpkm <- function(counts,len,dep){
 rpkm.TUCRs <- rpkm(rpkmcounts,genelength,seqdepth)
 rpkm.TUCRs2 <- cbind(rpkmcounts.info,rpkm.TUCRs)
 
-write.csv(rpkm.TUCRs2,"rpkm.TUCRs.csv")
+write.csv(rpkm.TUCRs2,paste(outputdir,"/rpkm.TUCRs.csv",sep=""))
 ```
 
 ## Generate RPKM Box Plots for each TUCR
 
-```{r boxplot, results = "hide"}
+```{r boxplot_TUCRs, results = "hide"}
 if(makeRPKMboxplots == TRUE){
   
-if(!dir.exists("RPKMboxplots")){
-  dir.create("RPKMboxplots")
+if(!dir.exists(paste(outputdir,"/RPKMboxplots",sep=""))){
+  dir.create(paste(outputdir,"/RPKMboxplots",sep=""))
 }
 rpkm.dotplot <- rpkm.TUCRs2[,5:ncol(rpkm.TUCRs2)]
 TUCRids <- rpkm.dotplot[,1]
@@ -493,14 +487,16 @@ p<- ggplot(rpkm.dotplot2, aes(x=id, y=RPKM)) +
   labs(y="Reads per kilobase million (RPKM)", x = "TUCR") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color="red", fill="red")
 
-ggsave(p,file=paste("RPKMboxplots/",TUCR,"_rpkm_boxplot.png",sep = ""))
+ggsave(p,file=paste(outputdir,"/RPKMboxplots/",TUCR,"_rpkm_boxplot.png",sep = ""))
 }
 
 }
 
 ```
 
-```{r heatmap}
+## Generate heatmap for all TUCRs
+
+```{r heatmap_TUCRs}
 heatmap.TUCRs <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
 TUCRids <- rpkm.TUCRs2[,5]
 means <- apply(heatmap.TUCRs,1,mean)
@@ -518,10 +514,12 @@ p <- ggplot(data = heatmap.TUCRs2,mapping = aes(x = Sample,y = reorder(TUCRids,m
         axis.text = element_blank(),
         axis.ticks = element_blank())
 
-ggsave(p,file="TUCR_heatmap.png")
+ggsave(p,file=paste(outputdir,"/TUCR_heatmap.png",sep=""))
 ```
 
-```{r heatmap}
+## Generate heatmap for my TUCRs of interest
+
+```{r heatmap_Myron}
 heatmap.TUCRs <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
 TUCRids <- rpkm.TUCRs2[,5]
 means <- apply(heatmap.TUCRs,1,mean)
@@ -540,5 +538,235 @@ p <- ggplot(data = heatmap.TUCRs2,mapping = aes(x = Sample,y = reorder(TUCRids,m
         axis.text.x = element_blank(),
         axis.ticks = element_blank())
 
-ggsave(p,file="Myron_heatmap.png")
+ggsave(p,file=paste(outputdir,"/Myron_heatmap.png",sep=""))
+```
+
+## Identifying differentially expressed stringtie transcripts containing TUCRs with DESeq2
+
+```{r DESeq2_stringtie, results="hide", message = FALSE}
+
+stringtiecounts <- read.table("stringtie_TUCR_counts.txt",header = TRUE)
+stringtiecounts <- distinct(stringtiecounts)
+metadata <- read_csv(file = "TUCR_counts_metadata.csv")
+
+stringtiecounts2 <- stringtiecounts[,6:ncol(stringtiecounts)]
+rownames(stringtiecounts2) <- stringtiecounts[,5]
+
+
+dds_stringtie <- DESeqDataSetFromMatrix(countData = stringtiecounts2,
+                              colData = metadata,
+                              design = ~dex)
+dds_stringtie <- DESeq(dds_stringtie)
+res_stringtie <- results(dds_stringtie, tidy=TRUE)
+res_stringtie <- as_tibble(res_stringtie)
+
+write.csv(res_stringtie, file = paste(outputdir,"/results_stringtie.csv",sep=""))
+
+```
+
+## Generating volcano plot to visualize DE stringtie transcripts
+
+```{r DESeq2plots_stringtie, message = FALSE}
+
+### Volcano plot
+
+volcanoplot <- function (res,title = "Deregulated Genes", output = "results_volcanoplot.png"){
+  #res <- res_TUCR
+  #genes = c("uc.110","uc.62")
+  #title = "Deregulated Genes"
+  vres <- res
+  vres <- vres %>% mutate(filter1 = abs(log2FoldChange)>=1,filter2 = padj <=0.05,filter3="")#,gene="")
+  for (i in 1:length(vres$row)){
+    if(is.na(vres$padj[i])){vres$filter3[i] <- "black"}else{
+    if(vres$filter1[i] == TRUE && vres$filter2[i] == TRUE){
+    vres$filter3[i] <- "red"
+  }else{
+      if(vres$filter1[i] == TRUE){
+    vres$filter3[i] <- "blue"
+      }else{vres$filter3[i] <- "black"}
+  }}
+    #ifelse(genes!="all",ifelse(!is.na(match(vres$row[i],genes)),vres$gene[i] <- vres$row[i], ""),vres$gene[i] <- vres$row[i])
+    }
+  
+  
+  
+  ## plot
+  p <- ggplot(vres) +
+        geom_point(aes(x=log2FoldChange, y=-log10(padj),col=filter3)) +
+        scale_color_manual(values = c("black","blue","red")) +
+        ggtitle(title) +
+        xlab("log2 fold change") + 
+        ylab("-log10 adjusted p-value") +
+        theme(legend.position = "none",
+              plot.title = element_text(size = rel(1.5), hjust = 0.5),
+              axis.title = element_text(size = rel(1.25)))
+  
+  ggsave(output)
+}
+
+volcanoplot(res_stringtie,title = "Deregulation of stringtie transcripts containing TUCRs in GBM", output = paste(outputdir,"/stringtie_results_volcanoplot.png",sep=""))
+
+```
+
+## Generate stringtie RPKMs for filtering
+
+```{r RPKM_stringtie, results="hide"}
+
+stringtie.rpkmcounts <- stringtiecounts[,6:ncol(stringtiecounts)]
+stringtie.rpkmcounts.info <- stringtiecounts[,1:5]
+rownames(stringtie.rpkmcounts) <- stringtiecounts$id
+
+genelength <- stringtiecounts$length
+
+seqdepth <- read.csv(file = "mergedcounts.csv",row.names=1)
+
+seqdepth <- as.vector(seqdepth$counts)
+
+rpkm <- function(counts,len,dep){
+  x <- counts/len
+  return(t(t(x)/dep))
+}
+
+rpkm.stringtie <- rpkm(stringtie.rpkmcounts,genelength,seqdepth)
+rpkm.stringtie2 <- cbind(stringtie.rpkmcounts.info,rpkm.stringtie)
+
+write.csv(rpkm.stringtie2,paste(outputdir,"/rpkm.stringtie.csv",sep=""))
+```
+
+## Generate heatmap for all stringtie TUCR transcripts
+
+```{r heatmap_stringtie, message=FALSE}
+heatmap.stringtie <- rpkm.stringtie2[,6:ncol(rpkm.stringtie2)]
+stringtieids <- rpkm.stringtie2[,5]
+means <- apply(heatmap.stringtie,1,mean)
+
+heatmap.stringtie2 <- as.data.frame(apply(heatmap.stringtie,1:2,function(x) {ifelse(x>=10,10,x)}))
+heatmap.stringtie2 <- cbind(stringtieids,means,heatmap.stringtie2)
+
+heatmap.stringtie2 <- heatmap.stringtie2 %>% 
+  gather(key = "Sample", value = "RPKM",-stringtieids,-means)
+
+p <- ggplot(data = heatmap.stringtie2,mapping = aes(x = Sample,y = reorder(stringtieids,means), fill = RPKM)) +
+  geom_tile() +
+  scale_fill_gradientn(colours = c("blue", "white", "red"), values = c(0,0.1,1)) +
+  theme(panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+ggsave(p,file=paste(outputdir,"/stringtie_heatmap.png",sep=""))
+```
+
+## Identifying differentially expressed CHESS genes containing TUCRs with DESeq2
+
+```{r DESeq2_stringtie, results="hide", message = FALSE}
+
+CHESScounts <- read.table("intersectchess_TUCR_counts.txt",header = TRUE)
+CHESScounts <- distinct(CHESScounts)
+metadata <- read_csv(file = "TUCR_counts_metadata.csv")
+
+CHESScounts2 <- CHESScounts[,6:ncol(CHESScounts)]
+rownames(CHESScounts2) <- CHESScounts[,5]
+
+
+dds_CHESS <- DESeqDataSetFromMatrix(countData = CHESScounts2,
+                              colData = metadata,
+                              design = ~dex)
+dds_CHESS <- DESeq(dds_CHESS)
+res_CHESS <- results(dds_CHESS, tidy=TRUE)
+res_CHESS <- as_tibble(res_CHESS)
+
+write.csv(res_CHESS, file = paste(outputdir,"/results_CHESS.csv",sep=""))
+
+```
+
+## Generating volcano plot to visualize DE CHESS genes containing TUCRs
+
+```{r DESeq2plots_stringtie, message = FALSE}
+
+### Volcano plot
+
+volcanoplot <- function (res,title = "Deregulated Genes", output = "results_volcanoplot.png"){
+  #res <- res_TUCR
+  #genes = c("uc.110","uc.62")
+  #title = "Deregulated Genes"
+  vres <- res
+  vres <- vres %>% mutate(filter1 = abs(log2FoldChange)>=1,filter2 = padj <=0.05,filter3="")#,gene="")
+  for (i in 1:length(vres$row)){
+    if(is.na(vres$padj[i])){vres$filter3[i] <- "black"}else{
+    if(vres$filter1[i] == TRUE && vres$filter2[i] == TRUE){
+    vres$filter3[i] <- "red"
+  }else{
+      if(vres$filter1[i] == TRUE){
+    vres$filter3[i] <- "blue"
+      }else{vres$filter3[i] <- "black"}
+  }}
+    #ifelse(genes!="all",ifelse(!is.na(match(vres$row[i],genes)),vres$gene[i] <- vres$row[i], ""),vres$gene[i] <- vres$row[i])
+    }
+  
+  
+  
+  ## plot
+  p <- ggplot(vres) +
+        geom_point(aes(x=log2FoldChange, y=-log10(padj),col=filter3)) +
+        scale_color_manual(values = c("black","blue","red")) +
+        ggtitle(title) +
+        xlab("log2 fold change") + 
+        ylab("-log10 adjusted p-value") +
+        theme(legend.position = "none",
+              plot.title = element_text(size = rel(1.5), hjust = 0.5),
+              axis.title = element_text(size = rel(1.25)))
+  
+  ggsave(output)
+}
+
+volcanoplot(res_CHESS,title = "Deregulation of CHESS genes containing TUCRs in GBM", output = paste(outputdir,"/CHESS_results_volcanoplot.png",sep=""))
+
+```
+
+## Generate CHESS gene RPKMs for filtering
+
+```{r RPKM_stringtie, results="hide"}
+
+CHESS.rpkmcounts <- CHESScounts[,6:ncol(CHESScounts)]
+CHESS.rpkmcounts.info <- CHESScounts[,1:5]
+rownames(CHESS.rpkmcounts) <- CHESScounts$id
+
+genelength <- CHESScounts$length
+
+seqdepth <- read.csv(file = "mergedcounts.csv",row.names=1)
+
+seqdepth <- as.vector(seqdepth$counts)
+
+rpkm <- function(counts,len,dep){
+  x <- counts/len
+  return(t(t(x)/dep))
+}
+
+rpkm.CHESS <- rpkm(CHESS.rpkmcounts,genelength,seqdepth)
+rpkm.CHESS2 <- cbind(CHESS.rpkmcounts.info,rpkm.CHESS)
+
+write.csv(rpkm.CHESS2,paste(outputdir,"/rpkm.CHESS.csv",sep=""))
+```
+
+## Generate heatmap for all CHESS genes containing TUCRs
+
+```{r heatmap_CHESS, message=FALSE}
+heatmap.CHESS <- rpkm.CHESS2[,6:ncol(rpkm.CHESS2)]
+CHESSids <- rpkm.CHESS2[,5]
+means <- apply(heatmap.CHESS,1,mean)
+
+heatmap.CHESS2 <- as.data.frame(apply(heatmap.CHESS,1:2,function(x) {ifelse(x>=10,10,x)}))
+heatmap.CHESS2 <- cbind(CHESSids,means,heatmap.CHESS2)
+
+heatmap.CHESS2 <- heatmap.CHESS2 %>% 
+  gather(key = "Sample", value = "RPKM",-CHESSids,-means)
+
+p <- ggplot(data = heatmap.CHESS2,mapping = aes(x = Sample,y = reorder(CHESSids,means), fill = RPKM)) +
+  geom_tile() +
+  scale_fill_gradientn(colours = c("blue", "white", "red"), values = c(0,0.1,1)) +
+  theme(panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+ggsave(p,file=paste(outputdir,"/CHESS_heatmap.png",sep=""))
 ```
