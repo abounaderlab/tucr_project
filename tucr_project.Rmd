@@ -36,6 +36,20 @@ library("ggrepel")
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
 library("DESeq2")
+
+if (!require("survival")) install.packages("survival")
+library("survival")
+
+if (!require("broom")) install.packages("broom")
+library("broom")
+
+if (!requireNamespace("limma", quietly = TRUE))BiocManager::install("limma")
+library("limma")
+
+if (!require("Tmisc")) install.packages("Tmisc")
+library("Tmisc")
+
+
 ```
 
 ```{r outputs}
@@ -205,14 +219,14 @@ samtools view -c -F 260 $bam > $name.readcounts.txt
 mv $name.readcounts.txt ./tcga_analysis/readcounts/
 done
 
-echo "id,counts" > tcga_analysis/readcounts/mergedcounts.csv 
+echo "id,counts" > tcga_analysis/readcounts/seqdepth_counts.csv 
 
 for txt in $(find tcga_analysis/readcounts/* -name '*.txt')
 do
 name=$(echo $txt | awk -F ".readcounts.txt" '{print $1}')
 echo $name
 reads=$(head $txt)
-echo "$name,$reads" >> tcga_analysis/readcounts/mergedcounts.csv 
+echo "$name,$reads" >> tcga_analysis/readcounts/seqdepth_counts.csv 
 done
 
 ```
@@ -328,53 +342,18 @@ bedtools random -g hg38.genome -n 481 -l 243 -seed 71346
 
 ```
 
-
-## Completing survival analysis
-
-```{r surcor, eval = FALSE, message = FALSE}
-if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
-
-tucrcounts <- read.table("TUCR_counts.txt",header = TRUE)
-
-scal.exp <- function(x){
-  res <- matrix(nrow=nrow(x),ncol=ncol(x))
-  colnames(res) <- colnames(x)
-  rownames(res) <- rownames(x)
-  for (i in 1:dim(x)[1]){
-    median_n <- median(x[i,])
-    for (j in 1:dim(x)[2]){
-      if(x[i,j]>median_n){
-        res[i,j] <- 1
-      }else{
-        res[i,j] <- 0
-      }
-    }
-  }
-  return(res)
-}
-
-scaledata <- tucrcounts[,5:length(colnames(tucrcounts))]
-rowdata <- tucrcounts[,1:4]
-scaledata <- as.matrix(scaledata)
-#countdata.exp <- scal.exp(scaledata)
-#countdata.exp2 <- cbind(rowdata,countdata.exp)
-
-write.csv(countdata.exp2,"countdataexp.csv")
-
-survdata <- read.table("GBM.clin.merged.txt",header = TRUE)
-survdata$survival <- as.numeric(survdata$survival)
-
-```
-
 ## Identifying differentially expressed TUCRs with DESeq2
 
 ```{r DESeq2_TUCRs, results="hide", message = FALSE}
 
 tucrcounts <- read.table("TUCR_counts.txt",header = TRUE)
-metadata <- read_csv(file = "TUCR_counts_metadata.csv")
+metadata <- read_csv(file = "tcga_metadata.csv")
 
-tucrcounts2 <- tucrcounts[,6:ncol(tucrcounts)]
-rownames(tucrcounts2) <- tucrcounts[,5]
+tucrcounts2 <- tucrcounts[,5:ncol(tucrcounts)]
+rownames(tucrcounts2) <- tucrcounts[,4]
+tucrcounts.info <- tucrcounts[,1:4]
+tucrcounts.info$length <- (tucrcounts$end - tucrcounts$start)/1000
+tucrcounts <- cbind(tucrcounts.info,tucrcounts2)
 
 
 dds_TUCR <- DESeqDataSetFromMatrix(countData = tucrcounts2,
@@ -385,6 +364,80 @@ res_TUCR <- results(dds_TUCR, tidy=TRUE)
 res_TUCR <- as_tibble(res_TUCR)
 
 write.csv(res_TUCR, file = paste(outputdir,"/results_TUCR.csv",sep=""))
+
+```
+
+## Completing survival analysis for TUCRs
+
+```{r surcor, eval = FALSE, message = FALSE}
+if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
+
+countdata <- read.table("TUCR_counts.txt",header = TRUE)
+metadata <- read_csv(file = "tcga_metadata.csv")
+
+posdata <- countdata[,1:4]
+countdata <- countdata[,5:length(colnames(countdata))]
+
+countdata <- as.matrix(countdata)
+
+n_index <- c(seq(36,39),73)
+t_index <- c(seq(1,35),seq(40,72),seq(74,ncol(countdata2)))
+
+vm <- function(x){
+  cond <- factor(ifelse(seq(1,dim(x)[2],1) %in% t_index, 1,  0))
+  d <- model.matrix(~1+cond)
+  x <- t(apply(x,1,as.numeric))
+  ex <- voom(x,d,plot=F)
+  return(ex$E)
+}
+
+count_vm <- vm(countdata)
+colnames(count_vm) <- metadata$barcode
+
+
+scal <- function(x,y){
+  mean_n <- rowMeans(y)  # mean of normal
+  sd_n <- apply(y,1,sd)  # SD of normal
+  # z score as (value - mean normal)/SD normal
+  res <- matrix(nrow=nrow(x), ncol=ncol(x))
+  colnames(res) <- colnames(x)
+  rownames(res) <- rownames(x)
+  for(i in 1:dim(x)[1]){
+    for(j in 1:dim(x)[2]){
+      res[i,j] <- (x[i,j]-mean_n[i])/sd_n[i]
+    }
+  }
+  return(res)
+}
+
+z_rna <- scal(count_vm[,t_index],count_vm[,n_index])
+rownames(z_rna) <- posdata[,4]
+
+
+countdata.exp <- scal.exp(scaledata)
+countdata.exp2 <- as.data.frame(cbind(rowdata,countdata.exp))
+
+write.csv(countdata.exp2,"countdataexp.csv")
+
+clinical <- read.table("GBM.clin.merged.txt",header = TRUE)
+clinical$time <- as.numeric(clinical$time)
+
+sum(clinical$patient %in% colnames(z_rna))
+
+ind_tum <- which(unique(colnames(z_rna)) %in% clinical$patient)
+ind_clin <- which(clinical$patient %in% colnames(z_rna))
+
+out.tab <- c()
+for(x in 1:nrow(count_vm)){
+  ind_gene <- x
+  s <- Surv(clinical$time[ind_clin],clinical$status[ind_clin])
+  cx <- coxph(formula = s ~ count_vm[ind_gene,ind_tum])
+  cx <- tidy(cx)
+  out.tab <- rbind(out.tab,cx)
+}
+
+surv_TUCR <- cbind(posdata,out.tab)
+surv_TUCR <- surv_TUCR %>% select(-term)
 
 ```
 
@@ -443,7 +496,7 @@ rownames(rpkmcounts) <- tucrcounts$id
 
 genelength <- tucrcounts$length
 
-seqdepth <- read.csv(file = "mergedcounts.csv",row.names=1)
+seqdepth <- read.csv(file = "seqdepth_counts.csv",row.names=1)
 
 seqdepth <- as.vector(seqdepth$counts)
 
@@ -466,19 +519,20 @@ if(makeRPKMboxplots == TRUE){
 if(!dir.exists(paste(outputdir,"/RPKMboxplots",sep=""))){
   dir.create(paste(outputdir,"/RPKMboxplots",sep=""))
 }
-rpkm.dotplot <- rpkm.TUCRs2[,5:ncol(rpkm.TUCRs2)]
-TUCRids <- rpkm.dotplot[,1]
+rpkm.dotplot <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
+TUCRids <- rpkm.TUCRs2[,4]
+rpkm.dotplot <- cbind(TUCRids,rpkm.dotplot)
 
 i = 1
 for(i in 1:length(TUCRids)){
-TUCR <- "uc.110"
+#TUCR <- "uc.110"
 TUCR <- TUCRids[i]
 print(i)
 rpkm.dotplot2 <- rpkm.dotplot %>% 
-  gather(key = "Sample", value = "RPKM",-id) %>%
-  filter(id == TUCR)
+  gather(key = "Sample", value = "RPKM",-TUCRids) %>%
+  filter(TUCRids == TUCR)
 
-p<- ggplot(rpkm.dotplot2, aes(x=id, y=RPKM)) +
+p<- ggplot(rpkm.dotplot2, aes(x=TUCRids, y=RPKM)) +
   geom_boxplot() +
   geom_dotplot(binaxis='y', stackdir='center',
                stackratio=0.75, dotsize=0.5) + 
@@ -491,14 +545,13 @@ ggsave(p,file=paste(outputdir,"/RPKMboxplots/",TUCR,"_rpkm_boxplot.png",sep = ""
 }
 
 }
-
 ```
 
 ## Generate heatmap for all TUCRs
 
 ```{r heatmap_TUCRs}
 heatmap.TUCRs <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
-TUCRids <- rpkm.TUCRs2[,5]
+TUCRids <- rpkm.TUCRs2[,4]
 means <- apply(heatmap.TUCRs,1,mean)
 
 heatmap.TUCRs2 <- as.data.frame(apply(heatmap.TUCRs,1:2,function(x) {ifelse(x>=10,10,x)}))
@@ -521,7 +574,7 @@ ggsave(p,file=paste(outputdir,"/TUCR_heatmap.png",sep=""))
 
 ```{r heatmap_Myron}
 heatmap.TUCRs <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
-TUCRids <- rpkm.TUCRs2[,5]
+TUCRids <- rpkm.TUCRs2[,4]
 means <- apply(heatmap.TUCRs,1,mean)
 
 heatmap.TUCRs2 <- as.data.frame(apply(heatmap.TUCRs,1:2,function(x) {ifelse(x>=10,10,x)}))
@@ -547,11 +600,13 @@ ggsave(p,file=paste(outputdir,"/Myron_heatmap.png",sep=""))
 
 stringtiecounts <- read.table("stringtie_TUCR_counts.txt",header = TRUE)
 stringtiecounts <- distinct(stringtiecounts)
-metadata <- read_csv(file = "TUCR_counts_metadata.csv")
+metadata <- read_csv(file = "tcga_metadata.csv")
 
-stringtiecounts2 <- stringtiecounts[,6:ncol(stringtiecounts)]
-rownames(stringtiecounts2) <- stringtiecounts[,5]
-
+stringtiecounts2 <- stringtiecounts[,5:ncol(stringtiecounts)]
+rownames(stringtiecounts2) <- stringtiecounts[,4]
+stringtiecounts.info <- stringtiecounts[,1:4]
+stringtiecounts.info$length <- (stringtiecounts$end - stringtiecounts$start)/1000
+stringtiecounts <- cbind(stringtiecounts.info,stringtiecounts2)
 
 dds_stringtie <- DESeqDataSetFromMatrix(countData = stringtiecounts2,
                               colData = metadata,
@@ -618,7 +673,7 @@ rownames(stringtie.rpkmcounts) <- stringtiecounts$id
 
 genelength <- stringtiecounts$length
 
-seqdepth <- read.csv(file = "mergedcounts.csv",row.names=1)
+seqdepth <- read.csv(file = "seqdepth_counts.csv",row.names=1)
 
 seqdepth <- as.vector(seqdepth$counts)
 
@@ -662,11 +717,13 @@ ggsave(p,file=paste(outputdir,"/stringtie_heatmap.png",sep=""))
 
 CHESScounts <- read.table("intersectchess_TUCR_counts.txt",header = TRUE)
 CHESScounts <- distinct(CHESScounts)
-metadata <- read_csv(file = "TUCR_counts_metadata.csv")
+metadata <- read_csv(file = "tcga_metadata.csv")
 
-CHESScounts2 <- CHESScounts[,6:ncol(CHESScounts)]
-rownames(CHESScounts2) <- CHESScounts[,5]
-
+CHESScounts2 <- CHESScounts[,5:ncol(CHESScounts)]
+rownames(CHESScounts2) <- CHESScounts[,4]
+CHESScounts.info <- CHESScounts[,1:4]
+CHESScounts.info$length <- (CHESScounts$end - CHESScounts$start)/1000
+CHESScounts <- cbind(CHESScounts.info,CHESScounts2)
 
 dds_CHESS <- DESeqDataSetFromMatrix(countData = CHESScounts2,
                               colData = metadata,
@@ -733,7 +790,7 @@ rownames(CHESS.rpkmcounts) <- CHESScounts$id
 
 genelength <- CHESScounts$length
 
-seqdepth <- read.csv(file = "mergedcounts.csv",row.names=1)
+seqdepth <- read.csv(file = "seqdepth_counts.csv",row.names=1)
 
 seqdepth <- as.vector(seqdepth$counts)
 
