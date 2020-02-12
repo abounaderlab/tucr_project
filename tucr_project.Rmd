@@ -13,7 +13,7 @@ For this first programming assignment I wrote three functions that are meant to 
 
 ```{r parameters}
 
-makeRPKMboxplots <- FALSE
+makeRPKMboxplots <- TRUE
 
 outputdir <- "Outputs"
 
@@ -194,10 +194,10 @@ done
 mkdir tcga_analysis/foldchange
 
 #Write header line
-echo -e chrom"\t"start"\t"end"\t"id tcga_analysis/reindex/*bam | sed -e "s/ /\t/g" > tcga_analysis/foldchange/TUCR_counts.txt
+echo -e chrom"\t"start"\t"end"\t"id tcga_analysis/reindex/*bam | sed -e "s/ /\t/g" > tcga_analysis/foldchange/TUCR_counts_80.txt
 
 #Counts
-multiBamCov -bams tcga_analysis/reindex/*bam -bed hg38.ultraConserved.bed -q 10 >> tcga_analysis/foldchange/TUCR_counts.txt
+multiBamCov -bams tcga_analysis/reindex/*bam -bed hg38.ultraConserved.bed -q 10 -f 0.80 >> tcga_analysis/foldchange/TUCR_counts_80.txt
 
 #Write header line
 echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" > gene_counts.txt
@@ -372,7 +372,7 @@ write.csv(res_TUCR, file = paste(outputdir,"/results_TUCR.csv",sep=""))
 
 ## Completing survival analysis for TUCRs
 
-```{r surcor_TUCRs, eval = FALSE, message = FALSE}
+```{r surcor_TUCRs, message = FALSE}
 if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
 
 countdata <- read.table("TUCR_counts.txt",header = TRUE)
@@ -415,7 +415,9 @@ scal <- function(x,y){
 z_rna <- scal(count_vm[,t_index],count_vm[,n_index])
 rownames(z_rna) <- posdata[,4]
 
-clinical <- read.table("GBM.clin.merged.txt",header = TRUE)
+#clinical <- read.table("GBM.clin.merged.txt",header = TRUE)
+clinical <- read.table("GBM.oncolnc.merged.txt",header = TRUE)
+
 clinical$time <- as.numeric(clinical$time)
 
 sum(clinical$patient %in% colnames(z_rna))
@@ -443,7 +445,8 @@ if(!dir.exists(paste(outputdir,"/tucrKPMplots",sep=""))){
 
 km_countdata <- countdata
 colnames(km_countdata) <- metadata$barcode
-posdata$median <- rowMedians(countdata)
+km_countdata <- 
+posdata$rank <- rowMedians(countdata)
 km_TUCRs <- cbind(posdata,km_countdata)
 km_TUCRs <- km_TUCRs[,4:ncol(km_TUCRs)]
 km_TUCRs <- km_TUCRs %>%
@@ -453,19 +456,20 @@ km_TUCRs <- km_TUCRs %>%
   left_join(clinical,by="patient") %>%
   filter(median != 0)
 
-TUCRids <- km_TUCRs$id
+TUCRids <- posdata$id
 i = 1
 
-for(i in 1:length(TUCRids)){
+#for(i in 1:length(TUCRids)){
   print(i)
-  TUCR <- TUCRids[i]
-  #TUCR <- "uc.110"
+  #TUCR <- TUCRids[i]
+  TUCR <- "uc.110"
   kmdata <- km_TUCRs %>%
     filter(id == TUCR)
+if(length(as.vector(kmdata$id))>0){
   fit <- survfit(Surv(time, status) ~ group, data = kmdata)
   p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
-  ggsave(file=paste(outputdir,"/tucrKPMplots/",TUCR,"_kpmplot.png",sep = ""),plot = print(p))
-}
+  ggsave(file=paste(outputdir,"/tucrKPMplots/",TUCR,"_kpmplot.png",sep = ""),plot = print(p))}
+#}
 
 ```
 
@@ -994,4 +998,73 @@ p <- ggplot(data = heatmap.CHESS2,mapping = aes(x = Sample,y = reorder(CHESSids,
         axis.ticks = element_blank())
 
 ggsave(p,file=paste(outputdir,"/CHESS_heatmap.png",sep=""))
+```
+
+## Visualize Stephen and Alex's FPKMs to compare to my own RPKMs
+
+```{r sdt_heatmap, message=FALSE}
+fpkm.sdt <- read_csv("aboundaer_tucr_gbm-survival_fpkms.csv")
+heatmap.sdt <- fpkm.sdt[,2:ncol(fpkm.sdt)]
+sdtids <- fpkm.sdt[,1]
+means <- apply(heatmap.sdt,1,mean)
+
+heatmap.sdt2 <- as.data.frame(apply(heatmap.sdt,1:2,function(x) {ifelse(x>=10,10,x)}))
+heatmap.sdt2 <- cbind(sdtids,means,heatmap.sdt2)
+
+heatmap.sdt2 <- heatmap.sdt2 %>% 
+  gather(key = "Sample", value = "FPKM",-id,-means)
+
+p <- ggplot(data = heatmap.sdt2,mapping = aes(x = Sample,y = reorder(id,means), fill = FPKM)) +
+  geom_tile() +
+  scale_fill_gradientn(colours = c("blue", "white", "red"), values = c(0,0.1,1)) +
+  theme(panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+ggsave(p,file=paste(outputdir,"/sdt_heatmap.png",sep=""))
+```
+
+## Generate figures for cell fractionation
+
+```{r cellfrac_TUCR, message=FALSE}
+
+if(!dir.exists(paste(outputdir,"/CellFrac",sep=""))){
+  dir.create(paste(outputdir,"/CellFrac",sep=""))
+}
+
+CellFrackin <- function(filename){
+all_content = readLines(filename)
+skip_second = all_content[-c(1:19)]
+x <- read.csv(textConnection(skip_second), header = TRUE, stringsAsFactors = FALSE)
+samplenames <- t(as.data.frame(strsplit(as.character(x$Sample), " ")))
+colnames(samplenames) <- c("Line","Fraction")
+x <- cbind(x,samplenames)
+x<- x %>%
+    select(Well,Target,Sample,Line,Fraction,Cq) %>%
+    group_by(Target,Line,Fraction) %>%
+    summarize(meanCq = mean(Cq)) %>%
+    mutate(dct = meanCq - min(meanCq)) %>%
+    mutate(FoldChange = 2^(-dct)) %>%
+    mutate(ID = paste(Target,Line,Fraction,sep=" "))
+
+p <- ggplot(x,aes(x = Target, y = FoldChange, fill = Fraction)) + 
+  geom_bar(stat = "identity",position="dodge") + 
+  theme(axis.text.x = element_text(angle = -90),
+        axis.ticks.x = element_blank()) +
+  facet_wrap(~Line)
+
+ggsave(p,file=paste(filename,".png",sep=""), width = 20, height = 5, dpi = 300)
+x %>%
+  select(-ID) %>%
+  write_csv(paste(filename," (Output).csv",sep=""))
+}
+
+path <- list.files("cellfrac")
+i = 1
+
+for(i in 1:length(path)){
+  print(i)
+  CellFrackin(paste("cellfrac",path[i],sep="/"))
+}
+
 ```
