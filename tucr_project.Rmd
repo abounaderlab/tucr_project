@@ -13,7 +13,7 @@ For this first programming assignment I wrote three functions that are meant to 
 
 ```{r parameters}
 
-makeRPKMboxplots <- TRUE
+makeRPKMboxplots <- FALSE
 
 outputdir <- "Outputs"
 
@@ -48,6 +48,9 @@ library("limma")
 
 if (!require("Tmisc")) install.packages("Tmisc")
 library("Tmisc")
+
+if (!require("survminer")) install.packages("survminer")
+library("survminer")
 
 
 ```
@@ -369,7 +372,7 @@ write.csv(res_TUCR, file = paste(outputdir,"/results_TUCR.csv",sep=""))
 
 ## Completing survival analysis for TUCRs
 
-```{r surcor, eval = FALSE, message = FALSE}
+```{r surcor_TUCRs, eval = FALSE, message = FALSE}
 if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
 
 countdata <- read.table("TUCR_counts.txt",header = TRUE)
@@ -381,7 +384,7 @@ countdata <- countdata[,5:length(colnames(countdata))]
 countdata <- as.matrix(countdata)
 
 n_index <- c(seq(36,39),73)
-t_index <- c(seq(1,35),seq(40,72),seq(74,ncol(countdata2)))
+t_index <- c(seq(1,35),seq(40,72),seq(74,ncol(countdata)))
 
 vm <- function(x){
   cond <- factor(ifelse(seq(1,dim(x)[2],1) %in% t_index, 1,  0))
@@ -393,7 +396,6 @@ vm <- function(x){
 
 count_vm <- vm(countdata)
 colnames(count_vm) <- metadata$barcode
-
 
 scal <- function(x,y){
   mean_n <- rowMeans(y)  # mean of normal
@@ -412,12 +414,6 @@ scal <- function(x,y){
 
 z_rna <- scal(count_vm[,t_index],count_vm[,n_index])
 rownames(z_rna) <- posdata[,4]
-
-
-countdata.exp <- scal.exp(scaledata)
-countdata.exp2 <- as.data.frame(cbind(rowdata,countdata.exp))
-
-write.csv(countdata.exp2,"countdataexp.csv")
 
 clinical <- read.table("GBM.clin.merged.txt",header = TRUE)
 clinical$time <- as.numeric(clinical$time)
@@ -438,6 +434,38 @@ for(x in 1:nrow(count_vm)){
 
 surv_TUCR <- cbind(posdata,out.tab)
 surv_TUCR <- surv_TUCR %>% select(-term)
+
+write_csv(surv_TUCR,paste(outputdir,"/survival_TUCRs.csv",sep=""))
+
+if(!dir.exists(paste(outputdir,"/tucrKPMplots",sep=""))){
+  dir.create(paste(outputdir,"/tucrKPMplots",sep=""))
+}
+
+km_countdata <- countdata
+colnames(km_countdata) <- metadata$barcode
+posdata$median <- rowMedians(countdata)
+km_TUCRs <- cbind(posdata,km_countdata)
+km_TUCRs <- km_TUCRs[,4:ncol(km_TUCRs)]
+km_TUCRs <- km_TUCRs %>%
+  gather(key = "sample", value = "count",-id,-median) %>%
+  mutate(group = ifelse(count>=median,"high","low")) %>%
+  select(id,median,"patient"=sample,group) %>%
+  left_join(clinical,by="patient") %>%
+  filter(median != 0)
+
+TUCRids <- km_TUCRs$id
+i = 1
+
+for(i in 1:length(TUCRids)){
+  print(i)
+  TUCR <- TUCRids[i]
+  #TUCR <- "uc.110"
+  kmdata <- km_TUCRs %>%
+    filter(id == TUCR)
+  fit <- survfit(Surv(time, status) ~ group, data = kmdata)
+  p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
+  ggsave(file=paste(outputdir,"/tucrKPMplots/",TUCR,"_kpmplot.png",sep = ""),plot = print(p))
+}
 
 ```
 
@@ -619,6 +647,76 @@ write.csv(res_stringtie, file = paste(outputdir,"/results_stringtie.csv",sep="")
 
 ```
 
+## Completing survival analysis for stringtie transcripts containing TUCRs
+
+```{r surcor_stringtie, message = FALSE}
+if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
+
+countdata <- read.table("stringtie_TUCR_counts.txt",header = TRUE)
+metadata <- read_csv(file = "tcga_metadata.csv")
+
+posdata <- countdata[,1:4]
+countdata <- countdata[,5:length(colnames(countdata))]
+
+countdata <- as.matrix(countdata)
+
+
+n_index <- c(seq(36,39),73)
+t_index <- c(seq(1,35),seq(40,72),seq(74,ncol(countdata)))
+
+vm <- function(x){
+  cond <- factor(ifelse(seq(1,dim(x)[2],1) %in% t_index, 1,  0))
+  d <- model.matrix(~1+cond)
+  x <- t(apply(x,1,as.numeric))
+  ex <- voom(x,d,plot=F)
+  return(ex$E)
+}
+
+count_vm <- vm(countdata)
+colnames(count_vm) <- metadata$barcode
+
+
+scal <- function(x,y){
+  mean_n <- rowMeans(y)  # mean of normal
+  sd_n <- apply(y,1,sd)  # SD of normal
+  # z score as (value - mean normal)/SD normal
+  res <- matrix(nrow=nrow(x), ncol=ncol(x))
+  colnames(res) <- colnames(x)
+  rownames(res) <- rownames(x)
+  for(i in 1:dim(x)[1]){
+    for(j in 1:dim(x)[2]){
+      res[i,j] <- (x[i,j]-mean_n[i])/sd_n[i]
+    }
+  }
+  return(res)
+}
+
+z_rna <- scal(count_vm[,t_index],count_vm[,n_index])
+rownames(z_rna) <- posdata[,4]
+
+clinical <- read.table("GBM.clin.merged.txt",header = TRUE)
+clinical$time <- as.numeric(clinical$time)
+
+sum(clinical$patient %in% colnames(z_rna))
+
+ind_tum <- which(unique(colnames(z_rna)) %in% clinical$patient)
+ind_clin <- which(clinical$patient %in% colnames(z_rna))
+
+out.tab <- c()
+for(x in 1:nrow(count_vm)){
+  ind_gene <- x
+  s <- Surv(clinical$time[ind_clin],clinical$status[ind_clin])
+  cx <- coxph(formula = s ~ count_vm[ind_gene,ind_tum])
+  cx <- tidy(cx)
+  out.tab <- rbind(out.tab,cx)
+}
+
+surv_stringtie <- cbind(posdata,out.tab)
+surv_stringtie <- surv_stringtie %>% select(-term)
+
+write_csv(surv_stringtie,paste(outputdir,"/survival_TUCRs_stringtie.csv",sep=""))
+```
+
 ## Generating volcano plot to visualize DE stringtie transcripts
 
 ```{r DESeq2plots_stringtie, message = FALSE}
@@ -713,7 +811,7 @@ ggsave(p,file=paste(outputdir,"/stringtie_heatmap.png",sep=""))
 
 ## Identifying differentially expressed CHESS genes containing TUCRs with DESeq2
 
-```{r DESeq2_stringtie, results="hide", message = FALSE}
+```{r DESeq2_CHESS, results="hide", message = FALSE}
 
 CHESScounts <- read.table("intersectchess_TUCR_counts.txt",header = TRUE)
 CHESScounts <- distinct(CHESScounts)
@@ -738,7 +836,7 @@ write.csv(res_CHESS, file = paste(outputdir,"/results_CHESS.csv",sep=""))
 
 ## Generating volcano plot to visualize DE CHESS genes containing TUCRs
 
-```{r DESeq2plots_stringtie, message = FALSE}
+```{r DESeq2plots_CHESS, message = FALSE}
 
 ### Volcano plot
 
@@ -780,9 +878,79 @@ volcanoplot(res_CHESS,title = "Deregulation of CHESS genes containing TUCRs in G
 
 ```
 
+## Completing survival analysis for stringtie transcripts containing TUCRs
+
+```{r surcor_CHESS, message = FALSE}
+if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
+
+countdata <- read.table("intersectchess_TUCR_counts.txt",header = TRUE)
+metadata <- read_csv(file = "tcga_metadata.csv")
+
+posdata <- countdata[,1:4]
+countdata <- countdata[,5:length(colnames(countdata))]
+
+countdata <- as.matrix(countdata)
+
+n_index <- c(seq(36,39),73)
+t_index <- c(seq(1,35),seq(40,72),seq(74,ncol(countdata)))
+
+vm <- function(x){
+  cond <- factor(ifelse(seq(1,dim(x)[2],1) %in% t_index, 1,  0))
+  d <- model.matrix(~1+cond)
+  x <- t(apply(x,1,as.numeric))
+  ex <- voom(x,d,plot=F)
+  return(ex$E)
+}
+
+count_vm <- vm(countdata)
+colnames(count_vm) <- metadata$barcode
+
+
+scal <- function(x,y){
+  mean_n <- rowMeans(y)  # mean of normal
+  sd_n <- apply(y,1,sd)  # SD of normal
+  # z score as (value - mean normal)/SD normal
+  res <- matrix(nrow=nrow(x), ncol=ncol(x))
+  colnames(res) <- colnames(x)
+  rownames(res) <- rownames(x)
+  for(i in 1:dim(x)[1]){
+    for(j in 1:dim(x)[2]){
+      res[i,j] <- (x[i,j]-mean_n[i])/sd_n[i]
+    }
+  }
+  return(res)
+}
+
+z_rna <- scal(count_vm[,t_index],count_vm[,n_index])
+rownames(z_rna) <- posdata[,4]
+
+clinical <- read.table("GBM.clin.merged.txt",header = TRUE)
+clinical$time <- as.numeric(clinical$time)
+
+sum(clinical$patient %in% colnames(z_rna))
+
+ind_tum <- which(unique(colnames(z_rna)) %in% clinical$patient)
+ind_clin <- which(clinical$patient %in% colnames(z_rna))
+
+out.tab <- c()
+for(x in 1:nrow(count_vm)){
+  ind_gene <- x
+  s <- Surv(clinical$time[ind_clin],clinical$status[ind_clin])
+  cx <- coxph(formula = s ~ count_vm[ind_gene,ind_tum])
+  cx <- tidy(cx)
+  out.tab <- rbind(out.tab,cx)
+}
+
+surv_CHESS <- cbind(posdata,out.tab)
+surv_CHESS <- surv_CHESS %>% select(-term)
+
+write_csv(surv_CHESS,paste(outputdir,"/survival_TUCRs_CHESS.csv",sep=""))
+
+```
+
 ## Generate CHESS gene RPKMs for filtering
 
-```{r RPKM_stringtie, results="hide"}
+```{r RPKM_CHESS, results="hide"}
 
 CHESS.rpkmcounts <- CHESScounts[,6:ncol(CHESScounts)]
 CHESS.rpkmcounts.info <- CHESScounts[,1:5]
