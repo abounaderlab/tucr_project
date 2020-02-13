@@ -12,8 +12,9 @@ For this first programming assignment I wrote three functions that are meant to 
 ## Set parameters
 
 ```{r parameters}
+makekpmplots <- TRUE
 
-makeRPKMboxplots <- TRUE
+makeRPKMboxplots <- FALSE
 
 outputdir <- "Outputs"
 
@@ -52,6 +53,14 @@ library("Tmisc")
 if (!require("survminer")) install.packages("survminer")
 library("survminer")
 
+if (!require("corrr")) install.packages("corrr")
+library("corrr")
+
+if (!require("here")) install.packages("here")
+library("here")
+
+if (!require("lessR")) install.packages("lessR")
+library("lessR")
 
 ```
 
@@ -375,7 +384,7 @@ write.csv(res_TUCR, file = paste(outputdir,"/results_TUCR.csv",sep=""))
 ```{r surcor_TUCRs, message = FALSE}
 if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
 
-countdata <- read.table("TUCR_counts.txt",header = TRUE)
+countdata <- read.table("tucr_counts.txt",header = TRUE)
 metadata <- read_csv(file = "tcga_metadata.csv")
 
 posdata <- countdata[,1:4]
@@ -439,14 +448,15 @@ surv_TUCR <- surv_TUCR %>% select(-term)
 
 write_csv(surv_TUCR,paste(outputdir,"/survival_TUCRs.csv",sep=""))
 
+if(makekpmplots == TRUE){
+
 if(!dir.exists(paste(outputdir,"/tucrKPMplots",sep=""))){
   dir.create(paste(outputdir,"/tucrKPMplots",sep=""))
 }
 
 km_countdata <- countdata
 colnames(km_countdata) <- metadata$barcode
-km_countdata <- 
-posdata$rank <- rowMedians(countdata)
+posdata$median <- rowMedians(countdata)
 km_TUCRs <- cbind(posdata,km_countdata)
 km_TUCRs <- km_TUCRs[,4:ncol(km_TUCRs)]
 km_TUCRs <- km_TUCRs %>%
@@ -459,18 +469,18 @@ km_TUCRs <- km_TUCRs %>%
 TUCRids <- posdata$id
 i = 1
 
-#for(i in 1:length(TUCRids)){
+for(i in 1:length(TUCRids)){
   print(i)
-  #TUCR <- TUCRids[i]
-  TUCR <- "uc.110"
+  TUCR <- TUCRids[i]
+  #TUCR <- "uc.110"
   kmdata <- km_TUCRs %>%
     filter(id == TUCR)
 if(length(as.vector(kmdata$id))>0){
   fit <- survfit(Surv(time, status) ~ group, data = kmdata)
   p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
   ggsave(file=paste(outputdir,"/tucrKPMplots/",TUCR,"_kpmplot.png",sep = ""),plot = print(p))}
-#}
-
+}
+}
 ```
 
 ## Generating volcano plot to visualize DE genes
@@ -479,7 +489,7 @@ if(length(as.vector(kmdata$id))>0){
 
 ### Volcano plot
 
-volcanoplot <- function (res,genes = "all",title = "Deregulated Genes", output = "results_volcanoplot.png"){
+volcanoplot <- function (res,genes = "all",title = "Deregulated Genes", output = "results_volcanoplot.png",repel=TRUE,height = 5, width = 5, dpi = 300){
   #res <- res_TUCR
   #genes = c("uc.110","uc.62")
   #title = "Deregulated Genes"
@@ -500,6 +510,7 @@ volcanoplot <- function (res,genes = "all",title = "Deregulated Genes", output =
   
   
   ## plot
+if(repel==TRUE){
   p <- ggplot(vres) +
         geom_point(aes(x=log2FoldChange, y=-log10(padj),col=filter3)) +
         scale_color_manual(values = c("black","blue","red")) +
@@ -510,11 +521,24 @@ volcanoplot <- function (res,genes = "all",title = "Deregulated Genes", output =
               plot.title = element_text(size = rel(1.5), hjust = 0.5),
               axis.title = element_text(size = rel(1.25))) +
         geom_text_repel(aes(x=log2FoldChange, y=-log10(padj),label = gene),force=50)
-  
-  ggsave(output)
+  }else{
+   p <- ggplot(vres) +
+        geom_point(aes(x=log2FoldChange, y=-log10(padj),col=filter3)) +
+        scale_color_manual(values = c("black","blue","red")) +
+        ggtitle(title) +
+        xlab("log2 fold change") + 
+        ylab("-log10 adjusted p-value") +
+        theme(legend.position = "none",
+              plot.title = element_text(size = rel(1.5), hjust = 0.5),
+              axis.title = element_text(size = rel(1.25))) +
+        geom_text(aes(x=log2FoldChange, y=-log10(padj),label = gene), label.size = 0.15)
+  }
+ggsave(output, width = width, height = height, dpi = dpi)
 }
 
-volcanoplot(res_TUCR,genes=c("uc.62","uc.110","uc.193","uc.210","uc.427"),title = "TUCR deregulation in GBM", output = paste(outputdir,"/tucr_results_volcanoplot.png",sep=""))
+volcanoplot(res_TUCR,genes=c("uc.62","uc.110","uc.193","uc.210","uc.427","uc.212","uc.341"),title = "TUCR deregulation in GBM", output = paste(outputdir,"/myron_tucr_results_volcanoplot.png",sep=""))
+
+volcanoplot(res_TUCR,title = "TUCR deregulation in GBM", output = paste(outputdir,"/tucr_results_volcanoplot.png",sep=""),repel = FALSE,width=7.5)
 
 ```
 
@@ -614,7 +638,7 @@ heatmap.TUCRs2 <- cbind(TUCRids,means,heatmap.TUCRs2)
 
 heatmap.TUCRs2 <- heatmap.TUCRs2 %>% 
   gather(key = "Sample", value = "RPKM",-TUCRids,-means) %>% 
-  filter(TUCRids == "uc.62"|TUCRids == "uc.110"|TUCRids == "uc.193"|TUCRids == "uc.210"|TUCRids == "uc.427")
+  filter(TUCRids == "uc.62"|TUCRids == "uc.110"|TUCRids == "uc.193"|TUCRids == "uc.210"|TUCRids == "uc.427"|TUCRids == "uc.212"|TUCRids == "uc.341")
 
 p <- ggplot(data = heatmap.TUCRs2,mapping = aes(x = Sample,y = reorder(TUCRids,means), fill = RPKM)) +
   geom_tile() +
@@ -1026,11 +1050,7 @@ ggsave(p,file=paste(outputdir,"/sdt_heatmap.png",sep=""))
 
 ## Generate figures for cell fractionation
 
-```{r cellfrac_TUCR, message=FALSE}
-
-if(!dir.exists(paste(outputdir,"/CellFrac",sep=""))){
-  dir.create(paste(outputdir,"/CellFrac",sep=""))
-}
+```{r cellfrac_TUCR, eval = FALSE, message=FALSE}
 
 CellFrackin <- function(filename){
 all_content = readLines(filename)
@@ -1066,5 +1086,88 @@ for(i in 1:length(path)){
   print(i)
   CellFrackin(paste("cellfrac",path[i],sep="/"))
 }
+
+```
+
+## Identify DE TUCRs that are correlated with each other
+
+```{r}
+
+tucrcounts <- read.table("TUCR_counts.txt",header = TRUE)
+metadata <- read_csv(file = "tcga_metadata.csv")
+
+
+tucr.cor <- tucrcounts[,5:ncol(tucrcounts)]
+rownames(tucr.cor) <- as.character(tucrcounts[,4])
+
+posdata <- tucrcounts[,1:4]
+
+countdata <- as.matrix(tucr.cor)
+
+n_index <- c(seq(36,39),73)
+t_index <- c(seq(1,35),seq(40,72),seq(74,ncol(countdata)))
+
+vm <- function(x){
+  cond <- factor(ifelse(seq(1,dim(x)[2],1) %in% t_index, 1,  0))
+  d <- model.matrix(~1+cond)
+  x <- t(apply(x,1,as.numeric))
+  ex <- voom(x,d,plot=F)
+  return(ex$E)
+}
+
+count_vm <- vm(countdata)
+colnames(count_vm) <- metadata$barcode
+posdata$median <- rowMedians(as.matrix(count_vm)) 
+
+tucr.cor <- cbind(posdata[,4:5],count_vm)
+
+tucr.cor.matrix <- data.frame(row.names = posdata[,4])
+
+i=3
+
+for(i in 3:ncol(tucr.cor)){
+  print(i)
+  tucr.cor.matrix[,i-2] <- tucr.cor[,i]/tucr.cor[,2]
+}
+
+colnames(tucr.cor.matrix) <- metadata$id
+tucr.cor.matrix2 <- t(as.data.frame(apply(as.data.frame(tucr.cor.matrix),1:2,function(x) {ifelse(x>=1,x,-(1/x))})))
+
+#tucr.cor.matrix.shave <- 
+  
+tucr.cor.matrix2 %>%
+  corrr::correlate() %>%
+  corrr::focus(1:481, mirror = TRUE) %>%
+  # converts the upper triangle (default) to missing values
+  corrr::shave() %>%
+  # converts a correlation df into clean matrix
+  corrr::fashion() %>%
+  readr::write_excel_csv(here::here("Outputs","tucr_correlation-matrix.csv"))
+
+tucr.cor.matrix.heatmap <- tucr.cor.matrix2 %>%
+  corrr::correlate() %>%
+  corrr::focus(1:482, mirror = TRUE) %>%
+  # converts a correlation df into clean matrix
+  corrr::fashion() %>%
+  gather(key = "Partner", value = "Cor",-rowname) %>%
+  mutate(corr = ifelse(Cor=="",1,Cor)) %>%
+  select(TUCR = rowname,Partner,corr)
+
+tucr.cor.matrix.heatmap$corr <- as.numeric(tucr.cor.matrix.heatmap$corr)
+tucr.cor.matrix.heatmap$TUCR <- as.character(tucr.cor.matrix.heatmap$TUCR)
+tucr.cor.matrix.heatmap$Partner <- as.character(tucr.cor.matrix.heatmap$Partner)
+
+
+ggplot(data = tucr.cor.matrix.heatmap,mapping = aes(x = reorder(TUCR,corr),y = reorder(Partner,corr), fill = corr)) +
+  geom_tile() +
+ scale_fill_gradientn(colours = c("blue", "white", "red"), values = c(-0.25,0.625,1)) +
+  theme(panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+        ggsave(file=paste(outputdir,"/tucr_corr_heatmap.png",sep=""))
+
+tucr.cor.matrix.heatmap %>%
+  filter(abs(corr) >= 0.6 & abs(corr) < 1) %>%
+  write_csv("topcorr.csv")
 
 ```
