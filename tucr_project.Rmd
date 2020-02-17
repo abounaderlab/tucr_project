@@ -31,6 +31,9 @@ library("tidyverse")
 if (!require("ggplot2")) install.packages("ggplot2")
 library("ggplot2")
 
+if (!require("ggforce")) install.packages("ggforce")
+library("ggforce")
+
 if (!require("ggrepel")) install.packages("ggrepel")
 library("ggrepel")
 
@@ -1068,9 +1071,14 @@ x<- x %>%
     mutate(ID = paste(Target,Line,Fraction,sep=" "))
 
 p <- ggplot(x,aes(x = Target, y = FoldChange, fill = Fraction)) + 
+  labs(title = "Cellular localization of TUCRs in GBM cell lines") +
+  ylab("Fold Change") +
   geom_bar(stat = "identity",position="dodge") + 
-  theme(axis.text.x = element_text(angle = -90),
-        axis.ticks.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = -90, size = 10),
+        axis.text.y = element_text(size = 10),
+        axis.ticks.x = element_blank(),
+        plot.title = element_text(size = 15, face = "bold",hjust = 0.5),
+        axis.title.y = element_text("Fold Change",size = 10)) +
   facet_wrap(~Line)
 
 ggsave(p,file=paste(filename,".png",sep=""), width = 20, height = 5, dpi = 300)
@@ -1169,5 +1177,31 @@ ggplot(data = tucr.cor.matrix.heatmap,mapping = aes(x = reorder(TUCR,corr),y = r
 tucr.cor.matrix.heatmap %>%
   filter(abs(corr) >= 0.6 & abs(corr) < 1) %>%
   write_csv("topcorr.csv")
+
+```
+
+## Make figures for fold change
+
+```{r overexp_TUCR, eval = FALSE, message=FALSE}
+
+overexp_TUCR_cp <- c("#C77CFF","#F8766D","#619CFF","#00BA38","#FFFF00")
+
+filename <- "tucroverexpression.csv"
+x <- read.csv(filename)
+
+p <- ggplot(x,aes(x = Target, y = FC, fill = Sample)) + 
+  labs(title = "TUCR Overexpression in U251 cells") +
+  ylab("Fold Change") +
+  geom_bar(stat = "identity",position="dodge",colour="black") + 
+  theme(axis.text.x = element_text(angle = -90, size = 10),
+        axis.text.y = element_text(size = 10),
+        axis.ticks.x = element_blank(),
+        plot.title = element_text(size = 15, face = "bold",hjust = 0.5),
+        axis.title.y = element_text("Fold Change",size = 10)) +
+  facet_zoom(ylim = c(0, 2)) +
+  scale_fill_manual(values=overexp_TUCR_cp)
+
+ggsave(p,file=paste(filename,".png",sep=""), width = 7.5, height = 5, dpi = 300)
+
 
 ```
