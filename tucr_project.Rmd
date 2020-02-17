@@ -427,8 +427,8 @@ scal <- function(x,y){
 z_rna <- scal(count_vm[,t_index],count_vm[,n_index])
 rownames(z_rna) <- posdata[,4]
 
-#clinical <- read.table("GBM.clin.merged.txt",header = TRUE)
-clinical <- read.table("GBM.oncolnc.merged.txt",header = TRUE)
+clinical <- read.table("GBM.clin.merged.txt",header = TRUE)
+#clinical <- read.table("GBM.oncolnc.merged.txt",header = TRUE)
 
 clinical$time <- as.numeric(clinical$time)
 
@@ -1053,7 +1053,7 @@ ggsave(p,file=paste(outputdir,"/sdt_heatmap.png",sep=""))
 
 ## Generate figures for cell fractionation
 
-```{r cellfrac_TUCR, eval = FALSE, message=FALSE}
+```{r cellfrac_TUCR, message=FALSE}
 
 CellFrackin <- function(filename){
 all_content = readLines(filename)
