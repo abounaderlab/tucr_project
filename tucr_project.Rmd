@@ -16,7 +16,11 @@ makekpmplots <- TRUE
 
 makeRPKMboxplots <- FALSE
 
+repel <- TRUE
+
 outputdir <- "Outputs"
+
+useintermediate <- TRUE
 
 ```
 
@@ -36,6 +40,12 @@ library("ggforce")
 
 if (!require("ggrepel")) install.packages("ggrepel")
 library("ggrepel")
+
+if (!require("ggfortify")) install.packages("ggfortify")
+library("ggfortify")
+
+if (!require("ggdendro")) install.packages("ggdendro")
+library("ggdendro")
 
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
@@ -365,6 +375,7 @@ tucrcounts <- read.table("TUCR_counts.txt",header = TRUE)
 metadata <- read_csv(file = "tcga_metadata.csv")
 
 tucrcounts2 <- tucrcounts[,5:ncol(tucrcounts)]
+
 rownames(tucrcounts2) <- tucrcounts[,4]
 tucrcounts.info <- tucrcounts[,1:4]
 tucrcounts.info$length <- (tucrcounts$end - tucrcounts$start)/1000
@@ -1055,6 +1066,10 @@ ggsave(p,file=paste(outputdir,"/sdt_heatmap.png",sep=""))
 
 ```{r cellfrac_TUCR, message=FALSE}
 
+if(!dir.exists(paste(outputdir,"/cellfrac",sep=""))){
+  dir.create(paste(outputdir,"/cellfrac",sep=""))
+}
+
 CellFrackin <- function(filename){
 all_content = readLines(filename)
 skip_second = all_content[-c(1:19)]
@@ -1081,10 +1096,10 @@ p <- ggplot(x,aes(x = Target, y = FoldChange, fill = Fraction)) +
         axis.title.y = element_text("Fold Change",size = 10)) +
   facet_wrap(~Line)
 
-ggsave(p,file=paste(filename,".png",sep=""), width = 20, height = 5, dpi = 300)
+ggsave(p,file=paste(outputdir,"/",filename,".png",sep=""), width = 7.5, height = 5, dpi = 300)
 x %>%
   select(-ID) %>%
-  write_csv(paste(filename," (Output).csv",sep=""))
+  write_csv(paste(outputdir,"/",filename," (Output).csv",sep=""))
 }
 
 path <- list.files("cellfrac")
@@ -1101,8 +1116,17 @@ for(i in 1:length(path)){
 
 ```{r}
 
-tucrcounts <- read.table("TUCR_counts.txt",header = TRUE)
+if(!dir.exists(paste(outputdir,"/correlations",sep=""))){
+  dir.create(paste(outputdir,"/correlations",sep=""))
+}
+
+if(useintermediate==FALSE){
+TUCRids <- read.table("TUCR_counts.txt",header = TRUE)
+TUCRids <- as.character(TUCRids[,4])
+tucrcounts <- read.table("mergedcounts.txt",header = TRUE)
+
 metadata <- read_csv(file = "tcga_metadata.csv")
+
 
 
 tucr.cor <- tucrcounts[,5:ncol(tucrcounts)]
@@ -1131,6 +1155,7 @@ tucr.cor <- cbind(posdata[,4:5],count_vm)
 
 tucr.cor.matrix <- data.frame(row.names = posdata[,4])
 
+
 i=3
 
 for(i in 3:ncol(tucr.cor)){
@@ -1140,43 +1165,45 @@ for(i in 3:ncol(tucr.cor)){
 
 colnames(tucr.cor.matrix) <- metadata$id
 tucr.cor.matrix2 <- t(as.data.frame(apply(as.data.frame(tucr.cor.matrix),1:2,function(x) {ifelse(x>=1,x,-(1/x))})))
-
-#tucr.cor.matrix.shave <- 
-  
-tucr.cor.matrix2 %>%
-  corrr::correlate() %>%
-  corrr::focus(1:481, mirror = TRUE) %>%
-  # converts the upper triangle (default) to missing values
-  corrr::shave() %>%
-  # converts a correlation df into clean matrix
-  corrr::fashion() %>%
-  readr::write_excel_csv(here::here("Outputs","tucr_correlation-matrix.csv"))
-
-tucr.cor.matrix.heatmap <- tucr.cor.matrix2 %>%
-  corrr::correlate() %>%
-  corrr::focus(1:482, mirror = TRUE) %>%
-  # converts a correlation df into clean matrix
-  corrr::fashion() %>%
-  gather(key = "Partner", value = "Cor",-rowname) %>%
-  mutate(corr = ifelse(Cor=="",1,Cor)) %>%
-  select(TUCR = rowname,Partner,corr)
-
-tucr.cor.matrix.heatmap$corr <- as.numeric(tucr.cor.matrix.heatmap$corr)
-tucr.cor.matrix.heatmap$TUCR <- as.character(tucr.cor.matrix.heatmap$TUCR)
-tucr.cor.matrix.heatmap$Partner <- as.character(tucr.cor.matrix.heatmap$Partner)
+tucr.cor.matrix2 <- as.data.frame(tucr.cor.matrix2)
 
 
-ggplot(data = tucr.cor.matrix.heatmap,mapping = aes(x = reorder(TUCR,corr),y = reorder(Partner,corr), fill = corr)) +
-  geom_tile() +
- scale_fill_gradientn(colours = c("blue", "white", "red"), values = c(-0.25,0.625,1)) +
-  theme(panel.grid = element_blank(),
-        axis.text = element_blank(),
-        axis.ticks = element_blank()) +
-        ggsave(file=paste(outputdir,"/tucr_corr_heatmap.png",sep=""))
+tucr.cor.matrix3 <- cor(tucr.cor.matrix2,method="spearman")
 
-tucr.cor.matrix.heatmap %>%
-  filter(abs(corr) >= 0.6 & abs(corr) < 1) %>%
-  write_csv("topcorr.csv")
+geneindex <- rownames(tucr.cor.matrix)
+save(tucr.cor.matrix3,geneindex,TUCRids,file="matrixintermediate.RData")
+rm(list=ls())
+load(file="matrixintermediate.RData")}else{
+  load(file="matrixintermediate.RData")
+}
+
+summarycor <- data.frame(searchTUCR=character(0),ngenes=integer(0),meancor=numeric(0),mediancor=numeric(0),mincor=numeric(0),maxcor=numeric(0))
+
+i = 1
+
+for(i in 1:length(TUCRids)){
+  print(i)
+  searchTUCR <- TUCRids[i]
+  #searchTUCR <- "uc.110"
+###uc.110 is at row 20972 in tucr.cor.matrix3 via manual confirmation.
+tucr.cor.matrix.match <- tucr.cor.matrix3[match(searchTUCR,geneindex),]
+tucr.cor.matrix.match <- as.data.frame(tucr.cor.matrix.match)
+tucr.cor.matrix.match <- tucr.cor.matrix.match %>% 
+  mutate(partner = geneindex) %>%
+  mutate(gene = searchTUCR) %>%
+  select(gene,partner,"cor"=tucr.cor.matrix.match) %>%
+  filter(abs(cor)>=0.3 & partner != searchTUCR) %>%
+  readr::write_excel_csv(here::here(paste(outputdir,"/correlations",sep=""),paste(searchTUCR,"_correlations.csv",sep="")))
+meancor <- mean(tucr.cor.matrix.match$cor)
+mediancor <- median(tucr.cor.matrix.match$cor)
+ngenes <- length(tucr.cor.matrix.match$cor)
+mincor <- min(tucr.cor.matrix.match$cor)
+maxcor <- max(tucr.cor.matrix.match$cor)
+newrow <- cbind(searchTUCR,ngenes,meancor,mediancor,mincor,maxcor)
+summarycor <- rbind(summarycor,newrow)}
+
+summarycor %>%
+readr::write_excel_csv(here::here(paste(outputdir,"/correlations",sep=""),paste("cor_summary.csv",sep="")))
 
 ```
 
@@ -1186,11 +1213,11 @@ tucr.cor.matrix.heatmap %>%
 
 overexp_TUCR_cp <- c("#C77CFF","#F8766D","#619CFF","#00BA38","#FFFF00")
 
-filename <- "tucroverexpression.csv"
+filename <- "tucroverexpression_U87.csv"
 x <- read.csv(filename)
 
 p <- ggplot(x,aes(x = Target, y = FC, fill = Sample)) + 
-  labs(title = "TUCR Overexpression in U251 cells") +
+  labs(title = "TUCR Overexpression in U87 cells") +
   ylab("Fold Change") +
   geom_bar(stat = "identity",position="dodge",colour="black") + 
   theme(axis.text.x = element_text(angle = -90, size = 10),
@@ -1201,7 +1228,66 @@ p <- ggplot(x,aes(x = Target, y = FC, fill = Sample)) +
   facet_zoom(ylim = c(0, 2)) +
   scale_fill_manual(values=overexp_TUCR_cp)
 
-ggsave(p,file=paste(filename,".png",sep=""), width = 7.5, height = 5, dpi = 300)
+ggsave(p,file=paste(outputdir,"/",filename,".png",sep=""), width = 7.5, height = 5, dpi = 300)
 
+
+```
+
+## Volcano plot for intergenic TUCRs only
+
+```{r DESeq2plots_intergenicTUCRs, message = FALSE}
+
+### Volcano plot
+
+res_intergenic <- read.csv("results_TUCR_intergenic_sdt.csv")
+
+volcanoplot <- function (res,genes = "all",title = "Deregulated Genes", output = "results_volcanoplot.png",repel=TRUE,height = 5, width = 5, dpi = 300){
+  #res <- res_TUCR
+  #genes = c("uc.110","uc.62")
+  #title = "Deregulated Genes"
+  vres <- res
+  vres <- vres %>% mutate(filter1 = abs(log2FoldChange)>=1,filter2 = padj <=0.05,filter3="",gene="")
+  for (i in 1:length(vres$row)){
+    if(is.na(vres$padj[i])){vres$filter3[i] <- "black"}else{
+    if(vres$filter1[i] == TRUE && vres$filter2[i] == TRUE){
+    vres$filter3[i] <- "red"
+  }else{
+      if(vres$filter1[i] == TRUE){
+    vres$filter3[i] <- "blue"
+      }else{vres$filter3[i] <- "black"}
+  }}
+    ifelse(genes!="all",ifelse(!is.na(match(vres$row[i],genes)),vres$gene[i] <- as.character(vres$row[i]), ""),vres$gene[i] <- as.character(vres$row[i]))
+    }
+  
+  
+  
+  ## plot
+if(repel==TRUE){
+  p <- ggplot(vres) +
+        geom_point(aes(x=log2FoldChange, y=-log10(padj),col=filter3)) +
+        scale_color_manual(values = c("black","red","red")) +
+        ggtitle(title) +
+        xlab("log2 fold change") + 
+        ylab("-log10 adjusted p-value") +
+        theme(legend.position = "none",
+              plot.title = element_text(size = rel(1.5), hjust = 0.5),
+              axis.title = element_text(size = rel(1.25))) +
+        geom_text_repel(aes(x=log2FoldChange, y=-log10(padj),label = gene),force=50)
+  }else{
+   p <- ggplot(vres) +
+        geom_point(aes(x=log2FoldChange, y=-log10(padj),col=filter3)) +
+        scale_color_manual(values = c("black","blue","red")) +
+        ggtitle(title) +
+        xlab("log2 fold change") + 
+        ylab("-log10 adjusted p-value") +
+        theme(legend.position = "none",
+              plot.title = element_text(size = rel(1.5), hjust = 0.5),
+              axis.title = element_text(size = rel(1.25))) +
+        geom_text(aes(x=log2FoldChange, y=-log10(padj),label = gene), label.size = 0.15)
+  }
+ggsave(output, width = width, height = height, dpi = dpi)
+}
+
+volcanoplot(res_intergenic,genes=c("uc.62","uc.110","uc.193","uc.210","uc.427","uc.382","uc.403","uc.159"),title = "TUCR deregulation in GBM", output = paste(outputdir,"/intergenic_tucr_results_volcanoplot.png",sep=""))
 
 ```
