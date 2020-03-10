@@ -12,13 +12,15 @@ For this first programming assignment I wrote three functions that are meant to 
 ## Set parameters
 
 ```{r parameters}
+countfilename <- "TUCR_counts_80.txt"
+
 makekpmplots <- TRUE
 
-makeRPKMboxplots <- FALSE
+makeRPKMboxplots <- TRUE
 
 repel <- TRUE
 
-outputdir <- "Outputs"
+outputdir <- "Outputs_80"
 
 useintermediate <- TRUE
 
@@ -371,7 +373,7 @@ bedtools random -g hg38.genome -n 481 -l 243 -seed 71346
 
 ```{r DESeq2_TUCRs, results="hide", message = FALSE}
 
-tucrcounts <- read.table("TUCR_counts.txt",header = TRUE)
+tucrcounts <- read.table(countfilename,header = TRUE)
 metadata <- read_csv(file = "tcga_metadata.csv")
 
 tucrcounts2 <- tucrcounts[,5:ncol(tucrcounts)]
@@ -398,7 +400,7 @@ write.csv(res_TUCR, file = paste(outputdir,"/results_TUCR.csv",sep=""))
 ```{r surcor_TUCRs, message = FALSE}
 if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
 
-countdata <- read.table("tucr_counts.txt",header = TRUE)
+countdata <- read.table(countfilename,header = TRUE)
 metadata <- read_csv(file = "tcga_metadata.csv")
 
 posdata <- countdata[,1:4]
@@ -1064,7 +1066,7 @@ ggsave(p,file=paste(outputdir,"/sdt_heatmap.png",sep=""))
 
 ## Generate figures for cell fractionation
 
-```{r cellfrac_TUCR, message=FALSE}
+```{r cellfrac_TUCR, eval=FALSE,message=FALSE}
 
 if(!dir.exists(paste(outputdir,"/cellfrac",sep=""))){
   dir.create(paste(outputdir,"/cellfrac",sep=""))
@@ -1114,14 +1116,14 @@ for(i in 1:length(path)){
 
 ## Identify DE TUCRs that are correlated with each other
 
-```{r}
+```{r correlations, eval=FALSE}
 
 if(!dir.exists(paste(outputdir,"/correlations",sep=""))){
   dir.create(paste(outputdir,"/correlations",sep=""))
 }
 
 if(useintermediate==FALSE){
-TUCRids <- read.table("TUCR_counts.txt",header = TRUE)
+TUCRids <- read.table(countfilename,header = TRUE)
 TUCRids <- as.character(TUCRids[,4])
 tucrcounts <- read.table("mergedcounts.txt",header = TRUE)
 
