@@ -145,6 +145,8 @@ cp stringtie_merged.gtf stringtie_merged.bed
 ```{bash tcga, eval = FALSE}
 ## Create directory for all outputs from TCGA analysis data
 mkdir tcga_analysis/
+
+mkdir lgg_tcga_analysis/
 ```
 
 ## Extract headers from BAM files
@@ -154,6 +156,8 @@ mkdir tcga_analysis/
 # Create directory for extracted headerfiles
 mkdir tcga_analysis/head/
 
+mkdir lgg_tcga_analysis/head/
+
 # Create extracted header files
 for bam in $(find GBM-RNASEQ-RAW/* -name '*.bam')
 do
@@ -161,6 +165,14 @@ name=$(echo $bam | awk -F ".bam" '{print $1}')
 echo $name
 samtools view -H $bam > $name.headerids.txt
 mv $name.headerids.txt ./tcga_analysis/head/
+done
+
+for bam in $(find LGG-RNASEQ-RAW/* -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+echo $name
+samtools view -H $bam > $name.headerids.txt
+mv $name.headerids.txt ./lgg_tcga_analysis/head/
 done
 ```
 
@@ -170,8 +182,12 @@ done
 ## Get new file names for BAM files using TCGA IDs from extracted header
 mkdir tcga_analysis/ids/
 
+mkdir lgg_tcga_analysis/ids/
+
 # Initialize summary file with TCGA IDs
-echo "RAWID,TCGAID" > tcga_analysis/ids/tcgaIDs.csv 
+echo "RAWID,TCGAID" > tcga_analysis/ids/tcgaIDs.csv
+
+echo "RAWID,TCGAID" > lgg_tcga_analysis/ids/tcgaIDs.csv 
 
 # Extract IDs from header files
 for header in $(find tcga_analysis/head/* -name '*headerids.txt')
@@ -182,8 +198,20 @@ ids1=$(awk '$1=="@RG"{print $3}' $header)
 ids2=$(echo $ids1 | cut -c4-)
 echo "$name2.bam,$ids2.bam"
 echo "$name2.bam,$ids2.bam" > $name.tcgaid.csv
-echo "$name2.bam,$ids2.bam" >> tcga_analysis/ids/tcgaIDs.csv 
+echo "$name2.bam,$ids2.bam" >> tcga_analysis/ids/tcgaIDs.csv
 mv $name.tcgaid.csv ./tcga_analysis/ids/
+done
+
+for header in $(find lgg_tcga_analysis/head/* -name '*headerids.txt')
+do
+name=$(echo $header | awk -F ".headerids.txt" '{print $1}')
+name2=$(echo $name | cut -c20-)
+ids1=$(awk '$1=="@RG"{print $3}' $header)
+ids2=$(echo $ids1 | cut -c4-)
+echo "$name2.bam,$ids2.bam"
+echo "$name2.bam,$ids2.bam" > $name.tcgaid.csv
+echo "$name2.bam,$ids2.bam" >> lgg_tcga_analysis/ids/tcgaIDs.csv 
+mv $name.tcgaid.csv ./lgg_tcga_analysis/ids/
 done
 ```
 
@@ -194,6 +222,7 @@ done
 ##Rename BAM files using TCGA ids
 # Create folder for new files
 mkdir tcga_analysis/reindex/
+
 # Copy BAM files into new directory with updated names
 
 while IFS=, read orig target; do
