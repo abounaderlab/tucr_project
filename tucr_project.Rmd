@@ -205,7 +205,7 @@ done
 for header in $(find lgg_tcga_analysis/head/* -name '*headerids.txt')
 do
 name=$(echo $header | awk -F ".headerids.txt" '{print $1}')
-name2=$(echo $name | cut -c20-)
+name2=$(echo $name | cut -c24-)
 ids1=$(awk '$1=="@RG"{print $3}' $header)
 ids2=$(echo $ids1 | cut -c4-)
 echo "$name2.bam,$ids2.bam"
@@ -232,8 +232,23 @@ cp $orig2 $target
 mv $target tcga_analysis/reindex/
 done < tcga_analysis/ids/tcgaIDs.csv
 
+while IFS=, read orig target; do
+orig2=$(find LGG-RNASEQ-RAW/* -name $orig)
+echo $orig2
+cp $orig2 $target
+mv $target lgg_tcga_analysis/reindex/
+done < lgg_tcga_analysis/ids/tcgaIDs.csv
+
 # Reindex the renamed files using samtools.
 for bam in $(find tcga_analysis/reindex/ -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+echo $name
+samtools index $bam
+done
+
+# Reindex the renamed files using samtools.
+for bam in $(find lgg_tcga_analysis/reindex/ -name '*.bam')
 do
 name=$(echo $bam | awk -F ".bam" '{print $1}')
 echo $name
