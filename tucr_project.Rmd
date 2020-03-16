@@ -250,9 +250,11 @@ done
 # Reindex the renamed files using samtools.
 for bam in $(find lgg_tcga_analysis/reindex/ -name '*.bam')
 do
+samtools view -H TCGA-CS-4938-01B-11R-1896-07.bam > header
 name=$(echo $bam | awk -F ".bam" '{print $1}')
 echo $name
-samtools index $bam
+samtools reheader header $bam > $name.rehead.bam
+samtools index $name.rehead.bam
 done
 ```
 
