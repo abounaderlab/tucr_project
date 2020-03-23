@@ -1,22 +1,25 @@
 ---
 title: 'Uncovering a role for transcribed ultra-conserved regions as long non-coding RNAs in glioblastoma'
-author: "Myron Keith Gibert Jr"
+author: "Myron Gibert Jr"
 date: "January 27, 2020"
 output: pdf_document
 toc: true
 ---
 
+## Abstract
+
+Glioblastoma (GBM) is the most common and most deadly malignant brain tumor. Most GBM research has focused on protein-coding genes and much less on the non-coding transcripts that make up 98% of cellular RNA. Transcribed Ultra-Conserved Regions (TUCRs) represent an understudied class of long non-coding RNAs (lncRNAs) that are found conserved across multiple species. These non-coding transcripts are highly resistant to variation and are commonly deregulated in cancer, suggesting regulatory and functional importance. We performed a first time analysis of TCGA RNA-Seq data and identified 197 TUCRs that are differentially expressed relative to normal brain. This project aims to identify and valid these deregulated TUCRs, identify and validate lncRNA transcripts containing these TUCRs, identify genes that are co-regulated with these TUCRs, and predict TUCR function using the functions that are governed by co-regulated genes.
+
 ## Introduction
-For this first programming assignment I wrote three functions that are meant to interact with dataset that accompanies this assignment. The dataset is contained in a zip file specdata.zip that is included in the GitHub repository.
 
 ## Set parameters
 
 ```{r parameters}
 countfilename <- "TUCR_counts_80.txt"
 
-makekpmplots <- TRUE
+makekpmplots <- FALSE
 
-makeRPKMboxplots <- TRUE
+makeRPKMboxplots <- FALSE
 
 repel <- TRUE
 
@@ -1283,7 +1286,7 @@ ggsave(p,file=paste(outputdir,"/",filename,".png",sep=""), width = 7.5, height =
 
 ## Volcano plot for intergenic TUCRs only
 
-```{r DESeq2plots_intergenicTUCRs, message = FALSE}
+```{r DESeq2plots_intergenicTUCRs, message = FALSE, eval=FALSE}
 
 ### Volcano plot
 
