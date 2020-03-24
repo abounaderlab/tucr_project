@@ -1,5 +1,5 @@
 ---
-title: 'Uncovering a role for transcribed ultra-conserved regions as long non-coding RNAs in glioblastoma'
+title: 'Uncovering a role for transcribed ultra-conserved regions as long non-coding RNAs in gliomas'
 author: "Myron Gibert Jr"
 date: "January 27, 2020"
 output: pdf_document
@@ -11,6 +11,17 @@ toc: true
 Glioblastoma (GBM) is the most common and most deadly malignant brain tumor. Most GBM research has focused on protein-coding genes and much less on the non-coding transcripts that make up 98% of cellular RNA. Transcribed Ultra-Conserved Regions (TUCRs) represent an understudied class of long non-coding RNAs (lncRNAs) that are found conserved across multiple species. These non-coding transcripts are highly resistant to variation and are commonly deregulated in cancer, suggesting regulatory and functional importance. We performed a first time analysis of TCGA RNA-Seq data and identified 197 TUCRs that are differentially expressed relative to normal brain. This project aims to identify and valid these deregulated TUCRs, identify and validate lncRNA transcripts containing these TUCRs, identify genes that are co-regulated with these TUCRs, and predict TUCR function using the functions that are governed by co-regulated genes.
 
 ## Introduction
+
+*Introduction for GBM and LGGs.
+
+While many targeted therapies in the context of GBM, LGGs, and other malignancies focus on protein-coding genes, these genes make up ~1.5% of the ~90% of the genome that is transcribed. The remainder of the transcribed genome is represented by non-coding elements that can serve key regulatory roles. Of these elements, long non-coding RNAs (lncRNAs) have recently been determined to serve as important regulators of malignancy and potential therapeutic targets in cancer. 28-33 These lncRNAs are transcribed RNA molecules that contain greater than 200 nucleotides but typically lack significant protein coding capabilities. 
+
+A subset of these lncRNAs is transcribed from ultra-conserved regions (TUCR) of the genome.  These TUCRs are 481 unique regions of the genome that are greater than 200 base pairs in length and are highly conserved across multiple species, including human, mouse, rat, dog, and chicken genomes. This is significant, as lncRNAs are typically poorly conserved as a class of molecules.  TUCRs are highly resistant to variation, with the 106,767 conserved bases overlapping with as few as six canonical single nucleotide polymorphisms (SNPs).  Their expression is commonly deregulated in cancer.
+
+It is believed that these TUCRs may serve crucial regulatory roles as lncRNAs in cancer. The non-coding RNA field is a growing one.  While only a single lncRNA paper was published in 2007, that number has exploded to 1342 publications in the year 2016.  Despite this explosion of interest in lncRNAs, nothing is known on TUCR lncRNAs in GBM or LGGs as the literature elucidating their expression, functions and mechanisms of action is nonexistent. Studying them therefore represents an untouched avenue for understanding novel oncogenic mechanisms and discovering new biomarkers and therapeutic targets for these diseases.
+
+Here, we use TCGA RNA-Seq GBM and LGG datasets to identify TUCR expression change effects on various parameters.  We identified and validated TUCRs that are deregulated in GBM tissues.  We also identified TUCRs that are correlated with GBM and LGG patient survival, TUCRs that are coregulated with protein coding genes, predicted novel lncRNAs containing TUCRs, TUCR lncRNA secondary structure, and predicted TUCR functions using gene ontology and pathway analyses.  
+
 
 ## Set parameters
 
