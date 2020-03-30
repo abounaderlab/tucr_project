@@ -25,6 +25,18 @@ Here, we use TCGA RNA-Seq GBM and LGG datasets to identify TUCR expression chang
 
 ## Set parameters
 
+This initial section is used to set the dependent variables that are used for this analysis. 
+
+The following variables can be set:
+* countfilename is the name of the RNA-Seq feature count file that is generated in the "Generating count tables for survival and differential expression" section.  This can be any tab-delimited text file where the row names are the genes, the column names are the samples, and the cells are the generated counts.  This table is used for both survival and differential expression analyses.
+* makekpmplots is a logical vector.  When set to TRUE, the script will generate Kaplan-Meier survival plots for each gene in the counts file.
+* makerpkmoxplots is also a logical vector.  When set to TRUE, the script will generate reads per kilobase million boxplots for each gene, showing median RPKM, mean RPKM (red dot), and additional summary information. This is used to determine to what extent a gene is expressed across all samples
+* repel is also a logical vector.  When set to true, the volcano summary plot for RNA-Seq expression data will contain labels for a given set of genes specified in the "Generating volcano plot to visualize DE genes"
+* outputdir is a character variable containing the "output directory", or the location where all output files will go. This can be any characters enclosed in quotations marks (ex. "Outputs"). Set to "Outputs" to use the default outputs folder
+* useintermediate is a logical vector.  When set to TRUE, the analysis will use a pregenerated gene correlation matrix for the guilt by association analysis.  Unless there is a specific reason to generate a new matrix (VERY memory intensive), this variable should be set to TRUE.
+* deleteoutputs is a logical vector that should only be set to TURE or FALSE.  When set to true, the output directory will be repopulated after every program run.  If set to false, the program will only run if the output directory does not already exist in the working directory, to prevent the data from being overwritten.
+
+
 ```{r parameters}
 countfilename <- "TUCR_counts_80.txt"
 
