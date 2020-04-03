@@ -6,6 +6,20 @@ output: pdf_document
 toc: true
 ---
 
+```{r tinytex, include=FALSE}
+## INSTALLING LATEX FOR RMARKDOWN
+
+#RMarkdown requires LaTex to create pdf documents as an output. More information can be found [here](https://bookdown.org/yihui/rmarkdown/pdf-document.html). Alternatively, output can be set to "html_document" or "word_document". End users may install LaTex by setting the "wanttinytex" variable to FALSE and running the following script:
+
+#Install tinytex to let RMarkdown create a pdf document? Default: wanttinytex <- FALSE
+wanttinytex <- TRUE
+
+if(tinytex:::is_tinytex()==FALSE && wanttinytex == TRUE){
+if (!require("tinytex")) install.packages("tinytex")
+tinytex::install_tinytex()
+}
+```
+
 ## Abstract
 
 Glioblastoma (GBM) is the most common and most deadly malignant brain tumor. Most GBM research has focused on protein-coding genes and much less on the non-coding transcripts that make up 98% of cellular RNA. Transcribed Ultra-Conserved Regions (TUCRs) represent an understudied class of long non-coding RNAs (lncRNAs) that are found conserved across multiple species. These non-coding transcripts are highly resistant to variation and are commonly deregulated in cancer, suggesting regulatory and functional importance. We performed a first time analysis of TCGA RNA-Seq data and identified 197 TUCRs that are differentially expressed relative to normal brain. This project aims to identify and valid these deregulated TUCRs, identify and validate lncRNA transcripts containing these TUCRs, identify genes that are co-regulated with these TUCRs, and predict TUCR function using the functions that are governed by co-regulated genes.
@@ -35,7 +49,6 @@ The following variables can be set:
 * outputdir is a character variable containing the "output directory", or the location where all output files will go. This can be any characters enclosed in quotations marks (ex. "Outputs"). Set to "Outputs" to use the default outputs folder
 * useintermediate is a logical vector.  When set to TRUE, the analysis will use a pregenerated gene correlation matrix for the guilt by association analysis.  Unless there is a specific reason to generate a new matrix (VERY memory intensive), this variable should be set to TRUE.
 * deleteoutputs is a logical vector that should only be set to TURE or FALSE.  When set to true, the output directory will be repopulated after every program run.  If set to false, the program will only run if the output directory does not already exist in the working directory, to prevent the data from being overwritten.
-
 
 ```{r parameters}
 countfilename <- "TUCR_counts_80.txt"
@@ -105,28 +118,19 @@ library("lessR")
 
 ```
 
+## Create output directory
+
+This script checks to see if the defined output directory already exists.  If it doesn't exist, it will create the directory.
+
 ```{r outputs}
 if(!dir.exists(outputdir)){
   dir.create(outputdir)
 }
 ```
 
-
-```{r tinytex, include=FALSE}
-## INSTALLING LATEX FOR RMARKDOWN
-
-#RMarkdown requires LaTex to create pdf documents as an output. More information can be found [here](https://bookdown.org/yihui/rmarkdown/pdf-document.html). Alternatively, output can be set to "html_document" or "word_document". End users may install LaTex by setting the "wanttinytex" variable to FALSE and running the following script:
-
-#Install tinytex to let RMarkdown create a pdf document? Default: wanttinytex <- FALSE
-wanttinytex <- TRUE
-
-if(tinytex:::is_tinytex()==FALSE && wanttinytex == TRUE){
-if (!require("tinytex")) install.packages("tinytex")
-tinytex::install_tinytex()
-}
-```
-
 ## Stringtie
+
+The hg19 genomic coordinates for each TUCR were acquired from _____________ and were lifted over to hg38 coordinates. The stringtie bioinformatics package was then used to perform a de novo transcript reassembly of all transcripts in 161 GBM, 400 LGG, and 5 normal brain TCGA Cancer RNA-Seq datasets.  First, transcripts present in each RNA-Seq BAM file were compiled into individual BED/GTF format genomic coordinate files using Stringtie.  These files were then merged into one master file containing all transcripts in all samples using Stringtie and an hg38 genome reference file.  The bedtools package was then used to find the genomic coordinates of all transcripts containing ultraconserved regions.  The ________________ group used stringtie to analyze the entirety of the GTex RNA-Seq normal tissue catalog, so bedtools was also used to determine the intersection of TUCRs with their results.  This methodology provides insight into TUCR transcript presence in normal tissues and in brain cancer.
 
 ```{bash stringtie, eval = FALSE}
 wget ftp://ftp.ensembl.org/pub/release-99/gtf/homo_sapiens/Homo_sapiens.GRCh38.99.gtf.gz
