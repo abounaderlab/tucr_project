@@ -172,6 +172,8 @@ cp stringtie_merged.gtf stringtie_merged.bed
 
 ## Setup for TCGA RNA-Seq analysis
 
+The next part of this analysis involves using bash and R scripts to identify TUCRs that are deregulated and/or correlated with survival in GBM and LGG. The GBM analyses were stored in a directory named tcga_analysis, while the LGG analyses were stored in the lgg_tcga_analysis.  The following script generates these two directories.
+
 ```{bash tcga, eval = FALSE}
 ## Create directory for all outputs from TCGA analysis data
 mkdir tcga_analysis/
@@ -181,14 +183,16 @@ mkdir lgg_tcga_analysis/
 
 ## Extract headers from BAM files
 
+The raw BAM files for GBM and LGG were stored in GBM-RNASEQ-RAW and LGG-RNASEQ-RAW, respectively.  Since these files are labeled with unintuitive and encrypted names, I will generate clones of each BAM file using the TCGA ID as the name instead.  This will make it easier to see which files are normal brain and which are tumors at a glance.  TCGA files are not named this way by default because there is patient information contained within the BAM files that can be identified using the TCGA ID.  Therefore, renaming the file in secure storage is preferrable.  The first step to doing this is extracting the TCGA ID from the header present in each BAM file. 
+
+In the following series of scripts, a bash script was used to extract the header from each encrypted BAM file and generate a text file containing the full header. 
+
 ```{bash tcgaheader, eval = FALSE}
-## Extract header information from BAM files
+## Extract header information from GBM BAM files
 # Create directory for extracted headerfiles
 mkdir tcga_analysis/head/
 
-mkdir lgg_tcga_analysis/head/
-
-# Create extracted header files
+# Use a for loop to cycle through BAM files and extract header before creating a text file containing each BAM file's header.
 for bam in $(find GBM-RNASEQ-RAW/* -name '*.bam')
 do
 name=$(echo $bam | awk -F ".bam" '{print $1}')
@@ -196,6 +200,10 @@ echo $name
 samtools view -H $bam > $name.headerids.txt
 mv $name.headerids.txt ./tcga_analysis/head/
 done
+
+## Do the same thing for LGG
+
+mkdir lgg_tcga_analysis/head/
 
 for bam in $(find LGG-RNASEQ-RAW/* -name '*.bam')
 do
@@ -207,6 +215,8 @@ done
 ```
 
 ## Extract TCGA patient barcodes from BAM headers
+
+Once the headers have been extracted from each BAM file, the TCGA ID is then extracted from each header.  A master table is generated that contains the encrypted BAM file name and the new TCGA ID based named, which will be used to generate the renamed clone files in the next step.
 
 ```{bash tcgaids, eval = FALSE}
 ## Get new file names for BAM files using TCGA IDs from extracted header
