@@ -313,7 +313,7 @@ multiBamCov -bams tcga_analysis/reindex/*bam -bed hg38.ultraConserved.bed -q 10 
 echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" > gene_counts.txt
 
 #Counts
-multiBamCov -bams *bam -bed CHESSgenes.bed -q 10 >> gene_counts.txt
+multiBamCov -bams lgg_tcga_analysis/reindex/*bam -bed CHESSgenes.bed -q 10 >> gene_counts.txt
 ```
 
 ## Acquiring total reads from RNA-Seq BAM files
