@@ -1269,6 +1269,7 @@ for(i in 3:ncol(tucr.cor)){
 colnames(tucr.cor.matrix) <- metadata$id
 tucr.cor.matrix2 <- t(as.data.frame(apply(as.data.frame(tucr.cor.matrix),1:2,function(x) {ifelse(x>=1,x,-(1/x))})))
 tucr.cor.matrix2 <- as.data.frame(tucr.cor.matrix2)
+tucr.cor.matrix2 <- tucr.cor.matrix2[1:180,]
 
 
 tucr.cor.matrix3 <- cor(tucr.cor.matrix2,method="spearman")
