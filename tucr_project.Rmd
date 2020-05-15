@@ -51,17 +51,21 @@ The following variables can be set:
 * deleteoutputs is a logical vector that should only be set to TURE or FALSE.  When set to true, the output directory will be repopulated after every program run.  If set to false, the program will only run if the output directory does not already exist in the working directory, to prevent the data from being overwritten.
 
 ```{r parameters}
-countfilename <- "TUCR_counts_80.txt"
+countfilename <- "lgg_TUCR_counts.txt"
 
-makekpmplots <- FALSE
+metadatafile <- "lgg_tcga_metadata.csv" 
 
-makeRPKMboxplots <- FALSE
+makekpmplots <- TRUE 
+
+makeRPKMboxplots <- TRUE
 
 repel <- TRUE
 
-outputdir <- "Outputs_80"
+outputdir <- "Outputs_GBM"
 
 useintermediate <- TRUE
+
+mergedcounts <- "lgg_mergedcounts.txt"
 
 ```
 
@@ -172,6 +176,8 @@ cp stringtie_merged.gtf stringtie_merged.bed
 
 ## Setup for TCGA RNA-Seq analysis
 
+The next part of this analysis involves using bash and R scripts to identify TUCRs that are deregulated and/or correlated with survival in GBM and LGG. The GBM analyses were stored in a directory named tcga_analysis, while the LGG analyses were stored in the lgg_tcga_analysis.  The following script generates these two directories.
+
 ```{bash tcga, eval = FALSE}
 ## Create directory for all outputs from TCGA analysis data
 mkdir tcga_analysis/
@@ -181,14 +187,16 @@ mkdir lgg_tcga_analysis/
 
 ## Extract headers from BAM files
 
+The raw BAM files for GBM and LGG were stored in GBM-RNASEQ-RAW and LGG-RNASEQ-RAW, respectively.  Since these files are labeled with unintuitive and encrypted names, I will generate clones of each BAM file using the TCGA ID as the name instead.  This will make it easier to see which files are normal brain and which are tumors at a glance.  TCGA files are not named this way by default because there is patient information contained within the BAM files that can be identified using the TCGA ID.  Therefore, renaming the file in secure storage is preferrable.  The first step to doing this is extracting the TCGA ID from the header present in each BAM file. 
+
+In the following series of scripts, a bash script was used to extract the header from each encrypted BAM file and generate a text file containing the full header. 
+
 ```{bash tcgaheader, eval = FALSE}
-## Extract header information from BAM files
+## Extract header information from GBM BAM files
 # Create directory for extracted headerfiles
 mkdir tcga_analysis/head/
 
-mkdir lgg_tcga_analysis/head/
-
-# Create extracted header files
+# Use a for loop to cycle through BAM files and extract header before creating a text file containing each BAM file's header.
 for bam in $(find GBM-RNASEQ-RAW/* -name '*.bam')
 do
 name=$(echo $bam | awk -F ".bam" '{print $1}')
@@ -196,6 +204,10 @@ echo $name
 samtools view -H $bam > $name.headerids.txt
 mv $name.headerids.txt ./tcga_analysis/head/
 done
+
+## Do the same thing for LGG
+
+mkdir lgg_tcga_analysis/head/
 
 for bam in $(find LGG-RNASEQ-RAW/* -name '*.bam')
 do
@@ -207,6 +219,8 @@ done
 ```
 
 ## Extract TCGA patient barcodes from BAM headers
+
+Once the headers have been extracted from each BAM file, the TCGA ID is then extracted from each header.  A master table is generated that contains the encrypted BAM file name and the new TCGA ID based named, which will be used to generate the renamed clone files in the next step.
 
 ```{bash tcgaids, eval = FALSE}
 ## Get new file names for BAM files using TCGA IDs from extracted header
@@ -303,7 +317,7 @@ multiBamCov -bams tcga_analysis/reindex/*bam -bed hg38.ultraConserved.bed -q 10 
 echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" > gene_counts.txt
 
 #Counts
-multiBamCov -bams *bam -bed CHESSgenes.bed -q 10 >> gene_counts.txt
+multiBamCov -bams lgg_tcga_analysis/reindex/*bam -bed CHESSgenes.bed -q 10 >> gene_counts.txt
 ```
 
 ## Acquiring total reads from RNA-Seq BAM files
@@ -450,7 +464,7 @@ bedtools random -g hg38.genome -n 481 -l 243 -seed 71346
 ```{r DESeq2_TUCRs, results="hide", message = FALSE}
 
 tucrcounts <- read.table(countfilename,header = TRUE)
-metadata <- read_csv(file = "tcga_metadata.csv")
+metadata <- read_csv(file = metadatafile)
 
 tucrcounts2 <- tucrcounts[,5:ncol(tucrcounts)]
 
@@ -473,19 +487,19 @@ write.csv(res_TUCR, file = paste(outputdir,"/results_TUCR.csv",sep=""))
 
 ## Completing survival analysis for TUCRs
 
-```{r surcor_TUCRs, message = FALSE}
+```{r surcor_TUCRs, message = FALSE, eval = FALSE}
 if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
 
 countdata <- read.table(countfilename,header = TRUE)
-metadata <- read_csv(file = "tcga_metadata.csv")
+metadata <- read_csv(file = metadatafile)
 
 posdata <- countdata[,1:4]
 countdata <- countdata[,5:length(colnames(countdata))]
 
 countdata <- as.matrix(countdata)
 
-n_index <- c(seq(36,39),73)
-t_index <- c(seq(1,35),seq(40,72),seq(74,ncol(countdata)))
+n_index <- c(seq(1,5))
+t_index <- c(seq(6,ncol(countdata)))
 
 vm <- function(x){
   cond <- factor(ifelse(seq(1,dim(x)[2],1) %in% t_index, 1,  0))
@@ -549,11 +563,16 @@ if(!dir.exists(paste(outputdir,"/tucrKPMplots",sep=""))){
 km_countdata <- countdata
 colnames(km_countdata) <- metadata$barcode
 posdata$median <- rowMedians(countdata)
+
+probs <- c(0.25,0.5,0.75)
+q <- rowQuantiles(countdata, probs = probs)
+posdata$n25 <- q[,1]
+posdata$n75 <- q[,3]
 km_TUCRs <- cbind(posdata,km_countdata)
 km_TUCRs <- km_TUCRs[,4:ncol(km_TUCRs)]
 km_TUCRs <- km_TUCRs %>%
-  gather(key = "sample", value = "count",-id,-median) %>%
-  mutate(group = ifelse(count>=median,"high","low")) %>%
+  gather(key = "sample", value = "count",-id,-median,-n75,-n25) %>%
+  mutate(group = ifelse(count>=n75,"high",ifelse(count<=n25,"low",NA))) %>%
   select(id,median,"patient"=sample,group) %>%
   left_join(clinical,by="patient") %>%
   filter(median != 0)
@@ -744,11 +763,11 @@ ggsave(p,file=paste(outputdir,"/Myron_heatmap.png",sep=""))
 
 ## Identifying differentially expressed stringtie transcripts containing TUCRs with DESeq2
 
-```{r DESeq2_stringtie, results="hide", message = FALSE}
+```{r DESeq2_stringtie, results="hide", message = FALSE, eval = FALSE}
 
 stringtiecounts <- read.table("stringtie_TUCR_counts.txt",header = TRUE)
 stringtiecounts <- distinct(stringtiecounts)
-metadata <- read_csv(file = "tcga_metadata.csv")
+metadata <- read_csv(file = metadatafile)
 
 stringtiecounts2 <- stringtiecounts[,5:ncol(stringtiecounts)]
 rownames(stringtiecounts2) <- stringtiecounts[,4]
@@ -769,11 +788,11 @@ write.csv(res_stringtie, file = paste(outputdir,"/results_stringtie.csv",sep="")
 
 ## Completing survival analysis for stringtie transcripts containing TUCRs
 
-```{r surcor_stringtie, message = FALSE}
+```{r surcor_stringtie, message = FALSE,eval = FALSE}
 if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
 
 countdata <- read.table("stringtie_TUCR_counts.txt",header = TRUE)
-metadata <- read_csv(file = "tcga_metadata.csv")
+metadata <- read_csv(file = metadatafile)
 
 posdata <- countdata[,1:4]
 countdata <- countdata[,5:length(colnames(countdata))]
@@ -839,7 +858,7 @@ write_csv(surv_stringtie,paste(outputdir,"/survival_TUCRs_stringtie.csv",sep="")
 
 ## Generating volcano plot to visualize DE stringtie transcripts
 
-```{r DESeq2plots_stringtie, message = FALSE}
+```{r DESeq2plots_stringtie, message = FALSE, eval = FALSE}
 
 ### Volcano plot
 
@@ -883,7 +902,7 @@ volcanoplot(res_stringtie,title = "Deregulation of stringtie transcripts contain
 
 ## Generate stringtie RPKMs for filtering
 
-```{r RPKM_stringtie, results="hide"}
+```{r RPKM_stringtie, results="hide", eval = FALSE}
 
 stringtie.rpkmcounts <- stringtiecounts[,6:ncol(stringtiecounts)]
 stringtie.rpkmcounts.info <- stringtiecounts[,1:5]
@@ -908,7 +927,7 @@ write.csv(rpkm.stringtie2,paste(outputdir,"/rpkm.stringtie.csv",sep=""))
 
 ## Generate heatmap for all stringtie TUCR transcripts
 
-```{r heatmap_stringtie, message=FALSE}
+```{r heatmap_stringtie, message=FALSE, eval = FALSE}
 heatmap.stringtie <- rpkm.stringtie2[,6:ncol(rpkm.stringtie2)]
 stringtieids <- rpkm.stringtie2[,5]
 means <- apply(heatmap.stringtie,1,mean)
@@ -931,11 +950,11 @@ ggsave(p,file=paste(outputdir,"/stringtie_heatmap.png",sep=""))
 
 ## Identifying differentially expressed CHESS genes containing TUCRs with DESeq2
 
-```{r DESeq2_CHESS, results="hide", message = FALSE}
+```{r DESeq2_CHESS, results="hide", message = FALSE, eval = FALSE}
 
 CHESScounts <- read.table("intersectchess_TUCR_counts.txt",header = TRUE)
 CHESScounts <- distinct(CHESScounts)
-metadata <- read_csv(file = "tcga_metadata.csv")
+metadata <- read_csv(file = metadatafile)
 
 CHESScounts2 <- CHESScounts[,5:ncol(CHESScounts)]
 rownames(CHESScounts2) <- CHESScounts[,4]
@@ -956,7 +975,7 @@ write.csv(res_CHESS, file = paste(outputdir,"/results_CHESS.csv",sep=""))
 
 ## Generating volcano plot to visualize DE CHESS genes containing TUCRs
 
-```{r DESeq2plots_CHESS, message = FALSE}
+```{r DESeq2plots_CHESS, message = FALSE, eval = FALSE}
 
 ### Volcano plot
 
@@ -1000,11 +1019,11 @@ volcanoplot(res_CHESS,title = "Deregulation of CHESS genes containing TUCRs in G
 
 ## Completing survival analysis for stringtie transcripts containing TUCRs
 
-```{r surcor_CHESS, message = FALSE}
+```{r surcor_CHESS, message = FALSE, eval = FALSE}
 if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
 
 countdata <- read.table("intersectchess_TUCR_counts.txt",header = TRUE)
-metadata <- read_csv(file = "tcga_metadata.csv")
+metadata <- read_csv(file = metadatafile)
 
 posdata <- countdata[,1:4]
 countdata <- countdata[,5:length(colnames(countdata))]
@@ -1070,7 +1089,7 @@ write_csv(surv_CHESS,paste(outputdir,"/survival_TUCRs_CHESS.csv",sep=""))
 
 ## Generate CHESS gene RPKMs for filtering
 
-```{r RPKM_CHESS, results="hide"}
+```{r RPKM_CHESS, results="hide", eval = FALSE}
 
 CHESS.rpkmcounts <- CHESScounts[,6:ncol(CHESScounts)]
 CHESS.rpkmcounts.info <- CHESScounts[,1:5]
@@ -1095,7 +1114,7 @@ write.csv(rpkm.CHESS2,paste(outputdir,"/rpkm.CHESS.csv",sep=""))
 
 ## Generate heatmap for all CHESS genes containing TUCRs
 
-```{r heatmap_CHESS, message=FALSE}
+```{r heatmap_CHESS, message=FALSE, eval = FALSE}
 heatmap.CHESS <- rpkm.CHESS2[,6:ncol(rpkm.CHESS2)]
 CHESSids <- rpkm.CHESS2[,5]
 means <- apply(heatmap.CHESS,1,mean)
@@ -1192,7 +1211,7 @@ for(i in 1:length(path)){
 
 ## Identify DE TUCRs that are correlated with each other
 
-```{r correlations, eval=FALSE}
+```{r correlations}
 
 if(!dir.exists(paste(outputdir,"/correlations",sep=""))){
   dir.create(paste(outputdir,"/correlations",sep=""))
@@ -1201,9 +1220,15 @@ if(!dir.exists(paste(outputdir,"/correlations",sep=""))){
 if(useintermediate==FALSE){
 TUCRids <- read.table(countfilename,header = TRUE)
 TUCRids <- as.character(TUCRids[,4])
-tucrcounts <- read.table("mergedcounts.txt",header = TRUE)
+normcounts <- read.table("normal_mergedcounts.txt",header = TRUE)
+expcounts <- read.table(mergedcounts,header = TRUE)
+posdata <- normcounts[,1:4]
+normcounts <- normcounts[4:ncol(normcounts)]
+expcounts <- expcounts[4:ncol(expcounts)]
+tucrcounts <- inner_join(posdata,normcounts,by="id")
+tucrcounts <- inner_join(tucrcounts,expcounts,by="id")
 
-metadata <- read_csv(file = "tcga_metadata.csv")
+metadata <- read_csv(file = metadatafile)
 
 
 
@@ -1214,8 +1239,8 @@ posdata <- tucrcounts[,1:4]
 
 countdata <- as.matrix(tucr.cor)
 
-n_index <- c(seq(36,39),73)
-t_index <- c(seq(1,35),seq(40,72),seq(74,ncol(countdata)))
+n_index <- c(seq(1,5))
+t_index <- c(seq(6,ncol(countdata)))
 
 vm <- function(x){
   cond <- factor(ifelse(seq(1,dim(x)[2],1) %in% t_index, 1,  0))
@@ -1244,14 +1269,15 @@ for(i in 3:ncol(tucr.cor)){
 colnames(tucr.cor.matrix) <- metadata$id
 tucr.cor.matrix2 <- t(as.data.frame(apply(as.data.frame(tucr.cor.matrix),1:2,function(x) {ifelse(x>=1,x,-(1/x))})))
 tucr.cor.matrix2 <- as.data.frame(tucr.cor.matrix2)
+tucr.cor.matrix2 <- tucr.cor.matrix2[1:180,]
 
 
 tucr.cor.matrix3 <- cor(tucr.cor.matrix2,method="spearman")
 
 geneindex <- rownames(tucr.cor.matrix)
-save(tucr.cor.matrix3,geneindex,TUCRids,file="matrixintermediate.RData")
+save(tucr.cor.matrix2,geneindex,TUCRids,file="lgg_matrixintermediate.RData")
 rm(list=ls())
-load(file="matrixintermediate.RData")}else{
+load(file="lgg_matrixintermediate.RData")}else{
   load(file="matrixintermediate.RData")
 }
 
@@ -1287,7 +1313,7 @@ readr::write_excel_csv(here::here(paste(outputdir,"/correlations",sep=""),paste(
 
 ## Make figures for fold change
 
-```{r overexp_TUCR, eval = FALSE, message=FALSE}
+```{r overexp_TUCR, eval = FALSE, message=FALSE, eval = FALSE}
 
 overexp_TUCR_cp <- c("#C77CFF","#F8766D","#619CFF","#00BA38","#FFFF00")
 
