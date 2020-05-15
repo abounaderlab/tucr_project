@@ -61,11 +61,13 @@ makeRPKMboxplots <- TRUE
 
 repel <- TRUE
 
-outputdir <- "Outputs_GBM"
+outputdir <- "Outputs_LGG"
 
 useintermediate <- TRUE
 
 mergedcounts <- "lgg_mergedcounts.txt"
+
+intermediatefile <- "lgg_matrixintermediate.Rdata"
 
 ```
 
@@ -1275,10 +1277,10 @@ tucr.cor.matrix2 <- tucr.cor.matrix2[1:180,]
 tucr.cor.matrix3 <- cor(tucr.cor.matrix2,method="spearman")
 
 geneindex <- rownames(tucr.cor.matrix)
-save(tucr.cor.matrix2,geneindex,TUCRids,file="lgg_matrixintermediate.RData")
+save(tucr.cor.matrix3,geneindex,TUCRids,file="lgg_matrixintermediate.RData")
 rm(list=ls())
 load(file="lgg_matrixintermediate.RData")}else{
-  load(file="matrixintermediate.RData")
+  load(file=intermediatefile)
 }
 
 summarycor <- data.frame(searchTUCR=character(0),ngenes=integer(0),meancor=numeric(0),mediancor=numeric(0),mincor=numeric(0),maxcor=numeric(0))
@@ -1296,9 +1298,11 @@ tucr.cor.matrix.match <- tucr.cor.matrix.match %>%
   mutate(partner = geneindex) %>%
   mutate(gene = searchTUCR) %>%
   select(gene,partner,"cor"=tucr.cor.matrix.match) %>%
-  filter(abs(cor)>=0.3 & partner != searchTUCR) %>%
-  readr::write_excel_csv(here::here(paste(outputdir,"/correlations",sep=""),paste(searchTUCR,"_correlations.csv",sep="")))
-meancor <- mean(tucr.cor.matrix.match$cor)
+  filter(abs(cor)>=0.3 & partner != searchTUCR)
+
+write.csv(tucr.cor.matrix.match,paste(outputdir,"/correlations/",searchTUCR,"_correlations.csv",sep=""))
+
+meancor <- mean(tucr.cor.matrix.match$cor,na.rm=TRUE)
 mediancor <- median(tucr.cor.matrix.match$cor)
 ngenes <- length(tucr.cor.matrix.match$cor)
 mincor <- min(tucr.cor.matrix.match$cor)
