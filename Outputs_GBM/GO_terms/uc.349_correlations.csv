@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0051899","membrane depolarization","BP",91,3,0.00020466370448294
+"GO:0086012","membrane depolarization during cardiac muscle cell action potential","BP",23,2,0.000385420201578767
+"GO:0086019","cell-cell signaling involved in cardiac conduction","BP",32,2,0.00075031977505331
+"GO:0086010","membrane depolarization during action potential","BP",37,2,0.00100356535581409
+"GO:0086091","regulation of heart rate by cardiac conduction","BP",38,2,0.0010584934201578
+"GO:0031225","anchored component of membrane","CC",170,3,0.00126816542970732
+"GO:0047915","ganglioside galactosyltransferase activity","MF",1,1,0.00126903553299484
+"GO:0086057","voltage-gated calcium channel activity involved in bundle of His cell action potential","MF",1,1,0.00126903553299484
+"GO:1904646","cellular response to amyloid-beta","BP",43,2,0.0013543407188545
+"GO:0005891","voltage-gated calcium channel complex","CC",43,2,0.0013543407188545
+"GO:0005245","voltage-gated calcium channel activity","MF",48,2,0.00168522216202003
+"GO:0022832","voltage-gated channel activity","MF",197,3,0.00193394016289139
+"GO:0005244","voltage-gated ion channel activity","MF",197,3,0.00193394016289139
+"GO:1904645","response to amyloid-beta","BP",54,2,0.00212793249871446
+"GO:0005871","kinesin complex","CC",55,2,0.00220651271033496
+"GO:0086002","cardiac muscle cell action potential involved in contraction","BP",56,2,0.00228645410383508
+"GO:0086065","cell communication involved in cardiac conduction","BP",56,2,0.00228645410383508
+"GO:0099034","anchored component of postsynaptic endosome membrane","CC",2,1,0.00253652247965086
+"GO:0099033","anchored component of postsynaptic recycling endosome membrane","CC",2,1,0.00253652247965086
+"GO:0098949","intrinsic component of postsynaptic endosome membrane","CC",2,1,0.00253652247965086

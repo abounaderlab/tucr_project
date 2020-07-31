@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0021568","rhombomere 2 development","BP",2,2,0.0000387289531154192
+"GO:0097167","circadian regulation of translation","BP",4,2,0.00023047244690386
+"GO:0030902","hindbrain development","BP",152,6,0.000389394753223948
+"GO:0007417","central nervous system development","BP",1002,16,0.000517132355139269
+"GO:0006790","sulfur compound metabolic process","BP",372,9,0.000556776947442041
+"GO:0016407","acetyltransferase activity","MF",110,5,0.000637826158533561
+"GO:0030900","forebrain development","BP",381,9,0.000660357242411605
+"GO:0031365","N-terminal protein amino acid modification","BP",29,3,0.000772855128064396
+"GO:0003357","noradrenergic neuron differentiation","BP",7,2,0.000796785615281185
+"GO:0021546","rhombomere development","BP",7,2,0.000796785615281185
+"GO:0034660","ncRNA metabolic process","BP",562,11,0.000809104960112644
+"GO:0021953","central nervous system neuron differentiation","BP",183,6,0.00103128198386765
+"GO:0035019","somatic stem cell population maintenance","BP",72,4,0.00107694145558409
+"GO:0005634","nucleus","CC",7932,67,0.00116341180226592
+"GO:0044424","intracellular part","CC",15063,109,0.00117007420427233
+"GO:0005622","intracellular","CC",15073,109,0.00121714098124255
+"GO:0034212","peptide N-acetyltransferase activity","MF",75,4,0.00125415796871155
+"GO:0060411","cardiac septum morphogenesis","BP",76,4,0.00131750020936356
+"GO:1990837","sequence-specific double-stranded DNA binding","MF",889,14,0.00133876221478753
+"GO:0003677","DNA binding","MF",2518,28,0.00159496460536942

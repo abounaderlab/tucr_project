@@ -1,0 +1,18 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0050860","negative regulation of T cell receptor signaling pathway","BP",20,1,0.00195145703105537
+"GO:0050858","negative regulation of antigen receptor-mediated signaling pathway","BP",28,1,0.00273150617680118
+"GO:0050855","regulation of B cell receptor signaling pathway","BP",29,1,0.00282899087805455
+"GO:0050856","regulation of T cell receptor signaling pathway","BP",39,1,0.00380357582213187
+"GO:0050854","regulation of antigen receptor-mediated signaling pathway","BP",65,1,0.0063352667124057
+"GO:0050853","B cell receptor signaling pathway","BP",129,1,0.0125533983541377
+"GO:0001959","regulation of cytokine-mediated signaling pathway","BP",177,1,0.0172041890851939
+"GO:0060759","regulation of response to cytokine stimulus","BP",190,1,0.0184618889661876
+"GO:0050852","T cell receptor signaling pathway","BP",202,1,0.019622127970334
+"GO:0050851","antigen receptor-mediated signaling pathway","BP",316,1,0.0306101771340722
+"GO:0051604","protein maturation","BP",397,1,0.0383798445760603
+"GO:0002683","negative regulation of immune system process","BP",463,1,0.0446875702760395
+"GO:0002429","immune response-activating cell surface receptor signaling pathway","BP",473,1,0.0456414756363909
+"GO:0002768","immune response-regulating cell surface receptor signaling pathway","BP",506,1,0.0487859826424533
+"GO:0072594","establishment of protein localization to organelle","BP",549,1,0.0528755847438188
+"GO:0002757","immune response-activating signal transduction","BP",641,1,0.0615958411889549
+"GO:0002764","immune response-regulating signaling pathway","BP",675,1,0.0648083382826153

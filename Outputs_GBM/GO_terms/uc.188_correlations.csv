@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0044428","nuclear part","CC",5023,45,0.0000000986471696774365
+"GO:0005654","nucleoplasm","CC",3512,35,0.000000563967650743898
+"GO:0031981","nuclear lumen","CC",4594,41,0.000000673147193723808
+"GO:0005634","nucleus","CC",7932,57,0.00000112823073885199
+"GO:0043229","intracellular organelle","CC",13294,77,0.00000379510884547387
+"GO:0043226","organelle","CC",14144,79,0.0000105141770363087
+"GO:0070013","intracellular organelle lumen","CC",5740,44,0.0000146259471209353
+"GO:0031974","membrane-enclosed lumen","CC",5740,44,0.0000146259471209353
+"GO:0043233","organelle lumen","CC",5740,44,0.0000146259471209353
+"GO:0044422","organelle part","CC",10112,63,0.0000321716502160734
+"GO:0044424","intracellular part","CC",15063,81,0.0000337541408423974
+"GO:0005622","intracellular","CC",15073,81,0.000035130149374613
+"GO:0044446","intracellular organelle part","CC",9811,61,0.0000637179693850599
+"GO:0003713","transcription coactivator activity","MF",319,8,0.0000748261036684589
+"GO:0003682","chromatin binding","MF",546,10,0.000128159089363474
+"GO:1901362","organic cyclic compound biosynthetic process","BP",4500,35,0.000157912577943148
+"GO:0003712","transcription coregulator activity","MF",562,10,0.000162059491564583
+"GO:0004402","histone acetyltransferase activity","MF",64,4,0.000173245108902278
+"GO:0061733","peptide-lysine-N-acetyltransferase activity","MF",66,4,0.000195220923320784
+"GO:0006351","transcription, DNA-templated","BP",3668,30,0.00024823633914781

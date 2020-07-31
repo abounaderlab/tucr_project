@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005654","nucleoplasm","CC",3512,371,1.12412121865763e-66
+"GO:0005634","nucleus","CC",7932,595,6.94970112678323e-62
+"GO:0003676","nucleic acid binding","MF",4349,396,6.2389162320127e-54
+"GO:0044428","nuclear part","CC",5023,430,2.33769456082533e-52
+"GO:0031981","nuclear lumen","CC",4594,402,2.88328862421724e-50
+"GO:0044260","cellular macromolecule metabolic process","BP",8352,587,3.75770810831958e-49
+"GO:0019219","regulation of nucleobase-containing compound metabolic process","BP",4140,373,1.16349665560332e-48
+"GO:0044451","nucleoplasm part","CC",1126,170,3.25733753684925e-47
+"GO:0043231","intracellular membrane-bounded organelle","CC",11488,714,4.28642290525808e-47
+"GO:0003677","DNA binding","MF",2518,271,4.363128395357e-47
+"GO:0043229","intracellular organelle","CC",13294,780,7.39666311192997e-47
+"GO:0090304","nucleic acid metabolic process","BP",5735,453,7.66286669989222e-46
+"GO:0044424","intracellular part","CC",15063,832,1.74967510347643e-43
+"GO:0005622","intracellular","CC",15073,832,2.66831781268753e-43
+"GO:0006139","nucleobase-containing compound metabolic process","BP",6411,481,3.08279878267319e-43
+"GO:0051252","regulation of RNA metabolic process","BP",3822,342,7.41871194952704e-43
+"GO:0097659","nucleic acid-templated transcription","BP",3716,333,1.39221652178024e-41
+"GO:0006351","transcription, DNA-templated","BP",3668,330,1.72934125478641e-41
+"GO:0032774","RNA biosynthetic process","BP",3733,333,3.78043903877303e-41
+"GO:0043226","organelle","CC",14144,798,4.59102265787031e-41

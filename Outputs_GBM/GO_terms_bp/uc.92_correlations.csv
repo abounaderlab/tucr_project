@@ -1,0 +1,18 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:1903382","negative regulation of endoplasmic reticulum stress-induced neuron intrinsic apoptotic signaling pathway","BP",2,1,0.000390443882404723
+"GO:0036483","neuron intrinsic apoptotic signaling pathway in response to endoplasmic reticulum stress","BP",2,1,0.000390443882404723
+"GO:1903381","regulation of endoplasmic reticulum stress-induced neuron intrinsic apoptotic signaling pathway","BP",2,1,0.000390443882404723
+"GO:1903298","negative regulation of hypoxia-induced intrinsic apoptotic signaling pathway","BP",5,1,0.000975895314274444
+"GO:1903297","regulation of hypoxia-induced intrinsic apoptotic signaling pathway","BP",5,1,0.000975895314274444
+"GO:1990144","intrinsic apoptotic signaling pathway in response to hypoxia","BP",7,1,0.00136605337359019
+"GO:1900038","negative regulation of cellular response to hypoxia","BP",7,1,0.00136605337359019
+"GO:0046512","sphingosine biosynthetic process","BP",11,1,0.00214602664404229
+"GO:0046520","sphingoid biosynthetic process","BP",12,1,0.00234094855122702
+"GO:0006670","sphingosine metabolic process","BP",13,1,0.0025358418998207
+"GO:1900037","regulation of cellular response to hypoxia","BP",15,1,0.00292554293239056
+"GO:0046519","sphingoid metabolic process","BP",16,1,0.00312035062194604
+"GO:0034312","diol biosynthetic process","BP",19,1,0.00370460241716464
+"GO:0046514","ceramide catabolic process","BP",20,1,0.00389929593371818
+"GO:1902236","negative regulation of endoplasmic reticulum stress-induced intrinsic apoptotic signaling pathway","BP",20,1,0.00389929593371818
+"GO:0034311","diol metabolic process","BP",22,1,0.00428859736077736
+"GO:0042759","long-chain fatty acid biosynthetic process","BP",30,1,0.00584466206399104

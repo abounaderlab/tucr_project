@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0097149","centralspindlin complex","CC",3,1,0.00087834865561276
+"GO:0006311","meiotic gene conversion","BP",3,1,0.00087834865561276
+"GO:0035822","gene conversion","BP",4,1,0.00117098863159826
+"GO:0007060","male meiosis chromosome segregation","BP",4,1,0.00117098863159826
+"GO:0000915","actomyosin contractile ring assembly","BP",6,1,0.00175605430345327
+"GO:0000912","assembly of actomyosin apparatus involved in cytokinesis","BP",6,1,0.00175605430345327
+"GO:0051026","chiasma assembly","BP",6,1,0.00175605430345327
+"GO:0044837","actomyosin contractile ring organization","BP",7,1,0.00204848002721969
+"GO:0051256","mitotic spindle midzone assembly","BP",7,1,0.00204848002721969
+"GO:0000801","central element","CC",8,1,0.0023408343614727
+"GO:0098813","nuclear chromosome segregation","BP",262,2,0.00236220266280483
+"GO:0000022","mitotic spindle elongation","BP",9,1,0.0026331173201557
+"GO:0003810","protein-glutamine gamma-glutamyltransferase activity","MF",9,1,0.0026331173201557
+"GO:0051231","spindle elongation","BP",10,1,0.00292532891721076
+"GO:0051255","spindle midzone assembly","BP",10,1,0.00292532891721076
+"GO:0051988","regulation of attachment of spindle microtubules to kinetochore","BP",12,1,0.00350953808218801
+"GO:0007059","chromosome segregation","BP",321,2,0.00352107444550217
+"GO:0008272","sulfate transport","BP",17,1,0.00496881314162301
+"GO:0000712","resolution of meiotic recombination intermediates","BP",18,1,0.00526045434728717
+"GO:0016755","transferase activity, transferring amino-acyl groups","MF",18,1,0.00526045434728717

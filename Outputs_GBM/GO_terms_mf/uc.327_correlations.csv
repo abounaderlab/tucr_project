@@ -1,0 +1,9 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005457","GDP-fucose transmembrane transporter activity","MF",1,1,0.000195236235845497
+"GO:0036080","purine nucleotide-sugar transmembrane transporter activity","MF",1,1,0.000195236235845497
+"GO:0015279","store-operated calcium channel activity","MF",10,1,0.0019510761754763
+"GO:0005338","nucleotide-sugar transmembrane transporter activity","MF",14,1,0.00273070669261211
+"GO:0019707","protein-cysteine S-acyltransferase activity","MF",28,1,0.00545581699433539
+"GO:0019706","protein-cysteine S-palmitoyltransferase activity","MF",28,1,0.00545581699433539
+"GO:0016417","S-acyltransferase activity","MF",32,1,0.00623339310004889
+"GO:0016409","palmitoyltransferase activity","MF",39,1,0.00759305403355337

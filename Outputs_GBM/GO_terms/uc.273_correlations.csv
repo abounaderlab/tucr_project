@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0016235","aggresome","CC",43,2,0.000644410897909703
+"GO:0090600","alpha-1,3-glucosidase activity","MF",1,1,0.000878563061304072
+"GO:0033919","glucan 1,3-alpha-glucosidase activity","MF",1,1,0.000878563061304072
+"GO:0001716","L-amino-acid oxidase activity","MF",1,1,0.000878563061304072
+"GO:1905062","positive regulation of cardioblast proliferation","BP",1,1,0.000878563061304072
+"GO:0060928","atrioventricular node cell development","BP",2,1,0.00175639709580877
+"GO:0060922","atrioventricular node cell differentiation","BP",2,1,0.00175639709580877
+"GO:0003292","cardiac septum cell differentiation","BP",2,1,0.00175639709580877
+"GO:0045004","DNA replication proofreading","BP",2,1,0.00175639709580877
+"GO:0017177","glucosidase II complex","CC",2,1,0.00175639709580877
+"GO:0031022","nuclear migration along microfilament","BP",2,1,0.00175639709580877
+"GO:1903490","positive regulation of mitotic cytokinesis","BP",2,1,0.00175639709580877
+"GO:1903438","positive regulation of mitotic cytokinetic process","BP",2,1,0.00175639709580877
+"GO:1903436","regulation of mitotic cytokinetic process","BP",2,1,0.00175639709580877
+"GO:0043130","ubiquitin binding","MF",76,2,0.00199925465992746
+"GO:0016234","inclusion body","CC",82,2,0.00232240537657748
+"GO:0003162","atrioventricular node development","BP",3,1,0.00263350267289919
+"GO:0002193","MAML1-RBP-Jkappa- ICN1 complex","CC",3,1,0.00263350267289919
+"GO:0017087","mitochondrial processing peptidase complex","CC",3,1,0.00263350267289919
+"GO:0021817","nucleokinesis involved in cell motility in cerebral cortex radial glia guided migration","BP",3,1,0.00263350267289919

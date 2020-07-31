@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0010646","regulation of cell communication","BP",3542,20,0.00000012166855721679
+"GO:0023051","regulation of signaling","BP",3591,20,0.000000153882328469517
+"GO:0048583","regulation of response to stimulus","BP",4342,21,0.000000685104332103589
+"GO:0009966","regulation of signal transduction","BP",3170,18,0.000000779302403037538
+"GO:0051128","regulation of cellular component organization","BP",2507,15,0.00000579885799447455
+"GO:0043062","extracellular structure organization","BP",422,7,0.00000611343227846451
+"GO:0048518","positive regulation of biological process","BP",6254,23,0.0000184985221072673
+"GO:0033138","positive regulation of peptidyl-serine phosphorylation","BP",105,4,0.0000301771690643108
+"GO:0030198","extracellular matrix organization","BP",368,6,0.0000336898174376477
+"GO:0042325","regulation of phosphorylation","BP",1614,11,0.0000496588515434609
+"GO:1902531","regulation of intracellular signal transduction","BP",1961,12,0.0000585344801038672
+"GO:0051222","positive regulation of protein transport","BP",418,6,0.0000684032557441476
+"GO:0071333","cellular response to glucose stimulus","BP",133,4,0.0000760231610234513
+"GO:0071331","cellular response to hexose stimulus","BP",135,4,0.0000805599384335256
+"GO:0071326","cellular response to monosaccharide stimulus","BP",136,4,0.0000829008062579886
+"GO:0033135","regulation of peptidyl-serine phosphorylation","BP",139,4,0.000090220866665375
+"GO:0071322","cellular response to carbohydrate stimulus","BP",144,4,0.000103450614809986
+"GO:1904951","positive regulation of establishment of protein localization","BP",456,6,0.000110393298232255
+"GO:0001667","ameboidal-type cell migration","BP",461,6,0.000117181756574707
+"GO:0001678","cellular glucose homeostasis","BP",152,4,0.000127474416464092

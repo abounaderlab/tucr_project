@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0050907","detection of chemical stimulus involved in sensory perception","BP",477,4,0.000175539071221934
+"GO:0009593","detection of chemical stimulus","BP",512,4,0.000230326533782887
+"GO:0007606","sensory perception of chemical stimulus","BP",526,4,0.000255374360839441
+"GO:0050906","detection of stimulus involved in sensory perception","BP",531,4,0.000264780220559079
+"GO:0031424","keratinization","BP",224,3,0.000340122050781177
+"GO:0018021","peptidyl-histidine methylation","BP",1,1,0.000634517766497478
+"GO:0018064","protein-histidine N-methyltransferase activity","MF",1,1,0.000634517766497478
+"GO:0051606","detection of stimulus","BP",691,4,0.000719035174246108
+"GO:0030216","keratinocyte differentiation","BP",305,3,0.000836403176045334
+"GO:0009913","epidermal cell differentiation","BP",358,3,0.00132841355004692
+"GO:0004930","G protein-coupled receptor activity","MF",866,4,0.00166887698533073
+"GO:0043588","skin development","BP",419,3,0.00208499675498002
+"GO:0050911","detection of chemical stimulus involved in sensory perception of smell","BP",427,3,0.00220052225888244
+"GO:0004984","olfactory receptor activity","MF",427,3,0.00220052225888244
+"GO:0018685","alkane 1-monooxygenase activity","MF",4,1,0.00253584189982037
+"GO:0007600","sensory perception","BP",977,4,0.00259973349169405
+"GO:0007608","sensory perception of smell","BP",454,3,0.00261982339882965
+"GO:0008544","epidermis development","BP",464,3,0.0027868921043135
+"GO:0030047","actin modification","BP",5,1,0.00316887422042678
+"GO:0016713","oxidoreductase activity, acting on paired donors, with incorporation or reduction of molecular oxygen, reduced iron-sulfur protein as one donor, and incorporation of one atom of oxygen","MF",7,1,0.00443382647166524

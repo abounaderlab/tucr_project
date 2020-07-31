@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005515","protein binding","MF",11807,136,0.000000000235577249659186
+"GO:0044260","cellular macromolecule metabolic process","BP",8352,109,0.000000000360036356831103
+"GO:0006464","cellular protein modification process","BP",4160,69,0.000000000810270884088268
+"GO:0036211","protein modification process","BP",4160,69,0.000000000810270884088268
+"GO:0006996","organelle organization","BP",3885,66,0.000000000881272939491219
+"GO:0044267","cellular protein metabolic process","BP",5276,80,0.00000000110678247282891
+"GO:0043412","macromolecule modification","BP",4373,70,0.00000000274659336853546
+"GO:1990234","transferase complex","CC",779,24,0.0000000272848697787076
+"GO:0070647","protein modification by small protein conjugation or removal","BP",1108,29,0.0000000305351380779847
+"GO:0043227","membrane-bounded organelle","CC",13019,139,0.0000000716926308767869
+"GO:1902494","catalytic complex","CC",1370,32,0.0000000755510767102613
+"GO:0019538","protein metabolic process","BP",5986,82,0.0000000873336820542692
+"GO:0043226","organelle","CC",14144,146,0.000000120127872736201
+"GO:0016043","cellular component organization","BP",6512,86,0.00000017807036483417
+"GO:0044424","intracellular part","CC",15063,151,0.00000028596272664215
+"GO:0005654","nucleoplasm","CC",3512,56,0.000000300943870284553
+"GO:0016567","protein ubiquitination","BP",822,23,0.000000304573043087435
+"GO:0005622","intracellular","CC",15073,151,0.000000306262879510155
+"GO:0071840","cellular component organization or biogenesis","BP",6697,87,0.000000309469563489788
+"GO:0005488","binding","MF",15267,152,0.00000037733783018762

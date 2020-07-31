@@ -1,0 +1,10 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0043647","inositol phosphate metabolic process","BP",71,2,0.000523344255389154
+"GO:1905373","ceramide phosphoethanolamine biosynthetic process","BP",2,1,0.000975966759580227
+"GO:1905371","ceramide phosphoethanolamine metabolic process","BP",2,1,0.000975966759580227
+"GO:2000538","positive regulation of B cell chemotaxis","BP",2,1,0.000975966759580227
+"GO:2000537","regulation of B cell chemotaxis","BP",2,1,0.000975966759580227
+"GO:0006644","phospholipid metabolic process","BP",430,3,0.000987102942844199
+"GO:0019751","polyol metabolic process","BP",124,2,0.00158402668020824
+"GO:0006686","sphingomyelin biosynthetic process","BP",6,1,0.00292532891721053
+"GO:0032960","regulation of inositol trisphosphate biosynthetic process","BP",7,1,0.00341213424436748

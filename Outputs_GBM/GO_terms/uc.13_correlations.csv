@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005622","intracellular","CC",15073,2449,1.35321088201571e-125
+"GO:0044424","intracellular part","CC",15063,2448,1.48162378398104e-125
+"GO:0043229","intracellular organelle","CC",13294,2255,9.5032159752785e-118
+"GO:0005654","nucleoplasm","CC",3512,915,9.69967974167746e-117
+"GO:0043231","intracellular membrane-bounded organelle","CC",11488,2047,4.6164443197035e-116
+"GO:0043226","organelle","CC",14144,2318,1.9262347166734e-104
+"GO:0043227","membrane-bounded organelle","CC",13019,2188,1.5657820628952e-100
+"GO:0044446","intracellular organelle part","CC",9811,1795,1.46117127076334e-97
+"GO:0044422","organelle part","CC",10112,1819,4.67651539783308e-92
+"GO:0005634","nucleus","CC",7932,1518,1.30632955666687e-87
+"GO:0044260","cellular macromolecule metabolic process","BP",8352,1575,1.89665714368559e-87
+"GO:0044428","nuclear part","CC",5023,1082,3.27822646451215e-83
+"GO:0031981","nuclear lumen","CC",4594,1011,1.11713850059605e-81
+"GO:1902494","catalytic complex","CC",1370,432,9.8781705726124e-76
+"GO:0032991","protein-containing complex","CC",6151,1223,4.01658792585031e-73
+"GO:0005515","protein binding","MF",11807,1976,7.20598339096285e-73
+"GO:0070013","intracellular organelle lumen","CC",5740,1161,1.1319042619764e-72
+"GO:0031974","membrane-enclosed lumen","CC",5740,1161,1.1319042619764e-72
+"GO:0043233","organelle lumen","CC",5740,1161,1.1319042619764e-72
+"GO:0006996","organelle organization","BP",3885,872,5.07402259446464e-72

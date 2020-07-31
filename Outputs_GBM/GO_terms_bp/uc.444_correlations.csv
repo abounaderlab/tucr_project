@@ -1,0 +1,13 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0001207","histone displacement","BP",1,1,0.000292854353768135
+"GO:0051039","positive regulation of transcription involved in meiotic cell cycle","BP",1,1,0.000292854353768135
+"GO:0051037","regulation of transcription involved in meiotic cell cycle","BP",1,1,0.000292854353768135
+"GO:0019953","sexual reproduction","BP",848,3,0.00128643342964066
+"GO:0044245","polysaccharide digestion","BP",6,1,0.00175605430345327
+"GO:0098828","modulation of inhibitory postsynaptic potential","BP",7,1,0.00204848002721969
+"GO:0097151","positive regulation of inhibitory postsynaptic potential","BP",7,1,0.00204848002721969
+"GO:0044703","multi-organism reproductive process","BP",1016,3,0.00217209853982607
+"GO:0060478","acrosomal vesicle exocytosis","BP",9,1,0.0026331173201557
+"GO:0051704","multi-organism process","BP",2635,4,0.00329922771194898
+"GO:0048791","calcium ion-regulated exocytosis of neurotransmitter","BP",16,1,0.00467710068578642
+"GO:0060080","inhibitory postsynaptic potential","BP",17,1,0.00496881314162301

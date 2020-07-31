@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0070936","protein K48-linked ubiquitination","BP",56,2,0.0000729930710829197
+"GO:0007387","anterior compartment pattern formation","BP",1,1,0.000244045294806705
+"GO:0004339","glucan 1,4-alpha-glucosidase activity","MF",1,1,0.000244045294806705
+"GO:0007388","posterior compartment specification","BP",1,1,0.000244045294806705
+"GO:0005983","starch catabolic process","BP",1,1,0.000244045294806705
+"GO:0005982","starch metabolic process","BP",1,1,0.000244045294806705
+"GO:0004558","alpha-1,4-glucosidase activity","MF",3,1,0.000731992944966509
+"GO:0032450","maltose alpha-glucosidase activity","MF",3,1,0.000731992944966509
+"GO:0000023","maltose metabolic process","BP",3,1,0.000731992944966509
+"GO:0090234","regulation of kinetochore assembly","BP",3,1,0.000731992944966509
+"GO:0007386","compartment pattern specification","BP",5,1,0.00121975005570352
+"GO:0032184","SUMO polymer binding","MF",5,1,0.00121975005570352
+"GO:0090599","alpha-glucosidase activity","MF",6,1,0.00146355717622892
+"GO:0016160","amylase activity","MF",6,1,0.00146355717622892
+"GO:0044245","polysaccharide digestion","BP",6,1,0.00146355717622892
+"GO:0090230","regulation of centromere complex assembly","BP",6,1,0.00146355717622892
+"GO:0085020","protein K6-linked ubiquitination","BP",8,1,0.00195102858246898
+"GO:0090070","positive regulation of ribosome biogenesis","BP",9,1,0.00219469288213092
+"GO:2000234","positive regulation of rRNA processing","BP",9,1,0.00219469288213092
+"GO:0000209","protein polyubiquitination","BP",310,2,0.00221428563248606

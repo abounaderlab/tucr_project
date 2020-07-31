@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005654","nucleoplasm","CC",3512,409,2.99466814799502e-67
+"GO:0044424","intracellular part","CC",15063,971,2.51897571754493e-58
+"GO:0005622","intracellular","CC",15073,971,4.24476060191798e-58
+"GO:0043229","intracellular organelle","CC",13294,904,3.72628079761816e-57
+"GO:0043231","intracellular membrane-bounded organelle","CC",11488,824,3.59637775771747e-55
+"GO:0044446","intracellular organelle part","CC",9811,742,1.94795124590543e-53
+"GO:0031981","nuclear lumen","CC",4594,448,2.66328332697648e-51
+"GO:0044428","nuclear part","CC",5023,474,6.01822318937103e-51
+"GO:0043227","membrane-bounded organelle","CC",13019,879,6.16162237596939e-50
+"GO:0043226","organelle","CC",14144,923,1.81550878025005e-49
+"GO:0044422","organelle part","CC",10112,747,2.83360435893898e-49
+"GO:0005634","nucleus","CC",7932,633,6.75814785389249e-48
+"GO:0070013","intracellular organelle lumen","CC",5740,501,3.00209279716896e-44
+"GO:0031974","membrane-enclosed lumen","CC",5740,501,3.00209279716896e-44
+"GO:0043233","organelle lumen","CC",5740,501,3.00209279716896e-44
+"GO:0044260","cellular macromolecule metabolic process","BP",8352,645,7.25958775561466e-44
+"GO:0032991","protein-containing complex","CC",6151,521,1.05222491901841e-42
+"GO:0044237","cellular metabolic process","BP",11301,777,1.37999154850921e-38
+"GO:0006996","organelle organization","BP",3885,370,1.09223590235167e-37
+"GO:1902494","catalytic complex","CC",1370,187,1.359891986413e-36

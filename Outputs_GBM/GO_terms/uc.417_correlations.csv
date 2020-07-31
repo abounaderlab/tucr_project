@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0031224","intrinsic component of membrane","CC",5495,33,0.00000918147669860388
+"GO:0016021","integral component of membrane","CC",5330,32,0.0000145854103817896
+"GO:0044425","membrane part","CC",6939,36,0.0000795276031368763
+"GO:0051963","regulation of synapse assembly","BP",106,4,0.000299802932423732
+"GO:0099061","integral component of postsynaptic density membrane","CC",50,3,0.000467371838854908
+"GO:0099151","regulation of postsynaptic density assembly","BP",11,2,0.000486937637892559
+"GO:0099146","intrinsic component of postsynaptic density membrane","CC",53,3,0.000555011190736753
+"GO:0150052","regulation of postsynapse assembly","BP",12,2,0.000583186380711403
+"GO:0099150","regulation of postsynaptic specialization assembly","BP",12,2,0.000583186380711403
+"GO:1904889","regulation of excitatory synapse assembly","BP",14,2,0.000800960185280158
+"GO:1905874","regulation of postsynaptic density organization","BP",15,2,0.000922384828913903
+"GO:0006026","aminoglycan catabolic process","BP",65,3,0.00100851900044429
+"GO:0051965","positive regulation of synapse assembly","BP",68,3,0.00114968711264737
+"GO:0097107","postsynaptic density assembly","BP",17,2,0.00119006018898304
+"GO:0016020","membrane","CC",9495,41,0.0013105956869607
+"GO:0099060","integral component of postsynaptic specialization membrane","CC",74,3,0.00146806584142424
+"GO:0098839","postsynaptic density membrane","CC",74,3,0.00146806584142424
+"GO:0098948","intrinsic component of postsynaptic specialization membrane","CC",77,3,0.00164599564107038
+"GO:0098698","postsynaptic specialization assembly","BP",20,2,0.00165289667844437
+"GO:0006022","aminoglycan metabolic process","BP",170,4,0.00175505382593767

@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0032049","cardiolipin biosynthetic process","BP",7,2,0.000037663904328794
+"GO:0006655","phosphatidylglycerol biosynthetic process","BP",8,2,0.0000501760636114086
+"GO:0032048","cardiolipin metabolic process","BP",14,2,0.000162246583599581
+"GO:0043484","regulation of RNA splicing","BP",135,3,0.000812423440369604
+"GO:0046471","phosphatidylglycerol metabolic process","BP",31,2,0.00081723389639437
+"GO:0008444","CDP-diacylglycerol-glycerol-3-phosphate 3-phosphatidyltransferase activity","MF",1,1,0.0013666536509177
+"GO:0047316","glutamine-phenylpyruvate transaminase activity","MF",1,1,0.0013666536509177
+"GO:2000266","regulation of blood coagulation, intrinsic pathway","BP",1,1,0.0013666536509177
+"GO:0004712","protein serine/threonine/tyrosine kinase activity","MF",43,2,0.00157101532843759
+"GO:0008144","drug binding","MF",1727,8,0.0016820727988319
+"GO:0008374","O-acyltransferase activity","MF",47,2,0.00187435686192424
+"GO:0016740","transferase activity","MF",2272,9,0.00241352153968659
+"GO:0043168","anion binding","MF",2773,10,0.00260064063247893
+"GO:0047804","cysteine-S-conjugate beta-lyase activity","MF",2,1,0.00273150617680107
+"GO:0060152","microtubule-based peroxisome localization","BP",2,1,0.00273150617680107
+"GO:1990443","peptidyl-threonine autophosphorylation","BP",2,1,0.00273150617680107
+"GO:0060151","peroxisome localization","BP",2,1,0.00273150617680107
+"GO:1900210","positive regulation of cardiolipin metabolic process","BP",2,1,0.00273150617680107
+"GO:1900208","regulation of cardiolipin metabolic process","BP",2,1,0.00273150617680107
+"GO:0030626","U12 snRNA binding","MF",2,1,0.00273150617680107

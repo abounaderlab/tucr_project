@@ -1,0 +1,10 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005515","protein binding","MF",11807,288,0.00000283747502396747
+"GO:0032555","purine ribonucleotide binding","MF",1878,67,0.00000562023917229616
+"GO:0017076","purine nucleotide binding","MF",1891,67,0.00000706398533786005
+"GO:0032553","ribonucleotide binding","MF",1894,67,0.00000744310525514912
+"GO:0003674","molecular_function","MF",17697,392,0.00000756934527493304
+"GO:0005488","binding","MF",15267,350,0.0000127540737488933
+"GO:0000166","nucleotide binding","MF",2125,72,0.00001418483181023
+"GO:1901265","nucleoside phosphate binding","MF",2126,72,0.000014411696090362
+"GO:0035639","purine ribonucleoside triphosphate binding","MF",1813,63,0.0000250957873408541

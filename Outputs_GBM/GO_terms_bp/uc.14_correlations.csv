@@ -1,0 +1,13 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0031424","keratinization","BP",224,3,0.000429397887556441
+"GO:0030216","keratinocyte differentiation","BP",305,3,0.00105282715161714
+"GO:0009913","epidermal cell differentiation","BP",358,3,0.00166892054991055
+"GO:0043588","skin development","BP",419,3,0.00261362345407818
+"GO:0050911","detection of chemical stimulus involved in sensory perception of smell","BP",427,3,0.00275763611272391
+"GO:0007608","sensory perception of smell","BP",454,3,0.00327986976620988
+"GO:0008544","epidermis development","BP",464,3,0.00348776157975208
+"GO:0050907","detection of chemical stimulus involved in sensory perception","BP",477,3,0.00376997764306301
+"GO:0043152","induction of bacterial agglutination","BP",6,1,0.00409346196789484
+"GO:0009593","detection of chemical stimulus","BP",512,3,0.00459859095305568
+"GO:0007606","sensory perception of chemical stimulus","BP",526,3,0.00495880529135788
+"GO:0050906","detection of stimulus involved in sensory perception","BP",531,3,0.00509151529881226

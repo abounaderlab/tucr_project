@@ -1,0 +1,9 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:1901363","heterocyclic compound binding","MF",6241,64,0.000000000517628364734072
+"GO:0097159","organic cyclic compound binding","MF",6328,64,0.000000000970661240110403
+"GO:0003676","nucleic acid binding","MF",4349,51,0.00000000154326384634196
+"GO:0140110","transcription regulator activity","MF",2053,30,0.000000155623224864407
+"GO:0003677","DNA binding","MF",2518,32,0.00000124586669835908
+"GO:0003700","DNA-binding transcription factor activity","MF",1699,25,0.00000195898753273282
+"GO:0000981","DNA-binding transcription factor activity, RNA polymerase II-specific","MF",1600,24,0.0000023615866334704
+"GO:0005488","binding","MF",15267,98,0.000018146705083225

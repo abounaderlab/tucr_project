@@ -1,0 +1,10 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0004843","thiol-dependent ubiquitin-specific protease activity","MF",106,6,0.00000021963134407476
+"GO:0036459","thiol-dependent ubiquitinyl hydrolase activity","MF",114,6,0.000000338333466281226
+"GO:0101005","ubiquitinyl hydrolase activity","MF",114,6,0.000000338333466281226
+"GO:0004197","cysteine-type endopeptidase activity","MF",116,6,0.000000375042249181759
+"GO:0019783","ubiquitin-like protein-specific protease activity","MF",123,6,0.000000530219389080374
+"GO:0008234","cysteine-type peptidase activity","MF",184,6,0.00000553468757833745
+"GO:0004175","endopeptidase activity","MF",427,8,0.00000831478825897851
+"GO:0070011","peptidase activity, acting on L-amino acid peptides","MF",599,8,0.0000925804008278245
+"GO:0008233","peptidase activity","MF",623,8,0.000121498318525719

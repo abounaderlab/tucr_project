@@ -1,0 +1,11 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0039694","viral RNA genome replication","BP",32,3,0.000243156141963591
+"GO:0033043","regulation of organelle organization","BP",1261,14,0.000261241200170227
+"GO:1904354","negative regulation of telomere capping","BP",8,2,0.000394745504162599
+"GO:0043254","regulation of protein complex assembly","BP",467,8,0.000398308781299654
+"GO:0046326","positive regulation of glucose import","BP",38,3,0.000406825589218223
+"GO:0034613","cellular protein localization","BP",1872,17,0.000568748219083767
+"GO:0070727","cellular macromolecule localization","BP",1883,17,0.00060814514674202
+"GO:0010828","positive regulation of glucose transmembrane transport","BP",44,3,0.000628297631169806
+"GO:0044257","cellular protein catabolic process","BP",773,10,0.000682871595214498
+"GO:0033629","negative regulation of cell adhesion mediated by integrin","BP",11,2,0.000769664967015385

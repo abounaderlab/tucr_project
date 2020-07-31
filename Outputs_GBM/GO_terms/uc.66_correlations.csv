@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005737","cytoplasm","CC",11625,70,0.00000000839788911095642
+"GO:0044444","cytoplasmic part","CC",9735,60,0.00000100683004178163
+"GO:0051301","cell division","BP",598,12,0.00000385888412260168
+"GO:0051781","positive regulation of cell division","BP",87,5,0.0000244370675907257
+"GO:0051897","positive regulation of protein kinase B signaling","BP",176,6,0.0000702546431394276
+"GO:0005158","insulin receptor binding","MF",22,3,0.000086840442001912
+"GO:0035556","intracellular signal transduction","BP",2952,25,0.000119169079446435
+"GO:0044424","intracellular part","CC",15063,73,0.000188094883996424
+"GO:0005622","intracellular","CC",15073,73,0.000194741895932113
+"GO:0000776","kinetochore","CC",135,5,0.000197778964688584
+"GO:0005829","cytosol","CC",5085,35,0.000220146774513986
+"GO:0044344","cellular response to fibroblast growth factor stimulus","BP",143,5,0.000258431804437202
+"GO:0045834","positive regulation of lipid metabolic process","BP",146,5,0.000284486549257311
+"GO:0071774","response to fibroblast growth factor","BP",150,5,0.000322272825517855
+"GO:0062013","positive regulation of small molecule metabolic process","BP",153,5,0.000353020354274251
+"GO:0051896","regulation of protein kinase B signaling","BP",244,6,0.000413180792191337
+"GO:0007264","small GTPase mediated signal transduction","BP",571,9,0.000417441645514066
+"GO:0046326","positive regulation of glucose import","BP",38,3,0.000454513628715389
+"GO:0051302","regulation of cell division","BP",168,5,0.000541330441731372
+"GO:0035768","endothelial cell chemotaxis to fibroblast growth factor","BP",10,2,0.00068057338930382

@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0016579","protein deubiquitination","BP",283,3,0.000673061203840133
+"GO:0070646","protein modification by small protein removal","BP",299,3,0.000789590178362252
+"GO:0097123","cyclin A1-CDK2 complex","CC",2,1,0.00126866387227365
+"GO:0009383","rRNA (cytosine-C5-)-methyltransferase activity","MF",2,1,0.00126866387227365
+"GO:0000079","regulation of cyclin-dependent protein serine/threonine kinase activity","BP",102,2,0.00184712192755222
+"GO:0097124","cyclin A2-CDK2 complex","CC",3,1,0.00190243851689242
+"GO:1904029","regulation of cyclin-dependent protein kinase activity","BP",106,2,0.00199272678533889
+"GO:0004843","thiol-dependent ubiquitin-specific protease activity","MF",106,2,0.00199272678533889
+"GO:0036459","thiol-dependent ubiquitinyl hydrolase activity","MF",114,2,0.00229981608790232
+"GO:0101005","ubiquitinyl hydrolase activity","MF",114,2,0.00229981608790232
+"GO:0004197","cysteine-type endopeptidase activity","MF",116,2,0.00237987946244253
+"GO:0008169","C-methyltransferase activity","MF",4,1,0.00253584189982037
+"GO:0006235","dTTP biosynthetic process","BP",4,1,0.00253584189982037
+"GO:0046075","dTTP metabolic process","BP",4,1,0.00253584189982037
+"GO:0009212","pyrimidine deoxyribonucleoside triphosphate biosynthetic process","BP",4,1,0.00253584189982037
+"GO:0016434","rRNA (cytosine) methyltransferase activity","MF",4,1,0.00253584189982037
+"GO:0019783","ubiquitin-like protein-specific protease activity","MF",123,2,0.0026704025501899
+"GO:0005672","transcription factor TFIIA complex","CC",5,1,0.00316887422042678
+"GO:0009202","deoxyribonucleoside triphosphate biosynthetic process","BP",6,1,0.00380153567798347
+"GO:0000126","transcription factor TFIIIB complex","CC",6,1,0.00380153567798347

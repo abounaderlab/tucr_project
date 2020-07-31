@@ -1,0 +1,11 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0071449","cellular response to lipid hydroperoxide","BP",1,1,0.000927372120265502
+"GO:0035623","renal glucose absorption","BP",1,1,0.000927372120265502
+"GO:0006352","DNA-templated transcription, initiation","BP",249,3,0.0014881283867311
+"GO:0018105","peptidyl-serine phosphorylation","BP",299,3,0.00250736111031334
+"GO:0006982","response to lipid hydroperoxide","BP",3,1,0.00277967265296686
+"GO:0006391","transcription initiation from mitochondrial promoter","BP",3,1,0.00277967265296686
+"GO:0030101","natural killer cell activation","BP",86,2,0.00284299224214389
+"GO:0018209","peptidyl-serine modification","BP",322,3,0.00309195767042702
+"GO:2000552","negative regulation of T-helper 2 cell cytokine production","BP",4,1,0.00370460241716453
+"GO:0090170","regulation of Golgi inheritance","BP",4,1,0.00370460241716453

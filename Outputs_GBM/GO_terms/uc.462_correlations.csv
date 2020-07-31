@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005654","nucleoplasm","CC",3512,782,1.48357563952364e-161
+"GO:0005634","nucleus","CC",7932,1230,8.19565270907897e-145
+"GO:0044428","nuclear part","CC",5023,921,2.26961444893315e-137
+"GO:0031981","nuclear lumen","CC",4594,858,2.15055396009322e-129
+"GO:0090304","nucleic acid metabolic process","BP",5735,973,6.29983163449691e-124
+"GO:0006139","nucleobase-containing compound metabolic process","BP",6411,1043,6.32833228393869e-124
+"GO:0003676","nucleic acid binding","MF",4349,819,1.4085755674719e-123
+"GO:0046483","heterocycle metabolic process","BP",6570,1051,7.62986258726256e-120
+"GO:0006725","cellular aromatic compound metabolic process","BP",6615,1053,1.38611634001208e-118
+"GO:1901360","organic cyclic compound metabolic process","BP",6839,1063,1.56917846127406e-112
+"GO:0051276","chromosome organization","BP",1230,371,1.79117545466627e-108
+"GO:0034641","cellular nitrogen compound metabolic process","BP",7161,1079,4.12325552245292e-105
+"GO:0070013","intracellular organelle lumen","CC",5740,924,1.08942634045057e-99
+"GO:0031974","membrane-enclosed lumen","CC",5740,924,1.08942634045057e-99
+"GO:0043233","organelle lumen","CC",5740,924,1.08942634045057e-99
+"GO:0043231","intracellular membrane-bounded organelle","CC",11488,1446,1.20323713903281e-99
+"GO:1901363","heterocyclic compound binding","MF",6241,970,4.46143158621873e-97
+"GO:0097159","organic cyclic compound binding","MF",6328,975,2.37693895497492e-95
+"GO:0005694","chromosome","CC",1075,326,4.1590053979538e-95
+"GO:0044424","intracellular part","CC",15063,1686,2.36899935477023e-93

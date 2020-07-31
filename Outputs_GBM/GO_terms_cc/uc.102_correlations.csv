@@ -1,0 +1,19 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0044424","intracellular part","CC",15063,2783,1.85059101632865e-124
+"GO:0005622","intracellular","CC",15073,2784,2.16734483026217e-124
+"GO:0044446","intracellular organelle part","CC",9811,2065,4.3523767982961e-113
+"GO:0044422","organelle part","CC",10112,2097,2.82109646745079e-108
+"GO:0005737","cytoplasm","CC",11625,2308,2.34667013812675e-106
+"GO:0044444","cytoplasmic part","CC",9735,2026,1.56072798906426e-102
+"GO:0043229","intracellular organelle","CC",13294,2518,9.69559020633117e-101
+"GO:0043226","organelle","CC",14144,2606,3.32744092491318e-92
+"GO:0043231","intracellular membrane-bounded organelle","CC",11488,2241,2.47342035224132e-88
+"GO:0043227","membrane-bounded organelle","CC",13019,2445,3.7547503016811e-86
+"GO:0005829","cytosol","CC",5085,1209,3.44424722117096e-80
+"GO:0044391","ribosomal subunit","CC",190,145,8.8633403972487e-80
+"GO:0005654","nucleoplasm","CC",3512,895,5.08508776438868e-70
+"GO:0070013","intracellular organelle lumen","CC",5740,1281,9.01986573217557e-67
+"GO:0031974","membrane-enclosed lumen","CC",5740,1281,9.01986573217557e-67
+"GO:0043233","organelle lumen","CC",5740,1281,9.01986573217557e-67
+"GO:0005840","ribosome","CC",272,162,5.168677460293e-64
+"GO:0044429","mitochondrial part","CC",1036,358,2.93527255693989e-57

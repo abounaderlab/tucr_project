@@ -1,0 +1,15 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0120031","plasma membrane bounded cell projection assembly","BP",555,33,0.00000000000928329537360745
+"GO:0030031","cell projection assembly","BP",567,33,0.0000000000164332652432014
+"GO:0030030","cell projection organization","BP",1534,56,0.000000000162099402932765
+"GO:0120036","plasma membrane bounded cell projection organization","BP",1497,55,0.000000000192690289151519
+"GO:0060271","cilium assembly","BP",366,25,0.000000000198607704721355
+"GO:0044782","cilium organization","BP",384,25,0.000000000542224989526584
+"GO:0007399","nervous system development","BP",2375,68,0.0000000357737656616252
+"GO:0009653","anatomical structure morphogenesis","BP",2735,72,0.000000362480078611506
+"GO:0032502","developmental process","BP",6411,134,0.000000674801570394171
+"GO:0016043","cellular component organization","BP",6512,134,0.00000173061606767005
+"GO:0001503","ossification","BP",398,20,0.00000189929489746165
+"GO:0032989","cellular component morphogenesis","BP",1143,38,0.00000203893914634028
+"GO:0007010","cytoskeleton organization","BP",1330,42,0.00000209344607925754
+"GO:0035295","tube development","BP",1110,37,0.00000265002745739534

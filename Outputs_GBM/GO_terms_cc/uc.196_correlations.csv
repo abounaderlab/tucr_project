@@ -1,0 +1,10 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005737","cytoplasm","CC",11625,69,0.00011642145498813
+"GO:0043227","membrane-bounded organelle","CC",13019,74,0.000170976390663384
+"GO:0043231","intracellular membrane-bounded organelle","CC",11488,68,0.000173047645876664
+"GO:0044424","intracellular part","CC",15063,81,0.000236698763071538
+"GO:0005622","intracellular","CC",15073,81,0.000245509579373873
+"GO:0005634","nucleus","CC",7932,51,0.000586557588627836
+"GO:0043229","intracellular organelle","CC",13294,73,0.00103243596740879
+"GO:0043226","organelle","CC",14144,76,0.00124057173774692
+"GO:0016281","eukaryotic translation initiation factor 4F complex","CC",13,2,0.00147423579521074

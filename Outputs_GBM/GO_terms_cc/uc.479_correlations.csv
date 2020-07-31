@@ -1,0 +1,9 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0044424","intracellular part","CC",15063,2414,1.01823696079156e-52
+"GO:0005622","intracellular","CC",15073,2415,1.15824805176215e-52
+"GO:0043226","organelle","CC",14144,2293,4.47819300010457e-49
+"GO:0043227","membrane-bounded organelle","CC",13019,2147,2.55877201553116e-47
+"GO:0043229","intracellular organelle","CC",13294,2172,1.30118474907721e-44
+"GO:0043231","intracellular membrane-bounded organelle","CC",11488,1935,7.87399932404286e-44
+"GO:0005623","cell","CC",17590,2653,8.33950224409881e-38
+"GO:0044464","cell part","CC",17521,2642,2.10610178512867e-36

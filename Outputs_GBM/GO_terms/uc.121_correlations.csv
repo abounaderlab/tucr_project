@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0043029","T cell homeostasis","BP",37,2,0.000284860274928155
+"GO:0051886","negative regulation of timing of anagen","BP",1,1,0.000683326825458797
+"GO:2001203","positive regulation of transforming growth factor-beta secretion","BP",1,1,0.000683326825458797
+"GO:0002260","lymphocyte homeostasis","BP",62,2,0.000800960185280158
+"GO:0021700","developmental maturation","BP",284,3,0.000856605725846475
+"GO:0044301","climbing fiber","CC",2,1,0.00136622004674269
+"GO:0016524","latrotoxin receptor activity","MF",2,1,0.00136622004674269
+"GO:0043132","NAD transport","BP",2,1,0.00136622004674269
+"GO:0048817","negative regulation of hair follicle maturation","BP",2,1,0.00136622004674269
+"GO:0006649","phospholipid transfer to membrane","BP",2,1,0.00136622004674269
+"GO:1904172","positive regulation of bleb assembly","BP",2,1,0.00136622004674269
+"GO:1904170","regulation of bleb assembly","BP",2,1,0.00136622004674269
+"GO:0001776","leukocyte homeostasis","BP",86,2,0.00153369614809582
+"GO:0097676","histone H3-K36 dimethylation","BP",3,1,0.0020486799178423
+"GO:0050717","positive regulation of interleukin-1 alpha secretion","BP",3,1,0.0020486799178423
+"GO:2001201","regulation of transforming growth factor-beta secretion","BP",3,1,0.0020486799178423
+"GO:0035585","calcium-mediated signaling using extracellular calcium source","BP",4,1,0.00273070669261166
+"GO:0051799","negative regulation of hair follicle development","BP",4,1,0.00273070669261166
+"GO:0014054","positive regulation of gamma-aminobutyric acid secretion","BP",4,1,0.00273070669261166
+"GO:0032730","positive regulation of interleukin-1 alpha production","BP",4,1,0.00273070669261166

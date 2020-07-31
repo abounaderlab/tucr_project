@@ -1,0 +1,9 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0016973","poly(A)+ mRNA export from nucleus","BP",19,1,0.00185392944587259
+"GO:0071427","mRNA-containing ribonucleoprotein complex export from nucleus","BP",111,1,0.0108065214906525
+"GO:0006406","mRNA export from nucleus","BP",111,1,0.0108065214906525
+"GO:0071426","ribonucleoprotein complex export from nucleus","BP",127,1,0.012359377162958
+"GO:0071166","ribonucleoprotein complex localization","BP",128,1,0.0124563901409881
+"GO:0006405","RNA export from nucleus","BP",135,1,0.0131353475705308
+"GO:0051028","mRNA transport","BP",152,1,0.0147832721494017
+"GO:0006611","protein export from nucleus","BP",179,1,0.017397733788269

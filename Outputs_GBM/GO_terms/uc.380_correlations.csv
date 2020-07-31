@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0050911","detection of chemical stimulus involved in sensory perception of smell","BP",427,250,3.65546880446965e-261
+"GO:0004984","olfactory receptor activity","MF",427,250,3.65546880446965e-261
+"GO:0007608","sensory perception of smell","BP",454,252,4.90837248214603e-255
+"GO:0050907","detection of chemical stimulus involved in sensory perception","BP",477,254,7.83916948741995e-251
+"GO:0009593","detection of chemical stimulus","BP",512,255,7.45325903522703e-242
+"GO:0007606","sensory perception of chemical stimulus","BP",526,256,1.74178931605587e-239
+"GO:0050906","detection of stimulus involved in sensory perception","BP",531,255,1.6183168400111e-236
+"GO:0051606","detection of stimulus","BP",691,258,1.89997520431005e-204
+"GO:0004930","G protein-coupled receptor activity","MF",866,260,5.54367298199874e-178
+"GO:0007600","sensory perception","BP",977,264,7.49993291708877e-168
+"GO:0004888","transmembrane signaling receptor activity","MF",1277,265,5.50766430585169e-137
+"GO:0007186","G protein-coupled receptor signaling pathway","BP",1371,269,7.92430580458796e-133
+"GO:0050877","nervous system process","BP",1437,269,2.00104501600786e-127
+"GO:0038023","signaling receptor activity","MF",1484,267,7.25250505843351e-122
+"GO:0060089","molecular transducer activity","MF",1538,267,7.02350601271378e-118
+"GO:0003008","system process","BP",2216,283,2.00755373715053e-91
+"GO:0005549","odorant binding","MF",102,65,8.34674909154247e-69
+"GO:0031424","keratinization","BP",224,78,5.01212416855798e-56
+"GO:0032501","multicellular organismal process","BP",7751,473,1.04235536414962e-51
+"GO:0030216","keratinocyte differentiation","BP",305,83,6.14549716355995e-50

@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0006369","termination of RNA polymerase II transcription","BP",35,4,0.000000839799173856352
+"GO:0005849","mRNA cleavage factor complex","CC",20,3,0.00000957538458788942
+"GO:0000398","mRNA splicing, via spliceosome","BP",379,7,0.0000127323555861222
+"GO:0000377","RNA splicing, via transesterification reactions with bulged adenosine as nucleophile","BP",379,7,0.0000127323555861222
+"GO:0000375","RNA splicing, via transesterification reactions","BP",382,7,0.0000133983304320607
+"GO:0006353","DNA-templated transcription, termination","BP",75,4,0.0000183427646650537
+"GO:0006260","DNA replication","BP",274,6,0.0000217963753069466
+"GO:0005654","nucleoplasm","CC",3512,19,0.0000316939764913195
+"GO:0006259","DNA metabolic process","BP",1026,10,0.0000401487029786655
+"GO:0008380","RNA splicing","BP",469,7,0.0000497417944079363
+"GO:0006397","mRNA processing","BP",541,7,0.000121611658815951
+"GO:0006281","DNA repair","BP",552,7,0.000137748959816371
+"GO:0044428","nuclear part","CC",5023,22,0.000146092062028613
+"GO:0051292","nuclear pore complex assembly","BP",9,2,0.000153456401792941
+"GO:0006139","nucleobase-containing compound metabolic process","BP",6411,25,0.000243674582545281
+"GO:0000082","G1/S transition of mitotic cell cycle","BP",279,5,0.000284790900332071
+"GO:0003684","damaged DNA binding","MF",65,3,0.00034352551652366
+"GO:0046483","heterocycle metabolic process","BP",6570,25,0.000372439540143471
+"GO:0032991","protein-containing complex","CC",6151,24,0.000374757048980787
+"GO:0070013","intracellular organelle lumen","CC",5740,23,0.000375122809702125

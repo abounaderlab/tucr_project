@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0003824","catalytic activity","MF",5710,157,0.0000289572599690366
+"GO:0120039","plasma membrane bounded cell projection morphogenesis","BP",662,30,0.0000603664616785841
+"GO:0048858","cell projection morphogenesis","BP",666,30,0.0000672786150662237
+"GO:0048812","neuron projection morphogenesis","BP",648,29,0.0000995016862518173
+"GO:0120036","plasma membrane bounded cell projection organization","BP",1497,53,0.000100178833715777
+"GO:0032990","cell part morphogenesis","BP",685,30,0.000110894856551898
+"GO:0003674","molecular_function","MF",17697,392,0.000177410126558988
+"GO:0030030","cell projection organization","BP",1534,53,0.000184683174018435
+"GO:0099118","microtubule-based protein transport","BP",15,4,0.000209721184663181
+"GO:0098840","protein transport along microtubule","BP",15,4,0.000209721184663181
+"GO:0005515","protein binding","MF",11807,281,0.000230059754308508
+"GO:0032989","cellular component morphogenesis","BP",1143,42,0.000255033006624336
+"GO:0005737","cytoplasm","CC",11625,277,0.000261607063005089
+"GO:0030054","cell junction","CC",1298,46,0.000289938028754265
+"GO:1990778","protein localization to cell periphery","BP",311,17,0.000299899414857959
+"GO:0031175","neuron projection development","BP",978,37,0.00034573388596524
+"GO:0044425","membrane part","CC",6939,178,0.000351905462493315
+"GO:0098918","structural constituent of synapse","MF",17,4,0.000353805353196816
+"GO:0050992","dimethylallyl diphosphate biosynthetic process","BP",2,2,0.000431340856394357
+"GO:0050993","dimethylallyl diphosphate metabolic process","BP",2,2,0.000431340856394357

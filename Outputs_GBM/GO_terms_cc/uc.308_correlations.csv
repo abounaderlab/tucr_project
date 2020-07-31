@@ -1,0 +1,14 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005622","intracellular","CC",15073,2261,2.03398314647394e-87
+"GO:0044424","intracellular part","CC",15063,2259,6.6896767636381e-87
+"GO:0043229","intracellular organelle","CC",13294,2050,4.26871588424741e-74
+"GO:0043227","membrane-bounded organelle","CC",13019,2018,3.30459273653123e-73
+"GO:0043226","organelle","CC",14144,2135,2.40935755712567e-72
+"GO:0043231","intracellular membrane-bounded organelle","CC",11488,1841,2.7571481524038e-71
+"GO:0044446","intracellular organelle part","CC",9811,1633,1.77171069601854e-68
+"GO:0005654","nucleoplasm","CC",3512,764,2.56573486344338e-66
+"GO:0044422","organelle part","CC",10112,1662,5.64650290222336e-66
+"GO:0005737","cytoplasm","CC",11625,1833,3.06719111074896e-63
+"GO:0005829","cytosol","CC",5085,985,1.72273423593429e-61
+"GO:0044444","cytoplasmic part","CC",9735,1592,1.51913584415556e-58
+"GO:1902494","catalytic complex","CC",1370,371,3.07245518596002e-52

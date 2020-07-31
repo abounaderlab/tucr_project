@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0009952","anterior/posterior pattern specification","BP",219,7,0.000000000417163098030674
+"GO:0003002","regionalization","BP",351,7,0.0000000110419855988629
+"GO:0048705","skeletal system morphogenesis","BP",239,6,0.0000000390743491251432
+"GO:0007389","pattern specification process","BP",446,7,0.0000000571701623458498
+"GO:0009887","animal organ morphogenesis","BP",1068,9,0.0000000872198267027038
+"GO:0001501","skeletal system development","BP",518,7,0.000000158507786005523
+"GO:0048704","embryonic skeletal system morphogenesis","BP",93,4,0.00000115944172796918
+"GO:0043565","sequence-specific DNA binding","MF",1139,8,0.00000236138649640678
+"GO:0048706","embryonic skeletal system development","BP",126,4,0.00000390345149113781
+"GO:0060527","prostate epithelial cord arborization involved in prostate glandular acinus morphogenesis","BP",6,2,0.0000109126453330408
+"GO:0060526","prostate glandular acinus morphogenesis","BP",6,2,0.0000109126453330408
+"GO:0048736","appendage development","BP",179,4,0.0000156667496292864
+"GO:0060173","limb development","BP",179,4,0.0000156667496292864
+"GO:0042733","embryonic digit morphogenesis","BP",61,3,0.0000198495226294886
+"GO:0000981","DNA-binding transcription factor activity, RNA polymerase II-specific","MF",1600,8,0.0000291992595770068
+"GO:0060272","embryonic skeletal joint morphogenesis","BP",11,2,0.0000399089890339825
+"GO:0060525","prostate glandular acinus development","BP",11,2,0.0000399089890339825
+"GO:0003700","DNA-binding transcription factor activity","MF",1699,8,0.0000451338509804745
+"GO:0060442","branching involved in prostate gland morphogenesis","BP",12,2,0.0000478658574415608
+"GO:0072498","embryonic skeletal joint development","BP",14,2,0.0000659281759622352

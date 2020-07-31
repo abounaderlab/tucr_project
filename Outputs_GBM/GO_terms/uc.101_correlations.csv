@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005654","nucleoplasm","CC",3512,950,3.3588057135866e-162
+"GO:0005634","nucleus","CC",7932,1580,2.67054204110988e-158
+"GO:0003676","nucleic acid binding","MF",4349,1033,8.4097718301222e-135
+"GO:0090304","nucleic acid metabolic process","BP",5735,1232,3.38628565896598e-132
+"GO:0044428","nuclear part","CC",5023,1128,1.27254856636643e-131
+"GO:0006139","nucleobase-containing compound metabolic process","BP",6411,1311,2.4516371349626e-125
+"GO:0031981","nuclear lumen","CC",4594,1048,6.10058246157951e-124
+"GO:0043231","intracellular membrane-bounded organelle","CC",11488,1920,4.07459033906912e-122
+"GO:0046483","heterocycle metabolic process","BP",6570,1323,4.78912541571329e-121
+"GO:0006725","cellular aromatic compound metabolic process","BP",6615,1327,3.96104348687899e-120
+"GO:0005622","intracellular","CC",15073,2260,6.25953249113506e-118
+"GO:0044424","intracellular part","CC",15063,2259,7.69670276878547e-118
+"GO:0019219","regulation of nucleobase-containing compound metabolic process","BP",4140,962,5.48137127463052e-116
+"GO:1901360","organic cyclic compound metabolic process","BP",6839,1344,1.85538770877861e-114
+"GO:1901363","heterocyclic compound binding","MF",6241,1260,4.44750740365334e-113
+"GO:0043229","intracellular organelle","CC",13294,2086,2.20673550706028e-112
+"GO:0097159","organic cyclic compound binding","MF",6328,1267,5.53901964323327e-111
+"GO:0034641","cellular nitrogen compound metabolic process","BP",7161,1374,3.94903810494291e-109
+"GO:0016070","RNA metabolic process","BP",5206,1097,1.83922915190369e-105
+"GO:0044260","cellular macromolecule metabolic process","BP",8352,1515,1.81293534642673e-104

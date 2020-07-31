@@ -1,0 +1,11 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0016070","RNA metabolic process","BP",5206,50,0.00000205242945851811
+"GO:0006139","nucleobase-containing compound metabolic process","BP",6411,57,0.00000275265274839669
+"GO:0019219","regulation of nucleobase-containing compound metabolic process","BP",4140,42,0.00000603147983878042
+"GO:0046483","heterocycle metabolic process","BP",6570,57,0.00000640819878031303
+"GO:0090304","nucleic acid metabolic process","BP",5735,52,0.00000661523441890884
+"GO:0009059","macromolecule biosynthetic process","BP",5114,48,0.00000774824474053114
+"GO:0034645","cellular macromolecule biosynthetic process","BP",4961,47,0.00000802713006475874
+"GO:0006725","cellular aromatic compound metabolic process","BP",6615,57,0.0000080810182970555
+"GO:0051252","regulation of RNA metabolic process","BP",3822,39,0.0000138198323421537
+"GO:0010467","gene expression","BP",6585,56,0.0000165145042760088

@@ -1,0 +1,16 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0015980","energy derivation by oxidation of organic compounds","BP",285,4,0.000149000927304135
+"GO:0072421","detection of DNA damage stimulus involved in DNA damage checkpoint","BP",1,1,0.000976181179226931
+"GO:0090429","detection of endogenous biotic stimulus","BP",1,1,0.000976181179226931
+"GO:0072394","detection of stimulus involved in cell cycle checkpoint","BP",1,1,0.000976181179226931
+"GO:0097281","immune complex formation","BP",1,1,0.000976181179226931
+"GO:0002383","immune response in brain or nervous system","BP",1,1,0.000976181179226931
+"GO:0002379","immunoglobulin biosynthetic process involved in immune response","BP",1,1,0.000976181179226931
+"GO:0150072","positive regulation of arginase activity","BP",1,1,0.000976181179226931
+"GO:0150070","regulation of arginase activity","BP",1,1,0.000976181179226931
+"GO:0006781","succinyl-CoA pathway","BP",1,1,0.000976181179226931
+"GO:0006091","generation of precursor metabolites and energy","BP",526,4,0.00150035104925329
+"GO:0035781","CD86 biosynthetic process","BP",2,1,0.0019514570310557
+"GO:1904161","DNA synthesis involved in UV-damage excision repair","BP",2,1,0.0019514570310557
+"GO:0150074","positive regulation of protein-glutamine gamma-glutamyltransferase activity","BP",2,1,0.0019514570310557
+"GO:0150073","regulation of protein-glutamine gamma-glutamyltransferase activity","BP",2,1,0.0019514570310557

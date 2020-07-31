@@ -1,0 +1,11 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0032436","positive regulation of proteasomal ubiquitin-dependent protein catabolic process","BP",81,5,0.0000303790118582827
+"GO:2000060","positive regulation of ubiquitin-dependent protein catabolic process","BP",95,5,0.0000654257564505325
+"GO:1901800","positive regulation of proteasomal protein catabolic process","BP",104,5,0.000100637180866908
+"GO:1903052","positive regulation of proteolysis involved in cellular protein catabolic process","BP",120,5,0.000197255871588218
+"GO:0032434","regulation of proteasomal ubiquitin-dependent protein catabolic process","BP",122,5,0.000213063650606242
+"GO:1903364","positive regulation of cellular protein catabolic process","BP",140,5,0.00040258462056739
+"GO:2000058","regulation of ubiquitin-dependent protein catabolic process","BP",149,5,0.0005351628863649
+"GO:0006768","biotin metabolic process","BP",9,2,0.000688334387588178
+"GO:0061136","regulation of proteasomal protein catabolic process","BP",183,5,0.00134623393542641
+"GO:0043248","proteasome assembly","BP",13,2,0.00147423579521074

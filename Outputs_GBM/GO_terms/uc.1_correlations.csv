@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0060703","deoxyribonuclease inhibitor activity","MF",1,1,0.000195236235845497
+"GO:0009234","menaquinone biosynthetic process","BP",1,1,0.000195236235845497
+"GO:0032194","ubiquinone biosynthetic process via 3,4-dihydroxy-5-polyprenylbenzoate","BP",1,1,0.000195236235845497
+"GO:0042371","vitamin K biosynthetic process","BP",1,1,0.000195236235845497
+"GO:0032076","negative regulation of deoxyribonuclease activity","BP",2,1,0.000390443882404723
+"GO:0009233","menaquinone metabolic process","BP",3,1,0.000585622942468444
+"GO:0031301","integral component of organelle membrane","CC",214,2,0.000642622643883908
+"GO:1902511","negative regulation of apoptotic DNA fragmentation","BP",4,1,0.000780773418828207
+"GO:0031300","intrinsic component of organelle membrane","CC",237,2,0.000787351583902367
+"GO:1903625","negative regulation of DNA catabolic process","BP",5,1,0.000975895314274444
+"GO:0042373","vitamin K metabolic process","BP",6,1,0.00117098863159826
+"GO:0032074","negative regulation of nuclease activity","BP",7,1,0.00136605337359019
+"GO:0030473","nuclear migration along microtubule","BP",8,1,0.00156108954303991
+"GO:0032070","regulation of deoxyribonuclease activity","BP",10,1,0.0019510761754763
+"GO:1902510","regulation of apoptotic DNA fragmentation","BP",12,1,0.00234094855122702
+"GO:1903624","regulation of DNA catabolic process","BP",14,1,0.00273070669261211
+"GO:0042362","fat-soluble vitamin biosynthetic process","BP",15,1,0.00292554293239056
+"GO:0005639","integral component of nuclear inner membrane","CC",15,1,0.00292554293239056
+"GO:0031229","intrinsic component of nuclear inner membrane","CC",15,1,0.00292554293239056
+"GO:0004659","prenyltransferase activity","MF",15,1,0.00292554293239056

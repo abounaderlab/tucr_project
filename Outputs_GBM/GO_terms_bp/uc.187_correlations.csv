@@ -1,0 +1,14 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0003357","noradrenergic neuron differentiation","BP",7,4,0.000000604706576831734
+"GO:0001501","skeletal system development","BP",518,19,0.0000109419295062649
+"GO:0021781","glial cell fate commitment","BP",14,4,0.0000162202887845859
+"GO:0007389","pattern specification process","BP",446,17,0.0000197603104087516
+"GO:0042063","gliogenesis","BP",290,13,0.000037138493444134
+"GO:0030182","neuron differentiation","BP",1365,33,0.0000508458433692374
+"GO:0044260","cellular macromolecule metabolic process","BP",8352,127,0.0000534826475759143
+"GO:0048485","sympathetic nervous system development","BP",21,4,0.0000909715212462157
+"GO:0022008","neurogenesis","BP",1623,36,0.000130401161467118
+"GO:0048483","autonomic nervous system development","BP",45,5,0.000169643133734288
+"GO:0003211","cardiac ventricle formation","BP",10,3,0.000174886746739781
+"GO:0048699","generation of neurons","BP",1524,34,0.000183717882385151
+"GO:0003002","regionalization","BP",351,13,0.000250332620209827

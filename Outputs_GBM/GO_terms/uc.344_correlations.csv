@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0007389","pattern specification process","BP",446,12,0.00000000000012650016550468
+"GO:0043565","sequence-specific DNA binding","MF",1139,15,0.00000000000126591876091647
+"GO:0009952","anterior/posterior pattern specification","BP",219,9,0.00000000000612859344239665
+"GO:0003002","regionalization","BP",351,10,0.0000000000124867632156501
+"GO:0001501","skeletal system development","BP",518,11,0.0000000000219632756119392
+"GO:0000981","DNA-binding transcription factor activity, RNA polymerase II-specific","MF",1600,15,0.000000000162559585843507
+"GO:0003700","DNA-binding transcription factor activity","MF",1699,15,0.000000000378739180919159
+"GO:0140110","transcription regulator activity","MF",2053,15,0.00000000529631832952396
+"GO:0048706","embryonic skeletal system development","BP",126,6,0.0000000127788927893957
+"GO:0042733","embryonic digit morphogenesis","BP",61,5,0.0000000151913919421371
+"GO:0006357","regulation of transcription by RNA polymerase II","BP",2683,16,0.0000000223291383460233
+"GO:0009887","animal organ morphogenesis","BP",1068,11,0.0000000442289815300268
+"GO:0006366","transcription by RNA polymerase II","BP",2818,16,0.000000045416697126412
+"GO:0003677","DNA binding","MF",2518,15,0.0000000860883755163902
+"GO:0048736","appendage development","BP",179,6,0.000000103938960761409
+"GO:0060173","limb development","BP",179,6,0.000000103938960761409
+"GO:0048704","embryonic skeletal system morphogenesis","BP",93,5,0.000000128957790819102
+"GO:0006355","regulation of transcription, DNA-templated","BP",3506,17,0.000000131348786564273
+"GO:1903506","regulation of nucleic acid-templated transcription","BP",3567,17,0.000000170440006279288
+"GO:2001141","regulation of RNA biosynthetic process","BP",3576,17,0.000000177041796226576

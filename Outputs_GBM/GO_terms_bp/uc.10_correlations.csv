@@ -1,0 +1,17 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:1905515","non-motile cilium assembly","BP",56,2,0.000475865786359501
+"GO:0021852","pyramidal neuron migration","BP",1,1,0.00058570870753627
+"GO:1900924","negative regulation of glycine import across plasma membrane","BP",2,1,0.00117110293292333
+"GO:1900923","regulation of glycine import across plasma membrane","BP",2,1,0.00117110293292333
+"GO:1903804","glycine import across plasma membrane","BP",3,1,0.0017561828296726
+"GO:0060160","negative regulation of dopamine receptor signaling pathway","BP",4,1,0.00234094855122724
+"GO:0051581","negative regulation of neurotransmitter uptake","BP",6,1,0.0035095380821879
+"GO:1990791","dorsal root ganglion development","BP",7,1,0.00409336219814427
+"GO:0021860","pyramidal neuron development","BP",7,1,0.00409336219814427
+"GO:0051601","exocyst localization","BP",8,1,0.00467687275200501
+"GO:0021859","pyramidal neuron differentiation","BP",8,1,0.00467687275200501
+"GO:0010958","regulation of amino acid import across plasma membrane","BP",8,1,0.00467687275200501
+"GO:0001514","selenocysteine incorporation","BP",8,1,0.00467687275200501
+"GO:0006451","translational readthrough","BP",8,1,0.00467687275200501
+"GO:0043409","negative regulation of MAPK cascade","BP",184,2,0.0049902128430986
+"GO:1902857","positive regulation of non-motile cilium assembly","BP",9,1,0.00526006989687622
