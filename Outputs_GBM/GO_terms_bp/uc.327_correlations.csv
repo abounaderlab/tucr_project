@@ -1,0 +1,11 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0036085","GDP-fucose import into Golgi lumen","BP",1,1,0.000195236235845497
+"GO:0015783","GDP-fucose transmembrane transport","BP",1,1,0.000195236235845497
+"GO:0090480","purine nucleotide-sugar transmembrane transport","BP",1,1,0.000195236235845497
+"GO:0036066","protein O-linked fucosylation","BP",8,1,0.00156108954303991
+"GO:0030259","lipid glycosylation","BP",12,1,0.00234094855122702
+"GO:0015780","nucleotide-sugar transmembrane transport","BP",14,1,0.00273070669261211
+"GO:0036065","fucosylation","BP",20,1,0.00389929593371818
+"GO:0002115","store-operated calcium entry","BP",21,1,0.00409396091399272
+"GO:0018345","protein palmitoylation","BP",34,1,0.00662201012480546
+"GO:0045746","negative regulation of Notch signaling pathway","BP",43,1,0.00836937644407099

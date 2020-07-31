@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0043981","histone H4-K5 acetylation","BP",16,2,0.000416611864276054
+"GO:0043982","histone H4-K8 acetylation","BP",16,2,0.000416611864276054
+"GO:0061984","catabolite repression","BP",1,1,0.00190355329949243
+"GO:0090295","nitrogen catabolite repression of transcription","BP",1,1,0.00190355329949243
+"GO:0001081","nitrogen catabolite repression of transcription from RNA polymerase II promoter","BP",1,1,0.00190355329949243
+"GO:0000151","ubiquitin ligase complex","CC",282,4,0.00197820181083289
+"GO:1990234","transferase complex","CC",779,6,0.00331000710642291
+"GO:0004315","3-oxoacyl-[acyl-carrier-protein] synthase activity","MF",2,1,0.00380357582213209
+"GO:0046778","modification by virus of host mRNA processing","BP",2,1,0.00380357582213209
+"GO:0090293","nitrogen catabolite regulation of transcription","BP",2,1,0.00380357582213209
+"GO:0001079","nitrogen catabolite regulation of transcription from RNA polymerase II promoter","BP",2,1,0.00380357582213209
+"GO:0021568","rhombomere 2 development","BP",2,1,0.00380357582213209
+"GO:0021658","rhombomere 3 morphogenesis","BP",2,1,0.00380357582213209
+"GO:0021593","rhombomere morphogenesis","BP",2,1,0.00380357582213209
+"GO:0036324","vascular endothelial growth factor receptor-2 signaling pathway","BP",2,1,0.00380357582213209
+"GO:0044451","nucleoplasm part","CC",1126,7,0.00487243914915758
+"GO:0043167","ion binding","MF",6218,20,0.00497927669560199
+"GO:0045171","intercellular bridge","CC",59,2,0.00564146603444927
+"GO:0009822","alkaloid catabolic process","BP",3,1,0.00570007394489569
+"GO:0035284","brain segmentation","BP",3,1,0.00570007394489569

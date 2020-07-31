@@ -1,0 +1,7 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0003677","DNA binding","MF",2518,54,0.00000504848681812244
+"GO:0003700","DNA-binding transcription factor activity","MF",1699,39,0.0000311023989253294
+"GO:0001228","DNA-binding transcription activator activity, RNA polymerase II-specific","MF",439,16,0.0000592492601125016
+"GO:0000981","DNA-binding transcription factor activity, RNA polymerase II-specific","MF",1600,36,0.0000981171545202688
+"GO:0043565","sequence-specific DNA binding","MF",1139,28,0.000149838801941437
+"GO:0019901","protein kinase binding","MF",651,19,0.000229651636631832

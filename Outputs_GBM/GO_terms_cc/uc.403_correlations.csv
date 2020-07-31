@@ -1,0 +1,17 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0097458","neuron part","CC",1729,38,0.000000190445974714169
+"GO:0043005","neuron projection","CC",1312,30,0.00000208800039443344
+"GO:0044459","plasma membrane part","CC",2985,51,0.00000261672975268124
+"GO:0030425","dendrite","CC",620,19,0.00000336750724410535
+"GO:0097447","dendritic tree","CC",622,19,0.00000352786675020751
+"GO:0120025","plasma membrane bounded cell projection","CC",2103,39,0.00000860491329163863
+"GO:0044463","cell projection part","CC",1467,30,0.000018741702655132
+"GO:0120038","plasma membrane bounded cell projection part","CC",1467,30,0.000018741702655132
+"GO:0042995","cell projection","CC",2178,39,0.0000193551302509012
+"GO:0036477","somatodendritic compartment","CC",843,21,0.0000239360125191564
+"GO:0098794","postsynapse","CC",613,17,0.0000402143342349105
+"GO:0045202","synapse","CC",1171,25,0.0000507253713231392
+"GO:0044297","cell body","CC",564,16,0.000052283520037166
+"GO:0005887","integral component of plasma membrane","CC",1634,31,0.0000561400277371469
+"GO:0031226","intrinsic component of plasma membrane","CC",1713,32,0.0000562470687325874
+"GO:0044425","membrane part","CC",6939,88,0.0000587959427969871

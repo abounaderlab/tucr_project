@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0003676","nucleic acid binding","MF",4349,1148,3.19179467440764e-105
+"GO:0005634","nucleus","CC",7932,1763,1.38517504216075e-104
+"GO:1901363","heterocyclic compound binding","MF",6241,1456,1.88934189555571e-94
+"GO:0003677","DNA binding","MF",2518,763,2.24600919555624e-94
+"GO:0090304","nucleic acid metabolic process","BP",5735,1366,2.43004101445597e-93
+"GO:0097159","organic cyclic compound binding","MF",6328,1462,2.51818943076415e-91
+"GO:0006139","nucleobase-containing compound metabolic process","BP",6411,1460,9.19301177553498e-86
+"GO:0019219","regulation of nucleobase-containing compound metabolic process","BP",4140,1057,8.51852072154697e-85
+"GO:0046483","heterocycle metabolic process","BP",6570,1483,1.658939318623e-84
+"GO:0005654","nucleoplasm","CC",3512,937,3.84575639043948e-84
+"GO:0006725","cellular aromatic compound metabolic process","BP",6615,1487,2.54504051947745e-83
+"GO:1901360","organic cyclic compound metabolic process","BP",6839,1520,6.69251123001832e-82
+"GO:0051252","regulation of RNA metabolic process","BP",3822,978,1.84174015551845e-77
+"GO:0044424","intracellular part","CC",15063,2697,3.52675367540524e-76
+"GO:0005622","intracellular","CC",15073,2698,4.39093066627468e-76
+"GO:0016070","RNA metabolic process","BP",5206,1215,5.16977346739166e-73
+"GO:0043231","intracellular membrane-bounded organelle","CC",11488,2204,1.16244615742352e-71
+"GO:0043229","intracellular organelle","CC",13294,2454,3.90799025228496e-71
+"GO:0034654","nucleobase-containing compound biosynthetic process","BP",4278,1044,4.1129078597712e-71
+"GO:0018130","heterocycle biosynthetic process","BP",4341,1054,1.24625273061495e-70

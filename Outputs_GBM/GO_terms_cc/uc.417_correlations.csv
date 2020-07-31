@@ -1,0 +1,10 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0031224","intrinsic component of membrane","CC",5495,33,0.00000918147669860388
+"GO:0016021","integral component of membrane","CC",5330,32,0.0000145854103817896
+"GO:0044425","membrane part","CC",6939,36,0.0000795276031368763
+"GO:0099061","integral component of postsynaptic density membrane","CC",50,3,0.000467371838854908
+"GO:0099146","intrinsic component of postsynaptic density membrane","CC",53,3,0.000555011190736753
+"GO:0016020","membrane","CC",9495,41,0.0013105956869607
+"GO:0099060","integral component of postsynaptic specialization membrane","CC",74,3,0.00146806584142424
+"GO:0098839","postsynaptic density membrane","CC",74,3,0.00146806584142424
+"GO:0098948","intrinsic component of postsynaptic specialization membrane","CC",77,3,0.00164599564107038

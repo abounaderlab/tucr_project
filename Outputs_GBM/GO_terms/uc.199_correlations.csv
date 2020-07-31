@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0030020","extracellular matrix structural constituent conferring tensile strength","MF",41,3,0.0000235348334687654
+"GO:0035987","endodermal cell differentiation","BP",45,3,0.0000312138225721729
+"GO:0001706","endoderm formation","BP",50,3,0.0000429174722204389
+"GO:0006261","DNA-dependent DNA replication","BP",153,4,0.0000532438766770012
+"GO:0005694","chromosome","CC",1075,8,0.0000678478811530138
+"GO:0048407","platelet-derived growth factor binding","MF",11,2,0.0000983102808028411
+"GO:0042555","MCM complex","CC",12,2,0.000117872582165333
+"GO:0007492","endoderm development","BP",76,3,0.000150316726695719
+"GO:0005581","collagen trimer","CC",87,3,0.000224372971030201
+"GO:0044427","chromosomal part","CC",951,7,0.000228055471906305
+"GO:0005604","basement membrane","CC",95,3,0.000290866136860305
+"GO:0003688","DNA replication origin binding","MF",24,2,0.000487945504411715
+"GO:0006260","DNA replication","BP",274,4,0.000497550434085478
+"GO:0001704","formation of primary germ layer","BP",121,3,0.000590958964337421
+"GO:0044454","nuclear chromosome part","CC",572,5,0.000961902366543489
+"GO:0000228","nuclear chromosome","CC",607,5,0.00125371359110739
+"GO:0043509","activin A complex","CC",1,1,0.0013666536509177
+"GO:0048180","activin complex","CC",1,1,0.0013666536509177
+"GO:0004001","adenosine kinase activity","MF",1,1,0.0013666536509177
+"GO:0031737","CX3C chemokine receptor binding","MF",1,1,0.0013666536509177

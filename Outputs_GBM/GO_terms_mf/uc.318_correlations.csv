@@ -1,0 +1,9 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0000981","DNA-binding transcription factor activity, RNA polymerase II-specific","MF",1600,50,0.00000000000245207070671388
+"GO:0003700","DNA-binding transcription factor activity","MF",1699,51,0.00000000000629710301742771
+"GO:0003677","DNA binding","MF",2518,61,0.000000000255115886725835
+"GO:0140110","transcription regulator activity","MF",2053,53,0.000000000599742274207228
+"GO:0000977","RNA polymerase II regulatory region sequence-specific DNA binding","MF",788,30,0.00000000128340670697726
+"GO:0001012","RNA polymerase II regulatory region DNA binding","MF",794,30,0.00000000153199973293614
+"GO:0003690","double-stranded DNA binding","MF",981,33,0.00000000392350782396651
+"GO:0000976","transcription regulatory region sequence-specific DNA binding","MF",839,30,0.00000000547005491377052

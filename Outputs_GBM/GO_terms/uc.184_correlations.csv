@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0044391","ribosomal subunit","CC",190,83,8.94820676090593e-52
+"GO:0005737","cytoplasm","CC",11625,912,2.58597184446472e-49
+"GO:0003735","structural constituent of ribosome","MF",202,81,4.72119285160987e-47
+"GO:0044444","cytoplasmic part","CC",9735,803,1.62330731051719e-46
+"GO:0022626","cytosolic ribosome","CC",112,61,1.33687720049667e-45
+"GO:0000184","nuclear-transcribed mRNA catabolic process, nonsense-mediated decay","BP",120,62,1.8035478552793e-44
+"GO:0005840","ribosome","CC",272,90,5.00276881917053e-44
+"GO:0044424","intracellular part","CC",15063,1062,2.70304977663352e-43
+"GO:0005622","intracellular","CC",15073,1062,4.42583751792592e-43
+"GO:0051649","establishment of localization in cell","BP",2242,292,5.55368005992937e-43
+"GO:0046907","intracellular transport","BP",1847,258,6.23776229009568e-43
+"GO:0006613","cotranslational protein targeting to membrane","BP",109,58,1.23812672952979e-42
+"GO:0006614","SRP-dependent cotranslational protein targeting to membrane","BP",105,57,1.43188561536932e-42
+"GO:0006402","mRNA catabolic process","BP",364,102,2.13153531427698e-42
+"GO:0005829","cytosol","CC",5085,503,3.08660459444696e-42
+"GO:0070972","protein localization to endoplasmic reticulum","BP",147,65,3.87983570497441e-41
+"GO:0006401","RNA catabolic process","BP",397,105,4.29576680984713e-41
+"GO:0000956","nuclear-transcribed mRNA catabolic process","BP",207,76,5.85757208447705e-41
+"GO:0051641","cellular localization","BP",2927,341,3.05207345182716e-40
+"GO:0072599","establishment of protein localization to endoplasmic reticulum","BP",122,59,3.17931758718957e-40

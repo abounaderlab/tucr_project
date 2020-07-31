@@ -1,0 +1,14 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005622","intracellular","CC",15073,1864,3.70809696980677e-82
+"GO:0044424","intracellular part","CC",15063,1863,5.09016232092039e-82
+"GO:0044446","intracellular organelle part","CC",9811,1391,2.10382244218438e-76
+"GO:0043229","intracellular organelle","CC",13294,1702,8.59191381728404e-73
+"GO:0044422","organelle part","CC",10112,1410,1.96559954343104e-72
+"GO:0044391","ribosomal subunit","CC",190,120,2.37082374512628e-71
+"GO:0043231","intracellular membrane-bounded organelle","CC",11488,1535,3.20454817698814e-70
+"GO:0043226","organelle","CC",14144,1756,1.81113339698078e-65
+"GO:0043227","membrane-bounded organelle","CC",13019,1659,6.73432838630713e-65
+"GO:0044444","cytoplasmic part","CC",9735,1342,1.84861042612106e-61
+"GO:0005737","cytoplasm","CC",11625,1514,5.7781043159663e-58
+"GO:0005840","ribosome","CC",272,129,2.35270337662569e-56
+"GO:0022626","cytosolic ribosome","CC",112,77,2.96389233600638e-50

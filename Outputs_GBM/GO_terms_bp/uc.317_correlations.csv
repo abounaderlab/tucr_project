@@ -1,0 +1,20 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0000493","box H/ACA snoRNP assembly","BP",2,1,0.0000976181179225266
+"GO:2000233","negative regulation of rRNA processing","BP",2,1,0.0000976181179225266
+"GO:0090071","negative regulation of ribosome biogenesis","BP",4,1,0.000195236235845386
+"GO:0000491","small nucleolar ribonucleoprotein complex assembly","BP",11,1,0.000536899648574729
+"GO:2000232","regulation of rRNA processing","BP",12,1,0.000585708707536159
+"GO:0090069","regulation of ribosome biogenesis","BP",14,1,0.000683326825459241
+"GO:1904874","positive regulation of telomerase RNA localization to Cajal body","BP",15,1,0.000732135884420115
+"GO:1904872","regulation of telomerase RNA localization to Cajal body","BP",18,1,0.000878563061304183
+"GO:0090670","RNA localization to Cajal body","BP",19,1,0.000927372120265502
+"GO:0090685","RNA localization to nucleus","BP",19,1,0.000927372120265502
+"GO:0090672","telomerase RNA localization","BP",19,1,0.000927372120265502
+"GO:0090671","telomerase RNA localization to Cajal body","BP",19,1,0.000927372120265502
+"GO:0006364","rRNA processing","BP",214,1,0.010445138617727
+"GO:0006403","RNA localization","BP",230,1,0.011226083561109
+"GO:0016072","rRNA metabolic process","BP",253,1,0.0123486919172198
+"GO:0022618","ribonucleoprotein complex assembly","BP",277,1,0.0135201093322921
+"GO:0071826","ribonucleoprotein complex subunit organization","BP",291,1,0.0142034361577509
+"GO:0042254","ribosome biogenesis","BP",297,1,0.0144962905115189
+"GO:0034470","ncRNA processing","BP",384,1,0.0187426786411552

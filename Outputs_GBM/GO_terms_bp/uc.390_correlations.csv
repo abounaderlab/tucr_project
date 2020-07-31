@@ -1,0 +1,18 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0051685","maintenance of ER location","BP",2,1,0.000683226762957068
+"GO:0014707","branchiomeric skeletal muscle development","BP",3,1,0.00102469007510464
+"GO:0048210","Golgi vesicle fusion to target membrane","BP",3,1,0.00102469007510464
+"GO:2000342","negative regulation of chemokine (C-X-C motif) ligand 2 production","BP",3,1,0.00102469007510464
+"GO:0070375","ERK5 cascade","BP",4,1,0.00136605337359008
+"GO:0051461","positive regulation of corticotropin secretion","BP",5,1,0.00170731668282564
+"GO:0045046","protein import into peroxisome membrane","BP",6,1,0.0020484800272198
+"GO:0051459","regulation of corticotropin secretion","BP",6,1,0.0020484800272198
+"GO:0051458","corticotropin secretion","BP",7,1,0.00238954343117492
+"GO:0045415","negative regulation of interleukin-8 biosynthetic process","BP",7,1,0.00238954343117492
+"GO:0071499","cellular response to laminar fluid shear stress","BP",8,1,0.00273050691908949
+"GO:0060539","diaphragm development","BP",9,1,0.00307137051535722
+"GO:0051643","endoplasmic reticulum localization","BP",9,1,0.00307137051535722
+"GO:0034115","negative regulation of heterotypic cell-cell adhesion","BP",11,1,0.003752798130503
+"GO:0070587","regulation of cell-cell adhesion involved in gastrulation","BP",11,1,0.003752798130503
+"GO:0070586","cell-cell adhesion involved in gastrulation","BP",12,1,0.00409336219814416
+"GO:0051657","maintenance of organelle location","BP",12,1,0.00409336219814416

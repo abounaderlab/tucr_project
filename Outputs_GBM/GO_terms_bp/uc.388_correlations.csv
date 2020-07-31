@@ -1,0 +1,11 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0051276","chromosome organization","BP",1230,15,0.00000224613919843515
+"GO:0061188","negative regulation of chromatin silencing at rDNA","BP",2,2,0.00000871973230822063
+"GO:0090304","nucleic acid metabolic process","BP",5735,33,0.000015503189699647
+"GO:0003383","apical constriction","BP",3,2,0.0000261089709941547
+"GO:0061187","regulation of chromatin silencing at rDNA","BP",3,2,0.0000261089709941547
+"GO:0044265","cellular macromolecule catabolic process","BP",1162,13,0.000030165582486491
+"GO:1905268","negative regulation of chromatin organization","BP",62,4,0.0000348620194283564
+"GO:0045815","positive regulation of gene expression, epigenetic","BP",63,4,0.0000371429370952666
+"GO:0022402","cell cycle process","BP",1394,14,0.0000465094211084448
+"GO:0016070","RNA metabolic process","BP",5206,30,0.000054069215373066

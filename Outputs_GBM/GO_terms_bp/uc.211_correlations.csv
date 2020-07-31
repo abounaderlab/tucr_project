@@ -1,0 +1,18 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0042554","superoxide anion generation","BP",36,3,0.000000277317607689397
+"GO:2000363","positive regulation of prostaglandin-E synthase activity","BP",3,2,0.000000400171856656629
+"GO:2000361","regulation of prostaglandin-E synthase activity","BP",3,2,0.000000400171856656629
+"GO:0043299","leukocyte degranulation","BP",534,5,0.000000619616301261018
+"GO:0045914","negative regulation of catecholamine metabolic process","BP",4,2,0.000000800187440058347
+"GO:0045963","negative regulation of dopamine metabolic process","BP",4,2,0.000000800187440058347
+"GO:1902565","positive regulation of neutrophil activation","BP",4,2,0.000000800187440058347
+"GO:0043315","positive regulation of neutrophil degranulation","BP",4,2,0.000000800187440058347
+"GO:0045321","leukocyte activation","BP",1284,6,0.00000150339507244366
+"GO:0006801","superoxide metabolic process","BP",73,3,0.00000239936215777435
+"GO:0002366","leukocyte activation involved in immune response","BP",707,5,0.00000247811603263133
+"GO:0002263","cell activation involved in immune response","BP",711,5,0.00000254794101226629
+"GO:0033239","negative regulation of cellular amine metabolic process","BP",7,2,0.00000279901577173878
+"GO:0001775","cell activation","BP",1440,6,0.00000295396447204699
+"GO:0043313","regulation of neutrophil degranulation","BP",8,2,0.00000373129228769138
+"GO:0032940","secretion by cell","BP",1524,6,0.0000041223077872595
+"GO:0045055","regulated exocytosis","BP",794,5,0.00000438586871058844

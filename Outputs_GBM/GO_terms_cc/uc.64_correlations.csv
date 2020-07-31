@@ -1,0 +1,12 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0030896","checkpoint clamp complex","CC",5,2,0.0000408656450093782
+"GO:0031984","organelle subcompartment","CC",1711,12,0.000114535002875531
+"GO:0012505","endomembrane system","CC",4441,20,0.00017059125611687
+"GO:0098588","bounding membrane of organelle","CC",2081,13,0.000177805549337917
+"GO:0030176","integral component of endoplasmic reticulum membrane","CC",150,4,0.000248837455011706
+"GO:0005789","endoplasmic reticulum membrane","CC",1077,9,0.000274469504516851
+"GO:0098827","endoplasmic reticulum subcompartment","CC",1081,9,0.000282125367867275
+"GO:0031227","intrinsic component of endoplasmic reticulum membrane","CC",158,4,0.000303340408871521
+"GO:0042175","nuclear outer membrane-endoplasmic reticulum membrane network","CC",1099,9,0.000318818630260305
+"GO:0031090","organelle membrane","CC",2903,14,0.0013538091400948
+"GO:0044432","endoplasmic reticulum part","CC",1361,9,0.00148388981430977

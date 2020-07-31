@@ -1,0 +1,13 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005634","nucleus","CC",7932,891,9.27830934495212e-125
+"GO:0005654","nucleoplasm","CC",3512,560,4.29352119216905e-122
+"GO:0044428","nuclear part","CC",5023,663,3.6462366936256e-109
+"GO:0031981","nuclear lumen","CC",4594,625,1.55000756042839e-106
+"GO:0043231","intracellular membrane-bounded organelle","CC",11488,1034,3.89860017847139e-90
+"GO:0043229","intracellular organelle","CC",13294,1117,1.02588299210883e-87
+"GO:0044424","intracellular part","CC",15063,1188,2.75296834403803e-86
+"GO:0005622","intracellular","CC",15073,1188,5.47753506418378e-86
+"GO:0070013","intracellular organelle lumen","CC",5740,654,2.55661199365473e-76
+"GO:0031974","membrane-enclosed lumen","CC",5740,654,2.55661199365473e-76
+"GO:0043233","organelle lumen","CC",5740,654,2.55661199365473e-76
+"GO:0043226","organelle","CC",14144,1131,1.47201495748446e-72

@@ -1,0 +1,18 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005654","nucleoplasm","CC",3512,959,5.84599217994929e-145
+"GO:0043231","intracellular membrane-bounded organelle","CC",11488,2011,1.60114930531201e-114
+"GO:0043229","intracellular organelle","CC",13294,2206,8.29246710042752e-112
+"GO:0005622","intracellular","CC",15073,2381,7.2084714059584e-110
+"GO:0044424","intracellular part","CC",15063,2380,7.75008170792156e-110
+"GO:0005634","nucleus","CC",7932,1552,1.58395389398834e-109
+"GO:0031981","nuclear lumen","CC",4594,1054,9.64557364852506e-105
+"GO:0044428","nuclear part","CC",5023,1118,1.50371685394057e-103
+"GO:0044446","intracellular organelle part","CC",9811,1759,1.73581407943037e-94
+"GO:0043226","organelle","CC",14144,2257,9.88941597790677e-94
+"GO:0043227","membrane-bounded organelle","CC",13019,2131,2.23395715738996e-91
+"GO:0070013","intracellular organelle lumen","CC",5740,1193,2.19553338638943e-90
+"GO:0031974","membrane-enclosed lumen","CC",5740,1193,2.19553338638943e-90
+"GO:0043233","organelle lumen","CC",5740,1193,2.19553338638943e-90
+"GO:0044422","organelle part","CC",10112,1773,1.31751955749395e-85
+"GO:1902494","catalytic complex","CC",1370,420,5.95414380205477e-72
+"GO:0044451","nucleoplasm part","CC",1126,368,8.26404288311449e-71

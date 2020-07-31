@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0097352","autophagosome maturation","BP",38,2,0.000687960686704027
+"GO:0019964","interferon-gamma binding","MF",1,1,0.00102499023818836
+"GO:1901340","negative regulation of store-operated calcium channel activity","BP",1,1,0.00102499023818836
+"GO:1990390","protein K33-linked ubiquitination","BP",1,1,0.00102499023818836
+"GO:0060734","regulation of endoplasmic reticulum stress-induced eIF2 alpha phosphorylation","BP",1,1,0.00102499023818836
+"GO:0008219","cell death","BP",2264,8,0.00118614375279651
+"GO:2000272","negative regulation of signaling receptor activity","BP",57,2,0.00154364360140773
+"GO:0034681","integrin alpha11-beta1 complex","CC",2,1,0.00204897985135755
+"GO:0019961","interferon binding","MF",2,1,0.00204897985135755
+"GO:0061763","multivesicular body-lysosome fusion","BP",2,1,0.00204897985135755
+"GO:0034247","snoRNA splicing","BP",2,1,0.00204897985135755
+"GO:0006915","apoptotic process","BP",1988,7,0.00273945346828451
+"GO:0006446","regulation of translational initiation","BP",79,2,0.00293976378321005
+"GO:0060743","epithelial cell maturation involved in prostate gland development","BP",3,1,0.00307196976755031
+"GO:0034140","negative regulation of toll-like receptor 3 signaling pathway","BP",3,1,0.00307196976755031
+"GO:1990737","response to manganese-induced endoplasmic reticulum stress","BP",3,1,0.00307196976755031
+"GO:0097699","vascular endothelial cell response to fluid shear stress","BP",3,1,0.00307196976755031
+"GO:0032436","positive regulation of proteasomal ubiquitin-dependent protein catabolic process","BP",81,2,0.00308766556310464
+"GO:0006511","ubiquitin-dependent protein catabolic process","BP",620,4,0.0032978905530421
+"GO:1905897","regulation of response to endoplasmic reticulum stress","BP",84,2,0.0033159614458692

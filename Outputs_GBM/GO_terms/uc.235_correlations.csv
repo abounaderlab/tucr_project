@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0030198","extracellular matrix organization","BP",368,21,0.0000000000169592780937642
+"GO:0043062","extracellular structure organization","BP",422,21,0.000000000214407253451282
+"GO:0005515","protein binding","MF",11807,143,0.0000000037958809197919
+"GO:0005737","cytoplasm","CC",11625,141,0.00000000659736211800642
+"GO:0005783","endoplasmic reticulum","CC",1911,43,0.0000000101109309714836
+"GO:0044432","endoplasmic reticulum part","CC",1361,35,0.000000012171947712053
+"GO:0005604","basement membrane","CC",95,10,0.0000000132425575675012
+"GO:0005488","binding","MF",15267,166,0.0000000238446683384495
+"GO:0005201","extracellular matrix structural constituent","MF",163,12,0.0000000269912184080647
+"GO:0071711","basement membrane organization","BP",26,6,0.0000000928371678265695
+"GO:0005788","endoplasmic reticulum lumen","CC",309,15,0.000000127501621767287
+"GO:0044424","intracellular part","CC",15063,163,0.000000161137598191252
+"GO:0005622","intracellular","CC",15073,163,0.000000173337425468017
+"GO:0010033","response to organic substance","BP",3302,57,0.000000293861170181814
+"GO:0043226","organelle","CC",14144,156,0.000000302341838895735
+"GO:0062023","collagen-containing extracellular matrix","CC",406,16,0.000000796006821812941
+"GO:0032963","collagen metabolic process","BP",115,9,0.000000926700334234772
+"GO:0009653","anatomical structure morphogenesis","BP",2735,49,0.000000952833171007625
+"GO:0031012","extracellular matrix","CC",526,18,0.00000122517647850456
+"GO:0043229","intracellular organelle","CC",13294,148,0.00000141396488243496

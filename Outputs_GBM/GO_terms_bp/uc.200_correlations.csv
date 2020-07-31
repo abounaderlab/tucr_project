@@ -1,0 +1,18 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0045046","protein import into peroxisome membrane","BP",6,2,0.0000612187054362037
+"GO:0016032","viral process","BP",833,8,0.000249327858649353
+"GO:0006384","transcription initiation from RNA polymerase III promoter","BP",13,2,0.000315450459129252
+"GO:0044403","symbiont process","BP",884,8,0.000372159550881243
+"GO:1903358","regulation of Golgi organization","BP",15,2,0.00042354165492532
+"GO:0044419","interspecies interaction between organisms","BP",932,8,0.000529340985422754
+"GO:0015919","peroxisomal membrane transport","BP",17,2,0.000547162462507412
+"GO:1900034","regulation of cellular response to heat","BP",79,3,0.000568405415478273
+"GO:0017038","protein import","BP",199,4,0.000724139702307124
+"GO:0015931","nucleobase-containing compound transport","BP",241,4,0.00147176263759493
+"GO:0006886","intracellular protein transport","BP",1119,8,0.00173215744608096
+"GO:1903578","regulation of ATP metabolic process","BP",122,3,0.00199636410857429
+"GO:1903434","negative regulation of constitutive secretory pathway","BP",1,1,0.0020499804763765
+"GO:0071431","tRNA-containing ribonucleoprotein complex export from nucleus","BP",34,2,0.00220775892852994
+"GO:0006409","tRNA export from nucleus","BP",34,2,0.00220775892852994
+"GO:0071705","nitrogen compound transport","BP",2374,12,0.00224538550074482
+"GO:0051031","tRNA transport","BP",36,2,0.00247287774098677

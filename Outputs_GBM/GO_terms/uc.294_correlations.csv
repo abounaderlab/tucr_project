@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0050911","detection of chemical stimulus involved in sensory perception of smell","BP",427,8,0.000000000687823924874325
+"GO:0004984","olfactory receptor activity","MF",427,8,0.000000000687823924874325
+"GO:0007608","sensory perception of smell","BP",454,8,0.00000000111571823079105
+"GO:0050907","detection of chemical stimulus involved in sensory perception","BP",477,8,0.00000000164659577317158
+"GO:0009593","detection of chemical stimulus","BP",512,8,0.00000000287281027588567
+"GO:0007606","sensory perception of chemical stimulus","BP",526,8,0.00000000355015951009651
+"GO:0050906","detection of stimulus involved in sensory perception","BP",531,8,0.00000000382359546752085
+"GO:0051606","detection of stimulus","BP",691,8,0.0000000298598406402762
+"GO:0004930","G protein-coupled receptor activity","MF",866,8,0.000000170756387051337
+"GO:0004888","transmembrane signaling receptor activity","MF",1277,9,0.000000212662074512657
+"GO:0007600","sensory perception","BP",977,8,0.000000430000487520773
+"GO:0038023","signaling receptor activity","MF",1484,9,0.000000764045837578687
+"GO:0060089","molecular transducer activity","MF",1538,9,0.00000103374156420102
+"GO:0005549","odorant binding","MF",102,4,0.00000131107663043931
+"GO:0007186","G protein-coupled receptor signaling pathway","BP",1371,8,0.00000554874117059745
+"GO:0050877","nervous system process","BP",1437,8,0.00000787266203799203
+"GO:0030216","keratinocyte differentiation","BP",305,4,0.0000983448115727378
+"GO:0009913","epidermal cell differentiation","BP",358,4,0.000182220113489447
+"GO:0003008","system process","BP",2216,8,0.000182765487544381
+"GO:0032501","multicellular organismal process","BP",7751,14,0.000226147808784368

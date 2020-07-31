@@ -1,0 +1,9 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0004984","olfactory receptor activity","MF",427,27,0.00000000000000000000000000557529919885313
+"GO:0004930","G protein-coupled receptor activity","MF",866,27,0.000000000000000000629562486545143
+"GO:0004888","transmembrane signaling receptor activity","MF",1277,27,0.0000000000000101106094623464
+"GO:0038023","signaling receptor activity","MF",1484,27,0.000000000000376501849075891
+"GO:0060089","molecular transducer activity","MF",1538,27,0.000000000000879185971647864
+"GO:0004843","thiol-dependent ubiquitin-specific protease activity","MF",106,9,0.000000000138615856109276
+"GO:0036459","thiol-dependent ubiquitinyl hydrolase activity","MF",114,9,0.000000000267497960816353
+"GO:0101005","ubiquitinyl hydrolase activity","MF",114,9,0.000000000267497960816353

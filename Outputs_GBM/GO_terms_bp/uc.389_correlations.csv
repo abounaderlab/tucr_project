@@ -1,0 +1,9 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0044782","cilium organization","BP",384,28,0.0000000000000000407280666708938
+"GO:0060271","cilium assembly","BP",366,27,0.000000000000000116115502511278
+"GO:0061512","protein localization to cilium","BP",54,11,0.00000000000261828977741014
+"GO:0120031","plasma membrane bounded cell projection assembly","BP",555,27,0.00000000000275299971775029
+"GO:0030031","cell projection assembly","BP",567,27,0.00000000000451776623353106
+"GO:0070925","organelle assembly","BP",845,30,0.000000000372358735249581
+"GO:0007224","smoothened signaling pathway","BP",133,12,0.00000000492063745615367
+"GO:0007017","microtubule-based process","BP",748,26,0.00000000968799994164433

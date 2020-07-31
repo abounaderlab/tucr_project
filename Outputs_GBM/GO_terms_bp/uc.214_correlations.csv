@@ -1,0 +1,14 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0050911","detection of chemical stimulus involved in sensory perception of smell","BP",427,235,1.12906494862127e-256
+"GO:0050907","detection of chemical stimulus involved in sensory perception","BP",477,239,5.38204779979643e-248
+"GO:0007608","sensory perception of smell","BP",454,235,5.8033121663666e-248
+"GO:0009593","detection of chemical stimulus","BP",512,239,3.00730465398877e-238
+"GO:0050906","detection of stimulus involved in sensory perception","BP",531,240,5.49823340858857e-235
+"GO:0007606","sensory perception of chemical stimulus","BP",526,239,1.29397920669361e-234
+"GO:0051606","detection of stimulus","BP",691,240,2.58369952313892e-201
+"GO:0007600","sensory perception","BP",977,245,4.07069237217217e-167
+"GO:0007186","G protein-coupled receptor signaling pathway","BP",1371,254,2.03375996668856e-139
+"GO:0050877","nervous system process","BP",1437,248,5.454297249361e-128
+"GO:0003008","system process","BP",2216,257,1.25191344610754e-91
+"GO:0032501","multicellular organismal process","BP",7751,414,3.30238263374735e-52
+"GO:0031424","keratinization","BP",224,70,7.7075668961774e-52

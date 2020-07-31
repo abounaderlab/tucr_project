@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0048188","Set1C/COMPASS complex","CC",12,1,0.000585708707536159
+"GO:0044666","MLL3/4 complex","CC",13,1,0.000634517766497478
+"GO:0051568","histone H3-K4 methylation","BP",56,1,0.00273330730183519
+"GO:0035097","histone methyltransferase complex","CC",86,1,0.00419757907067553
+"GO:0034708","methyltransferase complex","CC",113,1,0.00551542366263214
+"GO:0034968","histone lysine methylation","BP",114,1,0.00556423272159301
+"GO:0018022","peptidyl-lysine methylation","BP",129,1,0.00629636860601324
+"GO:0016571","histone methylation","BP",139,1,0.00678445919562676
+"GO:0008213","protein alkylation","BP",179,1,0.00873682155408095
+"GO:0006479","protein methylation","BP",179,1,0.00873682155408095
+"GO:0043414","macromolecule methylation","BP",309,1,0.0150819992190551
+"GO:0032259","methylation","BP",366,1,0.0178641155798521
+"GO:0018205","peptidyl-lysine modification","BP",397,1,0.0193771964076533
+"GO:0016570","histone modification","BP",454,1,0.0221593127684498
+"GO:0016569","covalent chromatin modification","BP",474,1,0.0231354939476767
+"GO:1990234","transferase complex","CC",779,1,0.0380222569308856
+"GO:0006325","chromatin organization","BP",800,1,0.0390472471690745
+"GO:0044451","nucleoplasm part","CC",1126,1,0.0549590003904725
+"GO:0051276","chromosome organization","BP",1230,1,0.0600351425224521
+"GO:0018193","peptidyl-amino acid modification","BP",1259,1,0.0614506052323311

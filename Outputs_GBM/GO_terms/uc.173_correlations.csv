@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0044424","intracellular part","CC",15063,3709,2.60697858975069e-144
+"GO:0005622","intracellular","CC",15073,3710,5.20804327827104e-144
+"GO:0043231","intracellular membrane-bounded organelle","CC",11488,3042,5.53475246488512e-129
+"GO:0043229","intracellular organelle","CC",13294,3373,7.9885190152487e-128
+"GO:0005654","nucleoplasm","CC",3512,1274,3.21125681777826e-127
+"GO:0043226","organelle","CC",14144,3486,6.78683066245914e-113
+"GO:0043227","membrane-bounded organelle","CC",13019,3284,2.70469489828729e-112
+"GO:0044446","intracellular organelle part","CC",9811,2647,2.59375131810547e-106
+"GO:0005488","binding","MF",15267,3648,5.74366236040768e-101
+"GO:0005515","protein binding","MF",11807,3024,1.70445719382199e-100
+"GO:0044422","organelle part","CC",10112,2681,1.74613686273603e-97
+"GO:0005634","nucleus","CC",7932,2204,1.80246541400017e-90
+"GO:0031981","nuclear lumen","CC",4594,1438,5.79661172181915e-87
+"GO:0044428","nuclear part","CC",5023,1530,8.13809424286769e-84
+"GO:0044260","cellular macromolecule metabolic process","BP",8352,2267,1.71005880331015e-82
+"GO:0006996","organelle organization","BP",3885,1252,3.80094718700587e-82
+"GO:0070013","intracellular organelle lumen","CC",5740,1683,9.02748632399548e-80
+"GO:0031974","membrane-enclosed lumen","CC",5740,1683,9.02748632399548e-80
+"GO:0043233","organelle lumen","CC",5740,1683,9.02748632399548e-80
+"GO:0071840","cellular component organization or biogenesis","BP",6697,1881,1.01143655728371e-74

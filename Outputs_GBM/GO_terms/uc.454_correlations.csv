@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0044391","ribosomal subunit","CC",190,91,6.44158998583367e-68
+"GO:0003735","structural constituent of ribosome","MF",202,87,5.22488347580899e-60
+"GO:0005840","ribosome","CC",272,97,9.76760055889304e-58
+"GO:0000184","nuclear-transcribed mRNA catabolic process, nonsense-mediated decay","BP",120,65,3.52788076899572e-53
+"GO:0022626","cytosolic ribosome","CC",112,63,5.66546709633294e-53
+"GO:0006613","cotranslational protein targeting to membrane","BP",109,62,1.46540080384824e-52
+"GO:0006614","SRP-dependent cotranslational protein targeting to membrane","BP",105,61,1.65381945694815e-52
+"GO:0019083","viral transcription","BP",177,73,8.37169621111097e-49
+"GO:0072599","establishment of protein localization to endoplasmic reticulum","BP",122,62,1.7066503985577e-48
+"GO:0045047","protein targeting to ER","BP",118,61,2.57357768376925e-48
+"GO:0006413","translational initiation","BP",193,75,7.06862021523282e-48
+"GO:0019080","viral gene expression","BP",191,74,3.88279901529325e-47
+"GO:0070972","protein localization to endoplasmic reticulum","BP",147,65,6.98783996946298e-46
+"GO:0015934","large ribosomal subunit","CC",121,59,7.82698620614557e-45
+"GO:0000956","nuclear-transcribed mRNA catabolic process","BP",207,74,3.11423093512211e-44
+"GO:0006412","translation","BP",714,132,1.06939680809372e-41
+"GO:0006402","mRNA catabolic process","BP",364,93,2.27698340552604e-41
+"GO:0043043","peptide biosynthetic process","BP",739,132,5.27920749259747e-40
+"GO:0006401","RNA catabolic process","BP",397,95,1.1967513543593e-39
+"GO:0044446","intracellular organelle part","CC",9811,678,4.22535425886625e-39

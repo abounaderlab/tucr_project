@@ -1,0 +1,16 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0007389","pattern specification process","BP",446,12,0.00000950741782292765
+"GO:0042733","embryonic digit morphogenesis","BP",61,5,0.0000256863112314347
+"GO:0009952","anterior/posterior pattern specification","BP",219,8,0.0000376757570617634
+"GO:0003002","regionalization","BP",351,9,0.000186849026139474
+"GO:0060561","apoptotic process involved in morphogenesis","BP",25,3,0.000380868091024599
+"GO:0048645","animal organ formation","BP",61,4,0.000410100514261474
+"GO:0009059","macromolecule biosynthetic process","BP",5114,46,0.00041874359837699
+"GO:0044271","cellular nitrogen compound biosynthetic process","BP",5029,45,0.00057041036557992
+"GO:0048736","appendage development","BP",179,6,0.000573965707236997
+"GO:0060173","limb development","BP",179,6,0.000573965707236997
+"GO:0044249","cellular biosynthetic process","BP",6168,52,0.000708968000173533
+"GO:0035113","embryonic appendage morphogenesis","BP",125,5,0.000757832699010785
+"GO:0030326","embryonic limb morphogenesis","BP",125,5,0.000757832699010785
+"GO:0018130","heterocycle biosynthetic process","BP",4341,40,0.000763901799112298
+"GO:0019438","aromatic compound biosynthetic process","BP",4351,40,0.000800891831554227

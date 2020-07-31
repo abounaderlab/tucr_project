@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0006796","phosphate-containing compound metabolic process","BP",3320,106,0.00000126342595985265
+"GO:0005737","cytoplasm","CC",11625,286,0.00000130806479661977
+"GO:0006793","phosphorus metabolic process","BP",3347,106,0.00000185502705899358
+"GO:0005515","protein binding","MF",11807,288,0.00000283747502396747
+"GO:0032555","purine ribonucleotide binding","MF",1878,67,0.00000562023917229616
+"GO:0017076","purine nucleotide binding","MF",1891,67,0.00000706398533786005
+"GO:0032553","ribonucleotide binding","MF",1894,67,0.00000744310525514912
+"GO:0003674","molecular_function","MF",17697,392,0.00000756934527493304
+"GO:0005488","binding","MF",15267,350,0.0000127540737488933
+"GO:0000166","nucleotide binding","MF",2125,72,0.00001418483181023
+"GO:1901265","nucleoside phosphate binding","MF",2126,72,0.000014411696090362
+"GO:0035639","purine ribonucleoside triphosphate binding","MF",1813,63,0.0000250957873408541
+"GO:1990778","protein localization to cell periphery","BP",311,19,0.0000261045354842
+"GO:0030054","cell junction","CC",1298,49,0.0000288415890113219
+"GO:0070727","cellular macromolecule localization","BP",1883,64,0.000041920904042137
+"GO:0051641","cellular localization","BP",2927,90,0.0000444632151327136
+"GO:0016043","cellular component organization","BP",6512,172,0.000046249717016978
+"GO:0034613","cellular protein localization","BP",1872,63,0.000064791927808776
+"GO:0071840","cellular component organization or biogenesis","BP",6697,175,0.0000709678080769876
+"GO:0006464","cellular protein modification process","BP",4160,118,0.0000788562971561631

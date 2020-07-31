@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0044424","intracellular part","CC",15063,111,0.000000393891389861822
+"GO:0005622","intracellular","CC",15073,111,0.000000416673837154377
+"GO:0044772","mitotic cell cycle phase transition","BP",588,15,0.00000201944919901785
+"GO:0005515","protein binding","MF",11807,94,0.00000278563022710792
+"GO:1903311","regulation of mRNA metabolic process","BP",324,11,0.00000355170950246596
+"GO:0005488","binding","MF",15267,110,0.00000439417317638684
+"GO:0044770","cell cycle phase transition","BP",631,15,0.00000476734660856143
+"GO:0005634","nucleus","CC",7932,71,0.00000659562580605274
+"GO:0000278","mitotic cell cycle","BP",1017,19,0.00000795235441198625
+"GO:0030071","regulation of mitotic metaphase/anaphase transition","BP",51,5,0.0000124994189829825
+"GO:1901990","regulation of mitotic cell cycle phase transition","BP",444,12,0.0000128385130282638
+"GO:1903047","mitotic cell cycle process","BP",873,17,0.0000148137990537458
+"GO:0005654","nucleoplasm","CC",3512,40,0.0000149511030703264
+"GO:1902099","regulation of metaphase/anaphase transition of cell cycle","BP",53,5,0.0000151265427361995
+"GO:0007091","metaphase/anaphase transition of mitotic cell cycle","BP",54,5,0.000016591763096304
+"GO:0044784","metaphase/anaphase transition of cell cycle","BP",56,5,0.0000198524476372626
+"GO:0010965","regulation of mitotic sister chromatid separation","BP",57,5,0.0000216591484247102
+"GO:1901987","regulation of cell cycle phase transition","BP",480,12,0.0000276926298945891
+"GO:0051306","mitotic sister chromatid separation","BP",60,5,0.0000278553738284152
+"GO:0034660","ncRNA metabolic process","BP",562,13,0.0000284269917930325

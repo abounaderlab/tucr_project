@@ -1,0 +1,15 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0050911","detection of chemical stimulus involved in sensory perception of smell","BP",427,6,0.00000118788137310699
+"GO:0007608","sensory perception of smell","BP",454,6,0.00000169622403982616
+"GO:0050907","detection of chemical stimulus involved in sensory perception","BP",477,6,0.00000225872763346664
+"GO:0009593","detection of chemical stimulus","BP",512,6,0.00000340062112331041
+"GO:0007606","sensory perception of chemical stimulus","BP",526,6,0.00000397273238845216
+"GO:0050906","detection of stimulus involved in sensory perception","BP",531,6,0.00000419517663055805
+"GO:0051606","detection of stimulus","BP",691,6,0.0000188939779158204
+"GO:0007186","G protein-coupled receptor signaling pathway","BP",1371,7,0.0000977036240090825
+"GO:0007600","sensory perception","BP",977,6,0.000131079410500004
+"GO:0050877","nervous system process","BP",1437,6,0.00104907576475284
+"GO:0097274","urea homeostasis","BP",2,1,0.00175639709580877
+"GO:0006311","meiotic gene conversion","BP",3,1,0.00263350267289919
+"GO:0035822","gene conversion","BP",4,1,0.00350988036154409
+"GO:0007060","male meiosis chromosome segregation","BP",4,1,0.00350988036154409

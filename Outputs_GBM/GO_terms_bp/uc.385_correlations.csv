@@ -1,0 +1,8 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0016570","histone modification","BP",454,6,0.0000763420886514425
+"GO:0007049","cell cycle","BP",1854,11,0.0000956709412824216
+"GO:0016569","covalent chromatin modification","BP",474,6,0.000096785593112254
+"GO:0090305","nucleic acid phosphodiester bond hydrolysis","BP",302,5,0.000113884489822567
+"GO:1903311","regulation of mRNA metabolic process","BP",324,5,0.000158206945531774
+"GO:0033147","negative regulation of intracellular estrogen receptor signaling pathway","BP",13,2,0.000194071137270795
+"GO:0044260","cellular macromolecule metabolic process","BP",8352,24,0.000199197966690006

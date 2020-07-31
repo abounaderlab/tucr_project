@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005654","nucleoplasm","CC",3512,29,0.0000000392992651856442
+"GO:0051276","chromosome organization","BP",1230,15,0.00000224613919843515
+"GO:0061188","negative regulation of chromatin silencing at rDNA","BP",2,2,0.00000871973230822063
+"GO:0031981","nuclear lumen","CC",4594,29,0.0000132290778122381
+"GO:0090304","nucleic acid metabolic process","BP",5735,33,0.000015503189699647
+"GO:0070013","intracellular organelle lumen","CC",5740,33,0.0000158142627933099
+"GO:0031974","membrane-enclosed lumen","CC",5740,33,0.0000158142627933099
+"GO:0043233","organelle lumen","CC",5740,33,0.0000158142627933099
+"GO:0005634","nucleus","CC",7932,40,0.0000193583547039606
+"GO:0044451","nucleoplasm part","CC",1126,13,0.0000216886606943501
+"GO:0003383","apical constriction","BP",3,2,0.0000261089709941547
+"GO:0061187","regulation of chromatin silencing at rDNA","BP",3,2,0.0000261089709941547
+"GO:0042393","histone binding","MF",197,6,0.0000261948017156788
+"GO:0044265","cellular macromolecule catabolic process","BP",1162,13,0.000030165582486491
+"GO:1905268","negative regulation of chromatin organization","BP",62,4,0.0000348620194283564
+"GO:0045815","positive regulation of gene expression, epigenetic","BP",63,4,0.0000371429370952666
+"GO:0035064","methylated histone binding","MF",65,4,0.0000420299602525065
+"GO:0140034","methylation-dependent protein binding","MF",65,4,0.0000420299602525065
+"GO:0022402","cell cycle process","BP",1394,14,0.0000465094211084448
+"GO:0016070","RNA metabolic process","BP",5206,30,0.000054069215373066

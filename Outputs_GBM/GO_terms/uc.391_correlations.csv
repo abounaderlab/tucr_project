@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0019988","charged-tRNA amino acid modification","BP",1,1,0.000195236235845497
+"GO:0071951","conversion of methionyl-tRNA to N-formyl-methionyl-tRNA","BP",1,1,0.000195236235845497
+"GO:0004479","methionyl-tRNA formyltransferase activity","MF",1,1,0.000195236235845497
+"GO:2000342","negative regulation of chemokine (C-X-C motif) ligand 2 production","BP",3,1,0.000585622942468444
+"GO:1902268","negative regulation of polyamine transmembrane transport","BP",3,1,0.000585622942468444
+"GO:0008073","ornithine decarboxylase inhibitor activity","MF",3,1,0.000585622942468444
+"GO:0070375","ERK5 cascade","BP",4,1,0.000780773418828207
+"GO:1902267","regulation of polyamine transmembrane transport","BP",5,1,0.000975895314274444
+"GO:0042979","ornithine decarboxylase regulator activity","MF",6,1,0.00117098863159826
+"GO:1902047","polyamine transmembrane transport","BP",6,1,0.00117098863159826
+"GO:0045415","negative regulation of interleukin-8 biosynthetic process","BP",7,1,0.00136605337359019
+"GO:0015846","polyamine transport","BP",7,1,0.00136605337359019
+"GO:0071499","cellular response to laminar fluid shear stress","BP",8,1,0.00156108954303991
+"GO:0016742","hydroxymethyl-, formyl- and related transferase activity","MF",8,1,0.00156108954303991
+"GO:0034115","negative regulation of heterotypic cell-cell adhesion","BP",11,1,0.00214602664404229
+"GO:0070587","regulation of cell-cell adhesion involved in gastrulation","BP",11,1,0.00214602664404229
+"GO:0070586","cell-cell adhesion involved in gastrulation","BP",12,1,0.00234094855122702
+"GO:2000341","regulation of chemokine (C-X-C motif) ligand 2 production","BP",12,1,0.00234094855122702
+"GO:0006596","polyamine biosynthetic process","BP",13,1,0.0025358418998207
+"GO:0072567","chemokine (C-X-C motif) ligand 2 production","BP",14,1,0.00273070669261211

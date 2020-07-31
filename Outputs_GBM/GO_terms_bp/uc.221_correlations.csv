@@ -1,0 +1,20 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:1903047","mitotic cell cycle process","BP",873,46,0.000000000311895202034106
+"GO:0048699","generation of neurons","BP",1524,65,0.000000000403514855182463
+"GO:0120036","plasma membrane bounded cell projection organization","BP",1497,64,0.000000000512798957406502
+"GO:0030030","cell projection organization","BP",1534,65,0.000000000527488248451756
+"GO:0000278","mitotic cell cycle","BP",1017,50,0.000000000537997636906143
+"GO:0030182","neuron differentiation","BP",1365,60,0.000000000677703711407636
+"GO:0048666","neuron development","BP",1110,52,0.00000000126162006585365
+"GO:0007399","nervous system development","BP",2375,86,0.0000000014133071585733
+"GO:0032990","cell part morphogenesis","BP",685,38,0.00000000304413028992551
+"GO:0022008","neurogenesis","BP",1623,65,0.00000000504840712539793
+"GO:0048812","neuron projection morphogenesis","BP",648,36,0.00000000782176972619412
+"GO:0031175","neuron projection development","BP",978,46,0.0000000111312931532432
+"GO:0120039","plasma membrane bounded cell projection morphogenesis","BP",662,36,0.0000000135741181520562
+"GO:0048858","cell projection morphogenesis","BP",666,36,0.0000000158393299554153
+"GO:0022402","cell cycle process","BP",1394,57,0.0000000253661018987356
+"GO:0032501","multicellular organismal process","BP",7751,196,0.000000121095912415947
+"GO:0051128","regulation of cellular component organization","BP",2507,83,0.000000167190188352028
+"GO:0048468","cell development","BP",2183,75,0.000000181126962501749
+"GO:0030154","cell differentiation","BP",4239,122,0.00000025087758762702

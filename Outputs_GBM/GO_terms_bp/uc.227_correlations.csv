@@ -1,0 +1,12 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0048812","neuron projection morphogenesis","BP",648,46,0.0000000000980395519197083
+"GO:0120039","plasma membrane bounded cell projection morphogenesis","BP",662,46,0.000000000198322778339015
+"GO:0048858","cell projection morphogenesis","BP",666,46,0.000000000241548000854557
+"GO:0032990","cell part morphogenesis","BP",685,46,0.000000000601583704804343
+"GO:0030030","cell projection organization","BP",1534,77,0.00000000100923484776665
+"GO:0000902","cell morphogenesis","BP",1034,58,0.00000000304149918266056
+"GO:0120036","plasma membrane bounded cell projection organization","BP",1497,74,0.00000000436357138385765
+"GO:0048667","cell morphogenesis involved in neuron differentiation","BP",583,40,0.00000000458888642204822
+"GO:0031175","neuron projection development","BP",978,55,0.0000000074007354211713
+"GO:0071840","cellular component organization or biogenesis","BP",6697,224,0.0000000074431767158217
+"GO:0032989","cellular component morphogenesis","BP",1143,61,0.00000000748080049761169

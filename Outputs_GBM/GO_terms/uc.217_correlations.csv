@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0098916","anterograde trans-synaptic signaling","BP",703,16,0.000000000421716190492852
+"GO:0007268","chemical synaptic transmission","BP",703,16,0.000000000421716190492852
+"GO:0099537","trans-synaptic signaling","BP",711,16,0.000000000497109441878195
+"GO:0099536","synaptic signaling","BP",717,16,0.000000000561608048634428
+"GO:0016021","integral component of membrane","CC",5330,40,0.00000000168160345928473
+"GO:0031224","intrinsic component of membrane","CC",5495,40,0.00000000439704113178993
+"GO:0044459","plasma membrane part","CC",2985,28,0.0000000260516499343168
+"GO:0005887","integral component of plasma membrane","CC",1634,20,0.0000000832852287468982
+"GO:0097060","synaptic membrane","CC",432,11,0.000000103764119903558
+"GO:0044425","membrane part","CC",6939,43,0.000000104563436232734
+"GO:0031226","intrinsic component of plasma membrane","CC",1713,20,0.000000180274061837331
+"GO:0006865","amino acid transport","BP",145,7,0.000000379902018110917
+"GO:0060076","excitatory synapse","CC",50,5,0.000000521455475278854
+"GO:0007218","neuropeptide signaling pathway","BP",104,6,0.00000095842260619967
+"GO:0097458","neuron part","CC",1729,19,0.00000101501644326552
+"GO:0017075","syntaxin-1 binding","MF",26,4,0.00000130864140418288
+"GO:0030594","neurotransmitter receptor activity","MF",117,6,0.00000191307016610071
+"GO:0006836","neurotransmitter transport","BP",269,8,0.00000210308548867706
+"GO:0007267","cell-cell signaling","BP",1650,18,0.00000235974496110465
+"GO:0043005","neuron projection","CC",1312,16,0.00000237887022745133

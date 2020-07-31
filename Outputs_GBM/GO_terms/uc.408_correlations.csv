@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005737","cytoplasm","CC",11625,307,0.0000000000119163057807586
+"GO:0005622","intracellular","CC",15073,366,0.000000000104158752815688
+"GO:0044446","intracellular organelle part","CC",9811,268,0.000000000105024890353896
+"GO:0044424","intracellular part","CC",15063,365,0.000000000208173840261059
+"GO:0044422","organelle part","CC",10112,273,0.000000000213089067130581
+"GO:0043229","intracellular organelle","CC",13294,327,0.0000000242375233011962
+"GO:0044444","cytoplasmic part","CC",9735,257,0.0000000306197553549442
+"GO:0043226","organelle","CC",14144,340,0.000000122081296238941
+"GO:0043227","membrane-bounded organelle","CC",13019,319,0.000000135090605626944
+"GO:0043231","intracellular membrane-bounded organelle","CC",11488,287,0.000000512744584576575
+"GO:0005515","protein binding","MF",11807,291,0.00000163952468410489
+"GO:0016043","cellular component organization","BP",6512,178,0.00000522914710075062
+"GO:0071840","cellular component organization or biogenesis","BP",6697,182,0.00000543740428374467
+"GO:0005524","ATP binding","MF",1473,55,0.0000150069417058933
+"GO:0001228","DNA-binding transcription activator activity, RNA polymerase II-specific","MF",439,24,0.0000168639918179614
+"GO:0003674","molecular_function","MF",17697,393,0.0000270404297436702
+"GO:0000166","nucleotide binding","MF",2125,71,0.0000330760900732018
+"GO:1901265","nucleoside phosphate binding","MF",2126,71,0.000033582329415081
+"GO:0006996","organelle organization","BP",3885,114,0.0000350578644886172
+"GO:0045935","positive regulation of nucleobase-containing compound metabolic process","BP",1899,65,0.0000364624550014153

@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0005737","cytoplasm","CC",11625,102,0.0000000776153854677968
+"GO:0098798","mitochondrial protein complex","CC",262,12,0.000000103417638970557
+"GO:0005740","mitochondrial envelope","CC",739,19,0.000000190431354221306
+"GO:0050136","NADH dehydrogenase (quinone) activity","MF",46,6,0.000000422362394036478
+"GO:0008137","NADH dehydrogenase (ubiquinone) activity","MF",46,6,0.000000422362394036478
+"GO:0003954","NADH dehydrogenase activity","MF",46,6,0.000000422362394036478
+"GO:0031975","envelope","CC",1182,23,0.00000121200242994594
+"GO:0031967","organelle envelope","CC",1182,23,0.00000121200242994594
+"GO:0005743","mitochondrial inner membrane","CC",473,14,0.00000174722597810288
+"GO:0031966","mitochondrial membrane","CC",698,17,0.00000186662465174741
+"GO:0016655","oxidoreductase activity, acting on NAD(P)H, quinone or similar compound as acceptor","MF",60,6,0.0000021005808925382
+"GO:0033108","mitochondrial respiratory chain complex assembly","BP",96,7,0.00000249342613154457
+"GO:0019866","organelle inner membrane","CC",532,14,0.000006770878779738
+"GO:0044429","mitochondrial part","CC",1036,20,0.00000742429236646111
+"GO:0016043","cellular component organization","BP",6512,65,0.00000820621554264797
+"GO:0044444","cytoplasmic part","CC",9735,86,0.00000837728030107059
+"GO:0022904","respiratory electron transport chain","BP",117,7,0.00000930111850203661
+"GO:0005747","mitochondrial respiratory chain complex I","CC",50,5,0.0000154549679141915
+"GO:0030964","NADH dehydrogenase complex","CC",50,5,0.0000154549679141915
+"GO:0045271","respiratory chain complex I","CC",50,5,0.0000154549679141915

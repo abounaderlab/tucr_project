@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0047560","3-dehydrosphinganine reductase activity","MF",1,1,0.000146427176884179
+"GO:0006666","3-keto-sphinganine metabolic process","BP",1,1,0.000146427176884179
+"GO:0001594","trace-amine receptor activity","MF",7,1,0.00102469007510486
+"GO:0046519","sphingoid metabolic process","BP",16,1,0.00234111986372354
+"GO:0008227","G protein-coupled amine receptor activity","MF",59,1,0.00861476798577165
+"GO:0018149","peptide cross-linking","BP",60,1,0.00876035297260569
+"GO:0001533","cornified envelope","CC",65,1,0.00948806411861958
+"GO:0030148","sphingolipid biosynthetic process","BP",102,1,0.01486206014359
+"GO:0070268","cornification","BP",112,1,0.0163111473464765
+"GO:0016616","oxidoreductase activity, acting on the CH-OH group of donors, NAD or NADP as acceptor","MF",119,1,0.0173246624241764
+"GO:0016614","oxidoreductase activity, acting on CH-OH group of donors","MF",128,1,0.0186267299858557
+"GO:0046467","membrane lipid biosynthetic process","BP",142,1,0.020649881432258
+"GO:0006665","sphingolipid metabolic process","BP",159,1,0.0231028248016883
+"GO:0097164","ammonium ion metabolic process","BP",205,1,0.0297196575639309
+"GO:0006643","membrane lipid metabolic process","BP",207,1,0.0300066661434174
+"GO:0031424","keratinization","BP",224,1,0.032443954261962
+"GO:0042180","cellular ketone metabolic process","BP",248,1,0.0358778759996305
+"GO:0030216","keratinocyte differentiation","BP",305,1,0.0440008565335481
+"GO:0009913","epidermal cell differentiation","BP",358,1,0.0515127500903982
+"GO:0043588","skin development","BP",419,1,0.0601096845103495

@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0000795","synaptonemal complex","CC",40,1,0.00390100810969352
+"GO:0099086","synaptonemal structure","CC",40,1,0.00390100810969352
+"GO:0016235","aggresome","CC",43,1,0.00419327638309408
+"GO:0016234","inclusion body","CC",82,1,0.00798886149971734
+"GO:0048704","embryonic skeletal system morphogenesis","BP",93,1,0.00905810080570901
+"GO:0000794","condensed nuclear chromosome","CC",99,1,0.00964107923640767
+"GO:0048706","embryonic skeletal system development","BP",126,1,0.0122623594200468
+"GO:0007286","spermatid development","BP",152,1,0.0147832721494017
+"GO:0048515","spermatid differentiation","BP",158,1,0.0153645638122109
+"GO:0009952","anterior/posterior pattern specification","BP",219,1,0.0212646253496972
+"GO:0000793","condensed chromosome","CC",223,1,0.0216508951963079
+"GO:0048705","skeletal system morphogenesis","BP",239,1,0.0231952122017853
+"GO:0051321","meiotic cell cycle","BP",249,1,0.0241597908956739
+"GO:0007281","germ cell development","BP",262,1,0.0254130308480114
+"GO:0048562","embryonic organ morphogenesis","BP",288,1,0.0279170949579991
+"GO:0003002","regionalization","BP",351,1,0.0339712765728126
+"GO:0022412","cellular process involved in reproduction in multicellular organism","BP",357,1,0.034546878967657
+"GO:0048568","embryonic organ development","BP",428,1,0.0413451491709864
+"GO:0007389","pattern specification process","BP",446,1,0.0430648376232414
+"GO:0001501","skeletal system development","BP",518,1,0.0499281532176848

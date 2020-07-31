@@ -1,0 +1,17 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0050911","detection of chemical stimulus involved in sensory perception of smell","BP",427,5,0.00007547232232693
+"GO:0007608","sensory perception of smell","BP",454,5,0.000100774069360813
+"GO:0050907","detection of chemical stimulus involved in sensory perception","BP",477,5,0.000127100524604581
+"GO:0009593","detection of chemical stimulus","BP",512,5,0.000176972625727181
+"GO:0007606","sensory perception of chemical stimulus","BP",526,5,0.000200659569949472
+"GO:0050906","detection of stimulus involved in sensory perception","BP",531,5,0.000209682902029588
+"GO:0051606","detection of stimulus","BP",691,5,0.000702586665148617
+"GO:0008631","intrinsic apoptotic signaling pathway in response to oxidative stress","BP",43,2,0.000967763812404314
+"GO:0014876","response to injury involved in regulation of muscle adaptation","BP",1,1,0.00107379929714957
+"GO:0014736","negative regulation of muscle atrophy","BP",2,1,0.00214649790677834
+"GO:1902504","regulation of signal transduction involved in mitotic G2 DNA damage checkpoint","BP",2,1,0.00214649790677834
+"GO:0090292","nuclear matrix anchoring at nuclear membrane","BP",3,1,0.00321809690346142
+"GO:0043578","nuclear matrix organization","BP",3,1,0.00321809690346142
+"GO:0021817","nucleokinesis involved in cell motility in cerebral cortex radial glia guided migration","BP",3,1,0.00321809690346142
+"GO:0061146","Peyer's patch morphogenesis","BP",3,1,0.00321809690346142
+"GO:1904289","regulation of mitotic DNA damage checkpoint","BP",3,1,0.00321809690346142

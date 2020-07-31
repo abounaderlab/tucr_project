@@ -1,0 +1,21 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0050911","detection of chemical stimulus involved in sensory perception of smell","BP",427,6,0.0000000334684001238786
+"GO:0004984","olfactory receptor activity","MF",427,6,0.0000000334684001238786
+"GO:0007608","sensory perception of smell","BP",454,6,0.0000000481750839105336
+"GO:0050907","detection of chemical stimulus involved in sensory perception","BP",477,6,0.0000000645903059874725
+"GO:0009593","detection of chemical stimulus","BP",512,6,0.0000000982598266950777
+"GO:0007606","sensory perception of chemical stimulus","BP",526,6,0.000000115269377935716
+"GO:0050906","detection of stimulus involved in sensory perception","BP",531,6,0.000000121904678071065
+"GO:0007600","sensory perception","BP",977,7,0.000000153079478701492
+"GO:0051606","detection of stimulus","BP",691,6,0.000000575830071255299
+"GO:0050877","nervous system process","BP",1437,7,0.00000211330575673826
+"GO:0004930","G protein-coupled receptor activity","MF",866,6,0.00000215804160651128
+"GO:0005549","odorant binding","MF",102,3,0.0000192027475502252
+"GO:0004888","transmembrane signaling receptor activity","MF",1277,6,0.0000203982385497979
+"GO:0007186","G protein-coupled receptor signaling pathway","BP",1371,6,0.000030621644600463
+"GO:0003008","system process","BP",2216,7,0.0000381565468443758
+"GO:0038023","signaling receptor activity","MF",1484,6,0.0000480743083624266
+"GO:0060089","molecular transducer activity","MF",1538,6,0.0000588839025776601
+"GO:0050896","response to stimulus","BP",9324,10,0.00245221617688754
+"GO:0030345","structural constituent of tooth enamel","MF",6,1,0.0032174691665755
+"GO:0042382","paraspeckles","CC",7,1,0.00375279813050322

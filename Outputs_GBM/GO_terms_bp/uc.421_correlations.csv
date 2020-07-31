@@ -1,0 +1,20 @@
+"","Term","Ont","N","DE","P.DE"
+"GO:0035752","lysosomal lumen pH elevation","BP",1,1,0.000390472471690773
+"GO:0001575","globoside metabolic process","BP",2,1,0.000780811526712166
+"GO:0008315","G2/MI transition of meiotic cell cycle","BP",3,1,0.00117101720414015
+"GO:0110032","positive regulation of G2/MI transition of meiotic cell cycle","BP",3,1,0.00117101720414015
+"GO:0110030","regulation of G2/MI transition of meiotic cell cycle","BP",3,1,0.00117101720414015
+"GO:0090170","regulation of Golgi inheritance","BP",4,1,0.00156108954304002
+"GO:1901995","positive regulation of meiotic cell cycle phase transition","BP",5,1,0.00195102858246843
+"GO:0051454","intracellular pH elevation","BP",6,1,0.00234083436147281
+"GO:0060440","trachea formation","BP",6,1,0.00234083436147281
+"GO:0060020","Bergmann glial cell differentiation","BP",7,1,0.00273050691908971
+"GO:0045852","pH elevation","BP",7,1,0.00273050691908971
+"GO:0007144","female meiosis I","BP",8,1,0.00312004629434703
+"GO:0007042","lysosomal lumen acidification","BP",8,1,0.00312004629434703
+"GO:0044771","meiotic cell cycle phase transition","BP",8,1,0.00312004629434703
+"GO:1901993","regulation of meiotic cell cycle phase transition","BP",8,1,0.00312004629434703
+"GO:0060502","epithelial cell proliferation involved in lung morphogenesis","BP",9,1,0.00350945252626311
+"GO:0006678","glucosylceramide metabolic process","BP",9,1,0.00350945252626311
+"GO:0015809","arginine transport","BP",10,1,0.00389872565384675
+"GO:1903800","positive regulation of production of miRNAs involved in gene silencing by miRNA","BP",10,1,0.00389872565384675
