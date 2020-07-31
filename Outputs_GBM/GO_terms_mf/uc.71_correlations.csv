@@ -1,8 +1,0 @@
-"","Term","Ont","N","DE","P.DE"
-"GO:0005515","protein binding","MF",11807,69,0.0000165684049550002
-"GO:0008092","cytoskeletal protein binding","MF",977,14,0.0000600511810455297
-"GO:0015631","tubulin binding","MF",336,8,0.0000912950658207937
-"GO:0005488","binding","MF",15267,79,0.000113501194158461
-"GO:0000981","DNA-binding transcription factor activity, RNA polymerase II-specific","MF",1600,17,0.000354604927819534
-"GO:0051219","phosphoprotein binding","MF",83,4,0.00043164906707898
-"GO:0008017","microtubule binding","MF",246,6,0.000632420322919424

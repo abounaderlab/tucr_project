@@ -1,9 +1,0 @@
-"","Term","Ont","N","DE","P.DE"
-"GO:0003824","catalytic activity","MF",5710,123,0.00000000183838727298672
-"GO:0051020","GTPase binding","MF",541,23,0.00000132163239311099
-"GO:0005085","guanyl-nucleotide exchange factor activity","MF",214,14,0.00000132616513435381
-"GO:0042578","phosphoric ester hydrolase activity","MF",367,18,0.00000273693444056352
-"GO:0003674","molecular_function","MF",17697,261,0.00000764014007525008
-"GO:0019899","enzyme binding","MF",2217,54,0.0000114969520587137
-"GO:0004090","carbonyl reductase (NADPH) activity","MF",5,3,0.0000237047123730411
-"GO:0016616","oxidoreductase activity, acting on the CH-OH group of donors, NAD or NADP as acceptor","MF",119,9,0.0000340788306927001

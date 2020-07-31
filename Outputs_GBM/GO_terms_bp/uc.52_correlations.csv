@@ -1,9 +1,0 @@
-"","Term","Ont","N","DE","P.DE"
-"GO:0016579","protein deubiquitination","BP",283,3,0.000673061203840133
-"GO:0070646","protein modification by small protein removal","BP",299,3,0.000789590178362252
-"GO:0000079","regulation of cyclin-dependent protein serine/threonine kinase activity","BP",102,2,0.00184712192755222
-"GO:1904029","regulation of cyclin-dependent protein kinase activity","BP",106,2,0.00199272678533889
-"GO:0006235","dTTP biosynthetic process","BP",4,1,0.00253584189982037
-"GO:0046075","dTTP metabolic process","BP",4,1,0.00253584189982037
-"GO:0009212","pyrimidine deoxyribonucleoside triphosphate biosynthetic process","BP",4,1,0.00253584189982037
-"GO:0009202","deoxyribonucleoside triphosphate biosynthetic process","BP",6,1,0.00380153567798347

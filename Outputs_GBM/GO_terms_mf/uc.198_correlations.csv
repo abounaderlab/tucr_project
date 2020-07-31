@@ -1,9 +1,0 @@
-"","Term","Ont","N","DE","P.DE"
-"GO:0001162","RNA polymerase II intronic transcription regulatory region sequence-specific DNA binding","MF",14,3,0.0000883204394431715
-"GO:0044213","intronic transcription regulatory region DNA binding","MF",17,3,0.000162693055914632
-"GO:0001161","intronic transcription regulatory region sequence-specific DNA binding","MF",17,3,0.000162693055914632
-"GO:0003674","molecular_function","MF",17697,126,0.00017082962271651
-"GO:0015501","glutamate:sodium symporter activity","MF",4,2,0.000241398663571757
-"GO:0004366","glycerol-3-phosphate O-acyltransferase activity","MF",4,2,0.000241398663571757
-"GO:0005314","high-affinity glutamate transmembrane transporter activity","MF",4,2,0.000241398663571757
-"GO:0102420","sn-1-glycerol-3-phosphate C16:0-DCA-CoA acyl transferase activity","MF",4,2,0.000241398663571757

@@ -1,8 +1,0 @@
-"","Term","Ont","N","DE","P.DE"
-"GO:0005515","protein binding","MF",11807,131,0.00000026151150784013
-"GO:0005488","binding","MF",15267,151,0.0000129509311973244
-"GO:0003674","molecular_function","MF",17697,164,0.0000952139419126866
-"GO:0016796","exonuclease activity, active with either ribo- or deoxyribonucleic acids and producing 5'-phosphomonoesters","MF",57,5,0.000115734545261421
-"GO:0017160","Ral GTPase binding","MF",15,3,0.000245624099858587
-"GO:0008853","exodeoxyribonuclease III activity","MF",4,2,0.000415796556816319
-"GO:0030674","protein binding, bridging","MF",170,7,0.00059390972827268
