@@ -1,0 +1,215 @@
+---
+title: 'T-type calcium channel expression in neuron connect versus neuron disconnected glioma'
+author: "Myron Keith Gibert Jr"
+date: "February 26, 2020"
+output: pdf_document
+toc: true
+---
+
+## Introduction
+
+## Set parameters
+
+```{r parameters}
+
+countfilename <- "mousegene_counts.txt"
+
+outputdir <- "Outputs"
+
+```
+
+## Install required programs
+
+```{r setup, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+if (!require("tidyverse")) install.packages("tidyverse")
+library("tidyverse")
+
+if (!require("ggplot2")) install.packages("ggplot2")
+library("ggplot2")
+
+if (!require("ggforce")) install.packages("ggforce")
+library("ggforce")
+
+if (!require("ggrepel")) install.packages("ggrepel")
+library("ggrepel")
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
+library("DESeq2")
+
+```
+
+```{r outputs}
+if(!dir.exists(outputdir)){
+  dir.create(outputdir)
+}
+```
+
+
+```{r tinytex, include=FALSE}
+## INSTALLING LATEX FOR RMARKDOWN
+
+#RMarkdown requires LaTex to create pdf documents as an output. More information can be found [here](https://bookdown.org/yihui/rmarkdown/pdf-document.html). Alternatively, output can be set to "html_document" or "word_document". End users may install LaTex by setting the "wanttinytex" variable to FALSE and running the following script:
+
+#Install tinytex to let RMarkdown create a pdf document? Default: wanttinytex <- FALSE
+wanttinytex <- TRUE
+
+if(tinytex:::is_tinytex()==FALSE && wanttinytex == TRUE){
+if (!require("tinytex")) install.packages("tinytex")
+tinytex::install_tinytex()
+}
+```
+
+## Aquire the data using the SRA toolkit
+
+```{bash setup, eval = FALSE}
+
+#using SRA Toolkit version 2.10.5
+
+#RNA-Seq connected Glioma 2
+
+prefetch SRR444442
+
+#RNA-Seq connected Glioma 1
+
+prefetch SRR444478
+
+```
+
+## Generate fastq files
+
+```{bash fastq, eval = FALSE}
+
+for sra in SRR*
+do
+echo $sra
+fastq-dump $sra
+done
+
+```
+
+## Align mm10 genome
+
+```{bash mm10, eval = FALSE}
+
+wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz
+gunzip hg38.fa.gz
+
+#Rivanna only.  Skip otherwise.
+module load gcc/7.1.0
+module load bowtie2/2.2.9
+
+bowtie2-build hg38.fa hg38
+
+```
+
+## Align fastq files to reference genome
+
+```{bash sam, eval = FALSE}
+
+for fq in *.fastq
+do
+name=$(echo $fq | awk -F".fastq" '{print $1}')
+echo $name
+bowtie2 -x hg38 -U $fq -S $name.sam
+done
+
+```
+
+## Convert sam to bam
+
+```{bash bam, eval = FALSE}
+
+for sam in *.sam
+do
+name=$(echo $sam | awk -F".sam" '{print $1}')
+echo $name
+samtools view -b $sam | samtools sort -o $name.bam
+done
+rm *sam
+
+```
+
+## Index bam files
+
+```{bash index, eval = FALSE}
+
+for bam in *bam
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+echo $name
+samtools index $bam
+done
+
+```
+
+## Download mouse genes and convert to bed
+
+I got this methodology from [here](https://github.com/stevekm/reference-annotations/blob/master/Makefile) since my other methods were not working.
+
+```{bash refgenes, eval = FALSE}
+
+#If using Rivanna.  Skip otherwise.
+module load gcc/7.1.0
+module load bedOps/
+
+# ~~~~~ ENSEMBL mm10 ~~~~~ #
+# generate the Ensembl hg19 annotations .bed file
+wget ftp://ftp.ensembl.org/pub/release-91/gtf/mus_musculus/Mus_musculus.GRCm38.91.chr.gtf.gz
+
+# remove comment lines
+# extract only 'gene' entries
+# add 'chr' to first entry, change 'chrMT' to 'chrM'
+zcat Mus_musculus.GRCm38.91.chr.gtf.gz | grep -Ev '^#' | grep -w 'gene' | sed -e 's/^/chr/' -e 's/^chrMT/chrM/' > Mus_musculus.GRCm38.91.chr.gtf
+
+# convert to .bed
+gtf2bed < Mus_musculus.GRCm38.91.chr.gtf > Mus_musculus.GRCm38.91.chr.bed
+
+```
+
+## Generate counts for mouse genes
+
+```{bash counts, eval = FALSE}
+
+echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" > mousegene_counts.txt
+multiBamCov -bams *bam -bed Mus_musculus.GRCm38.91.chr.bed >> mousegene_counts.txt
+
+```
+
+## Identifying differentially expressed TUCRs with DESeq2
+
+```{r DESeq2_mouse, results="hide", message = FALSE}
+
+mousecounts <- read.table(countfilename,header = TRUE)
+metadata <- read_csv(file = "connect_metadata.csv")
+
+mousecounts2 <- mousecounts[,5:ncol(mousecounts)]
+
+rownames(mousecounts2) <- mousecounts[,4]
+mousecounts.info <- mousecounts[,1:4]
+mousecounts.info$length <- (mousecounts$end - mousecounts$start)/1000
+mousecounts <- cbind(mousecounts.info,mousecounts2)
+
+
+dds_mouse <- DESeqDataSetFromMatrix(countData = mousecounts2,
+                              colData = metadata,
+                              design = ~dex)
+dds_mouse <- DESeq(dds_mouse)
+res_mouse <- results(dds_mouse, tidy=TRUE)
+res_mouse <- as_tibble(res_mouse)
+
+write.csv(res_mouse, file = paste(outputdir,"/results_mm10genes.csv",sep=""))
+
+totalreads <- colSums(mousecounts2,na.rm=TRUE)/1000000
+
+tpm <- function(counts,len,dep){
+  x <- counts/len
+  return(t(t(x)/dep))
+}
+
+mouse_tpms <- tpm(mousecounts2,mousecounts$length,totalreads)
+write.csv(mouse_tpms, file = paste(outputdir,"/TPM_mm10genes.csv",sep=""))
+
+```
