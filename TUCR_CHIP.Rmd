@@ -185,6 +185,8 @@ mv temp hg38_genomeFile.txt
 
 bedtools slop -b 10000 -i hg38.ultraConserved.bed -g hg38_genomeFile.txt > tucrs_pm10kb.bed
 
+bedtools slop -b 10000 -i TUCR_intergenic.bed -g hg38_genomeFile.txt > intergenic_tucrs_pm10kb.bed
+
 bedtools slop -b 10000 -i CHESScoding.bed -g hg38_genomeFile.txt > coding_pm10kb.bed
 
 bedtools slop -b 10000 -i CHESSlncRNA.bed -g hg38_genomeFile.txt > lncRNAs_pm10kb.bed
@@ -201,6 +203,8 @@ bedtools slop -b 10000 -i CHESSmisc.bed -g hg38_genomeFile.txt > misc_pm10kb.bed
 
 bedtools fisher -a tucrs_pm10kb.bed -b pol2.bed -g hg38_genomeFile.txt > pol2_tucrs_output.txt
 
+bedtools fisher -a intergenic_tucrs_pm10kb.bed -b pol2.bed -g hg38_genomeFile.txt > pol2_intergenic_tucrs_output.txt
+
 bedtools fisher -a coding_pm10kb.bed -b pol2.bed -g hg38_genomeFile.txt > pol2_coding_output.txt
 
 bedtools fisher -a lncRNAs_pm10kb.bed -b pol2.bed -g hg38_genomeFile.txt > pol2_lncRNA_output.txt
@@ -210,6 +214,8 @@ bedtools fisher -a antisense_pm10kb.bed -b pol2.bed -g hg38_genomeFile.txt > pol
 bedtools fisher -a misc_pm10kb.bed -b pol2.bed -g hg38_genomeFile.txt > pol2_misc_output.txt
 
 bedtools fisher -a tucrs_pm10kb.bed -b h3k4me3.bed -g hg38_genomeFile.txt > h3k4me3_tucrs_output.txt
+
+bedtools fisher -a intergenic_tucrs_pm10kb.bed -b h3k4me3.bed -g hg38_genomeFile.txt > h3k4me3_intergenic_tucrs_output.txt
 
 bedtools fisher -a coding_pm10kb.bed -b h3k4me3.bed -g hg38_genomeFile.txt > h3k4me3_coding_output.txt
 
