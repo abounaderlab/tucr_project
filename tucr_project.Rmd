@@ -185,9 +185,11 @@ cd stringtie
 
 stringtie --merge *rehead.gtf -G Homo_sapiens.GRCh38.99.gtf -o stringtie_merged.gtf
 
-intersectBed -a hg38.ultraConserved.bed -b CHESSgenes.bed -wa -wb > intersectchess_TUCRs.bed
+intersectBed -a hg38.ultraConserved.bed -b CHESSgenes.bed -wa -wb 
+  > intersectchess_TUCRs.bed
 
-intersectBed -a hg38.ultraConserved.bed -b stringtie_merged.gtf -wa -wb > intersectstringtie_TUCRs.bed
+intersectBed -a hg38.ultraConserved.bed -b stringtie_merged.gtf -wa -wb 
+  > intersectstringtie_TUCRs.bed
 
 cp stringtie_merged.gtf stringtie_merged.bed
 ```
@@ -214,7 +216,8 @@ In the following series of scripts, a bash script was used to extract the header
 # Create directory for extracted headerfiles
 mkdir tcga_analysis/head/
 
-# Use a for loop to cycle through BAM files and extract header before creating a text file containing each BAM file's header.
+# Use a for loop to cycle through BAM files and extract header before creating a 
+#text file containing each BAM file's header.
 for bam in $(find GBM-RNASEQ-RAW/* -name '*.bam')
 do
 name=$(echo $bam | awk -F ".bam" '{print $1}')
@@ -326,16 +329,20 @@ done
 mkdir tcga_analysis/foldchange
 
 #Write header line
-echo -e chrom"\t"start"\t"end"\t"id tcga_analysis/reindex/*bam | sed -e "s/ /\t/g" > tcga_analysis/foldchange/TUCR_counts_80.txt
+echo -e chrom"\t"start"\t"end"\t"id tcga_analysis/reindex/*bam | sed -e "s/ /\t/g" 
+  > tcga_analysis/foldchange/TUCR_counts_80.txt
 
 #Counts
-multiBamCov -bams tcga_analysis/reindex/*bam -bed hg38.ultraConserved.bed -q 10 -f 0.80 >> tcga_analysis/foldchange/TUCR_counts_80.txt
+multiBamCov -bams tcga_analysis/reindex/*bam -bed hg38.ultraConserved.bed -q 10 -f 0.80 
+  >> tcga_analysis/foldchange/TUCR_counts_80.txt
 
 #Write header line
-echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" > gene_counts.txt
+echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" 
+  > gene_counts.txt
 
 #Counts
-multiBamCov -bams lgg_tcga_analysis/reindex/*bam -bed CHESSgenes.bed -q 10 >> gene_counts.txt
+multiBamCov -bams lgg_tcga_analysis/reindex/*bam -bed CHESSgenes.bed -q 10 
+  >> gene_counts.txt
 ```
 
 ## Acquiring total reads from RNA-Seq BAM files
@@ -370,7 +377,8 @@ done
 
 ```{bash, eval = FALSE}
 
-wget http://gdac.broadinstitute.org/runs/stddata__2016_01_28/data/GBM/20160128/gdac.broadinstitute.org_GBM.Merge_Clinical.Level_1.2016012800.0.0.tar.gz
+wget http://gdac.broadinstitute.org/runs/stddata__2016_01_28/data/GBM/20160128/gdac.broadi
+nstitute.org_GBM.Merge_Clinical.Level_1.2016012800.0.0.tar.gz
 
 tar -xvzf gdac.broadinstitute.org_GBM.Merge_Clinical.Level_1.2016012800.0.0.tar.gz
 
@@ -479,8 +487,14 @@ plot_annotation <- tucr_annot %>%
   group_by(annot) %>%
   summarise(count = n())
   
-p <- ggplot(plot_annotation, aes(x=annot,y=count,fill=annot)) + geom_bar(stat="identity", width = 0.7) +
-  geom_text(aes(label=count), vjust=1.6, color="black", size=7) + scale_fill_manual(values=c("#F8766D","#00BFC4","#7CAE00","#C77CFF")) + ggtitle(paste("TUCR Genomic Location")) + xlab("Genomic Location relative to nearest gene") + ylab("Number of Genes") + theme(
+p <- ggplot(plot_annotation, aes(x=annot,y=count,fill=annot)) 
+  + geom_bar(stat="identity", width = 0.7) 
+  + geom_text(aes(label=count), vjust=1.6, color="black", size=7) 
+  + scale_fill_manual(values=c("#F8766D","#00BFC4","#7CAE00","#C77CFF")) 
+  + ggtitle(paste("TUCR Genomic Location")) 
+  + xlab("Genomic Location relative to nearest gene") 
+  + ylab("Number of Genes") 
+  + theme(
 plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
 axis.title = element_text(size = rel(1.25), face="bold"),
 legend.title = element_blank(),
@@ -488,7 +502,8 @@ legend.position = "none",
 panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
 panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
-ggsave(file=paste(outputdir,"/tucr_annotation.png",sep=""),plot = print(p), width = 5, height = 5, dpi = 300)
+ggsave(file=paste(outputdir,"/tucr_annotation.png",sep=""),plot = print(p)
+       , width = 5, height = 5, dpi = 300)
 ```
 
 ## Show that TUCRs are enriched for hallmarks of lncRNAs
@@ -496,8 +511,13 @@ ggsave(file=paste(outputdir,"/tucr_annotation.png",sep=""),plot = print(p), widt
 ```{r lncRNAs}
 tucr_lncRNAs <- read.csv("tucr_lncRNAs.csv")
   
-p <- ggplot(tucr_lncRNAs, aes(x=row,y=value,fill=row)) + geom_bar(stat="identity", width = 0.7) +
-  geom_text(aes(label=round(value,2)), vjust=1.6, color="black", size=rel(4)) + ggtitle(paste("TUCRs are enriched for \n RNA Pol.II and H3K4me3")) + xlab("Interval and Mark") + ylab("-log10 of p-value") + theme(
+p <- ggplot(tucr_lncRNAs, aes(x=row,y=value,fill=row)) 
+  + geom_bar(stat="identity", width = 0.7) 
+  + geom_text(aes(label=round(value,2)), vjust=1.6, color="black", size=rel(4)) 
+  + ggtitle(paste("TUCRs are enriched for \n RNA Pol.II and H3K4me3")) 
+  + xlab("Interval and Mark") 
+  + ylab("-log10 of p-value") 
+  + theme(
 plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
 axis.title = element_text(size = rel(1.25), face="bold"),
 axis.text.x = element_text(angle = -90, size = 10),
@@ -506,7 +526,8 @@ legend.position = "none",
 panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
 panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
-ggsave(file=paste(outputdir,"/tucr_lncRNAs.png",sep=""),plot = print(p), width = 5, height = 5, dpi = 300) 
+ggsave(file=paste(outputdir,"/tucr_lncRNAs.png",sep=""),plot = print(p),
+       width = 5, height = 5, dpi = 300) 
   
 
 ```
@@ -536,13 +557,21 @@ res_TUCR <- as_tibble(res_TUCR)
 write.csv(res_TUCR, file = paste(outputdir,"/results_TUCR.csv",sep=""))
 
 res_TUCR_summary <- res_TUCR %>%
-  mutate(dereg = ifelse(res_TUCR$log2FoldChange >=1, "upregulated",ifelse(res_TUCR$log2FoldChange <=-1,"downregulated","unchanged"))) %>%
+  mutate(dereg = 
+           ifelse(res_TUCR$log2FoldChange >=1, "upregulated",
+                    ifelse(res_TUCR$log2FoldChange <=-1,"downregulated","unchanged"))) %>%
   filter(dereg == "upregulated" | dereg == "downregulated") %>%
   group_by(dereg) %>%
   summarise(n = n())
 
-p <- ggplot(res_TUCR_summary, aes(x=dereg,y=n,fill=dereg)) + geom_bar(stat="identity", width = 0.7) +
-  geom_text(aes(label=n), vjust=1.6, color="black", size=7) + scale_fill_manual(values=c("green", "red")) + ggtitle(paste("TUCR Deregulation in ",disease)) + xlab("Direction of Deregulation") + ylab("Number of Deregulated Genes") + theme(
+p <- ggplot(res_TUCR_summary, aes(x=dereg,y=n,fill=dereg)) 
++ geom_bar(stat="identity", width = 0.7) 
++ geom_text(aes(label=n), vjust=1.6, color="black", size=7) 
++ scale_fill_manual(values=c("green", "red")) 
++ ggtitle(paste("TUCR Deregulation in ",disease)) 
++ xlab("Direction of Deregulation") 
++ ylab("Number of Deregulated Genes") 
++ theme(
 plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
 axis.title = element_text(size = rel(1.25), face="bold"),
 legend.title = element_blank(),
@@ -550,22 +579,28 @@ legend.position = "none",
 panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
 panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
-ggsave(file=paste(outputdir,"/",disease,"_deregGraph.png",sep=""),plot = print(p), width = 5, height = 5, dpi = 300)
+ggsave(file=paste(outputdir,"/",disease,"_deregGraph.png",sep=""),plot = print(p),
+       width = 5, height = 5, dpi = 300)
 
 ```
 
 ## Writing a script to generate a volcano plot
 
-```{r volcanoplot}
+```{r volcanoplot, eval = FALSE}
 
 ### Volcano plot
 
-volcanoplot <- function (res,genes = "all",title = paste("Deregulated Genes in ",disease,sep=""), output = "results_volcanoplot.png",height = 5, width = 6, dpi = 300){
+volcanoplot <- function (res,
+                         genes = "all",
+                         title = paste("Deregulated Genes in ",disease,sep=""), 
+                         output = "results_volcanoplot.png",
+                         height = 5, width = 6, dpi = 300){
   #res <- res_TUCR
   #genes = c("uc.110","uc.62")
   #title = "Deregulated Genes"
   vres <- res
-  vres <- vres %>% mutate(filter1 = abs(log2FoldChange)>=1,filter2 = padj <=0.05,Legend="",gene="")
+  vres <- vres %>% 
+    mutate(filter1 = abs(log2FoldChange)>=1,filter2 = padj <=0.05,Legend="",gene="")
   for (i in 1:length(vres$row)){
     if(is.na(vres$padj[i])){vres$Legend[i] <- "Not deregulated"}else{
     if(vres$filter1[i] == TRUE && vres$filter2[i] == TRUE){
@@ -575,21 +610,25 @@ volcanoplot <- function (res,genes = "all",title = paste("Deregulated Genes in "
     vres$Legend[i] <- ">2-Fold"
       }else{vres$Legend[i] <- "Not deregulated"}
   }}
-    ifelse(genes!="all",ifelse(!is.na(match(vres$row[i],genes)),vres$gene[i] <- vres$row[i], ""),vres$gene[i] <- vres$row[i])
+    ifelse(genes!="all",
+           ifelse(!is.na(
+             match(vres$row[i],genes)),vres$gene[i] <- vres$row[i], ""),
+           vres$gene[i] <- vres$row[i])
     }
   
   ## plot
-if(repel==TRUE){p <- ggplot(vres) +
-        geom_point(aes(x=log2FoldChange, y=-log10(padj),col=Legend)) +
-        scale_color_manual(values = c("blue","red","black")) +
-        ggtitle(title) +
-        xlab("log2 fold change") + 
-        ylab("-log10 adjusted p-value") +
-        theme(plot.title = element_text(size = rel(1.5), hjust = 0.5, face="bold"),
+if(repel==TRUE){p <- ggplot(vres) 
++ geom_point(aes(x=log2FoldChange, y=-log10(padj),col=Legend)) 
++ scale_color_manual(values = c("blue","red","black")) 
++ ggtitle(title) 
++ xlab("log2 fold change") 
++ ylab("-log10 adjusted p-value") 
++ theme(plot.title = element_text(size = rel(1.5), hjust = 0.5, face="bold"),
               axis.title = element_text(size = rel(1.25), face="bold"),
 panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black")) +
-        geom_text_repel(aes(x=log2FoldChange, y=-log10(padj),label = gene),force=50)}else{p <- ggplot(vres) +
+panel.background = element_blank(), axis.line = element_line(colour = "black")) 
++ geom_text_repel(aes(x=log2FoldChange, y=-log10(padj),label = gene),force=50)}
+else{p <- ggplot(vres) +
         geom_point(aes(x=log2FoldChange, y=-log10(padj),col=Legend)) +
         scale_color_manual(values = c("blue","red","black")) +
         ggtitle(title) +
@@ -606,15 +645,19 @@ ggsave(output, width = width, height = height, dpi = dpi)
 
 ## Generating volcano plot to visualize DE genes
 
-```{r DESeq2plots_TUCRs, message = FALSE}
+```{r DESeq2plots_TUCRs, message = FALSE, eval = FALSE}
 
-volcanoplot(res_TUCR,genes=c("uc.110","uc.210","uc.427","uc.62"),title = paste("Deregulated Genes in ",disease,sep=""), output = paste(outputdir,"/myron_tucr_results_volcanoplot.png",sep=""))
+volcanoplot(res_TUCR,genes=c("uc.110","uc.210","uc.427","uc.62"),
+            title = paste("Deregulated Genes in ",disease,sep=""), 
+            output = paste(outputdir,"/myron_tucr_results_volcanoplot.png",sep=""))
 
 repel_hold = repel
 
 repel = FALSE
 
-volcanoplot(res_TUCR,title = paste("Deregulated Genes in ",disease,sep=""), output = paste(outputdir,"/tucr_results_volcanoplot.png",sep=""))
+volcanoplot(res_TUCR,
+            title = paste("Deregulated Genes in ",disease,sep=""), 
+            output = paste(outputdir,"/tucr_results_volcanoplot.png",sep=""))
 
 repel = repel_hold
 
@@ -622,7 +665,7 @@ repel = repel_hold
 
 ## Volcano plot for intergenic TUCRs only
 
-```{r DESeq2plots_intergenicTUCRs}
+```{r DESeq2plots_intergenicTUCRs, eval = FALSE}
 
 tucr_annot <- read.csv("tucr_annot.csv")
 
@@ -631,13 +674,15 @@ res_intergenic <- inner_join(res_TUCR,tucr_annot,by = "row") %>%
 
 write.csv(res_intergenic, file = paste(outputdir,"/results_intergenicOnly.csv",sep=""))
 
-volcanoplot(res_intergenic,genes=c("uc.62","uc.110"), title = paste("Intergenic TUCR deregulation in ",disease,sep=""),output = paste(outputdir,"/intergenic_tucr_results_volcanoplot.png",sep=""))
+volcanoplot(res_intergenic,genes=c("uc.62","uc.110"), 
+            title = paste("Intergenic TUCR deregulation in ",disease,sep=""),
+            output = paste(outputdir,"/intergenic_tucr_results_volcanoplot.png",sep=""))
 
 ```
 
 ## Completing survival analysis for TUCRs
 
-```{r surcor_TUCRs, message=FALSE}
+```{r surcor_TUCRs, message=FALSE, eval = FALSE}
 if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
 
 countdata <- read.table(countfilename,header = TRUE)
@@ -740,12 +785,14 @@ for(i in 1:length(TUCRids)){
   kmdata <- km_TUCRs %>%
     dplyr::filter(id == TUCR)
   fit <- survfit(Surv(time, status) ~ group, data = kmdata)
-  p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE), error = function(e) { skip_to_next <<- TRUE})
+  p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE),
+                error = function(e) { skip_to_next <<- TRUE})
   if(skip_to_next) { 
     rbinder <- cbind(as.character(TUCR),NA,NA)
     ptable[i,] <- rbinder
     next } 
-  ggsave(file=paste(outputdir,"/tucrKPMplots/",TUCR,"_kpmplot.png",sep = ""),plot = print(p))
+  ggsave(file=paste(outputdir,"/tucrKPMplots/",TUCR,"_kpmplot.png",sep = ""),
+         plot = print(p))
     p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff")
   rbinder <- cbind(as.character(TUCR),p2value$pval,p2value$method)
   ptable[i,] <- rbinder
@@ -757,7 +804,7 @@ write_csv(ptable,paste(outputdir,"/kpm_summary_TUCRs.csv",sep=""))
 
 ## Summarize Survival Data 
 
-```{r summary surv}
+```{r summary surv, eval = FALSE}
 
 surv_TUCR <- read.csv(paste(outputdir,"/survival_TUCRs.csv",sep=""),header=TRUE)
 
@@ -770,15 +817,27 @@ res_surv_sum <- res_surv
 res_surv_sum <- res_surv_sum %>% mutate(gene="",Survival="")
 
 for (i in 1:length(res_surv_sum$id)){
-  ifelse(is.na(res_surv_sum$pvalue[i]),res_surv_sum$pvalue[i] <- 1,res_surv_sum$pvalue[i] <- res_surv_sum$pvalue[i])
+  ifelse(is.na(res_surv_sum$pvalue[i]),res_surv_sum$pvalue[i] <- 1,res_surv_sum$pvalue[i] 
+         <- res_surv_sum$pvalue[i])
     
-  ifelse(genes!="all",ifelse(!is.na(match(res_surv_sum$id[i],genes)),res_surv_sum$gene[i] <- as.character(res_surv_sum$id[i]), ""),res_surv_sum$gene[i] <- res_surv_sum$id[i])
+  ifelse(genes!="all",ifelse(!is.na(match(res_surv_sum$id[i],genes)),
+                             res_surv_sum$gene[i] <- as.character(res_surv_sum$id[i]), ""),
+                                  res_surv_sum$gene[i] <- res_surv_sum$id[i])
   
-  ifelse((res_surv_sum$pvalue[i] <0.05 & res_surv_sum$p.value[i] <0.05 & res_surv_sum$estimate[i] < 0),res_surv_sum$Survival[i] <- "Significant (Both, Good Prognosis)",
-  ifelse((res_surv_sum$pvalue[i] <0.05 & res_surv_sum$p.value[i] <0.05 & res_surv_sum$estimate[i] > 0),res_surv_sum$Survival[i] <- "Significant (Both, Poor Prognosis)",
-  ifelse((res_surv_sum$pvalue[i] >0.05 & res_surv_sum$p.value[i] <0.05 & res_surv_sum$estimate[i] < 0),res_surv_sum$Survival[i] <- "Significant (CH, Good Prognosis)",
-  ifelse((res_surv_sum$pvalue[i] >0.05 & res_surv_sum$p.value[i] <0.05 & res_surv_sum$estimate[i] > 0),res_surv_sum$Survival[i] <- "Significant (CH, Poor Prognosis)",
-  ifelse((res_surv_sum$pvalue[i] <0.05 & res_surv_sum$p.value[i] >0.05),res_surv_sum$Survival[i] <- "Significant (KM)",
+  ifelse((res_surv_sum$pvalue[i] <0.05 & res_surv_sum$p.value[i] <0.05 & 
+            res_surv_sum$estimate[i] < 0),
+         res_surv_sum$Survival[i] <- "Significant (Both, Good Prognosis)",
+  ifelse((res_surv_sum$pvalue[i] <0.05 & res_surv_sum$p.value[i] <0.05 &
+            res_surv_sum$estimate[i] > 0),
+         res_surv_sum$Survival[i] <- "Significant (Both, Poor Prognosis)",
+  ifelse((res_surv_sum$pvalue[i] >0.05 & res_surv_sum$p.value[i] <0.05 &
+            res_surv_sum$estimate[i] < 0),
+         res_surv_sum$Survival[i] <- "Significant (CH, Good Prognosis)",
+  ifelse((res_surv_sum$pvalue[i] >0.05 & res_surv_sum$p.value[i] <0.05 &
+            res_surv_sum$estimate[i] > 0),
+         res_surv_sum$Survival[i] <- "Significant (CH, Poor Prognosis)",
+  ifelse((res_surv_sum$pvalue[i] <0.05 & res_surv_sum$p.value[i] >0.05),
+         res_surv_sum$Survival[i] <- "Significant (KM)",
   ifelse(res_surv_sum$Survival[i] <- "Not significant"))))))}
 
 res_surv_sum <- res_surv_sum %>%
@@ -801,7 +860,7 @@ ggsave(file=paste(outputdir,"/tucr_surv_bar.png",sep=""),plot = print(p), width 
 
 ## Writing a script to generate a volcano plot for survival
 
-```{r volcanosurv}
+```{r volcanosurv, eval = FALSE}
 
 ### Volcano plot
 
@@ -856,7 +915,7 @@ ggsave(output, width = width, height = height, dpi = dpi)
 
 ## Draw Volcano plot for TUCRs
 
-```{r volcanosurv TUCRs}
+```{r volcanosurv TUCRs, eval = FALSE}
 
 volcanosurv(res_surv,genes=c("uc.174","uc.325","uc.363"), title = paste("TUCR correlation with patient survival in ",disease,sep=""),output = paste(outputdir,"/intergenic_tucr_results_volcanosurv.png",sep=""))
 
@@ -865,7 +924,7 @@ volcanosurv(res_surv,genes=c("uc.174","uc.325","uc.363"), title = paste("TUCR co
 
 ## Generate RPKMs for filtering
 
-```{r RPKM_TUCRs, results="hide"}
+```{r RPKM_TUCRs, results="hide", eval = FALSE}
 
 rpkmcounts <- tucrcounts[,6:ncol(tucrcounts)]
 rpkmcounts.info <- tucrcounts[,1:5]
@@ -896,7 +955,7 @@ write.csv(rpkm.median,paste(outputdir,"/medianrpkm.TUCRs.csv",sep=""))
 
 ## Generate RPKM Box Plots for each TUCR
 
-```{r boxplot_TUCRs, results = "hide"}
+```{r boxplot_TUCRs, results = "hide", eval = FALSE}
 if(makeRPKMboxplots == TRUE){
   
 if(!dir.exists(paste(outputdir,"/RPKMboxplots",sep=""))){
@@ -934,7 +993,7 @@ ggsave(p,file=paste(outputdir,"/RPKMboxplots/",TUCR,"_rpkm_boxplot.png",sep = ""
 
 ## Generate RPKM heatmap for all TUCRs
 
-```{r heatmap_TUCRs}
+```{r heatmap_TUCRs, eval = FALSE}
 heatmap.TUCRs <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
 TUCRids <- rpkm.TUCRs2[,4]
 means <- apply(heatmap.TUCRs,1,mean)
@@ -1065,7 +1124,7 @@ readr::write_excel_csv(here::here(paste(outputdir,"/correlations",sep=""),paste(
 
 ## Generate GO Terms for coregulated genes
 
-```{r GO Terms}
+```{r GO Terms, eval = FALSE}
  
 filenames <- list.files(paste(outputdir,"/correlations",sep=""))
 
@@ -1145,7 +1204,7 @@ write_csv(allgo_cc,paste(outputdir,"/GOterm_cc_summary_TUCRs.csv",sep=""))
 
 ## Summarize GO Term Data
 
-```{r summary GO Terms}
+```{r summary GO Terms, eval = FALSE}
 
 allgo <- read.csv(paste(outputdir,"/GOterm_all_summary_TUCRs.csv",sep=""),header=TRUE)
 
@@ -1345,11 +1404,11 @@ ggsave(p,file=paste(outputdir,"/",filename,".png",sep=""), width = 7.5, height =
 
 ## Show that TUCRs are enriched for hallmarks of lncRNAs
 
-```{r novelgenes}
+```{r novelgenes, eval = FALSE}
 tucr_novelgenes <- read.csv("tucr_novelgenes.csv")
   
 p <- ggplot(tucr_novelgenes, aes(x=row,y=value,fill=row)) + geom_bar(stat="identity", width = 0.7) +
-  geom_text(aes(label=round(value,2)), vjust=1.6, color="black", size=rel(4)) + ggtitle(paste("Some intergenic TUCRs are \n contained within Novel Genes")) + xlab("Overlap with known Refseq Gene") + ylab("Number of Genes") + theme(
+  geom_text(aes(label=round(value,2)), vjust=1.6, color="black", size=rel(4)) + ggtitle(paste("Some intergenic TUCRs are \n contained within Novel Genes")) + xlab("Gene Annotation and Disease") + ylab("Number of Genes") + theme(
 plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
 axis.title = element_text(size = rel(1.25), face="bold"),
 axis.text.x = element_text(angle = -90, size = 10),
