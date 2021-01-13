@@ -490,47 +490,40 @@ plot_annotation <- tucr_annot %>%
   arrange(desc(count)) %>%
   mutate(lab.ypos = cumsum(count) - 0.5*count)
 
-names(plot_annotation)[names(plot_annotation) == 'annot'] <- 'Annotation'
+names(plot_annotation)[names(plot_annotation) == 'annot'] <- 
+  'Annotation'
   
-<<<<<<< HEAD
-p <- ggplot(plot_annotation, aes(x=annot,y=count,fill=annot)) 
-  + geom_bar(stat="identity", width = 0.7) 
-  + geom_text(aes(label=count), vjust=1.6, color="black", size=7) 
-  + scale_fill_manual(values=c("#F8766D","#00BFC4","#7CAE00","#C77CFF")) 
-  + ggtitle(paste("TUCR Genomic Location")) 
-  + xlab("Genomic Location relative to nearest gene") 
-  + ylab("Number of Genes") 
-  + theme(
-plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
-axis.title = element_text(size = rel(1.25), face="bold"),
-legend.title = element_blank(),
-legend.position = "none",
-=======
-p <- ggplot(plot_annotation, aes(x=2,y=count,fill=Annotation)) + geom_bar(stat="identity", width = 1) +
-geom_text(aes(y = lab.ypos, label = count), color = "black") +
-coord_polar("y", start=0) +
-scale_fill_manual(values=c("#F8766D","#00BFC4","#7CAE00","#C77CFF")) + ggtitle(paste("TUCR Genomic Location")) + theme(
-plot.title = element_text(size=rel(1.5),
-  face="bold",hjust = 0.5,vjust=-2),
-legend.title.align=0.5, 
-axis.title = element_blank(),
-axis.text.x=element_blank(),
-axis.text.y=element_blank(),
-axis.line=element_blank(),
->>>>>>> efea12d00cff4703a47aef8c80036b5c87520470
-panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-axis.ticks=element_blank(),
-panel.background = element_blank()) +
-  xlim(0.5, 2.5) 
+p <- ggplot(plot_annotation, aes(x=2,y=count,fill=Annotation))          + 
+  geom_bar(
+    stat="identity", 
+    width = 1)                                                          +
+  geom_text(
+    aes(y = lab.ypos, label = count), 
+    color = "black")                                                    + 
+  coord_polar("y", start=0)                                             + 
+  scale_fill_manual(values=c("#F8766D","#00BFC4","#7CAE00","#C77CFF"))  + 
+  ggtitle(paste("TUCR Genomic Location"))                               + 
+  theme(
+    plot.title = element_text(size=rel(1.5),
+    face="bold",hjust = 0.5,vjust=-2),
+    legend.title.align=0.5, 
+    axis.title = element_blank(),
+    axis.text.x=element_blank(),
+    axis.text.y=element_blank(),
+    axis.line=element_blank(),
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    axis.ticks=element_blank(),
+    panel.background = element_blank())                                 + 
+  xlim(0.5, 2.5)
 
 p
 
-<<<<<<< HEAD
-ggsave(file=paste(outputdir,"/tucr_annotation.png",sep=""),plot = print(p)
-       , width = 5, height = 5, dpi = 300)
-=======
-ggsave(file=paste(outputdir,"/tucr_annotation.png",sep=""),plot = print(p), width = 4.5, height = 3.5, dpi = 300)
->>>>>>> efea12d00cff4703a47aef8c80036b5c87520470
+ggsave(file=paste(outputdir,"/tucr_annotation.png",sep=""),
+       plot = print(p), 
+       width = 5, 
+       height = 5, 
+       dpi = 300)
 ```
 
 ## Show that TUCRs are enriched for hallmarks of lncRNAs
@@ -538,24 +531,42 @@ ggsave(file=paste(outputdir,"/tucr_annotation.png",sep=""),plot = print(p), widt
 ```{r lncRNAs}
 tucr_lncRNAs <- read.csv("tucr_lncRNAs.csv")
   
-p <- ggplot(tucr_lncRNAs, aes(x=row,y=value,fill=row)) 
-  + geom_bar(stat="identity", width = 0.7) 
-  + geom_text(aes(label=round(value,2)), vjust=1.6, color="black", size=rel(4)) 
-  + ggtitle(paste("TUCRs are enriched for \n RNA Pol.II and H3K4me3")) 
-  + xlab("Interval and Mark") 
-  + ylab("-log10 of p-value") 
-  + theme(
-plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
-axis.title = element_text(size = rel(1.25), face="bold"),
-axis.text.x = element_text(angle = -90, size = 10),
-legend.title = element_blank(),
-legend.position = "none",
-panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black"))
+p <- ggplot(tucr_lncRNAs, aes(x=row,y=value,fill=row))                + 
+  geom_bar(
+    stat="identity", 
+    width = 0.7)                                                      + 
+  geom_text(
+    aes(label=round(value,2)), 
+    vjust=1.6, 
+    color="black", 
+    size=rel(4))                                                      + 
+  ggtitle(paste("TUCRs are enriched for \n RNA Pol.II and H3K4me3"))  + 
+  xlab("Interval and Mark")                                           + 
+  ylab("-log10 of p-value")                                           + 
+  theme(
+    plot.title = element_text(
+      size=rel(1.5), 
+      face="bold",hjust = 0.5),
+    axis.title = element_text(
+      size = rel(1.25), 
+      face="bold"),
+    axis.text.x = element_text(
+      angle = -90, 
+      size = 10),
+    legend.title = element_blank(),
+    legend.position = "none",
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(), 
+    axis.line = element_line(
+      colour = "black"))
 
-ggsave(file=paste(outputdir,"/tucr_lncRNAs.png",sep=""),plot = print(p),
-       width = 5, height = 5, dpi = 300) 
-  
+ggsave(
+    file=paste(outputdir,"/tucr_lncRNAs.png",sep=""),
+    plot = print(p),
+    width = 5, 
+    height = 5, 
+    dpi = 300) 
 
 ```
 
@@ -563,27 +574,45 @@ ggsave(file=paste(outputdir,"/tucr_lncRNAs.png",sep=""),plot = print(p),
 
 ```{r DESeq2_TUCRs, results="hide", message = FALSE}
 
-tucrcounts <- read.table(countfilename,header = TRUE)
-metadata <- read_csv(file = metadatafile)
+tucrcounts <- 
+  read.table(countfilename,header = TRUE)
 
-tucrcounts2 <- tucrcounts[,5:ncol(tucrcounts)]
+metadata <- 
+  read_csv(file = metadatafile)
 
-rownames(tucrcounts2) <- tucrcounts[,4]
-tucrcounts.info <- tucrcounts[,1:4]
-tucrcounts.info$length <- (tucrcounts$end - tucrcounts$start)/1000
-tucrcounts <- cbind(tucrcounts.info,tucrcounts2)
+tucrcounts2 <- 
+  tucrcounts[,5:ncol(tucrcounts)]
+
+rownames(tucrcounts2) <- 
+  tucrcounts[,4]
+
+tucrcounts.info <- 
+  tucrcounts[,1:4]
+
+tucrcounts.info$length <- 
+  (tucrcounts$end - tucrcounts$start)/1000
+
+tucrcounts <- 
+  cbind(tucrcounts.info,tucrcounts2)
 
 
-dds_TUCR <- DESeqDataSetFromMatrix(countData = tucrcounts2,
+dds_TUCR <- 
+  DESeqDataSetFromMatrix(countData = tucrcounts2,
                               colData = metadata,
                               design = ~dex)
-dds_TUCR <- DESeq(dds_TUCR)
-res_TUCR <- results(dds_TUCR, tidy=TRUE)
-res_TUCR <- as_tibble(res_TUCR)
+dds_TUCR <- 
+  DESeq(dds_TUCR)
+
+res_TUCR <- 
+  results(dds_TUCR, tidy=TRUE)
+
+res_TUCR <- 
+  as_tibble(res_TUCR)
 
 write.csv(res_TUCR, file = paste(outputdir,"/results_TUCR.csv",sep=""))
 
-res_TUCR_summary <- res_TUCR %>%
+res_TUCR_summary <- 
+  res_TUCR %>%
   mutate(dereg = 
            ifelse(res_TUCR$log2FoldChange >=1, "upregulated",
                     ifelse(res_TUCR$log2FoldChange <=-1,"downregulated","unchanged"))) %>%
@@ -591,23 +620,28 @@ res_TUCR_summary <- res_TUCR %>%
   group_by(dereg) %>%
   summarise(n = n())
 
-p <- ggplot(res_TUCR_summary, aes(x=dereg,y=n,fill=dereg)) 
-+ geom_bar(stat="identity", width = 0.7) 
-+ geom_text(aes(label=n), vjust=1.6, color="black", size=7) 
-+ scale_fill_manual(values=c("green", "red")) 
-+ ggtitle(paste("TUCR Deregulation in ",disease)) 
-+ xlab("Direction of Deregulation") 
-+ ylab("Number of Deregulated Genes") 
-+ theme(
-plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
-axis.title = element_text(size = rel(1.25), face="bold"),
-legend.title = element_blank(),
-legend.position = "none",
-panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black"))
+p <- ggplot(res_TUCR_summary, aes(x=dereg,y=n,fill=dereg)) + 
+  geom_bar(stat="identity", width = 0.7) + 
+  geom_text(aes(label=n), vjust=1.6, color="black", size=7) + 
+  scale_fill_manual(values=c("green", "red")) + 
+  ggtitle(paste("TUCR Deregulation in ",disease)) + 
+  xlab("Direction of Deregulation") + 
+  ylab("Number of Deregulated Genes") + 
+  theme(
+    plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
+    axis.title = element_text(size = rel(1.25), face="bold"),
+    legend.title = element_blank(),
+    legend.position = "none",
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(), 
+    axis.line = element_line(colour = "black"))
 
-ggsave(file=paste(outputdir,"/",disease,"_deregGraph.png",sep=""),plot = print(p),
-       width = 5, height = 5, dpi = 300)
+ggsave(file=paste(outputdir,"/",disease,"_deregGraph.png",sep=""),
+       plot = print(p),
+       width = 5, 
+       height = 5, 
+       dpi = 300)
 
 ```
 
@@ -621,13 +655,16 @@ volcanoplot <- function (res,
                          genes = "all",
                          title = paste("Deregulated Genes in ",disease,sep=""), 
                          output = "results_volcanoplot.png",
-                         height = 5, width = 6, dpi = 300){
+                         height = 5, 
+                         width = 6, 
+                         dpi = 300){
   #res <- res_TUCR
   #genes = c("uc.110","uc.62")
   #title = "Deregulated Genes"
   vres <- res
   vres <- vres %>% 
     mutate(filter1 = abs(log2FoldChange)>=1,filter2 = padj <=0.05,Legend="",gene="")
+  
   for (i in 1:length(vres$row)){
     if(is.na(vres$padj[i])){vres$Legend[i] <- "Not deregulated"}else{
     if(vres$filter1[i] == TRUE && vres$filter2[i] == TRUE){
@@ -1429,7 +1466,7 @@ ggsave(p,file=paste(outputdir,"/",filename,".png",sep=""), width = 7.5, height =
 
 ```
 
-## Show that TUCRs are enriched for hallmarks of lncRNAs
+## Show that TUCRs are contained within novel genes
 
 ```{r novelgenes, eval = FALSE}
 tucr_novelgenes <- read.csv("tucr_novelgenes.csv")
