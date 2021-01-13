@@ -483,10 +483,16 @@ cat *.txt > merged.txt
 
 tucr_annot <- read.csv("tucr_annot.csv")
 
-plot_annotation <- tucr_annot %>%
+plot_annotation <- tucr_annot %>% 
   group_by(annot) %>%
-  summarise(count = n())
+  summarise(count = n()) %>%
+  mutate(percent = count/sum(count)) %>%
+  arrange(desc(count)) %>%
+  mutate(lab.ypos = cumsum(count) - 0.5*count)
+
+names(plot_annotation)[names(plot_annotation) == 'annot'] <- 'Annotation'
   
+<<<<<<< HEAD
 p <- ggplot(plot_annotation, aes(x=annot,y=count,fill=annot)) 
   + geom_bar(stat="identity", width = 0.7) 
   + geom_text(aes(label=count), vjust=1.6, color="black", size=7) 
@@ -499,11 +505,32 @@ plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
 axis.title = element_text(size = rel(1.25), face="bold"),
 legend.title = element_blank(),
 legend.position = "none",
+=======
+p <- ggplot(plot_annotation, aes(x=2,y=count,fill=Annotation)) + geom_bar(stat="identity", width = 1) +
+geom_text(aes(y = lab.ypos, label = count), color = "black") +
+coord_polar("y", start=0) +
+scale_fill_manual(values=c("#F8766D","#00BFC4","#7CAE00","#C77CFF")) + ggtitle(paste("TUCR Genomic Location")) + theme(
+plot.title = element_text(size=rel(1.5),
+  face="bold",hjust = 0.5,vjust=-2),
+legend.title.align=0.5, 
+axis.title = element_blank(),
+axis.text.x=element_blank(),
+axis.text.y=element_blank(),
+axis.line=element_blank(),
+>>>>>>> efea12d00cff4703a47aef8c80036b5c87520470
 panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black"))
+axis.ticks=element_blank(),
+panel.background = element_blank()) +
+  xlim(0.5, 2.5) 
 
+p
+
+<<<<<<< HEAD
 ggsave(file=paste(outputdir,"/tucr_annotation.png",sep=""),plot = print(p)
        , width = 5, height = 5, dpi = 300)
+=======
+ggsave(file=paste(outputdir,"/tucr_annotation.png",sep=""),plot = print(p), width = 4.5, height = 3.5, dpi = 300)
+>>>>>>> efea12d00cff4703a47aef8c80036b5c87520470
 ```
 
 ## Show that TUCRs are enriched for hallmarks of lncRNAs
