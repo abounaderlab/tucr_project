@@ -75,8 +75,8 @@ intermediatefile <- "matrixintermediate.Rdata"
 
 ## Install required programs
 
-```{r setup, message = FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, message = FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE,eval=FALSE, warning=FALSE, message=FALSE)
 
 if (!require("tidyverse")) install.packages("tidyverse")
 library("tidyverse")
@@ -572,7 +572,7 @@ ggsave(
 
 ## Identifying differentially expressed TUCRs with DESeq2
 
-```{r DESeq2_TUCRs, results="hide", message = FALSE}
+```{r DESeq2_TUCRs}
 
 tucrcounts <- 
   read.table(countfilename,header = TRUE)
@@ -647,7 +647,7 @@ ggsave(file=paste(outputdir,"/",disease,"_deregGraph.png",sep=""),
 
 ## Writing a script to generate a volcano plot
 
-```{r volcanoplot, eval = FALSE}
+```{r volcanoplot}
 
 ### Volcano plot
 
@@ -709,7 +709,7 @@ ggsave(output, width = width, height = height, dpi = dpi)
 
 ## Generating volcano plot to visualize DE genes
 
-```{r DESeq2plots_TUCRs, message = FALSE, eval = FALSE}
+```{r DESeq2plots_TUCRs}
 
 volcanoplot(res_TUCR,genes=c("uc.110","uc.210","uc.427","uc.62"),
             title = paste("Deregulated Genes in ",disease,sep=""), 
@@ -729,7 +729,7 @@ repel = repel_hold
 
 ## Volcano plot for intergenic TUCRs only
 
-```{r DESeq2plots_intergenicTUCRs, eval = FALSE}
+```{r DESeq2plots_intergenicTUCRs}
 
 tucr_annot <- read.csv("tucr_annot.csv")
 
@@ -746,7 +746,7 @@ volcanoplot(res_intergenic,genes=c("uc.62","uc.110"),
 
 ## Completing survival analysis for TUCRs
 
-```{r surcor_TUCRs, message=FALSE, eval = FALSE}
+```{r surcor_TUCRs}
 if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
 
 countdata <- read.table(countfilename,header = TRUE)
@@ -868,7 +868,7 @@ write_csv(ptable,paste(outputdir,"/kpm_summary_TUCRs.csv",sep=""))
 
 ## Summarize Survival Data 
 
-```{r summary surv, eval = FALSE}
+```{r summary surv}
 
 surv_TUCR <- read.csv(paste(outputdir,"/survival_TUCRs.csv",sep=""),header=TRUE)
 
@@ -924,7 +924,7 @@ ggsave(file=paste(outputdir,"/tucr_surv_bar.png",sep=""),plot = print(p), width 
 
 ## Writing a script to generate a volcano plot for survival
 
-```{r volcanosurv, eval = FALSE}
+```{r volcanosurv}
 
 ### Volcano plot
 
@@ -979,7 +979,7 @@ ggsave(output, width = width, height = height, dpi = dpi)
 
 ## Draw Volcano plot for TUCRs
 
-```{r volcanosurv TUCRs, eval = FALSE}
+```{r volcanosurv TUCRs}
 
 volcanosurv(res_surv,genes=c("uc.174","uc.325","uc.363"), title = paste("TUCR correlation with patient survival in ",disease,sep=""),output = paste(outputdir,"/intergenic_tucr_results_volcanosurv.png",sep=""))
 
@@ -988,7 +988,7 @@ volcanosurv(res_surv,genes=c("uc.174","uc.325","uc.363"), title = paste("TUCR co
 
 ## Generate RPKMs for filtering
 
-```{r RPKM_TUCRs, results="hide", eval = FALSE}
+```{r RPKM_TUCRs}
 
 rpkmcounts <- tucrcounts[,6:ncol(tucrcounts)]
 rpkmcounts.info <- tucrcounts[,1:5]
@@ -1019,7 +1019,7 @@ write.csv(rpkm.median,paste(outputdir,"/medianrpkm.TUCRs.csv",sep=""))
 
 ## Generate RPKM Box Plots for each TUCR
 
-```{r boxplot_TUCRs, results = "hide", eval = FALSE}
+```{r boxplot_TUCRs}
 if(makeRPKMboxplots == TRUE){
   
 if(!dir.exists(paste(outputdir,"/RPKMboxplots",sep=""))){
@@ -1057,7 +1057,7 @@ ggsave(p,file=paste(outputdir,"/RPKMboxplots/",TUCR,"_rpkm_boxplot.png",sep = ""
 
 ## Generate RPKM heatmap for all TUCRs
 
-```{r heatmap_TUCRs, eval = FALSE}
+```{r heatmap_TUCRs}
 heatmap.TUCRs <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
 TUCRids <- rpkm.TUCRs2[,4]
 means <- apply(heatmap.TUCRs,1,mean)
@@ -1081,7 +1081,7 @@ ggsave(p,file=paste(outputdir,"/TUCR_heatmap.png",sep=""))
 
 ## Identify DE TUCRs that are correlated with each other
 
-```{r correlations, eval = FALSE}
+```{r correlations}
 
 if(!dir.exists(paste(outputdir,"/correlations",sep=""))){
   dir.create(paste(outputdir,"/correlations",sep=""))
@@ -1134,19 +1134,20 @@ i=3
 for(i in 3:ncol(tucr.cor)){
   print(i)
   tucr.cor.matrix[,i-2] <- tucr.cor[,i]/tucr.cor[,2]
-}
+
 
 colnames(tucr.cor.matrix) <- metadata$id
 tucr.cor.matrix2 <- t(as.data.frame(apply(as.data.frame(tucr.cor.matrix),1:2,function(x) {ifelse(x>=1,x,-(1/x))})))
 tucr.cor.matrix2 <- as.data.frame(tucr.cor.matrix2)
 tucr.cor.matrix2 <- tucr.cor.matrix2[1:180,]
-geneindex <- rownames(tucr.cor.matrix)
+geneindex <- rownames(tucr.cor.matrix)}
 
 save(tucr.cor.matrix2,geneindex,TUCRids,file="inter.rData")
 rm(list=ls())
+
 load(file="inter.rData")
 
-tucr.cor.matrix3 <- cor(tucr.cor.matrix2,method="spearman")
+tucr.cor.matrix3 <- cor(tucr.cor.matrix2,method="spearman", use = "complete.obs")
 
 save(tucr.cor.matrix3,geneindex,TUCRids,file=intermediatefile)
 rm(list=ls())
@@ -1154,24 +1155,38 @@ load(file=intermediatefile)}else{
   load("matrixintermediate.rData")
 }
 
+header <- head(tucr.cor.matrix3)
+
 summarycor <- data.frame(searchTUCR=character(0),ngenes=integer(0),meancor=numeric(0),mediancor=numeric(0),mincor=numeric(0),maxcor=numeric(0))
 
 i = 1
 
 for(i in 1:length(TUCRids)){
   print(i)
-  #searchTUCR <- TUCRids[i]
-  searchTUCR <- "uc.110"
+  searchTUCR <- TUCRids[i]
+  #searchTUCR <- "uc.110"
 ###uc.110 is at row 20972 in tucr.cor.matrix3 via manual confirmation.
 tucr.cor.matrix.match <- tucr.cor.matrix3[match(searchTUCR,geneindex),]
 tucr.cor.matrix.match <- as.data.frame(tucr.cor.matrix.match)
-tucr.cor.matrix.match <- tucr.cor.matrix.match %>% 
+tucr.cor.matrix.match.plus <- tucr.cor.matrix.match %>% 
   mutate(partner = geneindex) %>%
   mutate(gene = searchTUCR) %>%
   dplyr::select(gene,partner,"cor"=tucr.cor.matrix.match) %>%
-  dplyr::filter(abs(cor)>=0.3 & partner != searchTUCR)
+  dplyr::filter(cor>=0.3 & partner != searchTUCR) %>%
+  dplyr::mutate(direction = "negative")
 
-write.csv(tucr.cor.matrix.match,paste(outputdir,"/correlations/",searchTUCR,"_correlations.csv",sep=""))
+write.csv(tucr.cor.matrix.match.plus,
+          paste(outputdir,"/correlations/",searchTUCR,"_plus_correlations.csv",sep=""))
+
+tucr.cor.matrix.match.minus <- tucr.cor.matrix.match %>% 
+  mutate(partner = geneindex) %>%
+  mutate(gene = searchTUCR) %>%
+  dplyr::select(gene,partner,"cor"=tucr.cor.matrix.match) %>%
+  dplyr::filter(cor<=-0.3 & partner != searchTUCR) %>%
+  dplyr::mutate(direction = "negative")
+
+write.csv(tucr.cor.matrix.match.minus,
+          paste(outputdir,"/correlations/",searchTUCR,"_minus_correlations.csv",sep=""))
 
 meancor <- mean(tucr.cor.matrix.match$cor,na.rm=TRUE)
 mediancor <- median(tucr.cor.matrix.match$cor)
@@ -1188,7 +1203,7 @@ readr::write_excel_csv(here::here(paste(outputdir,"/correlations",sep=""),paste(
 
 ## Generate GO Terms for coregulated genes
 
-```{r GO Terms, eval = FALSE}
+```{r GO Terms}
  
 filenames <- list.files(paste(outputdir,"/correlations",sep=""))
 
@@ -1208,13 +1223,13 @@ if(!dir.exists(paste(outputdir,"/GO_terms_cc",sep=""))){
   dir.create(paste(outputdir,"/GO_terms_cc",sep=""))
 }
 
-allgo <- data.frame(matrix(ncol=5,nrow=0, dimnames=list(NULL, c("GO Term","Ont","N","DE","P.DE"))))
+allgo <- data.frame(matrix(ncol=7,nrow=0, dimnames=list(NULL, c("GO Term","Ont","N","DE","P.DE","direction","gene"))))
 
-allgo_bp <- data.frame(matrix(ncol=5,nrow=0, dimnames=list(NULL, c("GO Term","Ont","N","DE","P.DE"))))
+allgo_bp <- data.frame(matrix(ncol=7,nrow=0, dimnames=list(NULL, c("GO Term","Ont","N","DE","P.DE","direction","gene"))))
 
-allgo_mf <- data.frame(matrix(ncol=5,nrow=0, dimnames=list(NULL, c("GO Term","Ont","N","DE","P.DE"))))
+allgo_mf <- data.frame(matrix(ncol=7,nrow=0, dimnames=list(NULL, c("GO Term","Ont","N","DE","P.DE","direction","gene"))))
 
-allgo_cc <- data.frame(matrix(ncol=5,nrow=0, dimnames=list(NULL, c("GO Term","Ont","N","DE","P.DE"))))
+allgo_cc <- data.frame(matrix(ncol=7,nrow=0, dimnames=list(NULL, c("GO Term","Ont","N","DE","P.DE","direction","gene"))))
 
 i = 2
 
@@ -1222,6 +1237,7 @@ for(i in 2:length(filenames)){
   print(i)
   skip_to_next <- FALSE
   df <- read.csv(paste(outputdir,"/correlations/",filenames[i],sep=""))
+  gene <- as.character(df$gene[1])
   
   if(length(df[,1] > 0)){
   
@@ -1236,19 +1252,36 @@ for(i in 2:length(filenames)){
   if(skip_to_next) { next } 
 
   df2$entrez <- entrezIDs
+  if(str_detect(filenames[i],"minus")){direction <- -1}else{
+    if(str_detect(filenames[i],"plus")){direction <- 1}else{direction <- 0}
+  }
   
   Genes<-entrezIDs
   g <- goana(Genes)
-  topGO <- topGO(g)
-  write.csv(topGO,paste(outputdir,"/GO_terms/",filenames[i],sep=""))
+  topGO <- topGO(g) 
+  
+  topGO_all <- topGO %>%
+    mutate(direction = direction) %>%
+    mutate(gene = gene)
+  
+  write.csv(topGO_all,paste(outputdir,"/GO_terms/",filenames[i],sep=""))
   topGO_bp <- topGO %>%
-    filter(Ont == "BP")
+    filter(Ont == "BP") %>%
+    mutate(direction = direction) %>%
+    mutate(gene = gene)
+  
   write.csv(topGO_bp,paste(outputdir,"/GO_terms_bp/",filenames[i],sep=""))
   topGO_mf <- topGO %>%
-    filter(Ont == "MF")
+    filter(Ont == "MF") %>%
+    mutate(direction = direction) %>%
+    mutate(gene = gene)
+  
   write.csv(topGO_mf,paste(outputdir,"/GO_terms_mf/",filenames[i],sep=""))
   topGO_cc <- topGO %>%
-    filter(Ont == "CC")
+    filter(Ont == "CC") %>%
+    mutate(direction = direction) %>%
+    mutate(gene = gene)
+  
   write.csv(topGO_cc,paste(outputdir,"/GO_terms_cc/",filenames[i],sep=""))
   }else{}
   allgo <- rbind(allgo,topGO)
@@ -1266,9 +1299,53 @@ write_csv(allgo_mf,paste(outputdir,"/GOterm_mf_summary_TUCRs.csv",sep=""))
 write_csv(allgo_cc,paste(outputdir,"/GOterm_cc_summary_TUCRs.csv",sep=""))
 ```
 
-## Summarize GO Term Data
+## Summarize GO Term Data (new)
 
-```{r summary GO Terms, eval = FALSE}
+```{r summary GO Terms new}
+
+TUCRids <- read.table(countfilename,header = TRUE)
+TUCRids <- as.character(TUCRids[,4])
+
+allgo <- read.csv(paste(outputdir,"/GOterm_all_summary_TUCRs.csv",sep=""),header=TRUE)
+allgo <- allgo %>%
+  dplyr::select(Term)
+
+rbinder.allgo <- allgo
+heatmap.allgo <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("Term","gene","direction"))))
+
+i = 1
+for(i in 1:length(TUCRids)){
+  print(i)
+  TUCR <- TUCRids[i]
+  skip_to_next_p <<- FALSE
+  skip_to_next_n <<- FALSE
+  positive <- tryCatch(read.csv(paste(outputdir,"/GO_Terms/",TUCR,"_plus_correlations.csv",sep=""),
+                       header=TRUE), error = function(e) { skip_to_next_p <<- TRUE})
+
+  negative <- tryCatch(read.csv(paste(outputdir,"/GO_Terms/",TUCR,"_minus_correlations.csv",sep=""),
+                       header=TRUE), error = function(e) { skip_to_next_n <<- TRUE})
+
+  
+  if(skip_to_next_p & skip_to_next_n) { next } 
+  
+  pos_neg <- rbind(positive,negative)
+  pos_neg <- pos_neg %>%
+    filter(P.DE <= 0.05) %>%
+    dplyr::select(Term,gene,direction)
+  
+  rbinder.allgo.TUCR <- dplyr::left_join(rbinder.allgo,pos_neg,by="Term")
+  rbinder.allgo.TUCR$gene <- TUCR
+  heatmap.allgo <- rbind(heatmap.allgo,rbinder.allgo.TUCR)
+}
+
+
+heatmap.allgo[is.na(heatmap.allgo)] <- 0
+
+```  
+
+## Summarize GO Terms (old)
+
+```{r summary GO Terms old}
 
 allgo <- read.csv(paste(outputdir,"/GOterm_all_summary_TUCRs.csv",sep=""),header=TRUE)
 
@@ -1390,7 +1467,7 @@ ggsave(file=paste(outputdir,"/tucr_allgo_fig.png",sep=""),plot = print(p4), widt
 
 ## Generate figures for cell fractionation
 
-```{r cellfrac_TUCR, eval=FALSE,message=FALSE}
+```{r cellfrac_TUCR}
 
 if(!dir.exists(paste(outputdir,"/cellfrac",sep=""))){
   dir.create(paste(outputdir,"/cellfrac",sep=""))
@@ -1442,7 +1519,7 @@ for(i in 1:length(path)){
 
 ## Make figures for fold change
 
-```{r overexp_TUCR, eval = FALSE, message=FALSE, eval = FALSE}
+```{r overexp_TUCR}
 
 overexp_TUCR_cp <- c("#C77CFF","#F8766D","#619CFF","#00BA38","#FFFF00")
 
@@ -1468,7 +1545,7 @@ ggsave(p,file=paste(outputdir,"/",filename,".png",sep=""), width = 7.5, height =
 
 ## Show that TUCRs are contained within novel genes
 
-```{r novelgenes, eval = FALSE}
+```{r novelgenes}
 tucr_novelgenes <- read.csv("tucr_novelgenes.csv")
   
 p <- ggplot(tucr_novelgenes, aes(x=row,y=value,fill=row)) + geom_bar(stat="identity", width = 0.7) +
