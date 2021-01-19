@@ -138,6 +138,9 @@ library(GO.db)
 if (!require('limma')) BiocManager::install('limma')
 library(limma)
 
+if (!require('factoextra')) BiocManager::install('factoextra')
+library(factoextra)
+
 ```
 
 ## Create output directory
@@ -1338,8 +1341,33 @@ for(i in 1:length(TUCRids)){
   heatmap.allgo <- rbind(heatmap.allgo,rbinder.allgo.TUCR)
 }
 
+library(factoextra)
 
-heatmap.allgo[is.na(heatmap.allgo)] <- 0
+heatmap.allgo.wide <- heatmap.allgo %>%
+  group_by(Term) %>%
+  mutate(sum = sum(direction)) %>%
+  ungroup() %>%
+  arrange(desc(sum)) %>%
+  mutate(Term2 = fct_reorder(Term,sum))
+
+heatmap.allgo.summary <- heatmap.allgo.wide %>%
+  group_by(Term,sum) %>%
+  summarise() %>%
+  arrange(desc(sum))
+
+heatmap.allgo.top20 <- heatmap.allgo.summary[1:20,]
+heatmap.allgo.bottom20 <- heatmap.allgo.summary[(length(heatmap.allgo.summary$Term)):(length(heatmap.allgo.summary$Term)-19),]
+  
+
+p <- ggplot(data = heatmap.allgo.wide,mapping = aes(x = gene,y = Term2, fill = direction)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) + ggtitle(paste("Expression of TUCRs in ",disease,sep="")) +
+  theme(plot.title = element_text(hjust = 0.5),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+ggsave(p,file=paste(outputdir,"/GOTerm_all_heatmap.png",sep=""))
 
 ```  
 
