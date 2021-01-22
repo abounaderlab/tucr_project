@@ -50,7 +50,7 @@ The following variables can be set:
 * useintermediate is a logical vector.  When set to TRUE, the analysis will use a pregenerated gene correlation matrix for the guilt by association analysis.  Unless there is a specific reason to generate a new matrix (VERY memory intensive), this variable should be set to TRUE.
 * deleteoutputs is a logical vector that should only be set to TURE or FALSE.  When set to true, the output directory will be repopulated after every program run.  If set to false, the program will only run if the output directory does not already exist in the working directory, to prevent the data from being overwritten.
 
-```{r parameters}
+```{r parameters, eval = TRUE}
 disease <- "GBM"
 
 countfilename <- "TUCR_counts.txt"
@@ -77,6 +77,9 @@ intermediatefile <- "matrixintermediate.Rdata"
 
 ```{r setup, message = FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE,eval=FALSE, warning=FALSE, message=FALSE)
+
+#To get software environment
+#sessionInfo()
 
 if (!require("tidyverse")) install.packages("tidyverse")
 library("tidyverse")
@@ -1204,6 +1207,54 @@ readr::write_excel_csv(here::here(paste(outputdir,"/correlations",sep=""),paste(
 
 ```
 
+## Get "Cancer" GO Terms
+
+```{r cancerGO, eval = TRUE}
+
+cancermine <- read.csv("annotated_genelist_onctsg.csv",header=TRUE)
+
+IDs <- as.character(cancermine$target)
+  
+entrezIDs <- mapIds(org.Hs.eg.db, IDs, 'ENTREZID', 'SYMBOL')
+  
+cancermine$entrez <- entrezIDs
+
+Genes<-entrezIDs
+g <- goana(Genes)
+topGO_cancermine <- topGO(g) 
+
+cancermine_TSG <- cancermine %>%
+  filter(role == "TSG")
+
+IDs <- as.character(cancermine_TSG$target)
+  
+entrezIDs <- mapIds(org.Hs.eg.db, IDs, 'ENTREZID', 'SYMBOL')
+  
+cancermine_TSG$entrez <- entrezIDs
+
+Genes<-entrezIDs
+g <- goana(Genes)
+topGO_cancermine_TSG <- topGO(g) 
+
+cancermine_ONC <- cancermine %>%
+  filter(role == "ONC")
+
+IDs <- as.character(cancermine_ONC$target)
+  
+entrezIDs <- mapIds(org.Hs.eg.db, IDs, 'ENTREZID', 'SYMBOL')
+  
+cancermine_ONC$entrez <- entrezIDs
+
+Genes<-entrezIDs
+g <- goana(Genes)
+topGO_cancermine_ONC <- topGO(g) 
+
+topGO_cancermine_ALL <- rbind(topGO_cancermine,topGO_cancermine_ONC,topGO_cancermine_TSG)
+
+cancer_GOTerms <- unique(as.character(topGO_cancermine_ALL$Term))
+
+```
+
 ## Generate GO Terms for coregulated genes
 
 ```{r GO Terms}
@@ -1263,31 +1314,45 @@ for(i in 2:length(filenames)){
   g <- goana(Genes)
   topGO <- topGO(g) 
   
+  ############
+  
   topGO_all <- topGO %>%
     mutate(direction = direction) %>%
     mutate(gene = gene)
   
   write.csv(topGO_all,paste(outputdir,"/GO_terms/",filenames[i],sep=""))
+  
+  ############
+
   topGO_bp <- topGO %>%
     filter(Ont == "BP") %>%
     mutate(direction = direction) %>%
     mutate(gene = gene)
   
   write.csv(topGO_bp,paste(outputdir,"/GO_terms_bp/",filenames[i],sep=""))
+  
+  ############
+  
   topGO_mf <- topGO %>%
     filter(Ont == "MF") %>%
     mutate(direction = direction) %>%
     mutate(gene = gene)
   
   write.csv(topGO_mf,paste(outputdir,"/GO_terms_mf/",filenames[i],sep=""))
+  
+  ############
+  
   topGO_cc <- topGO %>%
     filter(Ont == "CC") %>%
     mutate(direction = direction) %>%
     mutate(gene = gene)
   
   write.csv(topGO_cc,paste(outputdir,"/GO_terms_cc/",filenames[i],sep=""))
+  
+  ############
+  
   }else{}
-  allgo <- rbind(allgo,topGO)
+  allgo <- rbind(allgo,topGO_all)
   allgo_bp <- rbind(allgo_bp,topGO_bp)
   allgo_mf <- rbind(allgo_mf,topGO_mf)
   allgo_cc <- rbind(allgo_cc,topGO_cc)
@@ -1300,7 +1365,70 @@ write_csv(allgo_bp,paste(outputdir,"/GOterm_bp_summary_TUCRs.csv",sep=""))
 write_csv(allgo_mf,paste(outputdir,"/GOterm_mf_summary_TUCRs.csv",sep=""))
 
 write_csv(allgo_cc,paste(outputdir,"/GOterm_cc_summary_TUCRs.csv",sep=""))
+
+save(allgo,allgo_bp,allgo_mf,allgo_cc,file="allgo.rData")
 ```
+
+## Get "Cancer" GO Terms only
+
+```{r cancerGO_TUCR, eval = TRUE}
+
+load("allgo.rData")
+
+if(!dir.exists(paste(outputdir,"/GO_terms_bp_cancer",sep=""))){
+  dir.create(paste(outputdir,"/GO_terms_bp_cancer",sep=""))
+}
+
+allgo_cancer <- allgo[which(allgo$Term %in% cancer_GOTerms),]
+
+allgo_cancer_summary <- allgo_cancer %>%
+  filter(P.DE <= 0.05) %>%
+  group_by(Term,direction) %>%
+  summarise(n = n())
+
+write_csv(allgo_cancer_summary,paste(outputdir,"/GOterm_cancer_all_summary_TUCRs.csv",sep=""))
+
+if(!dir.exists(paste(outputdir,"/GO_terms_bp_cancer",sep=""))){
+  dir.create(paste(outputdir,"/GO_terms_bp_cancer",sep=""))
+}
+
+allgo_bp_cancer <- allgo_bp[which(allgo_bp$Term %in% cancer_GOTerms),]
+
+allgo_bp_cancer_summary <- allgo_bp_cancer %>%
+  filter(P.DE <= 0.05) %>%
+  group_by(Term,direction) %>%
+  summarise(n = n())
+
+write_csv(allgo_bp_cancer_summary,paste(outputdir,"/GOterm_cancer_bp_summary_TUCRs.csv",sep=""))
+
+if(!dir.exists(paste(outputdir,"/GO_terms_mf_cancer",sep=""))){
+  dir.create(paste(outputdir,"/GO_terms_mf_cancer",sep=""))
+}
+
+allgo_mf_cancer <- allgo_mf[which(allgo_mf$Term %in% cancer_GOTerms),]
+
+allgo_mf_cancer_summary <- allgo_mf_cancer %>%
+  filter(P.DE <= 0.05) %>%
+  group_by(Term,direction) %>%
+  summarise(n = n())
+
+write_csv(allgo_mf_cancer_summary,paste(outputdir,"/GOterm_cancer_mf_summary_TUCRs.csv",sep=""))
+
+if(!dir.exists(paste(outputdir,"/GO_terms_cc_cancer",sep=""))){
+  dir.create(paste(outputdir,"/GO_terms_cc_cancer",sep=""))
+}
+
+allgo_cc_cancer <- allgo_cc[which(allgo_cc$Term %in% cancer_GOTerms),]
+
+allgo_cc_cancer_summary <- allgo_cc_cancer %>%
+  filter(P.DE <= 0.05) %>%
+  group_by(Term,direction) %>%
+  summarise(n = n())
+
+write_csv(allgo_cc_cancer_summary,paste(outputdir,"/GOterm_cancer_cc_summary_TUCRs.csv",sep=""))
+
+```
+
 
 ## Summarize GO Term Data (new)
 
@@ -1309,11 +1437,11 @@ write_csv(allgo_cc,paste(outputdir,"/GOterm_cc_summary_TUCRs.csv",sep=""))
 TUCRids <- read.table(countfilename,header = TRUE)
 TUCRids <- as.character(TUCRids[,4])
 
-allgo <- read.csv(paste(outputdir,"/GOterm_all_summary_TUCRs.csv",sep=""),header=TRUE)
-allgo <- allgo %>%
+allgo_cancer_summary <- read.csv(paste(outputdir,"/GOterm_cancer_all_summary_TUCRs.csv",sep=""),header=TRUE)
+allgo_cancer_summary <- allgo_cancer_summary %>%
   dplyr::select(Term)
 
-rbinder.allgo <- allgo
+rbinder.allgo <- allgo_cancer_summary
 heatmap.allgo <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("Term","gene","direction"))))
 
 i = 1
@@ -1367,7 +1495,7 @@ p <- ggplot(data = heatmap.allgo.wide,mapping = aes(x = gene,y = Term2, fill = d
         axis.text = element_blank(),
         axis.ticks = element_blank())
 
-ggsave(p,file=paste(outputdir,"/GOTerm_all_heatmap.png",sep=""))
+ggsave(p,file=paste(outputdir,"/GOTerm_cancer_all_heatmap.png",sep=""))
 
 ```  
 
