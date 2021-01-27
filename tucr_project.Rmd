@@ -20,24 +20,25 @@ tinytex::install_tinytex()
 }
 ```
 
-## Abstract
+# Abstract
 
-Glioblastoma (GBM) is the most common and most deadly malignant brain tumor. Most GBM research has focused on protein-coding genes and much less on the non-coding transcripts that make up 98% of cellular RNA. Transcribed Ultra-Conserved Regions (TUCRs) represent an understudied class of long non-coding RNAs (lncRNAs) that are found conserved across multiple species. These non-coding transcripts are highly resistant to variation and are commonly deregulated in cancer, suggesting regulatory and functional importance. We performed a first time analysis of TCGA RNA-Seq data and identified 197 TUCRs that are differentially expressed relative to normal brain. This project aims to identify and valid these deregulated TUCRs, identify and validate lncRNA transcripts containing these TUCRs, identify genes that are co-regulated with these TUCRs, and predict TUCR function using the functions that are governed by co-regulated genes.
+Gliomas represent the most common brain tumors.  Particularly, glioblastoma (GBM) is the most common and most deadly malignant brain tumor. Most glioma research has focused on protein-coding genes and much less on the non-coding transcripts that make up 98% of cellular RNA. Transcribed Ultra-Conserved Regions (TUCRs) represent an understudied class of molecules that are found conserved across multiple species. These transcripts are highly resistant to variation and are commonly deregulated in cancer, suggesting regulatory and functional importance.  Intergenic TUCRs specifically represent potential novel protein coding and non-coding transcripts, as they do not overlap with known genes.  We performed the first analysis of TUCRs in glioblastoma and low grade glioma (LGG).  Previously established methodologies were used to annotate TUCRs and confirm that they are transcribed.  Then, differentially expressed (DE) TUCRs were identified in GBM (n = 197) and LGG (n = 149), along with those who correlate with survival in GBM (n = 36) and LGG (n = 167).  TUCRs were then scored by their absolute and relative expression in GBM and LGG, frequency of deregulation, and correlation with survival.  These scores provide a means for prioritizing TUCRs for future experiments. Using a GBM and LGG RNA-Seq data to generate a list of co-regulated genes, a guilt-by-association analysis was performed to determine what biological processes and molecular functions may be shared by TUCRs and their co-regulated genes.  Lastly, as TUCRs represent fractions of larger host transcripts, we sought to identify and characterize the parent transcripts of intergenic TUCRs.  We propose that these host transcripts represent novel genes, with the TUCR itself serving as a component of these transcripts.  The results of this study provide an insight into several exciting future research directions.
 
-## Introduction
+# Introduction
 
-Gliomas account for approximately 80% of all brain tumors.  In particular, glioblastoma (GBM) accounts for about half of all primary brain and central nervous system cancers.  It is also one of the most deadly cancers. One-, five-, and ten-year survival rates for patients with GBM are 37 percent, 5%, and 3%, respectively.  Although there has been extensive research on protein coding genes and pathways in GBM and low grade gliomas (LGGs), the current standard of care involves surgical resection and radiation, with limited targeted therapies.
+Gliomas account for approximately 80% of all brain tumors.  In particular, glioblastoma (GBM) accounts for about half of all primary brain and central nervous system cancers.  It is also one of the most-deadly cancers. One-, five-, and ten-year survival rates for patients with GBM are 37 percent, 5%, and 3%, respectively.  Although there has been extensive research on protein coding genes and pathways in GBM and low grade gliomas (LGG), the current standard of care involves surgical resection and radiation, with limited targeted therapies.
 
-While many targeted therapies in the context of GBM, LGGs, and other malignancies focus on protein-coding genes, these genes make up only ~1.5% of the ~90% of the genome that is transcribed. The remainder of the transcribed genome is represented by non-coding elements that can serve key regulatory roles. Of these elements, long non-coding RNAs (lncRNAs) have recently been determined to serve as important regulators of malignancy and potential therapeutic targets in cancer. 28-33 These lncRNAs are transcribed RNA molecules that contain greater than 200 nucleotides but typically lack significant protein coding capabilities. 
+Many targeted therapies in the context of GBM, LGG, and other malignancies focus on protein-coding genes.  And yet, these genes make up only a small portion of the transcriptome; ~90% of the genome is transcribed, but only ~2 percent of the transcriptome is then translated. The remainder of the transcriptome is represented by non-coding elements that can serve key regulatory roles. Of these elements, long non-coding RNAs (lncRNAs) have recently been determined to serve as important regulators of malignancy and potential therapeutic targets in cancer. These lncRNAs are transcribed RNA molecules that contain greater than 200 nucleotides but typically lack significant protein coding capabilities. 
 
-A subset of these lncRNAs is transcribed from ultra-conserved regions (TUCR) of the genome.  These TUCRs are 481 unique regions of the genome that are greater than 200 base pairs in length and are highly conserved across multiple species, including human, mouse, rat, dog, and chicken genomes. This is significant, as lncRNAs are typically poorly conserved as a class of molecules.  TUCRs are highly resistant to variation, with the 106,767 conserved bases overlapping with as few as six canonical single nucleotide polymorphisms (SNPs).  Their expression is commonly deregulated in cancer.
+There are several genetic regions that are “ultra-conserved” across species (UCR).  From these regions, Transcribed ultra-conserved regions (TUCRs) represent 481 unique transcribed regions of the genome that are greater than 200 base pairs in length and are highly conserved across multiple species, including human, mouse (100%), rat (100%), dog (98%), and chicken (95%) genomes. Due to their size (>200 nt) and lack of known associated protein products, TUCRs may function as lncRNAs.  The existence of highly conserved lncRNAs is significant, as lncRNAs are typically poorly conserved as a class of molecules.  TUCRs are highly resistant to variation, with the 106,767 conserved bases overlapping with as few as six canonical single nucleotide polymorphisms (SNPs).  Their expression is commonly deregulated in cancer.
 
-It is believed that these TUCRs may serve crucial regulatory roles as lncRNAs in cancer. The non-coding RNA field is a growing one.  While only a single lncRNA paper was published in 2007, that number has exploded to 1342 publications in the year 2016.  Despite this explosion of interest in lncRNAs, nothing is known on TUCR lncRNAs in GBM or LGGs as the literature elucidating their expression, functions and mechanisms of action is nonexistent. Studying them therefore represents an untouched avenue for understanding novel oncogenic mechanisms and discovering new biomarkers and therapeutic targets for these diseases.
+Because of this, it is believed that these TUCRs may serve crucial regulatory roles in cancer. The non-coding RNA field is a growing one.  While only a single lncRNA paper was published in 2007, that number has exploded to 1342 publications by the year 2016.  Despite this explosion of interest in lncRNAs, very little is known of TUCRs.  In particular, the literature elucidating the expression, functions and mechanisms of action of TUCRs in GBM and/or LGG is nonexistent. Studying them therefore represents an untouched avenue for understanding novel oncogenic mechanisms and discovering new biomarkers and therapeutic targets for these diseases.
 
-Here, we use TCGA RNA-Seq GBM and LGG datasets to identify TUCR expression change effects on various parameters.  We identified and validated TUCRs that are deregulated in GBM tissues.  We also identified TUCRs that are correlated with GBM and LGG patient survival, TUCRs that are coregulated with protein coding genes, predicted novel lncRNAs containing TUCRs, TUCR lncRNA secondary structure, and predicted TUCR functions using gene ontology and pathway analyses.  
+Here, we utilize contemporary and novel bioinformatics techniques to perform the first characterization of TUCR expression, function, and mechanism of action in GBM and LGG.  First, TUCRs were annotated and validated to confirm that annotations from 2010 are consistent with more recent databases.  Then, programming tools were used to identify TUCRs that are differentially expressed in GBM and LGG tissues.  TUCRs that are correlated with GBM and LGG patient survival were also identified.  Then, a guilt-by-association analysis was performed to predict TUCR functional roles using coregulated genes.  Lastly, we predict that intergenic TUCRs may represent markers for novel genes. To test this hypothesis, de novo transcript reassembly was used to identify transcripts present in RNA-Seq datasets in a genome agnostic manner.  Selection criteria were then used to identify potentially novel genes from the resulting dataset.
 
+## Setup
 
-## Set parameters
+### Set parameters
 
 This initial section is used to set the dependent variables that are used for this analysis. 
 
@@ -50,36 +51,47 @@ The following variables can be set:
 * useintermediate is a logical vector.  When set to TRUE, the analysis will use a pregenerated gene correlation matrix for the guilt by association analysis.  Unless there is a specific reason to generate a new matrix (VERY memory intensive), this variable should be set to TRUE.
 * deleteoutputs is a logical vector that should only be set to TURE or FALSE.  When set to true, the output directory will be repopulated after every program run.  If set to false, the program will only run if the output directory does not already exist in the working directory, to prevent the data from being overwritten.
 
-```{r parameters, eval = TRUE}
+```{r parameters}
+
 disease <- "GBM"
-
-countfilename <- "TUCR_counts.txt"
-
-metadatafile <- "tcga_metadata.csv" 
-
-makekpmplots <- TRUE 
-
-makeRPKMboxplots <- TRUE
-
-repel <- TRUE
 
 outputdir <- "Outputs_GBM"
 
-useintermediate <- TRUE
+makeannotate <- TRUE
 
-mergedcounts <- "mergedcounts.txt"
+makelncRNA <- TRUE
+
+makeDE <- TRUE
+
+countfilename <- "TUCR_counts.txt"
+
+metadatafile <- "tcga_metadata.csv"
+
+repel <- TRUE
+
+makesurvival <- TRUE
+
+mergedcountfile <- "mergedcounts.txt"
+
+makeSuvivalplots <- TRUE 
+
+makeRPKMboxplots <- TRUE
+
+makecorrelations <- TRUE
+
+useintermediate <- TRUE
 
 intermediatefile <- "matrixintermediate.Rdata"
 
+makeGOterms <- TRUE
+
+
 ```
 
-## Install required programs
+### Install required programs
 
 ```{r setup, message = FALSE, warning=FALSE}
-knitr::opts_chunk$set(echo = TRUE,eval=FALSE, warning=FALSE, message=FALSE)
-
-#To get software environment
-#sessionInfo()
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 
 if (!require("tidyverse")) install.packages("tidyverse")
 library("tidyverse")
@@ -141,12 +153,9 @@ library(GO.db)
 if (!require('limma')) BiocManager::install('limma')
 library(limma)
 
-if (!require('factoextra')) BiocManager::install('factoextra')
-library(factoextra)
-
 ```
 
-## Create output directory
+### Create output directory
 
 This script checks to see if the defined output directory already exists.  If it doesn't exist, it will create the directory.
 
@@ -156,337 +165,24 @@ if(!dir.exists(outputdir)){
 }
 ```
 
-## Stringtie
+# Section 1: Transcribed Ultra-conserved Regions (TUCRs) are a broad class of molecules
 
-The hg19 genomic coordinates for each TUCR were acquired from _____________ and were lifted over to hg38 coordinates. The stringtie bioinformatics package was then used to perform a de novo transcript reassembly of all transcripts in 161 GBM, 400 LGG, and 5 normal brain TCGA Cancer RNA-Seq datasets.  First, transcripts present in each RNA-Seq BAM file were compiled into individual BED/GTF format genomic coordinate files using Stringtie.  These files were then merged into one master file containing all transcripts in all samples using Stringtie and an hg38 genome reference file.  The bedtools package was then used to find the genomic coordinates of all transcripts containing ultraconserved regions.  The ________________ group used stringtie to analyze the entirety of the GTex RNA-Seq normal tissue catalog, so bedtools was also used to determine the intersection of TUCRs with their results.  This methodology provides insight into TUCR transcript presence in normal tissues and in brain cancer.
+##Results
 
-```{bash stringtie, eval = FALSE}
-wget ftp://ftp.ensembl.org/pub/release-99/gtf/homo_sapiens/Homo_sapiens.GRCh38.99.gtf.gz
-mv Homo_sapiens.GRCh38.99.gtf.gz stringtie
-gunzip stringtie/Homo_sapiens.GRCh38.99.gtf.gz
+TUCRs are a broad class of molecules spanning the entire human genome.  Many TUCRs are contained within coding and non-coding transcripts.  Some TUCRs are exonic and are contained within an exon of the “host” gene (Figure 1A).  Others are contained within an intron instead (Figure 1B).  Some TUCRs straddle a region that spans exonic and intronic regions of the host gene (intronic/exonic) (Figure 1C), and others are not contained within a known genetic element at all (intergenic) (Figure 1D). Each of the 481 TUCRs were previously annotated in 2010.  Here, we provide an updated annotation that includes scientific discoveries made in the intervening decade (Figure 1E).  Through manual annotation, we have identified 46 exonic, 150 intronic, 67 intronic/exonic, and 218 intergenic TUCRs.  The full list of these annotations is available as a supplement (Supplementary Table 1)
 
-module load gcc/7.1.0
-module load stringtie/2.0.6
+It is critical that we confirm that TUCRs are transcribed to an extent that is comparable to known protein and non-coding genes.  Much of the genome is transcribed, but a relatively small fraction represents functional transcripts and genes.  The rest is considered transcriptional “noise”.  We sought to confirm that TUCRs do not represent transcriptional noise, but functional genomic units.
 
-for bam in $(find GBM-RNASEQ-RAW/* -name '*.bam')
-do
-name=$(echo $bam | awk -F ".bam" '{print $1}')
-name2=$(basename "$name")
-if [ ! -f stringtie/$name2.gtf ] 
-then
-    echo "$name2.gtf does not exist"
-    stringtie $bam -o $name.gtf
-    mv $name.gtf ./stringtie
-else
-    echo "$name2.gtf exists... skipping"
-fi
+To analyze the transcription of TUCRs, we evaluated the local chromatin landscape and compared it to that of protein coding genes, non-coding RNAs, and randomized control genomic intervals.  We specifically wanted to focus on H3K4me3, a marker for open chromatin, and RNA Pol.II, which is involved in the transcription of many non-coding RNAs.  Using GBM U87 CHIP-Seq data, we performed two separate analyses of epigenetic density.  
 
-if [ ! -f $name.gtf ]; then
-  stringtie $bam -o $name.gtf
-fi
-mv $name.gtf ./stringtie
-done
+First, publicly available U87 H3K4me3 and RNA Pol.II CHIP-Seq data were downloaded and processed. Then, we identified the nearest epigenetic marker to each TUCR and compared these results to randomized control intervals of a similar length, protein coding genes, and various non-coding elements. These analyses were performed using H3K4me3 (Figure 2A) and RNA Pol.II (Figure 2B) binding sites. Then, we considered the density of H3K4me3 and RNA Pol.II binding within a 10 kilobase (kb) window up- and downstream of each class of gene (Control, TUCR, lncRNA, and mRNA).  Fisher’s exact test was used to confirm that the chromatin landscape is more significantly enriched for H3K4me3 and RNA Pol.II than a random control interval and is more consistent with coding and non-coding genes. (Figure 2C) 
 
-cd stringtie
+## Methodology
 
-stringtie --merge *rehead.gtf -G Homo_sapiens.GRCh38.99.gtf -o stringtie_merged.gtf
+### Generate Figure 1E for TUCR annotation
 
-intersectBed -a hg38.ultraConserved.bed -b CHESSgenes.bed -wa -wb 
-  > intersectchess_TUCRs.bed
-
-intersectBed -a hg38.ultraConserved.bed -b stringtie_merged.gtf -wa -wb 
-  > intersectstringtie_TUCRs.bed
-
-cp stringtie_merged.gtf stringtie_merged.bed
-```
-
-## Setup for TCGA RNA-Seq analysis
-
-The next part of this analysis involves using bash and R scripts to identify TUCRs that are deregulated and/or correlated with survival in GBM and LGG. The GBM analyses were stored in a directory named tcga_analysis, while the LGG analyses were stored in the lgg_tcga_analysis.  The following script generates these two directories.
-
-```{bash tcga, eval = FALSE}
-## Create directory for all outputs from TCGA analysis data
-mkdir tcga_analysis/
-
-mkdir lgg_tcga_analysis/
-```
-
-## Extract headers from BAM files
-
-The raw BAM files for GBM and LGG were stored in GBM-RNASEQ-RAW and LGG-RNASEQ-RAW, respectively.  Since these files are labeled with unintuitive and encrypted names, I will generate clones of each BAM file using the TCGA ID as the name instead.  This will make it easier to see which files are normal brain and which are tumors at a glance.  TCGA files are not named this way by default because there is patient information contained within the BAM files that can be identified using the TCGA ID.  Therefore, renaming the file in secure storage is preferrable.  The first step to doing this is extracting the TCGA ID from the header present in each BAM file. 
-
-In the following series of scripts, a bash script was used to extract the header from each encrypted BAM file and generate a text file containing the full header. 
-
-```{bash tcgaheader, eval = FALSE}
-## Extract header information from GBM BAM files
-# Create directory for extracted headerfiles
-mkdir tcga_analysis/head/
-
-# Use a for loop to cycle through BAM files and extract header before creating a 
-#text file containing each BAM file's header.
-for bam in $(find GBM-RNASEQ-RAW/* -name '*.bam')
-do
-name=$(echo $bam | awk -F ".bam" '{print $1}')
-echo $name
-samtools view -H $bam > $name.headerids.txt
-mv $name.headerids.txt ./tcga_analysis/head/
-done
-
-## Do the same thing for LGG
-
-mkdir lgg_tcga_analysis/head/
-
-for bam in $(find LGG-RNASEQ-RAW/* -name '*.bam')
-do
-name=$(echo $bam | awk -F ".bam" '{print $1}')
-echo $name
-samtools view -H $bam > $name.headerids.txt
-mv $name.headerids.txt ./lgg_tcga_analysis/head/
-done
-```
-
-## Extract TCGA patient barcodes from BAM headers
-
-Once the headers have been extracted from each BAM file, the TCGA ID is then extracted from each header.  A master table is generated that contains the encrypted BAM file name and the new TCGA ID based named, which will be used to generate the renamed clone files in the next step.
-
-```{bash tcgaids, eval = FALSE}
-## Get new file names for BAM files using TCGA IDs from extracted header
-mkdir tcga_analysis/ids/
-
-mkdir lgg_tcga_analysis/ids/
-
-# Initialize summary file with TCGA IDs
-echo "RAWID,TCGAID" > tcga_analysis/ids/tcgaIDs.csv
-
-echo "RAWID,TCGAID" > lgg_tcga_analysis/ids/tcgaIDs.csv 
-
-# Extract IDs from header files
-for header in $(find tcga_analysis/head/* -name '*headerids.txt')
-do
-name=$(echo $header | awk -F ".headerids.txt" '{print $1}')
-name2=$(echo $name | cut -c20-)
-ids1=$(awk '$1=="@RG"{print $3}' $header)
-ids2=$(echo $ids1 | cut -c4-)
-echo "$name2.bam,$ids2.bam"
-echo "$name2.bam,$ids2.bam" > $name.tcgaid.csv
-echo "$name2.bam,$ids2.bam" >> tcga_analysis/ids/tcgaIDs.csv
-mv $name.tcgaid.csv ./tcga_analysis/ids/
-done
-
-for header in $(find lgg_tcga_analysis/head/* -name '*headerids.txt')
-do
-name=$(echo $header | awk -F ".headerids.txt" '{print $1}')
-name2=$(echo $name | cut -c24-)
-ids1=$(awk '$1=="@RG"{print $3}' $header)
-ids2=$(echo $ids1 | cut -c4-)
-echo "$name2.bam,$ids2.bam"
-echo "$name2.bam,$ids2.bam" > $name.tcgaid.csv
-echo "$name2.bam,$ids2.bam" >> lgg_tcga_analysis/ids/tcgaIDs.csv 
-mv $name.tcgaid.csv ./lgg_tcga_analysis/ids/
-done
-```
-
-## Reindex TCGA BAM files under new names
-
-```{bash tcgaindex, eval = FALSE}
-
-##Rename BAM files using TCGA ids
-# Create folder for new files
-mkdir tcga_analysis/reindex/
-
-# Copy BAM files into new directory with updated names
-
-while IFS=, read orig target; do
-orig2=$(find GBM-RNASEQ-RAW/* -name $orig)
-echo $orig2
-cp $orig2 $target
-mv $target tcga_analysis/reindex/
-done < tcga_analysis/ids/tcgaIDs.csv
-
-while IFS=, read orig target; do
-orig2=$(find LGG-RNASEQ-RAW/* -name $orig)
-echo $orig2
-cp $orig2 $target
-mv $target lgg_tcga_analysis/reindex/
-done < lgg_tcga_analysis/ids/tcgaIDs.csv
-
-# Reindex the renamed files using samtools.
-for bam in $(find tcga_analysis/reindex/ -name '*.bam')
-do
-name=$(echo $bam | awk -F ".bam" '{print $1}')
-echo $name
-samtools index $bam
-done
-
-# Reindex the renamed files using samtools.
-for bam in $(find lgg_tcga_analysis/reindex/ -name '*.bam')
-do
-samtools view -H TCGA-CS-4938-01B-11R-1896-07.bam > header
-name=$(echo $bam | awk -F ".bam" '{print $1}')
-echo $name
-samtools reheader header $bam > $name.rehead.bam
-samtools index $name.rehead.bam
-done
-```
-
-## Generating count tables for survival and differential expression.
-
-```{bash tcgacounts, eval = FALSE}
-mkdir tcga_analysis/foldchange
-
-#Write header line
-echo -e chrom"\t"start"\t"end"\t"id tcga_analysis/reindex/*bam | sed -e "s/ /\t/g" 
-  > tcga_analysis/foldchange/TUCR_counts_80.txt
-
-#Counts
-multiBamCov -bams tcga_analysis/reindex/*bam -bed hg38.ultraConserved.bed -q 10 -f 0.80 
-  >> tcga_analysis/foldchange/TUCR_counts_80.txt
-
-#Write header line
-echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" 
-  > gene_counts.txt
-
-#Counts
-multiBamCov -bams lgg_tcga_analysis/reindex/*bam -bed CHESSgenes.bed -q 10 
-  >> gene_counts.txt
-```
-
-## Acquiring total reads from RNA-Seq BAM files
-
-```{bash, eval = FALSE}
-
-mkdir tcga_analysis/readcounts/
-
-module load samtools/1.9
-
-for bam in $(find tcga_analysis/reindex/*.bam -name '*.bam')
-do
-name=$(echo $bam | awk -F ".bam" '{print $1}')
-echo $name
-samtools view -c -F 260 $bam > $name.readcounts.txt
-mv $name.readcounts.txt ./tcga_analysis/readcounts/
-done
-
-echo "id,counts" > tcga_analysis/readcounts/seqdepth_counts.csv 
-
-for txt in $(find tcga_analysis/readcounts/* -name '*.txt')
-do
-name=$(echo $txt | awk -F ".readcounts.txt" '{print $1}')
-echo $name
-reads=$(head $txt)
-echo "$name,$reads" >> tcga_analysis/readcounts/seqdepth_counts.csv 
-done
-
-```
-
-## Acquiring clinical survival data
-
-```{bash, eval = FALSE}
-
-wget http://gdac.broadinstitute.org/runs/stddata__2016_01_28/data/GBM/20160128/gdac.broadi
-nstitute.org_GBM.Merge_Clinical.Level_1.2016012800.0.0.tar.gz
-
-tar -xvzf gdac.broadinstitute.org_GBM.Merge_Clinical.Level_1.2016012800.0.0.tar.gz
-
-mv gdac.broadinstitute.org_GBM.Merge_Clinical.Level_1.2016012800.0.0 GBM.Merge_Clinical
-
-```
-
-## Acquiring SNPs
-
-```{bash, eval = FALSE}
-mkdir SNPs
-
-cd SNPs
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_1.bed.gz
-gunzip bed_chr_1.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_10.bed.gz
-gunzip bed_chr_10.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_11.bed.gz
-gunzip bed_chr_11.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_13.bed.gz
-gunzip bed_chr_13.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_12.bed.gz
-gunzip bed_chr_12.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_14.bed.gz
-gunzip bed_chr_14.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_15.bed.gz
-gunzip bed_chr_15.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_16.bed.gz
-gunzip bed_chr_16.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_17.bed.gz
-gunzip bed_chr_17.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_18.bed.gz
-gunzip bed_chr_18.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_19.bed.gz
-gunzip bed_chr_19.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_2.bed.gz
-gunzip bed_chr_2.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_20.bed.gz
-gunzip bed_chr_20.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_21.bed.gz
-gunzip bed_chr_21.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_22.bed.gz
-gunzip bed_chr_22.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_3.bed.gz
-gunzip bed_chr_3.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_4.bed.gz
-gunzip bed_chr_4.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_5.bed.gz
-gunzip bed_chr_5.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_6.bed.gz
-gunzip bed_chr_6.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_7.bed.gz
-gunzip bed_chr_7.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_8.bed.gz
-gunzip bed_chr_8.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_9.bed.gz
-gunzip bed_chr_9.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_X.bed.gz
-gunzip bed_chr_X.bed.gz
-
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_Y.bed.gz
-gunzip bed_chr_Y.bed.gz
-
-module load gcc/7.1.0
-module load bedtools/2.26.0
-
-for bed in *.bed
-do
-echo $bed
-intersectBed -a hg38.ultraConserved.bed -b $bed -wa -wb > $bed.txt
-done
-
-cat *.txt > merged.txt
-```
-
-## Generate figure for TUCR annotation
-
-```{r annotation}
-
+```{r Section1_annotation}
+if(makeannotate == FALSE){
 tucr_annot <- read.csv("tucr_annot.csv")
 
 plot_annotation <- tucr_annot %>% 
@@ -530,11 +226,270 @@ ggsave(file=paste(outputdir,"/tucr_annotation.png",sep=""),
        width = 5, 
        height = 5, 
        dpi = 300)
+}
 ```
 
-## Show that TUCRs are enriched for hallmarks of lncRNAs
+### Aquire the data using the SRA toolkit
 
-```{r lncRNAs}
+```{bash Section1_SRAToolkit, eval = FALSE}
+
+#using SRA Toolkit version 2.10.5
+
+#Transcriptional Amplification in Tumor Cells with Elevated c-Myc
+#https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE36354
+
+
+#CHIP-Seq U87-H3K4me3 
+
+prefetch SRR444442
+
+#CHIP-Seq U87-RNAPolII
+
+prefetch SRR444478
+
+```
+
+### Generate fastq files
+
+```{bash Section1_fastq, eval = FALSE}
+
+for sra in SRR*
+do
+echo $sra
+fastq-dump $sra
+done
+
+```
+
+### Build hg38 genome
+
+```{bash Section1_build_hg38genome, eval = FALSE}
+
+wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz
+gunzip hg38.fa.gz
+
+#Rivanna only.  Skip otherwise.
+module load gcc/7.1.0
+module load bowtie2/2.2.9
+
+bowtie2-build hg38.fa hg38
+
+```
+
+### Align fastq files to reference genome
+
+```{bash Section1_sam, eval = FALSE}
+
+for fq in *.fastq
+do
+name=$(echo $fq | awk -F".fastq" '{print $1}')
+echo $name
+bowtie2 -x hg38 -U $fq -S $name.sam
+done
+
+```
+
+### Convert sam to bam
+
+```{bash Section1_bam, eval = FALSE}
+
+for sam in *.sam
+do
+name=$(echo $sam | awk -F".sam" '{print $1}')
+echo $name
+samtools view -b $sam | samtools sort -o $name.bam
+done
+rm *sam
+
+```
+
+### Index bam files
+
+```{bash Section1_index, eval = FALSE}
+
+for bam in *bam
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+echo $name
+samtools index $bam
+done
+
+```
+
+### Download mouse genes and convert to bed
+
+I got this methodology from [here](https://github.com/stevekm/reference-annotations/blob/master/Makefile) since my other methods were not working.
+
+```{bash Section1_callpeaks, eval = FALSE}
+
+macs2 callpeak -t SRR444442.bam -n SRR444442 -g hs
+macs2 callpeak -t SRR444478.bam -n SRR444478 -g hs
+
+wc -l *Peak
+
+cat SRR444442_peaks.narrowPeak | cut -f 1-4 | grep -v chrMT | grep -v chrGL | grep -v chrKI > h3k4me3.bed
+cat SRR444478_peaks.narrowPeak | cut -f 1-4 | grep -v chrMT | grep -v chrGL | grep -v chrKI > pol2.bed
+
+```
+
+### Download Genome Annotation file
+
+```{bash Section1_referenceFile, eval = FALSE}
+
+wget ftp://ftp.ensembl.org/pub/release-90/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+
+gunzip Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+
+samtools faidx Homo_sapiens.GRCh38.dna.primary_assembly.fa
+
+awk -v OFS='\t' {'print $1,$2'} Homo_sapiens.GRCh38.dna.primary_assembly.fa.fai > hg38_genomeFile.txt
+
+cat hg38_genomeFile.txt | grep -v KI | grep -v MT | grep -v GL | sed -e "s/^/chr/g" > temp
+
+mv temp hg38_genomeFile.txt
+
+```
+
+### Generate Random Intervals and sort all files
+
+```{bash Section1_sortbed, eval = FALSE}
+
+bedtools random -l 800 -n 481 -g hg38_genomeFile.txt > random_intervals.bed
+
+bedtools sort -i random_intervals.bed > random_intervals.bed
+
+bedtools sort -i hg38.ultraConserved.bed > hg38.ultraConserved.bed
+
+bedtools sort -i TUCR_intergenic.bed > TUCR_intergenic.bed
+
+bedtools sort -i CHESScoding.bed > CHESScoding.bed
+
+bedtools sort -i CHESSlncRNA.bed > CHESSlncRNA.bed
+
+bedtools sort -i CHESSantisense.bed > CHESSantisense.bed
+
+bedtools sort -i CHESSmisc.bed > CHESSmisc.bed
+
+```
+
+### Find closest Pol.II binding site using bedtools closest
+
+```{bash Section1_closest_PolII, eval = FALSE}
+
+bedtools closest -a random_intervals.bed -b pol2.bed -g hg38_genomeFile.txt > 
+closest_pol2_random_intervals_output.bed
+
+bedtools closest -a hg38.ultraConserved.bed -b pol2.bed -g hg38_genomeFile.txt > 
+closest_pol2_tucrs_output.bed
+
+bedtools closest -a TUCR_intergenic.bed -b pol2.bed -g hg38_genomeFile.txt > 
+closest_pol2_intergenic_tucrs_output.bed
+
+bedtools closest -a CHESScoding.bed -b pol2.bed -g hg38_genomeFile.txt > 
+closest_pol2_coding_output.bed
+
+bedtools closest -a CHESSlncRNA.bed -b pol2.bed -g hg38_genomeFile.txt > 
+closest_pol2_lncRNA_output.bed
+
+bedtools closest -a CHESSantisense.bed -b pol2.bed -g hg38_genomeFile.txt > 
+closest_pol2_antisense_output.bed
+
+bedtools closest -a CHESSmisc.bed -b pol2.bed -g hg38_genomeFile.txt > 
+closest_pol2_misc_output.bed
+
+```
+
+### Find closest H3K4me3 binding site using bedtools closest
+
+```{bash Section1_closest_h3k4me3, eval = FALSE}
+
+bedtools closest -a random_intervals.bed -b pol2.bed -g hg38_genomeFile.txt > 
+closest_pol2_random_intervals_output.bed
+
+bedtools closest -a hg38.ultraConserved.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
+closest_h3k4me3_tucrs_output.bed
+
+bedtools closest -a TUCR_intergenic.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
+closest_h3k4me3_intergenic_tucrs_output.bed
+
+bedtools closest -a CHESScoding.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
+closest_h3k4me3_coding_output.bed
+
+bedtools closest -a CHESSlncRNA.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
+closest_h3k4me3_lncRNA_output.bed
+
+bedtools closest -a CHESSantisense.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
+closest_h3k4me3_antisense_output.bed
+
+bedtools closest -a CHESSmisc.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
+closest_h3k4me3_misc_output.bed
+
+```
+
+### Generate TUCR "Windows"
+
+```{bash Section1_slop, results="hide", eval = FALSE}
+
+bedtools slop -b 10000 -i random_intervals.bed -g hg38_genomeFile.txt > tucrs_pm10kb.bed
+
+bedtools slop -b 10000 -i hg38.ultraConserved.bed -g hg38_genomeFile.txt > tucrs_pm10kb.bed
+
+bedtools slop -b 10000 -i TUCR_intergenic.bed -g hg38_genomeFile.txt > intergenic_tucrs_pm10kb.bed
+
+bedtools slop -b 10000 -i CHESScoding.bed -g hg38_genomeFile.txt > coding_pm10kb.bed
+
+bedtools slop -b 10000 -i CHESSlncRNA.bed -g hg38_genomeFile.txt > lncRNAs_pm10kb.bed
+
+bedtools slop -b 10000 -i CHESSantisense.bed -g hg38_genomeFile.txt > antisense_pm10kb.bed
+
+bedtools slop -b 10000 -i CHESSmisc.bed -g hg38_genomeFile.txt > misc_pm10kb.bed
+
+```
+
+### Fisher
+
+```{bash Section1_fisher, results="hide", eval = FALSE}
+
+bedtools fisher -a tucrs_pm10kb.bed -b pol2.bed -g hg38_genomeFile.txt > 
+closest_pol2_tucrs_output.txt
+
+bedtools fisher -a intergenic_tucrs_pm10kb.bed -b pol2.bed -g hg38_genomeFile.txt > pol2_intergenic_tucrs_output.txt
+
+bedtools fisher -a CHESScoding.bed -b pol2.bed -g hg38_genomeFile.txt > 
+pol2_coding_output.txt
+
+bedtools fisher -a CHESSlncRNA.bed -b pol2.bed -g hg38_genomeFile.txt > 
+pol2_lncRNA_output.txt
+
+bedtools fisher -a CHESSantisense.bed -b pol2.bed -g hg38_genomeFile.txt > 
+pol2_antisense_output.txt
+
+bedtools fisher -a CHESSmisc.bed -b pol2.bed -g hg38_genomeFile.txt > 
+pol2_misc_output.txt
+
+bedtools fisher -a tucrs_pm10kb.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
+h3k4me3_tucrs_output.txt
+
+bedtools fisher -a intergenic_tucrs_pm10kb.bed -b h3k4me3.bed -g hg38_genomeFile.txt >
+h3k4me3_intergenic_tucrs_output.txt
+
+bedtools fisher -a CHESScoding.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
+h3k4me3_coding_output.txt
+
+bedtools fisher -a CHESSlncRNA.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
+h3k4me3_lncRNA_output.txt
+
+bedtools fisher -a CHESSantisense.bed -b h3k4me3.bed -g hg38_genomeFile.txt > h3k4me3_antisense_output.txt
+
+bedtools fisher -a CHESSmisc.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
+h3k4me3_misc_output.txt
+
+```
+
+### Show that TUCRs are enriched for hallmarks of lncRNAs
+
+```{r Section1_lncRNAs}
+if(makeannotate == TRUE){
 tucr_lncRNAs <- read.csv("tucr_lncRNAs.csv")
   
 p <- ggplot(tucr_lncRNAs, aes(x=row,y=value,fill=row))                + 
@@ -573,12 +528,212 @@ ggsave(
     width = 5, 
     height = 5, 
     dpi = 300) 
+}
+```
+
+# TUCRs are deregulated in GBM and LGG tumors
+
+## Results
+
+TUCR expression has not been characterized in glioblastoma (GBM) or low-grade gliomas (LGG).  We performed the first comprehensive bioinformatic analysis of TUCR expression in these diseases by comparing GBM and LGG tumor samples from the Cancer Genome Atlas (TCGA) to their normal brain counterparts.  Of the 481 TUCRs, we identified 115 and 82 that were up- and downregulated in GBM, respectively. (Figure 3A) We also identified 58 and 91 TUCRs that were up- and downregulated in LGG. (Figure 3B) Of the 157 deregulated TUCRs in LGG, 109 were also deregulated in GBM, a 70% overlap. (Figure 3C) Intergenic TUCRs are of particular interest; they may represent markers for novel genes.  Amongst intergenic TUCRs, we identified 6 up- and 6- downregulated TUCR by a magnitude greater that 2-fold and with an FDR of 0.05 or less (Figure 3D).  We performed these same analyses in LGG and identified 3 up- and 5 downregulated TUCRs. (Figure 3E) For both disease types, uc.110 and uc.62 represented the most up- and downregulated TUCRs, respectively.
+
+### Setup for TCGA RNA-Seq analysis
+
+The next part of this analysis involves using bash and R scripts to identify TUCRs that are deregulated and/or correlated with survival in GBM and LGG. The GBM analyses were stored in a directory named tcga_analysis, while the LGG analyses were stored in the lgg_tcga_analysis.  The following script generates these two directories.
+
+```{bash Section2_tcga, eval = FALSE}
+## Create directory for all outputs from GBM TCGA analysis data
+mkdir gbm_tcga_analysis/
+
+## Do the same for LGG
+mkdir lgg_tcga_analysis/
+```
+
+### Extract headers from BAM files
+
+The raw BAM files for GBM and LGG were stored in GBM-RNASEQ-RAW and LGG-RNASEQ-RAW, respectively.  Since these files are labeled with unintuitive and encrypted names, I will generate clones of each BAM file using the TCGA ID as the name instead.  This will make it easier to see which files are normal brain and which are tumors at a glance.  TCGA files are not named this way by default because there is patient information contained within the BAM files that can be identified using the TCGA ID.  Therefore, renaming the file in secure storage is preferrable.  The first step to doing this is extracting the TCGA ID from the header present in each BAM file. 
+
+In the following series of scripts, a bash script was used to extract the header from each encrypted BAM file and generate a text file containing the full header. 
+
+```{bash Section2_tcgaheader, eval = FALSE}
+## Extract header information from GBM BAM files
+# Create directory for extracted headerfiles
+mkdir tcga_analysis/head/
+
+# Use a for loop to cycle through BAM files and extract header before creating a 
+#text file containing each BAM file's header.
+for bam in $(find GBM-RNASEQ-RAW/* -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+echo $name
+samtools view -H $bam > $name.headerids.txt
+mv $name.headerids.txt ./tcga_analysis/head/
+done
+
+## Do the same thing for LGG
+# Create directory for extracted headerfiles
+mkdir lgg_tcga_analysis/head/
+
+for bam in $(find LGG-RNASEQ-RAW/* -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+echo $name
+samtools view -H $bam > $name.headerids.txt
+mv $name.headerids.txt ./lgg_tcga_analysis/head/
+done
+```
+
+### Extract TCGA patient barcodes from BAM headers
+
+Once the headers have been extracted from each BAM file, the TCGA ID is then extracted from each header.  A master table is generated that contains the encrypted BAM file name and the new TCGA ID based named, which will be used to generate the renamed clone files in the next step.
+
+```{bash Section2_tcgaids, eval = FALSE}
+## Get new file names for BAM files using TCGA IDs from extracted header
+mkdir gbm_tcga_analysis/ids/
+
+mkdir lgg_tcga_analysis/ids/
+
+# Initialize summary file with TCGA IDs
+echo "RAWID,TCGAID" > tcga_analysis/ids/tcgaIDs.csv
+
+# Extract IDs from header files
+for header in $(find tcga_analysis/head/* -name '*headerids.txt')
+do
+name=$(echo $header | awk -F ".headerids.txt" '{print $1}')
+name2=$(echo $name | cut -c20-)
+ids1=$(awk '$1=="@RG"{print $3}' $header)
+ids2=$(echo $ids1 | cut -c4-)
+echo "$name2.bam,$ids2.bam"
+echo "$name2.bam,$ids2.bam" > $name.tcgaid.csv
+echo "$name2.bam,$ids2.bam" >> tcga_analysis/ids/tcgaIDs.csv
+mv $name.tcgaid.csv ./gbm_tcga_analysis/ids/
+done
+
+## Do the same thing for LGG
+
+# Initialize summary file with TCGA IDs
+echo "RAWID,TCGAID" > lgg_tcga_analysis/ids/tcgaIDs.csv 
+
+# Extract IDs from header files
+for header in $(find lgg_tcga_analysis/head/* -name '*headerids.txt')
+do
+name=$(echo $header | awk -F ".headerids.txt" '{print $1}')
+name2=$(echo $name | cut -c24-)
+ids1=$(awk '$1=="@RG"{print $3}' $header)
+ids2=$(echo $ids1 | cut -c4-)
+echo "$name2.bam,$ids2.bam"
+echo "$name2.bam,$ids2.bam" > $name.tcgaid.csv
+echo "$name2.bam,$ids2.bam" >> lgg_tcga_analysis/ids/tcgaIDs.csv 
+mv $name.tcgaid.csv ./lgg_tcga_analysis/ids/
+done
+```
+
+### Reindex TCGA BAM files under new names
+
+```{bash Section2_tcgaindex, eval = FALSE}
+
+##Rename BAM files using TCGA ids
+
+# Create folder for new files
+mkdir gbm_tcga_analysis/reindex/
+
+# Copy BAM files into new directory with updated names
+while IFS=, read orig target; do
+orig2=$(find GBM-RNASEQ-RAW/* -name $orig)
+echo $orig2
+cp $orig2 $target
+mv $target gbm_tcga_analysis/reindex/
+done < gbm_tcga_analysis/ids/tcgaIDs.csv
+
+# Reindex the renamed files using samtools.
+for bam in $(find gbm_tcga_analysis/reindex/ -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+echo $name
+samtools index $bam
+done
+
+## Do the same thing for LGG
+# Create folder for new files
+mkdir lgg_tcga_analysis/reindex
+
+# Copy BAM files into new directory with updated names
+while IFS=, read orig target; do
+orig2=$(find LGG-RNASEQ-RAW/* -name $orig)
+echo $orig2
+cp $orig2 $target
+mv $target lgg_tcga_analysis/reindex/
+done < lgg_tcga_analysis/ids/tcgaIDs.csv
+
+# Reindex the renamed files using samtools.
+for bam in $(find lgg_tcga_analysis/reindex/ -name '*.bam')
+do
+samtools view -H TCGA-CS-4938-01B-11R-1896-07.bam > header
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+echo $name
+samtools reheader header $bam > $name.rehead.bam
+samtools index $name.rehead.bam
+done
 
 ```
 
-## Identifying differentially expressed TUCRs with DESeq2
+### Generating count tables for survival and differential expression.
 
-```{r DESeq2_TUCRs}
+```{bash Section2_tcgacounts, eval = FALSE}
+# Making directory
+mkdir tcga_analysis/foldchange
+
+#Write header line
+echo -e chrom"\t"start"\t"end"\t"id tcga_analysis/reindex/*bam | sed -e "s/ /\t/g" 
+  > tcga_analysis/foldchange/TUCR_counts_80.txt
+
+#Counts
+multiBamCov -bams tcga_analysis/reindex/*bam -bed hg38.ultraConserved.bed -q 10 -f 0.80 
+  >> tcga_analysis/foldchange/TUCR_counts_80.txt
+  
+#Do the same for LGG
+mkdir lgg_tcga_analysis/foldchange
+
+#Write header line
+echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" 
+  > gene_counts.txt
+
+#Counts
+multiBamCov -bams lgg_tcga_analysis/reindex/*bam -bed CHESSgenes.bed -q 10 
+  >> gene_counts.txt
+```
+
+### Acquiring total reads from RNA-Seq BAM files
+
+```{bash Section2_seqdepth, eval = FALSE}
+
+mkdir tcga_analysis/readcounts/
+
+module load samtools/1.9
+
+for bam in $(find tcga_analysis/reindex/*.bam -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+echo $name
+samtools view -c -F 260 $bam > $name.readcounts.txt
+mv $name.readcounts.txt ./tcga_analysis/readcounts/
+done
+
+echo "id,counts" > tcga_analysis/readcounts/seqdepth_counts.csv 
+
+for txt in $(find tcga_analysis/readcounts/* -name '*.txt')
+do
+name=$(echo $txt | awk -F ".readcounts.txt" '{print $1}')
+echo $name
+reads=$(head $txt)
+echo "$name,$reads" >> tcga_analysis/readcounts/seqdepth_counts.csv 
+done
+
+```
+
+### Identifying differentially expressed TUCRs with DESeq2
+
+```{r Section2_DESeq2_TUCRs}
 
 tucrcounts <- 
   read.table(countfilename,header = TRUE)
@@ -651,9 +806,9 @@ ggsave(file=paste(outputdir,"/",disease,"_deregGraph.png",sep=""),
 
 ```
 
-## Writing a script to generate a volcano plot
+### Writing a script to generate a volcano plot
 
-```{r volcanoplot}
+```{r Section2_volcanoplot}
 
 ### Volcano plot
 
@@ -713,9 +868,9 @@ ggsave(output, width = width, height = height, dpi = dpi)
 
 ```
 
-## Generating volcano plot to visualize DE genes
+### Generating volcano plot to visualize DE genes
 
-```{r DESeq2plots_TUCRs}
+```{r Section2_DESeq2plots_TUCRs}
 
 volcanoplot(res_TUCR,genes=c("uc.110","uc.210","uc.427","uc.62"),
             title = paste("Deregulated Genes in ",disease,sep=""), 
@@ -733,9 +888,9 @@ repel = repel_hold
 
 ```
 
-## Volcano plot for intergenic TUCRs only
+### Volcano plot for intergenic TUCRs only
 
-```{r DESeq2plots_intergenicTUCRs}
+```{r Section2_DESeq2plots_intergenicTUCRs}
 
 tucr_annot <- read.csv("tucr_annot.csv")
 
@@ -750,9 +905,201 @@ volcanoplot(res_intergenic,genes=c("uc.62","uc.110"),
 
 ```
 
-## Completing survival analysis for TUCRs
+### Identifying differentially expressed TUCRs with DESeq2
 
-```{r surcor_TUCRs}
+```{r Section2_DESeq2_TUCRs}
+
+mergedcounts <- 
+  read.table(mergedcountfile,header = TRUE)
+
+metadata <- 
+  read_csv(file = metadatafile)
+
+CHESSantisense <- read.table("CHESSantisense.bed",header=FALSE)
+CHESSantisense <- CHESSantisense %>%
+  dplyr::select("V4","V6")
+
+
+CHESScoding <- read.table("CHESScoding.bed",header=FALSE)
+CHESScoding <- CHESScoding %>%
+  dplyr::select("V4","V6")
+
+CHESSlncRNA <- read.table("CHESSlncRNA.bed",header=FALSE)
+CHESSlncRNA <- CHESSlncRNA %>%
+  dplyr::select("V4","V6")
+
+
+CHESSmisc <- read.table("CHESSmisc.bed",header=FALSE)
+CHESSmisc <- CHESSmisc %>%
+  dplyr::select("V4","V6")
+
+
+TUCRids <- read.table("hg38.ultraconserved.bed",header=FALSE,fill=TRUE)
+TUCRids <- TUCRids %>%
+  dplyr::select("V4","V6"="V5")
+
+
+count_annot <- rbind(TUCRids,CHESSantisense,CHESScoding,CHESSlncRNA,CHESSmisc)
+colnames(count_annot) <- c("id","annot")
+
+
+mergedcounts <- mergedcounts %>%
+  left_join(count_annot,by="id")
+
+for(i in 1:length(unique(mergedcounts$annot)))
+  
+sum(is.na(mergedcounts$annot))
+  
+rpkmcounts <- mergedcounts[,6:ncol(tucrcounts)]
+rpkmcounts.info <- tucrcounts[,1:5]
+rownames(rpkmcounts) <- tucrcounts$id
+
+genelength <- tucrcounts$length
+
+seqdepth <- read.csv(file = "seqdepth_counts.csv",row.names=1)
+
+seqdepth <- as.vector(seqdepth$counts)
+
+rpkm <- function(counts,len,dep){
+  x <- counts/len
+  return(t(t(x)/dep))
+}
+
+rpkm.TUCRs <- rpkm(rpkmcounts,genelength,seqdepth)
+rpkm.TUCRs2 <- cbind(rpkmcounts.info,rpkm.TUCRs)
+
+rpkm.median <- rpkm.TUCRs2 %>% dplyr::summarise(median_RPKM = rowMedians(rpkm.TUCRs))
+rpkm.median <- cbind(rpkmcounts.info,rpkm.median)
+rpkm.median <- rpkm.median %>% dplyr::select(id,median_RPKM)
+
+write.csv(rpkm.TUCRs2,paste(outputdir,"/rpkm.TUCRs.csv",sep=""))
+
+write.csv(rpkm.median,paste(outputdir,"/medianrpkm.TUCRs.csv",sep=""))
+
+
+```
+
+### Generate RPKMs for filtering
+
+```{r Section2_RPKM_TUCRs}
+
+rpkmcounts <- tucrcounts[,6:ncol(tucrcounts)]
+rpkmcounts.info <- tucrcounts[,1:5]
+rownames(rpkmcounts) <- tucrcounts$id
+
+genelength <- tucrcounts$length
+
+seqdepth <- read.csv(file = "seqdepth_counts.csv",row.names=1)
+
+seqdepth <- as.vector(seqdepth$counts)
+
+rpkm <- function(counts,len,dep){
+  x <- counts/len
+  return(t(t(x)/dep))
+}
+
+rpkm.TUCRs <- rpkm(rpkmcounts,genelength,seqdepth)
+rpkm.TUCRs2 <- cbind(rpkmcounts.info,rpkm.TUCRs)
+
+rpkm.median <- rpkm.TUCRs2 %>% dplyr::summarise(median_RPKM = rowMedians(rpkm.TUCRs))
+rpkm.median <- cbind(rpkmcounts.info,rpkm.median)
+rpkm.median <- rpkm.median %>% dplyr::select(id,median_RPKM)
+
+write.csv(rpkm.TUCRs2,paste(outputdir,"/rpkm.TUCRs.csv",sep=""))
+
+write.csv(rpkm.median,paste(outputdir,"/medianrpkm.TUCRs.csv",sep=""))
+```
+
+### Generate RPKM Box Plots for each TUCR
+
+```{r Section2_boxplot_TUCRs}
+if(makeRPKMboxplots == TRUE){
+  
+if(!dir.exists(paste(outputdir,"/RPKMboxplots",sep=""))){
+  dir.create(paste(outputdir,"/RPKMboxplots",sep=""))
+}
+rpkm.dotplot <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
+TUCRids <- rpkm.TUCRs2[,4]
+rpkm.dotplot <- cbind(TUCRids,rpkm.dotplot)
+
+i = 1
+for(i in 1:length(TUCRids)){
+#TUCR <- "uc.110"
+TUCR <- TUCRids[i]
+print(i)
+rpkm.dotplot2 <- rpkm.dotplot %>% 
+  gather(key = "Sample", value = "RPKM",-TUCRids) %>%
+  dplyr::filter(TUCRids == TUCR)
+
+p<- ggplot(rpkm.dotplot2, aes(x=TUCRids, y=RPKM)) +
+  geom_boxplot() +
+  geom_dotplot(binaxis='y', stackdir='center',
+               stackratio=0.75, dotsize=0.20) + 
+  ggtitle(paste("RPKM expression of ",TUCR)) +
+  theme(plot.title = element_text(hjust = 0.5),
+panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(y="Reads per kilobase million (RPKM)", x = "TUCR") +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=10, color="red", fill="red")
+
+ggsave(p,file=paste(outputdir,"/RPKMboxplots/",TUCR,"_rpkm_boxplot.png",sep = ""))
+}
+
+}
+```
+
+### Generate RPKM heatmap for all TUCRs
+
+```{r Section2_heatmap_TUCRs}
+heatmap.TUCRs <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
+TUCRids <- rpkm.TUCRs2[,4]
+means <- apply(heatmap.TUCRs,1,mean)
+
+heatmap.TUCRs2 <- as.data.frame(apply(heatmap.TUCRs,1:2,function(x) {ifelse(x>=10,10,x)}))
+heatmap.TUCRs2 <- cbind(TUCRids,means,heatmap.TUCRs2)
+
+heatmap.TUCRs2 <- heatmap.TUCRs2 %>% 
+  gather(key = "Sample", value = "RPKM",-TUCRids,-means)
+
+p <- ggplot(data = heatmap.TUCRs2,mapping = aes(x = Sample,y = reorder(TUCRids,means), fill = RPKM)) +
+  geom_tile() +
+  scale_fill_gradientn(colours = c("blue", "white", "red"), values = c(0,0.1,1)) + ggtitle(paste("Expression of TUCRs in ",disease,sep="")) + xlab(paste("TCGA RNA-Seq Samples (n = ",ncol(heatmap.TUCRs),")",sep="")) + ylab(paste("TUCRs ordered by expression (n = ",nrow(heatmap.TUCRs),")",sep="")) +
+  theme(plot.title = element_text(hjust = 0.5),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+ggsave(p,file=paste(outputdir,"/TUCR_heatmap.png",sep=""))
+```
+
+# Section 3: TUCR expression correlates with survival in LGG and GBM
+
+## Results
+
+Gene deregulation can sometimes result in a disparity in clinical outcomes.  We sought to identify whether deregulation of any of the 481 TUCRs correlate with patient outcomes in LGG and GBM.  For this exercise, we obtained LGG and GBM patient survival data from TCGA.  We then matched these patient outcomes to the patient RNA-Seq samples that were included in our differential expression analysis.  For each TUCR, we produced a Kaplan-Meier plot tracking differences in survival for high expressing and low expressing groups.  The high expression group represents the top quartile (25%) of expression values across the RNA-Seq samples; the low expression group represents the bottom quartile (25%) of expression values.  
+
+Of the 310 TUCRs that were expressed in GBM TCGA RNA-Seq data, only 36 were correlated with survival in manner that was statistically significant (p-value < 0.05).  Of these 36 TUCRs, 9 had a statistically significant Cox proportional hazard that was associated with a good prognosis, while 7 had one that was associated with a poor prognosis.  The remaining 20 displayed a statistically significant difference in survival in our Kaplan-Meier analysis.  (Figure 3A)
+
+We were initially surprised by the relatively (11.6%) small fraction of TUCRs that correlate with survival in GBM.  However, glioblastoma has a median survival of 15 months, which does not leave much room for dramatic differences in patient outcomes.  We also studied survival differences across LGG patients, as they have a much longer median survival (X months).  Because of this, we hypothesized that more TUCRs would correlate with survival in LGG.  Indeed, of the 293 TUCRs that were expressed in LGG TCGA RNA-Seq data, over half (n = 167) were correlated with survival in at least one of our studies.  Of these 167 TUCRs, 19 had a statistically significant Cox proportional hazard that was associated with a good prognosis, while 18 had one that was associated with a poor prognosis.  In this analysis, we also identified TUCRs that were statistically significant in our Cox Proportional Hazards and Kaplan Meier studies.  Of these, 49 were associated with a good prognosis while only 3 were associated with a poor prognosis.  The remaining 78 displayed a statistically significant difference in survival in our Kaplan-Meier analysis only (Figure 3B).  We have highlighted two TUCRs that represent a statistically significant correlation with good (uc.443, Figure 3C) or poor (uc.75, Figure 3D) prognosis using both methods.
+
+## Methodology
+
+### Acquiring and parsing clinical survival data
+
+```{bash Section3_clindata, eval = FALSE}
+
+wget http://gdac.broadinstitute.org/runs/stddata__2016_01_28/data/GBM/20160128/gdac.broadi
+nstitute.org_GBM.Merge_Clinical.Level_1.2016012800.0.0.tar.gz
+
+tar -xvzf gdac.broadinstitute.org_GBM.Merge_Clinical.Level_1.2016012800.0.0.tar.gz
+
+mv gdac.broadinstitute.org_GBM.Merge_Clinical.Level_1.2016012800.0.0 GBM.Merge_Clinical
+
+```
+
+### Completing survival analysis for TUCRs
+
+```{r Section3_surcor_TUCRs}
 if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
 
 countdata <- read.table(countfilename,header = TRUE)
@@ -872,9 +1219,9 @@ write_csv(ptable,paste(outputdir,"/kpm_summary_TUCRs.csv",sep=""))
 
 ```
 
-## Summarize Survival Data 
+### Summarize Survival Data 
 
-```{r summary surv}
+```{r Section3_summary surv}
 
 surv_TUCR <- read.csv(paste(outputdir,"/survival_TUCRs.csv",sep=""),header=TRUE)
 
@@ -928,9 +1275,9 @@ ggsave(file=paste(outputdir,"/tucr_surv_bar.png",sep=""),plot = print(p), width 
 ```
 
 
-## Writing a script to generate a volcano plot for survival
+### Writing a script to generate a volcano plot for survival
 
-```{r volcanosurv}
+```{r Section3_volcanosurv}
 
 ### Volcano plot
 
@@ -983,111 +1330,27 @@ ggsave(output, width = width, height = height, dpi = dpi)
 
 ```
 
-## Draw Volcano plot for TUCRs
+### Draw Volcano plot for TUCRs
 
-```{r volcanosurv TUCRs}
+```{r Section3_volcanosurv TUCRs}
 
 volcanosurv(res_surv,genes=c("uc.174","uc.325","uc.363"), title = paste("TUCR correlation with patient survival in ",disease,sep=""),output = paste(outputdir,"/intergenic_tucr_results_volcanosurv.png",sep=""))
 
 ```
 
+# Section 4: TUCRs are coregulated with genes that have known functions
 
-## Generate RPKMs for filtering
+## Results 
 
-```{r RPKM_TUCRs}
+Many genes have published functions and mechanisms of action.  Gene that are coregulated have correlated differential expression.  Coregulated genes may share a biological function.  We have predicted TUCR function by identifying coregulated genes with known functions.  Using a guilt-by-association analysis pipeline, we first identified determined the deregulation of all known coding and non-coding genes using the CHESS annotation database.  This dataset contains known Refseq and Ensembl genes in additional to some novel genes that were discovered in 2018.  We the constructed a correlation matrix of TUCRs to other TUCRs and “CHESS genes” using the Spearman correlation.  This correlation measures the relationship of the gene to the TUCR as TUCR deregulation decreases.  If the TUCR increases and the coregulated gene decreases, the correlation will increase and approach a perfect positive correlated value of 1.  If the TUCR increases and the coregulated gene decreases, the correlation will decrease and approach a perfect negative correlation of -1.  Genes with no correlation to the TUCR are those with a correlation close to zero, specifically between -0.3 and 0.3.  
 
-rpkmcounts <- tucrcounts[,6:ncol(tucrcounts)]
-rpkmcounts.info <- tucrcounts[,1:5]
-rownames(rpkmcounts) <- tucrcounts$id
+Coregulated genes lists for each TUCR were subset into separate lists by directionality (positive/negative).  These lists were subject to gene ontology (GO) term analysis.  For each TUCR, lists of biological processes, molecular functions, or cellular compartments were predicted for the list of coregulated genes.  This list was cross referenced and filtered to a control list of “cancer” related GO Terms; these terms were generated by performing the same guilt-by-association analysis on known oncogenes and tumor suppressors from the CancerMine database.  The final matrix was filtered to statistically significant (FDR <=0.05) GO Terms only. Then a heatmap of the directionality of significant positive (red), negative (blue), and uncorrelated biological processes (white) was generated for GBM (Figure 5A) and LGG (Figure 6A).  These heatmaps were sorted by frequency of occurrence, and the 10 most represented positive (Figure 5B, Figure 6B) and negative (Figure 5C, Figure 6C) associations are highlighted.  These analyses were also performed to determine TUCR molecular functions (MF, Supplementary Figures 2 and 3) and cellular compartments (CC, Supplementary Figures 4 and 5).  The full list of all TUCR GO Terms was also compiled.  (Supplementary Table 1) 
 
-genelength <- tucrcounts$length
+## Methodology
 
-seqdepth <- read.csv(file = "seqdepth_counts.csv",row.names=1)
+### Identify DE TUCRs that are correlated with each other
 
-seqdepth <- as.vector(seqdepth$counts)
-
-rpkm <- function(counts,len,dep){
-  x <- counts/len
-  return(t(t(x)/dep))
-}
-
-rpkm.TUCRs <- rpkm(rpkmcounts,genelength,seqdepth)
-rpkm.TUCRs2 <- cbind(rpkmcounts.info,rpkm.TUCRs)
-
-rpkm.median <- rpkm.TUCRs2 %>% dplyr::summarise(median_RPKM = rowMedians(rpkm.TUCRs))
-rpkm.median <- cbind(rpkmcounts.info,rpkm.median)
-rpkm.median <- rpkm.median %>% dplyr::select(id,median_RPKM)
-
-write.csv(rpkm.TUCRs2,paste(outputdir,"/rpkm.TUCRs.csv",sep=""))
-
-write.csv(rpkm.median,paste(outputdir,"/medianrpkm.TUCRs.csv",sep=""))
-```
-
-## Generate RPKM Box Plots for each TUCR
-
-```{r boxplot_TUCRs}
-if(makeRPKMboxplots == TRUE){
-  
-if(!dir.exists(paste(outputdir,"/RPKMboxplots",sep=""))){
-  dir.create(paste(outputdir,"/RPKMboxplots",sep=""))
-}
-rpkm.dotplot <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
-TUCRids <- rpkm.TUCRs2[,4]
-rpkm.dotplot <- cbind(TUCRids,rpkm.dotplot)
-
-i = 1
-for(i in 1:length(TUCRids)){
-#TUCR <- "uc.110"
-TUCR <- TUCRids[i]
-print(i)
-rpkm.dotplot2 <- rpkm.dotplot %>% 
-  gather(key = "Sample", value = "RPKM",-TUCRids) %>%
-  dplyr::filter(TUCRids == TUCR)
-
-p<- ggplot(rpkm.dotplot2, aes(x=TUCRids, y=RPKM)) +
-  geom_boxplot() +
-  geom_dotplot(binaxis='y', stackdir='center',
-               stackratio=0.75, dotsize=0.20) + 
-  ggtitle(paste("RPKM expression of ",TUCR)) +
-  theme(plot.title = element_text(hjust = 0.5),
-panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black")) +
-  labs(y="Reads per kilobase million (RPKM)", x = "TUCR") +
-  stat_summary(fun.y=mean, geom="point", shape=20, size=10, color="red", fill="red")
-
-ggsave(p,file=paste(outputdir,"/RPKMboxplots/",TUCR,"_rpkm_boxplot.png",sep = ""))
-}
-
-}
-```
-
-## Generate RPKM heatmap for all TUCRs
-
-```{r heatmap_TUCRs}
-heatmap.TUCRs <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
-TUCRids <- rpkm.TUCRs2[,4]
-means <- apply(heatmap.TUCRs,1,mean)
-
-heatmap.TUCRs2 <- as.data.frame(apply(heatmap.TUCRs,1:2,function(x) {ifelse(x>=10,10,x)}))
-heatmap.TUCRs2 <- cbind(TUCRids,means,heatmap.TUCRs2)
-
-heatmap.TUCRs2 <- heatmap.TUCRs2 %>% 
-  gather(key = "Sample", value = "RPKM",-TUCRids,-means)
-
-p <- ggplot(data = heatmap.TUCRs2,mapping = aes(x = Sample,y = reorder(TUCRids,means), fill = RPKM)) +
-  geom_tile() +
-  scale_fill_gradientn(colours = c("blue", "white", "red"), values = c(0,0.1,1)) + ggtitle(paste("Expression of TUCRs in ",disease,sep="")) + xlab(paste("TCGA RNA-Seq Samples (n = ",ncol(heatmap.TUCRs),")",sep="")) + ylab(paste("TUCRs ordered by expression (n = ",nrow(heatmap.TUCRs),")",sep="")) +
-  theme(plot.title = element_text(hjust = 0.5),
-        panel.grid = element_blank(),
-        axis.text = element_blank(),
-        axis.ticks = element_blank())
-
-ggsave(p,file=paste(outputdir,"/TUCR_heatmap.png",sep=""))
-```
-
-## Identify DE TUCRs that are correlated with each other
-
-```{r correlations}
+```{r Section4_correlations}
 
 if(!dir.exists(paste(outputdir,"/correlations",sep=""))){
   dir.create(paste(outputdir,"/correlations",sep=""))
@@ -1207,55 +1470,7 @@ readr::write_excel_csv(here::here(paste(outputdir,"/correlations",sep=""),paste(
 
 ```
 
-## Get "Cancer" GO Terms
-
-```{r cancerGO, eval = TRUE}
-
-cancermine <- read.csv("annotated_genelist_onctsg.csv",header=TRUE)
-
-IDs <- as.character(cancermine$target)
-  
-entrezIDs <- mapIds(org.Hs.eg.db, IDs, 'ENTREZID', 'SYMBOL')
-  
-cancermine$entrez <- entrezIDs
-
-Genes<-entrezIDs
-g <- goana(Genes)
-topGO_cancermine <- topGO(g) 
-
-cancermine_TSG <- cancermine %>%
-  filter(role == "TSG")
-
-IDs <- as.character(cancermine_TSG$target)
-  
-entrezIDs <- mapIds(org.Hs.eg.db, IDs, 'ENTREZID', 'SYMBOL')
-  
-cancermine_TSG$entrez <- entrezIDs
-
-Genes<-entrezIDs
-g <- goana(Genes)
-topGO_cancermine_TSG <- topGO(g) 
-
-cancermine_ONC <- cancermine %>%
-  filter(role == "ONC")
-
-IDs <- as.character(cancermine_ONC$target)
-  
-entrezIDs <- mapIds(org.Hs.eg.db, IDs, 'ENTREZID', 'SYMBOL')
-  
-cancermine_ONC$entrez <- entrezIDs
-
-Genes<-entrezIDs
-g <- goana(Genes)
-topGO_cancermine_ONC <- topGO(g) 
-
-topGO_cancermine_ALL <- rbind(topGO_cancermine,topGO_cancermine_ONC,topGO_cancermine_TSG)
-
-cancer_GOTerms <- unique(as.character(topGO_cancermine_ALL$Term))
-
-```
-
-## Generate GO Terms for coregulated genes
+### Generate GO Terms for coregulated genes
 
 ```{r GO Terms}
  
@@ -1314,45 +1529,31 @@ for(i in 2:length(filenames)){
   g <- goana(Genes)
   topGO <- topGO(g) 
   
-  ############
-  
   topGO_all <- topGO %>%
     mutate(direction = direction) %>%
     mutate(gene = gene)
   
   write.csv(topGO_all,paste(outputdir,"/GO_terms/",filenames[i],sep=""))
-  
-  ############
-
   topGO_bp <- topGO %>%
     filter(Ont == "BP") %>%
     mutate(direction = direction) %>%
     mutate(gene = gene)
   
   write.csv(topGO_bp,paste(outputdir,"/GO_terms_bp/",filenames[i],sep=""))
-  
-  ############
-  
   topGO_mf <- topGO %>%
     filter(Ont == "MF") %>%
     mutate(direction = direction) %>%
     mutate(gene = gene)
   
   write.csv(topGO_mf,paste(outputdir,"/GO_terms_mf/",filenames[i],sep=""))
-  
-  ############
-  
   topGO_cc <- topGO %>%
     filter(Ont == "CC") %>%
     mutate(direction = direction) %>%
     mutate(gene = gene)
   
   write.csv(topGO_cc,paste(outputdir,"/GO_terms_cc/",filenames[i],sep=""))
-  
-  ############
-  
   }else{}
-  allgo <- rbind(allgo,topGO_all)
+  allgo <- rbind(allgo,topGO)
   allgo_bp <- rbind(allgo_bp,topGO_bp)
   allgo_mf <- rbind(allgo_mf,topGO_mf)
   allgo_cc <- rbind(allgo_cc,topGO_cc)
@@ -1365,83 +1566,20 @@ write_csv(allgo_bp,paste(outputdir,"/GOterm_bp_summary_TUCRs.csv",sep=""))
 write_csv(allgo_mf,paste(outputdir,"/GOterm_mf_summary_TUCRs.csv",sep=""))
 
 write_csv(allgo_cc,paste(outputdir,"/GOterm_cc_summary_TUCRs.csv",sep=""))
-
-save(allgo,allgo_bp,allgo_mf,allgo_cc,file="allgo.rData")
 ```
 
-## Get "Cancer" GO Terms only
-
-```{r cancerGO_TUCR, eval = TRUE}
-
-load("allgo.rData")
-
-if(!dir.exists(paste(outputdir,"/GO_terms_bp_cancer",sep=""))){
-  dir.create(paste(outputdir,"/GO_terms_bp_cancer",sep=""))
-}
-
-allgo_cancer <- allgo[which(allgo$Term %in% cancer_GOTerms),]
-
-allgo_cancer_summary <- allgo_cancer %>%
-  filter(P.DE <= 0.05) %>%
-  group_by(Term,direction) %>%
-  summarise(n = n())
-
-write_csv(allgo_cancer_summary,paste(outputdir,"/GOterm_cancer_all_summary_TUCRs.csv",sep=""))
-
-if(!dir.exists(paste(outputdir,"/GO_terms_bp_cancer",sep=""))){
-  dir.create(paste(outputdir,"/GO_terms_bp_cancer",sep=""))
-}
-
-allgo_bp_cancer <- allgo_bp[which(allgo_bp$Term %in% cancer_GOTerms),]
-
-allgo_bp_cancer_summary <- allgo_bp_cancer %>%
-  filter(P.DE <= 0.05) %>%
-  group_by(Term,direction) %>%
-  summarise(n = n())
-
-write_csv(allgo_bp_cancer_summary,paste(outputdir,"/GOterm_cancer_bp_summary_TUCRs.csv",sep=""))
-
-if(!dir.exists(paste(outputdir,"/GO_terms_mf_cancer",sep=""))){
-  dir.create(paste(outputdir,"/GO_terms_mf_cancer",sep=""))
-}
-
-allgo_mf_cancer <- allgo_mf[which(allgo_mf$Term %in% cancer_GOTerms),]
-
-allgo_mf_cancer_summary <- allgo_mf_cancer %>%
-  filter(P.DE <= 0.05) %>%
-  group_by(Term,direction) %>%
-  summarise(n = n())
-
-write_csv(allgo_mf_cancer_summary,paste(outputdir,"/GOterm_cancer_mf_summary_TUCRs.csv",sep=""))
-
-if(!dir.exists(paste(outputdir,"/GO_terms_cc_cancer",sep=""))){
-  dir.create(paste(outputdir,"/GO_terms_cc_cancer",sep=""))
-}
-
-allgo_cc_cancer <- allgo_cc[which(allgo_cc$Term %in% cancer_GOTerms),]
-
-allgo_cc_cancer_summary <- allgo_cc_cancer %>%
-  filter(P.DE <= 0.05) %>%
-  group_by(Term,direction) %>%
-  summarise(n = n())
-
-write_csv(allgo_cc_cancer_summary,paste(outputdir,"/GOterm_cancer_cc_summary_TUCRs.csv",sep=""))
-
-```
-
-
-## Summarize GO Term Data (new)
+### Summarize GO Term Data (new)
 
 ```{r summary GO Terms new}
 
 TUCRids <- read.table(countfilename,header = TRUE)
 TUCRids <- as.character(TUCRids[,4])
 
-allgo_cancer_summary <- read.csv(paste(outputdir,"/GOterm_cancer_all_summary_TUCRs.csv",sep=""),header=TRUE)
-allgo_cancer_summary <- allgo_cancer_summary %>%
+allgo <- read.csv(paste(outputdir,"/GOterm_all_summary_TUCRs.csv",sep=""),header=TRUE)
+allgo <- allgo %>%
   dplyr::select(Term)
 
-rbinder.allgo <- allgo_cancer_summary
+rbinder.allgo <- allgo
 heatmap.allgo <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("Term","gene","direction"))))
 
 i = 1
@@ -1469,234 +1607,103 @@ for(i in 1:length(TUCRids)){
   heatmap.allgo <- rbind(heatmap.allgo,rbinder.allgo.TUCR)
 }
 
-library(factoextra)
 
-heatmap.allgo.wide <- heatmap.allgo %>%
-  group_by(Term) %>%
-  mutate(sum = sum(direction)) %>%
-  ungroup() %>%
-  arrange(desc(sum)) %>%
-  mutate(Term2 = fct_reorder(Term,sum))
-
-heatmap.allgo.summary <- heatmap.allgo.wide %>%
-  group_by(Term,sum) %>%
-  summarise() %>%
-  arrange(desc(sum))
-
-heatmap.allgo.top20 <- heatmap.allgo.summary[1:20,]
-heatmap.allgo.bottom20 <- heatmap.allgo.summary[(length(heatmap.allgo.summary$Term)):(length(heatmap.allgo.summary$Term)-19),]
-  
-
-p <- ggplot(data = heatmap.allgo.wide,mapping = aes(x = gene,y = Term2, fill = direction)) +
-  geom_tile() +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) + ggtitle(paste("Expression of TUCRs in ",disease,sep="")) +
-  theme(plot.title = element_text(hjust = 0.5),
-        panel.grid = element_blank(),
-        axis.text = element_blank(),
-        axis.ticks = element_blank())
-
-ggsave(p,file=paste(outputdir,"/GOTerm_cancer_all_heatmap.png",sep=""))
+heatmap.allgo[is.na(heatmap.allgo)] <- 0
 
 ```  
 
-## Summarize GO Terms (old)
+# Section 5: TUCRs are contained within mRNA or lncRNA transcripts
 
-```{r summary GO Terms old}
+## Results 
 
-allgo <- read.csv(paste(outputdir,"/GOterm_all_summary_TUCRs.csv",sep=""),header=TRUE)
+Of the 481 TUCRs, 186 were previously characterized as intergenic, or not being contained within a known coding or non-coding transcript.  We chose to focus on these TUCRs, as they potentially represent a partial or full novel long non-coding RNA (lncRNA) transcripts.  To identify the RNA transcript(s) that contain these TUCRs, we performed a de novo transcript reassembly using GBM RNA-Seq data from TCGA.  Using this method, we identified 2636 transcripts that contain TUCRs.  We prioritized transcripts that did not overlap with known genes, as these are likely to represent novel genes.  Transcripts that were greater than 10,000 nucleotide (nt) were also eliminated.  Using these criteria, 8 transcripts were identified in GBM, LGG, or both disease types. (Figure 7A, Table 1)  These transcripts were submitted to the Coding Potential Assessing Tool (CPAT) to determine whether they express any coding potential.  Of the 8 transcripts, five represented no coding potential, while three contained coding potential.  In particular, one of these transcripts with coding potential (TUC110-) overlaps with the most highly upregulated TUCR in both LGG and GBM (uc.110, Figures 7B and 7C).
 
-allgo_bp <- read.csv(paste(outputdir,"/GOterm_bp_summary_TUCRs.csv",sep=""),header=TRUE)
+## Methodology
 
-allgo_mf <- read.csv(paste(outputdir,"/GOterm_mf_summary_TUCRs.csv",sep=""),header=TRUE)
+### Stringtie GBM
 
-allgo_cc <- read.csv(paste(outputdir,"/GOterm_cc_summary_TUCRs.csv",sep=""),header=TRUE)
+The hg19 genomic coordinates for each TUCR were acquired from _____________ and were lifted over to hg38 coordinates. The stringtie bioinformatics package was then used to perform a de novo transcript reassembly of all transcripts in 161 GBM, 400 LGG, and 5 normal brain TCGA Cancer RNA-Seq datasets.  First, transcripts present in each RNA-Seq BAM file were compiled into individual BED/GTF format genomic coordinate files using Stringtie.  These files were then merged into one master file containing all transcripts in all samples using Stringtie and an hg38 genome reference file.  The bedtools package was then used to find the genomic coordinates of all transcripts containing ultraconserved regions.  The ________________ group used stringtie to analyze the entirety of the GTex RNA-Seq normal tissue catalog, so bedtools was also used to determine the intersection of TUCRs with their results.  This methodology provides insight into TUCR transcript presence in normal tissues and in brain cancer.
 
-allgo_sum <- allgo %>% 
-  dplyr::group_by(Term) %>%
-  dplyr::summarise(count = n()) %>%
-  dplyr::arrange(desc(count)) %>%
-  dplyr::mutate(Term=factor(Term, levels=Term))
+```{bash stringtie, eval = FALSE}
+wget ftp://ftp.ensembl.org/pub/release-99/gtf/homo_sapiens/Homo_sapiens.GRCh38.99.gtf.gz
+mv Homo_sapiens.GRCh38.99.gtf.gz stringtie
+gunzip stringtie/Homo_sapiens.GRCh38.99.gtf.gz
 
-allgo_sum <- allgo_sum[1:20,]
+module load gcc/7.1.0
+module load stringtie/2.0.6
 
-p <- ggplot(allgo_sum, aes(x=Term,y=count,fill=Term)) + geom_bar(stat="identity", width = 0.7) + geom_text(aes(label=round(count,2)), vjust=1.6, color="black", size=rel(2)) + ggtitle(paste("Most common TUCR GO Terms in ",disease,sep="")) +xlab("GO Term") + ylab("# of TUCRs") + 
-  theme(
-  plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
-axis.title = element_text(size = rel(1.25), face="bold"),
-legend.title = element_blank(),
-legend.position = "none",
-axis.text.x = element_text(size=rel(1.5)),
-axis.text.y = element_text(size=rel(1.5)),
-panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black")) + coord_flip()
+for bam in $(find GBM-RNASEQ-RAW/* -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+name2=$(basename "$name")
+if [ ! -f stringtie/$name2.gtf ] 
+then
+    echo "$name2.gtf does not exist"
+    stringtie $bam -o $name.gtf
+    mv $name.gtf ./stringtie
+else
+    echo "$name2.gtf exists... skipping"
+fi
 
-ggsave(file=paste(outputdir,"/tucr_allgo.png",sep=""),plot = print(p), width = 15, height = 10, dpi = 300) 
+if [ ! -f $name.gtf ]; then
+  stringtie $bam -o $name.gtf
+fi
+mv $name.gtf ./stringtie
+done
 
+cd stringtie
 
-allgo_bp_sum <- allgo_bp %>% 
-  dplyr::group_by(Term) %>%
-  dplyr::summarise(count = n()) %>%
-  dplyr::arrange(desc(count)) %>%
-  dplyr::mutate(Term=factor(Term, levels=Term))
+stringtie --merge *rehead.gtf -G Homo_sapiens.GRCh38.99.gtf -o stringtie_merged.gtf
 
-allgo_bp_sum <- allgo_bp_sum[1:20,]
+intersectBed -a hg38.ultraConserved.bed -b CHESSgenes.bed -wa -wb 
+  > intersectchess_TUCRs.bed
 
-p1 <- ggplot(allgo_bp_sum, aes(x=Term,y=count,fill=Term)) + geom_bar(stat="identity", width = 0.7) + geom_text(aes(label=round(count,2)), vjust=1.6, color="black", size=rel(2)) + ggtitle(paste("Most common TUCR Biological Processes in ",disease,sep="")) + xlab("Biological Processes") + ylab("# of TUCRs") + theme(
-  plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
-axis.title = element_text(size = rel(1.25), face="bold"),
-legend.title = element_blank(),
-legend.position = "none",
-axis.text.x = element_text(size=rel(1.5)),
-axis.text.y = element_text(size=rel(1.5)),
-panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black")) + coord_flip()
+intersectBed -a hg38.ultraConserved.bed -b stringtie_merged.gtf -wa -wb 
+  > intersectstringtie_TUCRs.bed
 
-ggsave(file=paste(outputdir,"/tucr_allgo_bp.png",sep=""),plot = print(p1), width = 15, height = 10, dpi = 300) 
-
-allgo_mf_sum <- allgo_mf %>% 
-  dplyr::group_by(Term) %>%
-  dplyr::summarise(count = n()) %>%
-  dplyr::arrange(desc(count)) %>%
-  dplyr::mutate(Term=factor(Term, levels=Term))
-
-allgo_mf_sum <- allgo_mf_sum[1:20,]
-
-p2 <- ggplot(allgo_mf_sum, aes(x=Term,y=count,fill=Term)) + geom_bar(stat="identity", width = 0.7) + geom_text(aes(label=round(count,2)), vjust=1.6, color="black", size=rel(2)) + ggtitle(paste("Most common TUCR Molecular Functions in ",disease,sep="")) + xlab("Molecular Function") + ylab("# of TUCRs") + theme(
-  plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
-axis.title = element_text(size = rel(1.25), face="bold"),
-legend.title = element_blank(),
-legend.position = "none",
-axis.text.x = element_text(size=rel(1.5)),
-axis.text.y = element_text(size=rel(1.5)),
-panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black")) + coord_flip()
-
-ggsave(file=paste(outputdir,"/tucr_allgo_mf.png",sep=""),plot = print(p2), width = 15, height = 10, dpi = 300) 
-
-allgo_cc_sum <- allgo_cc %>% 
-  dplyr::group_by(Term) %>%
-  dplyr::summarise(count = n()) %>%
-  dplyr::arrange(desc(count)) %>%
-  dplyr::mutate(Term=factor(Term, levels=Term))
-
-allgo_cc_sum <- allgo_cc_sum[1:20,]
-
-p3 <- ggplot(allgo_cc_sum, aes(x=Term,y=count,fill=Term)) + geom_bar(stat="identity", width = 0.7) + geom_text(aes(label=round(count,2)), vjust=1.6, color="black", size=rel(2)) + ggtitle(paste("Most common TUCR Cellular Compartments in ",disease,sep="")) + xlab("Cellular Compartment") + ylab("# of TUCRs") + theme(
-  plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
-axis.title = element_text(size = rel(1.25), face="bold"),
-legend.title = element_blank(),
-legend.position = "none",
-axis.text.x = element_text(size=rel(1.5)),
-axis.text.y = element_text(size=rel(1.5)),
-panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black")) + coord_flip()
-
-ggsave(file=paste(outputdir,"/tucr_allgo_cc.png",sep=""),plot = print(p3), width = 15, height = 10, dpi = 300) 
-
-allgo_bp_sum <- allgo_bp_sum %>%
-  dplyr::mutate(Ontology = "Biological Process")
-
-allgo_mf_sum <- allgo_mf_sum %>%
-  dplyr::mutate(Ontology = "Molecular Function")
-
-allgo_cc_sum <- allgo_cc_sum %>%
-  dplyr::mutate(Ontology = "Cellular Compartment")
-
-allgo_fig <- rbind(allgo_bp_sum,allgo_mf_sum)
-
-p4 <- ggplot(allgo_fig, aes(x=Term,y=count,fill=Term)) + geom_bar(stat="identity",position="dodge", width = 0.7) + geom_text(aes(label=round(count,2)), vjust=1.6, color="black", size=rel(4)) + ggtitle(paste("Most common TUCR GO Terms in ",disease,sep="")) + xlab("GO Term") + ylab("# of TUCRs") + facet_grid(~ Ontology,scales="free",space="free") + theme(
-  plot.title = element_text(size=rel(1.75), face="bold",hjust = 0.5),
-axis.title = element_text(size = rel(1.25), face="bold"),
-legend.title = element_blank(),
-legend.position = "none",
-axis.text.x = element_text(size=rel(1.5)),
-axis.text.y = element_text(size=rel(1.5)),
-strip.text = element_text(size=rel(1.5)),
-panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black")) 
-
-ggsave(file=paste(outputdir,"/tucr_allgo_fig.png",sep=""),plot = print(p4), width = 15, height = 15, dpi = 300)
-
-
+cp stringtie_merged.gtf stringtie_merged.bed
 ```
 
+### Stringtie LGG
 
-## Generate figures for cell fractionation
+```{bash stringtie, eval = FALSE}
+wget ftp://ftp.ensembl.org/pub/release-99/gtf/homo_sapiens/Homo_sapiens.GRCh38.99.gtf.gz
+mv Homo_sapiens.GRCh38.99.gtf.gz stringtie
+gunzip stringtie/Homo_sapiens.GRCh38.99.gtf.gz
 
-```{r cellfrac_TUCR}
+module load gcc/7.1.0
+module load stringtie/2.0.6
 
-if(!dir.exists(paste(outputdir,"/cellfrac",sep=""))){
-  dir.create(paste(outputdir,"/cellfrac",sep=""))
-}
+for bam in $(find LGG-RNASEQ-RAW/* -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+name2=$(basename "$name")
+if [ ! -f stringtie/$name2.gtf ] 
+then
+    echo "$name2.gtf does not exist"
+    stringtie $bam -o $name.gtf
+    mv $name.gtf ./stringtie
+else
+    echo "$name2.gtf exists... skipping"
+fi
 
-CellFrackin <- function(filename){
-all_content = readLines(filename)
-skip_second = all_content[-c(1:19)]
-x <- read.csv(textConnection(skip_second), header = TRUE, stringsAsFactors = FALSE)
-samplenames <- t(as.data.frame(strsplit(as.character(x$Sample), " ")))
-colnames(samplenames) <- c("Line","Fraction")
-x <- cbind(x,samplenames)
-x<- x %>%
-    dplyr::select(Well,Target,Sample,Line,Fraction,Cq) %>%
-    dplyr::group_by(Target,Line,Fraction) %>%
-    dplyr::summarize(meanCq = mean(Cq)) %>%
-    dplyr::mutate(dct = meanCq - min(meanCq)) %>%
-    dplyr::mutate(FoldChange = 2^(-dct)) %>%
-    dplyr::mutate(ID = paste(Target,Line,Fraction,sep=" "))
+if [ ! -f $name.gtf ]; then
+  stringtie $bam -o $name.gtf
+fi
+mv $name.gtf ./stringtie
+done
 
-p <- ggplot(x,aes(x = Target, y = FoldChange, fill = Fraction)) + 
-  labs(title = "Cellular localization of TUCRs in GBM cell lines") +
-  ylab("Fold Change") +
-  geom_bar(stat = "identity",position="dodge") + 
-  theme(axis.text.x = element_text(angle = -90, size = 10),
-        axis.text.y = element_text(size = 10),
-        axis.ticks.x = element_blank(),
-        plot.title = element_text(size = 15, face = "bold",hjust = 0.5),
-        axis.title.y = element_text("Fold Change",size = 10),
-panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black")) +
-  facet_wrap(~Line)
+cd stringtie
 
-ggsave(p,file=paste(outputdir,"/",filename,".png",sep=""), width = 7.5, height = 5, dpi = 300)
-x %>%
-  select(-ID) %>%
-  write_csv(paste(outputdir,"/",filename," (Output).csv",sep=""))
-}
+stringtie --merge *rehead.gtf -G Homo_sapiens.GRCh38.99.gtf -o stringtie_merged.gtf
 
-path <- list.files("cellfrac")
-i = 1
+intersectBed -a hg38.ultraConserved.bed -b CHESSgenes.bed -wa -wb 
+  > intersectchess_TUCRs.bed
 
-for(i in 1:length(path)){
-  print(i)
-  CellFrackin(paste("cellfrac",path[i],sep="/"))
-}
+intersectBed -a hg38.ultraConserved.bed -b stringtie_merged.gtf -wa -wb 
+  > intersectstringtie_TUCRs.bed
 
-```
-
-## Make figures for fold change
-
-```{r overexp_TUCR}
-
-overexp_TUCR_cp <- c("#C77CFF","#F8766D","#619CFF","#00BA38","#FFFF00")
-
-filename <- "tucroverexpression_U87.csv"
-x <- read.csv(filename)
-
-p <- ggplot(x,aes(x = Target, y = FC, fill = Sample)) + 
-  labs(title = "TUCR Overexpression in U87 cells") +
-  ylab("Fold Change") +
-  geom_bar(stat = "identity",position="dodge",colour="black") + 
-  theme(axis.text.x = element_text(angle = -90, size = 10),
-        axis.text.y = element_text(size = 10),
-        axis.ticks.x = element_blank(),
-        plot.title = element_text(size = 15, face = "bold",hjust = 0.5),
-        axis.title.y = element_text("Fold Change",size = 10)) +
-  facet_zoom(ylim = c(0, 2)) +
-  scale_fill_manual(values=overexp_TUCR_cp)
-
-ggsave(p,file=paste(outputdir,"/",filename,".png",sep=""), width = 7.5, height = 5, dpi = 300)
-
-
+cp stringtie_merged.gtf stringtie_merged.bed
 ```
 
 ## Show that TUCRs are contained within novel genes
