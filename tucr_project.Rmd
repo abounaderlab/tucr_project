@@ -426,6 +426,178 @@ closest_h3k4me3_misc_output.bed
 
 ```
 
+### Graphing closest H3K4me3 marks
+
+```{r CHIPgraphs-h3k4me3}
+
+filenames.H3K4me3 <- list.files("./closest_bed/H3K4me3/")
+
+mastertable.H3k4me3 <- data.frame(matrix(ncol=10,nrow=0, dimnames=list(NULL,c("chromosome.gene","start.gene","end.gene","gene","annot",
+"chromosome.H3K4me3","start.H3K4me3","end.H3K4me3","H3K4me3","dist"))))
+
+i = 1
+for(i in 1:length(filenames.H3K4me3)){
+  print(i)
+  df <- read.table(paste("./closest_bed/H3K4me3/",filenames.H3K4me3[i],sep=""))
+  colnames(df) <- colnames(mastertable.H3k4me3)
+  mastertable.H3k4me3 <- rbind(mastertable.H3k4me3,df)
+}
+
+mastertable.H3k4me3.sum <- mastertable.H3k4me3 %>%
+  mutate(interval = ifelse(dist<500, 500,
+                          ifelse(dist<1000, 1000,
+                          ifelse(dist<1500, 1500,
+                          ifelse(dist<2000, 2000,
+                          ifelse(dist<2500, 2500,
+                          ifelse(dist<3000, 3000,
+                          ifelse(dist<3500, 3500,
+                          ifelse(dist<4000, 4000,
+                          ifelse(dist<4500, 4500,
+                          ifelse(dist<5000, 5000,
+                          ifelse(dist<5500, 5500,
+                          ifelse(dist<6000, 6000,
+                          ifelse(dist<6500, 6500,
+                          ifelse(dist<7000, 7000,
+                          ifelse(dist<7500, 7500,
+                          ifelse(dist<8000, 8000,
+                          ifelse(dist<8500, 8500,
+                          ifelse(dist<9000, 9000,
+                          ifelse(dist<9500, 9500,
+                          ifelse(dist<10000, 10000,10500))))))))))))))))))))) %>%
+  filter(interval != 10500) %>%
+  mutate(order = ifelse(annot=="protein_coding", 1,
+                          ifelse(annot=="lncRNA", 2,
+                          ifelse(annot=="TUCR", 3,
+                          ifelse(annot=="intergenic_TUCR", 4,
+                          ifelse(annot=="antisense_RNA", 5,
+                          ifelse(annot=="misc_RNA", 6,
+                          ifelse(annot=="random", 7,0
+                          )))))))) %>%
+  mutate(annot = fct_reorder(annot,order)) %>%
+  group_by(annot,interval,order) %>%
+  summarise(total = n()) %>%
+  ungroup() %>%
+  group_by(annot) %>%
+  mutate(div = sum(total)) %>%
+  mutate(prop = total/div) %>%
+  mutate(log10 = log10(total)) %>%
+  mutate(log2 = log2(total)) %>%
+  arrange(order)
+
+p <- ggplot(mastertable.H3k4me3.sum, aes(x=interval,y=log2,fill=annot,order=order)) + 
+  geom_bar(stat="identity")                                                      + 
+  scale_fill_manual(values = c("red3","green4","blue3","deeppink","yellow2","orange2")) +
+  xlab("distance (nt)")                                           + 
+  ylab("log(density)")                                           + 
+  theme(
+    plot.title = element_blank(),
+    axis.title = element_text(
+      size = rel(1.25), 
+      face="bold"),
+    axis.text.x = element_text(
+      angle = -90, 
+      size = 10),
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(), 
+    axis.line = element_line(
+      colour = "black"))
+
+ggsave(
+    file=paste(outputdir,"/tucr_dist_h3k4me3.png",sep=""),
+    plot = print(p),
+    width = 10, 
+    height = 5, 
+    dpi = 300) 
+
+```
+
+### Graph closest RNA Pol.II Binding Sites
+
+```{r CHIPgraphs-pol2}
+
+filenames.pol2 <- list.files("./closest_bed/pol2/")
+
+mastertable.pol2 <- data.frame(matrix(ncol=10,nrow=0, dimnames=list(NULL,                  c("chromosome.gene","start.gene","end.gene","gene","annot",
+"chromosome.pol2","start.pol2","end.pol2","pol2","dist"))))
+
+i = 1
+for(i in 1:length(filenames.pol2)){
+  print(i)
+  df <- read.table(paste("./closest_bed/pol2/",filenames.pol2[i],sep=""))
+  colnames(df) <- colnames(mastertable.pol2)
+  mastertable.pol2 <- rbind(mastertable.pol2,df)
+}
+
+mastertable.pol2.sum <- mastertable.pol2 %>%
+  mutate(interval = ifelse(dist<500, 500,
+                          ifelse(dist<1000, 1000,
+                          ifelse(dist<1500, 1500,
+                          ifelse(dist<2000, 2000,
+                          ifelse(dist<2500, 2500,
+                          ifelse(dist<3000, 3000,
+                          ifelse(dist<3500, 3500,
+                          ifelse(dist<4000, 4000,
+                          ifelse(dist<4500, 4500,
+                          ifelse(dist<5000, 5000,
+                          ifelse(dist<5500, 5500,
+                          ifelse(dist<6000, 6000,
+                          ifelse(dist<6500, 6500,
+                          ifelse(dist<7000, 7000,
+                          ifelse(dist<7500, 7500,
+                          ifelse(dist<8000, 8000,
+                          ifelse(dist<8500, 8500,
+                          ifelse(dist<9000, 9000,
+                          ifelse(dist<9500, 9500,
+                          ifelse(dist<10000, 10000,10500))))))))))))))))))))) %>%
+  filter(interval != 10500) %>%
+  mutate(order = ifelse(annot=="protein_coding", 1,
+                          ifelse(annot=="lncRNA", 2,
+                          ifelse(annot=="TUCR", 3,
+                          ifelse(annot=="intergenic_TUCR", 4,
+                          ifelse(annot=="antisense_RNA", 5,
+                          ifelse(annot=="misc_RNA", 6,
+                          ifelse(annot=="random", 7,0
+                          )))))))) %>%
+  mutate(annot = fct_reorder(annot,order)) %>%
+  group_by(annot,interval,order) %>%
+  summarise(total = n()) %>%
+  ungroup() %>%
+  group_by(annot) %>%
+  mutate(div = sum(total)) %>%
+  mutate(prop = total/div) %>%
+  mutate(log10 = log10(total)) %>%
+  mutate(log2 = log2(total)) %>%
+  arrange(order)
+
+p <- ggplot(mastertable.pol2.sum, aes(x=interval,y=log2,fill=annot,order=order)) + 
+  geom_bar(stat="identity")                                                      + 
+  scale_fill_manual(values = c("red3","green4","blue3","deeppink","yellow2","orange2")) +
+  xlab("distance (nt)")                                           + 
+  ylab("log(density)")                                           + 
+  theme(
+    plot.title = element_blank(),
+    axis.title = element_text(
+      size = rel(1.25), 
+      face="bold"),
+    axis.text.x = element_text(
+      angle = -90, 
+      size = 10),
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(), 
+    axis.line = element_line(
+      colour = "black"))
+
+ggsave(
+    file=paste(outputdir,"/tucr_dist_pol2.png",sep=""),
+    plot = print(p),
+    width = 10, 
+    height = 5, 
+    dpi = 300) 
+
+```
+
 ### Generate TUCR "Windows"
 
 ```{bash Section1_slop, results="hide", eval = FALSE}
@@ -490,17 +662,21 @@ h3k4me3_misc_output.txt
 
 ```{r Section1_lncRNAs}
 if(makeannotate == TRUE){
-tucr_lncRNAs <- read.csv("tucr_lncRNAs.csv")
+tucr_lncRNAs <- read.csv("tucr_lncRNAsA.csv")
+
+tucr_lncRNAs <- tucr_lncRNAs %>%
+  mutate(row = fct_reorder(row,order))
   
-p <- ggplot(tucr_lncRNAs, aes(x=row,y=value,fill=row))                + 
+p <- ggplot(tucr_lncRNAs, aes(x=row,y=value,fill=as.factor(fill)))                + 
   geom_bar(
     stat="identity", 
     width = 0.7)                                                      + 
-  geom_text(
-    aes(label=round(value,2)), 
-    vjust=1.6, 
-    color="black", 
-    size=rel(4))                                                      + 
+  scale_fill_manual(values = c("red3","green4","blue3","deeppink","yellow2","orange2")) +
+  #geom_text(
+  #  aes(label=round(value,2)), 
+  #  vjust=1.6, 
+  #  color="black", 
+  #  size=rel(4))                                                      #+ 
   ggtitle(paste("TUCRs are enriched for \n RNA Pol.II and H3K4me3"))  + 
   xlab("Interval and Mark")                                           + 
   ylab("-log10 of p-value")                                           + 
@@ -905,9 +1081,40 @@ volcanoplot(res_intergenic,genes=c("uc.62","uc.110"),
 
 ```
 
-### Identifying differentially expressed TUCRs with DESeq2
+### Determining sequencing depth for TCGA files
+
+```{bash Section3_seqdepth, eval = FALSE}
+mkdir tcga_analysis/readcounts/
+
+for bam in $(find tcga_analysis/reindex/*.bam -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+echo $name
+samtools view -c -F 260 $bam > $name.readcounts.txt
+mv $name.readcounts.txt ./tcga_analysis/readcounts/
+done
+
+##Do the same for lgg
+
+mkdir lgg_tcga_analysis/readcounts/
+
+for bam in $(find lgg_tcga_analysis/reindex/*.bam -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+echo $name
+samtools view -c -F 260 $bam > $name.readcounts.txt
+mv $name.readcounts.txt ./lgg_tcga_analysis/readcounts/
+done
+
+
+```
+
+### Identifying and comparing TUCR absolute expression in GBM and LGG
 
 ```{r Section2_DESeq2_TUCRs}
+if(!dir.exists(paste(outputdir,"/RPKM",sep=""))){
+  dir.create(paste(outputdir,"/RPKM",sep=""))
+}
 
 mergedcounts <- 
   read.table(mergedcountfile,header = TRUE)
@@ -946,15 +1153,38 @@ colnames(count_annot) <- c("id","annot")
 mergedcounts <- mergedcounts %>%
   left_join(count_annot,by="id")
 
-for(i in 1:length(unique(mergedcounts$annot)))
-  
-sum(is.na(mergedcounts$annot))
-  
-rpkmcounts <- mergedcounts[,6:ncol(tucrcounts)]
-rpkmcounts.info <- tucrcounts[,1:5]
-rownames(rpkmcounts) <- tucrcounts$id
+NAchecker_mergedcounts<- mergedcounts[is.na(mergedcounts$annot),]
 
-genelength <- tucrcounts$length
+mergedcounts <- mergedcounts[complete.cases(mergedcounts),]
+
+i <- 1
+
+for(i in 1:length(unique(mergedcounts$annot))){
+
+  
+annot_unique <- as.character(unique(mergedcounts$annot))
+
+annotation <- as.character(annot_unique[i])
+
+print(annotation)
+    
+rpkmcounts <- mergedcounts %>%
+  filter(annot == annotation) %>%
+  mutate(length = end - start)
+
+#rpkmcounts <- rpkmcounts[481,]
+
+rpkmcounts.info <- rpkmcounts %>%
+  dplyr::select(chrom,start,end,length,id,annot)
+
+rpkmcounts <- rpkmcounts %>%
+  dplyr::select(-chrom,-start,-end,-id,-annot)
+  
+#sum(is.na(mergedcounts$annot))
+  
+rownames(rpkmcounts) <- as.character(rpkmcounts.info$id)
+
+genelength <- rpkmcounts.info$length/1000
 
 seqdepth <- read.csv(file = "seqdepth_counts.csv",row.names=1)
 
@@ -965,17 +1195,44 @@ rpkm <- function(counts,len,dep){
   return(t(t(x)/dep))
 }
 
-rpkm.TUCRs <- rpkm(rpkmcounts,genelength,seqdepth)
-rpkm.TUCRs2 <- cbind(rpkmcounts.info,rpkm.TUCRs)
+rpkm.df <- rpkm(rpkmcounts,genelength,seqdepth)
+rpkm.df2 <- cbind(rpkmcounts.info,rpkm.df)
 
-rpkm.median <- rpkm.TUCRs2 %>% dplyr::summarise(median_RPKM = rowMedians(rpkm.TUCRs))
+rpkm.median <- as.data.frame(rpkm.df)
+rpkm.median <- rpkm.median %>% 
+  dplyr::summarize(median_RPKM = rowMedians(rpkm.df)) %>%
+  dplyr::mutate(countif = ifelse(median_RPKM >=1,1,0),proportion = sum(countif,na.rm = TRUE)/n())
 rpkm.median <- cbind(rpkmcounts.info,rpkm.median)
-rpkm.median <- rpkm.median %>% dplyr::select(id,median_RPKM)
+rpkm.median <- rpkm.median %>% dplyr::select(id,median_RPKM,countif,proportion)
 
-write.csv(rpkm.TUCRs2,paste(outputdir,"/rpkm.TUCRs.csv",sep=""))
+proportion.df <- round(as.numeric(rpkm.median$proportion[i]),3)*100
 
-write.csv(rpkm.median,paste(outputdir,"/medianrpkm.TUCRs.csv",sep=""))
+write.csv(rpkm.df2,paste(outputdir,"/RPKM","/rpkm.",annotation,".csv",sep=""))
 
+write.csv(rpkm.median,paste(outputdir,"/RPKM","/medianrpkm.",annotation,".csv",sep=""))
+
+heatmap.df <- rpkm.df
+geneids <- rpkm.df2 %>%
+  dplyr::select(id)
+means <- apply(heatmap.df,1,mean)
+
+heatmap.df2 <- as.data.frame(apply(heatmap.df,1:2,function(x) {ifelse(x>=10,10,x)}))
+heatmap.df2 <- cbind(geneids,means,heatmap.df2)
+
+heatmap.df2 <- heatmap.df2 %>% 
+  gather(key = "Sample", value = "RPKM",-id,-means)
+
+p <- ggplot(data = heatmap.df2,mapping = aes(x = Sample,y = reorder(id,means), fill = RPKM)) +
+  geom_tile() +
+  scale_fill_gradientn(colours = c("blue", "white", "red"), values = c(0,0.1,1)) + ggtitle(paste(annotation," (",proportion.df,"%)",sep="")) + xlab(paste("Samples (n = ",ncol(heatmap.df),")",sep="")) + ylab(paste("genes (n = ",nrow(heatmap.df),")",sep="")) +
+  theme(plot.title = element_text(hjust = 0.5),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+ggsave(p,file=paste(outputdir,"/RPKM","/",annotation,"_heatmap.png",sep=""), width = 2.5, height = 7, dpi = 300)
+
+}
 
 ```
 
@@ -1015,8 +1272,8 @@ write.csv(rpkm.median,paste(outputdir,"/medianrpkm.TUCRs.csv",sep=""))
 ```{r Section2_boxplot_TUCRs}
 if(makeRPKMboxplots == TRUE){
   
-if(!dir.exists(paste(outputdir,"/RPKMboxplots",sep=""))){
-  dir.create(paste(outputdir,"/RPKMboxplots",sep=""))
+if(!dir.exists(paste(outputdir,"/RPKM","/RPKMboxplots",sep=""))){
+  dir.create(paste(outputdir,"/RPKM","/RPKMboxplots",sep=""))
 }
 rpkm.dotplot <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
 TUCRids <- rpkm.TUCRs2[,4]
@@ -1042,7 +1299,7 @@ panel.background = element_blank(), axis.line = element_line(colour = "black")) 
   labs(y="Reads per kilobase million (RPKM)", x = "TUCR") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color="red", fill="red")
 
-ggsave(p,file=paste(outputdir,"/RPKMboxplots/",TUCR,"_rpkm_boxplot.png",sep = ""))
+ggsave(p,file=paste(outputdir,"/RPKM","/RPKMboxplots/",TUCR,"_rpkm_boxplot.png",sep = ""))
 }
 
 }
@@ -1051,25 +1308,7 @@ ggsave(p,file=paste(outputdir,"/RPKMboxplots/",TUCR,"_rpkm_boxplot.png",sep = ""
 ### Generate RPKM heatmap for all TUCRs
 
 ```{r Section2_heatmap_TUCRs}
-heatmap.TUCRs <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
-TUCRids <- rpkm.TUCRs2[,4]
-means <- apply(heatmap.TUCRs,1,mean)
 
-heatmap.TUCRs2 <- as.data.frame(apply(heatmap.TUCRs,1:2,function(x) {ifelse(x>=10,10,x)}))
-heatmap.TUCRs2 <- cbind(TUCRids,means,heatmap.TUCRs2)
-
-heatmap.TUCRs2 <- heatmap.TUCRs2 %>% 
-  gather(key = "Sample", value = "RPKM",-TUCRids,-means)
-
-p <- ggplot(data = heatmap.TUCRs2,mapping = aes(x = Sample,y = reorder(TUCRids,means), fill = RPKM)) +
-  geom_tile() +
-  scale_fill_gradientn(colours = c("blue", "white", "red"), values = c(0,0.1,1)) + ggtitle(paste("Expression of TUCRs in ",disease,sep="")) + xlab(paste("TCGA RNA-Seq Samples (n = ",ncol(heatmap.TUCRs),")",sep="")) + ylab(paste("TUCRs ordered by expression (n = ",nrow(heatmap.TUCRs),")",sep="")) +
-  theme(plot.title = element_text(hjust = 0.5),
-        panel.grid = element_blank(),
-        axis.text = element_blank(),
-        axis.ticks = element_blank())
-
-ggsave(p,file=paste(outputdir,"/TUCR_heatmap.png",sep=""))
 ```
 
 # Section 3: TUCR expression correlates with survival in LGG and GBM
@@ -1582,7 +1821,8 @@ allgo <- allgo %>%
 rbinder.allgo <- allgo
 heatmap.allgo <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("Term","gene","direction"))))
 
-i = 1
+i <- 1
+
 for(i in 1:length(TUCRids)){
   print(i)
   TUCR <- TUCRids[i]
@@ -1609,6 +1849,8 @@ for(i in 1:length(TUCRids)){
 
 
 heatmap.allgo[is.na(heatmap.allgo)] <- 0
+
+
 
 ```  
 
@@ -1708,7 +1950,7 @@ cp stringtie_merged.gtf stringtie_merged.bed
 
 ## Show that TUCRs are contained within novel genes
 
-```{r novelgenes}
+```{r novelgenes, eval = FALSE}
 tucr_novelgenes <- read.csv("tucr_novelgenes.csv")
   
 p <- ggplot(tucr_novelgenes, aes(x=row,y=value,fill=row)) + geom_bar(stat="identity", width = 0.7) +
