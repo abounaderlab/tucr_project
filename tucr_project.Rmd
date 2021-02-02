@@ -51,17 +51,10 @@ The following variables can be set:
 * useintermediate is a logical vector.  When set to TRUE, the analysis will use a pregenerated gene correlation matrix for the guilt by association analysis.  Unless there is a specific reason to generate a new matrix (VERY memory intensive), this variable should be set to TRUE.
 * deleteoutputs is a logical vector that should only be set to TURE or FALSE.  When set to true, the output directory will be repopulated after every program run.  If set to false, the program will only run if the output directory does not already exist in the working directory, to prevent the data from being overwritten.
 
-```{r parameters}
-
-
-
-
-```
-
 ### Install required programs
 
 ```{r setup, message = FALSE, warning=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE,eval = FALSE)
 
 if (!require("tidyverse")) install.packages("tidyverse")
 library("tidyverse")
@@ -928,7 +921,7 @@ ggsave(
 }
 ```
 
-# TUCRs are deregulated in GBM and LGG tumors
+# Section 2: TUCRs are deregulated in GBM and LGG tumors
 
 ## Results
 
@@ -1334,7 +1327,7 @@ done
 
 ### Identifying and comparing TUCR absolute expression in GBM and LGG
 
-```{r Section2_DESeq2_TUCRs}
+```{r Section2_RPKM_TUCRs}
 if(!dir.exists(paste(outputdir,"/RPKM",sep=""))){
   dir.create(paste(outputdir,"/RPKM",sep=""))
 }
@@ -1995,7 +1988,7 @@ write_csv(allgo_cc,paste(outputdir,"/GOterm_cc_summary_TUCRs.csv",sep=""))
 
 ### Summarize GO term data for oncogenes and tumor suppressors
 
-```{r summary GO Terms new}
+```{r summary GO Terms GSEA}
 
 if(!dir.exists(paste(outputdir,"/Cancermine/",sep=""))){
   dir.create(paste(outputdir,"/Cancermine/",sep=""))
@@ -2223,7 +2216,7 @@ cp stringtie_merged.gtf stringtie_merged.bed
 
 ### Stringtie LGG
 
-```{bash stringtie, eval = FALSE}
+```{bash stringtie lgg, eval = FALSE}
 wget ftp://ftp.ensembl.org/pub/release-99/gtf/homo_sapiens/Homo_sapiens.GRCh38.99.gtf.gz
 mv Homo_sapiens.GRCh38.99.gtf.gz stringtie
 gunzip stringtie/Homo_sapiens.GRCh38.99.gtf.gz
