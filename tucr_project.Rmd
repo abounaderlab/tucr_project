@@ -51,47 +51,14 @@ The following variables can be set:
 * useintermediate is a logical vector.  When set to TRUE, the analysis will use a pregenerated gene correlation matrix for the guilt by association analysis.  Unless there is a specific reason to generate a new matrix (VERY memory intensive), this variable should be set to TRUE.
 * deleteoutputs is a logical vector that should only be set to TURE or FALSE.  When set to true, the output directory will be repopulated after every program run.  If set to false, the program will only run if the output directory does not already exist in the working directory, to prevent the data from being overwritten.
 
-```{r parameters}
-
-disease <- "GBM"
-
-outputdir <- "Outputs_GBM"
-
-makeannotate <- TRUE
-
-makelncRNA <- TRUE
-
-makeDE <- TRUE
-
-countfilename <- "TUCR_counts.txt"
-
-metadatafile <- "tcga_metadata.csv"
-
-repel <- TRUE
-
-makesurvival <- TRUE
-
-mergedcountfile <- "mergedcounts.txt"
-
-makeSuvivalplots <- TRUE 
-
-makeRPKMboxplots <- TRUE
-
-makecorrelations <- TRUE
-
-useintermediate <- TRUE
-
-intermediatefile <- "matrixintermediate.Rdata"
-
-makeGOterms <- TRUE
-
-
-```
-
 ### Install required programs
 
 ```{r setup, message = FALSE, warning=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE,eval = FALSE)
+
+if (!require("reticulate")) install.packages("reticulate")
+library("reticulate")
+#use_python("/usr/local/bin/python")
 
 if (!require("tidyverse")) install.packages("tidyverse")
 library("tidyverse")
@@ -153,6 +120,61 @@ library(GO.db)
 if (!require('limma')) BiocManager::install('limma')
 library(limma)
 
+if (!require("ggthemes")) install.packages('ggthemes', dependencies = TRUE)
+library(ggthemes)
+
+if (!require("gplots")) 
+install.packages("gplots")
+library(gplots)
+
+if (!require("heatmap.plus")) 
+install.packages("heatmap.plus")
+library(heatmap.plus)
+
+if (!require("RColorBrewer")) 
+install.packages("RColorBrewer")
+library(RColorBrewer)
+
+###
+
+disease <- "LGG"
+
+outputdir <- "Outputs_LGG"
+
+makeSNP <- TRUE
+
+makeannotate <- TRUE
+
+makelncRNA <- TRUE
+
+makeDE <- TRUE
+
+countfilename <- "lgg_TUCR_counts.txt"
+
+metadatafile <- "lgg_tcga_metadata.csv"
+
+repel <- TRUE
+
+makesurvival <- TRUE
+
+mergedcountfile <- "lgg_mergedcounts.txt"
+
+seqdepthfile <- "lgg_seqdepth.csv"
+
+makeSuvivalplots <- TRUE 
+
+makeRPKMboxplots <- TRUE
+
+makecorrelations <- TRUE
+
+useintermediate <- TRUE
+
+intermediatefile <- "lgg_matrixintermediate.Rdata"
+
+makeGOterms <- TRUE
+
+novelgenesfile <- "lgg_novelgenes.bed"
+
 ```
 
 ### Create output directory
@@ -182,7 +204,7 @@ First, publicly available U87 H3K4me3 and RNA Pol.II CHIP-Seq data were download
 ### Generate Figure 1E for TUCR annotation
 
 ```{r Section1_annotation}
-if(makeannotate == FALSE){
+if(makeannotate == TRUE){
 tucr_annot <- read.csv("tucr_annot.csv")
 
 plot_annotation <- tucr_annot %>% 
@@ -197,7 +219,7 @@ names(plot_annotation)[names(plot_annotation) == 'annot'] <-
   
 p <- ggplot(plot_annotation, aes(x=2,y=count,fill=Annotation))          + 
   geom_bar(
-    stat="identity", 
+    stat="identity",colour="black", 
     width = 1)                                                          +
   geom_text(
     aes(y = lab.ypos, label = count), 
@@ -206,8 +228,8 @@ p <- ggplot(plot_annotation, aes(x=2,y=count,fill=Annotation))          +
   scale_fill_manual(values=c("#F8766D","#00BFC4","#7CAE00","#C77CFF"))  + 
   ggtitle(paste("TUCR Genomic Location"))                               + 
   theme(
-    plot.title = element_text(size=rel(1.5),
-    face="bold",hjust = 0.5,vjust=-2),
+    plot.title = element_text(size=rel(1.0),
+    face="bold",hjust = 0.5,vjust=-10),
     legend.title.align=0.5, 
     axis.title = element_blank(),
     axis.text.x=element_blank(),
@@ -225,6 +247,215 @@ ggsave(file=paste(outputdir,"/tucr_annotation.png",sep=""),
        plot = print(p), 
        width = 5, 
        height = 5, 
+       dpi = 300)
+}
+```
+
+## Acquiring SNPs
+
+```{bash, Section1_SNPget, eval = FALSE}
+mkdir SNPs
+
+cd SNPs
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_1.bed.gz
+gunzip bed_chr_1.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_10.bed.gz
+gunzip bed_chr_10.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_11.bed.gz
+gunzip bed_chr_11.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_13.bed.gz
+gunzip bed_chr_13.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_12.bed.gz
+gunzip bed_chr_12.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_14.bed.gz
+gunzip bed_chr_14.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_15.bed.gz
+gunzip bed_chr_15.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_16.bed.gz
+gunzip bed_chr_16.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_17.bed.gz
+gunzip bed_chr_17.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_18.bed.gz
+gunzip bed_chr_18.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_19.bed.gz
+gunzip bed_chr_19.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_2.bed.gz
+gunzip bed_chr_2.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_20.bed.gz
+gunzip bed_chr_20.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_21.bed.gz
+gunzip bed_chr_21.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_22.bed.gz
+gunzip bed_chr_22.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_3.bed.gz
+gunzip bed_chr_3.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_4.bed.gz
+gunzip bed_chr_4.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_5.bed.gz
+gunzip bed_chr_5.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_6.bed.gz
+gunzip bed_chr_6.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_7.bed.gz
+gunzip bed_chr_7.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_8.bed.gz
+gunzip bed_chr_8.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_9.bed.gz
+gunzip bed_chr_9.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_X.bed.gz
+gunzip bed_chr_X.bed.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_Y.bed.gz
+gunzip bed_chr_Y.bed.gz
+
+```
+
+### Getting SNP intersects for genes
+
+```{bash Section1_SNPintersect, eval = FALSE}
+### TUCRs ###
+for bed in bed_chr_*
+do
+
+name=$(echo $bed | awk -F ".bed" '{print $1}')
+echo $name
+
+intersectBed -a hg38.ultraConserved.bed -b $bed -wa -wb > $name.TUCR.SNPs.bed
+
+done
+
+cat *.TUCR.SNPs.bed > merged_TUCR_SNPs.bed
+
+rm *TUCR.SNPs.bed
+
+### coding genes ###
+for bed in bed_chr_*
+do
+
+name=$(echo $bed | awk -F ".bed" '{print $1}')
+echo $name
+
+intersectBed -a CHESScoding.bed -b $bed -wa -wb > $name.coding.SNPs.bed
+
+done
+
+cat *coding.SNPs.bed > merged_coding_SNPs.bed
+
+rm *coding.SNPs.bed
+
+### lncRNAs ###
+for bed in bed_chr_*
+do
+
+name=$(echo $bed | awk -F ".bed" '{print $1}')
+echo $name
+
+intersectBed -a CHESSlncRNA.bed -b $bed -wa -wb > $name.lncRNA.SNPs.bed
+
+done
+
+cat *lncRNA.SNPs.bed > merged_lncRNA_SNPs.bed
+
+rm *lncRNA.SNPs.bed
+
+### antisense RNAs ###
+
+for bed in bed_chr_*
+do
+
+name=$(echo $bed | awk -F ".bed" '{print $1}')
+echo $name
+
+intersectBed -a CHESSantisense.bed -b $bed -wa -wb > $name.antisense.SNPs.bed
+
+done
+
+cat *antisense.SNPs.bed > merged_antisense_SNPs.bed
+
+rm *antisense.SNPs.bed
+
+### miscRNAs ###
+for bed in bed_chr_*
+do
+
+name=$(echo $bed | awk -F ".bed" '{print $1}')
+echo $name
+
+intersectBed -a CHESSmisc.bed -b $bed -wa -wb > $name.misc.SNPs.bed
+
+done
+
+cat *misc.SNPs.bed > merged_misc_SNPs.bed
+
+rm *misc.SNPs.bed
+```
+
+### Count intersecting SNPs
+
+```{bash Section1_SNPcount, eval = FALSE}
+
+wc -l merged_TUCR_SNPs.bed
+
+wc -l merged_coding_SNPs.bed
+
+wc -l merged_lncRNA_SNPs.bed
+
+wc -l merged_antisense_SNPs.bed
+
+wc -l merged_misc_SNPs.bed
+
+```
+
+### Generate SNP proportion graph
+
+```{r Section1_SNPgraph}
+if(makeSNP == TRUE){
+tucr_SNP <- read.csv("tucr_SNPs.csv")
+
+p <- ggplot(tucr_SNP, aes(x=reorder(annot,order),y=proportion*100,fill=reorder(annot,order))) + 
+  geom_bar(stat="identity", width = 0.7, 
+    color = "black") + 
+  geom_text(aes(label=round(proportion*100,3)), vjust=1.6, color="black", size=7) + 
+  scale_fill_manual(values=c("red3","green4","blue3","deeppink","yellow2","orange2")) + 
+  ggtitle(paste("TUCRs are less susceptible to variation than other genes")) + 
+  xlab("gene annotation") + 
+  ylab("Percent variant nucleotides (SNPs)") + 
+  theme(
+    plot.title = element_text(size=rel(1.0), face="bold",hjust = 0.5),
+    axis.title = element_text(size = rel(1.0), face="bold"),
+    legend.title = element_blank(),
+    legend.position = "none",
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(), 
+    axis.line = element_line(colour = "black"))
+
+ggsave(file=paste(outputdir,"/",disease,"_SNPGraph.png",sep=""),
+       plot = print(p),
+       width = 5, 
+       height = 6, 
        dpi = 300)
 }
 ```
@@ -327,8 +558,8 @@ macs2 callpeak -t SRR444478.bam -n SRR444478 -g hs
 
 wc -l *Peak
 
-cat SRR444442_peaks.narrowPeak | cut -f 1-4 | grep -v chrMT | grep -v chrGL | grep -v chrKI > h3k4me3.bed
-cat SRR444478_peaks.narrowPeak | cut -f 1-4 | grep -v chrMT | grep -v chrGL | grep -v chrKI > pol2.bed
+cat SRR444442_peaks.narrowPeak | cut -f 1-4 | grep -v KI | grep -v MT | grep -v GL | grep -v JH | grep -v KB | grep -v chrM > h3k4me3.bed
+cat SRR444478_peaks.narrowPeak | cut -f 1-4 | grep -v KI | grep -v MT | grep -v GL | grep -v JH | grep -v KB | grep -v chrM > pol2.bed
 
 ```
 
@@ -354,21 +585,27 @@ mv temp hg38_genomeFile.txt
 
 ```{bash Section1_sortbed, eval = FALSE}
 
-bedtools random -l 800 -n 481 -g hg38_genomeFile.txt > random_intervals.bed
+bedtools shuffle -i pol2.bed -g hg38_genomeFile.txt > pol2shuff.bed
+bedtools sort -i pol2shuff.bed > pol2shuff.sort.bed
 
-bedtools sort -i random_intervals.bed > random_intervals.bed
+bedtools shuffle -i h3k4me3.bed -g hg38_genomeFile.txt > h3k4me3shuff.bed
+bedtools sort -i h3k4me3shuff.bed > h3k4me3shuff.sort.bed
 
-bedtools sort -i hg38.ultraConserved.bed > hg38.ultraConserved.bed
+bedtools sort -i pol2.bed > pol2.sort.bed
 
-bedtools sort -i TUCR_intergenic.bed > TUCR_intergenic.bed
+bedtools sort -i h3k4me3.bed > h3k4me3.sort.bed
 
-bedtools sort -i CHESScoding.bed > CHESScoding.bed
+bedtools sort -i hg38.ultraConserved.bed > hg38.ultraConserved.sort.bed
 
-bedtools sort -i CHESSlncRNA.bed > CHESSlncRNA.bed
+bedtools sort -i TUCR_intergenic.bed > TUCR_intergenic.sort.bed
 
-bedtools sort -i CHESSantisense.bed > CHESSantisense.bed
+bedtools sort -i CHESScoding.bed > CHESScoding.sort.bed
 
-bedtools sort -i CHESSmisc.bed > CHESSmisc.bed
+bedtools sort -i CHESSlncRNA.bed > CHESSlncRNA.sort.bed
+
+bedtools sort -i CHESSantisense.bed > CHESSantisense.sort.bed
+
+bedtools sort -i CHESSmisc.bed > CHESSmisc.sort.bed
 
 ```
 
@@ -376,26 +613,19 @@ bedtools sort -i CHESSmisc.bed > CHESSmisc.bed
 
 ```{bash Section1_closest_PolII, eval = FALSE}
 
-bedtools closest -a random_intervals.bed -b pol2.bed -g hg38_genomeFile.txt > 
-closest_pol2_random_intervals_output.bed
+bedtools closest -a hg38.ultraConserved.sort.bed -b pol2shuff.sort.bed -g hg38_genomeFile.txt -d > closest_pol2_random_intervals_output.bed
 
-bedtools closest -a hg38.ultraConserved.bed -b pol2.bed -g hg38_genomeFile.txt > 
-closest_pol2_tucrs_output.bed
+bedtools closest -a hg38.ultraConserved.sort.bed -b pol2.sort.bed -g hg38_genomeFile.txt -d > closest_pol2_tucrs_output.bed
 
-bedtools closest -a TUCR_intergenic.bed -b pol2.bed -g hg38_genomeFile.txt > 
-closest_pol2_intergenic_tucrs_output.bed
+bedtools closest -a TUCR_intergenic.sort.bed -b pol2.sort.bed -g hg38_genomeFile.txt -d > closest_pol2_intergenic_tucrs_output.bed
 
-bedtools closest -a CHESScoding.bed -b pol2.bed -g hg38_genomeFile.txt > 
-closest_pol2_coding_output.bed
+bedtools closest -a CHESScoding.sort.bed -b pol2.sort.bed -g hg38_genomeFile.txt -d > closest_pol2_coding_output.bed
 
-bedtools closest -a CHESSlncRNA.bed -b pol2.bed -g hg38_genomeFile.txt > 
-closest_pol2_lncRNA_output.bed
+bedtools closest -a CHESSlncRNA.sort.bed -b pol2.sort.bed -g hg38_genomeFile.txt -d > closest_pol2_lncRNA_output.bed
 
-bedtools closest -a CHESSantisense.bed -b pol2.bed -g hg38_genomeFile.txt > 
-closest_pol2_antisense_output.bed
+bedtools closest -a CHESSantisense..sort.bed -b pol2.sort.bed -g hg38_genomeFile.txt -d > closest_pol2_antisense_output.bed
 
-bedtools closest -a CHESSmisc.bed -b pol2.bed -g hg38_genomeFile.txt > 
-closest_pol2_misc_output.bed
+bedtools closest -a CHESSmisc.sort.bed -b pol2.sort.bed -g hg38_genomeFile.txt -d > closest_pol2_misc_output.bed
 
 ```
 
@@ -403,26 +633,19 @@ closest_pol2_misc_output.bed
 
 ```{bash Section1_closest_h3k4me3, eval = FALSE}
 
-bedtools closest -a random_intervals.bed -b pol2.bed -g hg38_genomeFile.txt > 
-closest_pol2_random_intervals_output.bed
+bedtools closest -a hg38.ultraConserved.sort.bed -b h3k4me3shuff.sort.bed -g hg38_genomeFile.txt -d > closest_h3k4me3_random_intervals_output.bed
 
-bedtools closest -a hg38.ultraConserved.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
-closest_h3k4me3_tucrs_output.bed
+bedtools closest -a hg38.ultraConserved.sort.bed -b h3k4me3.sort.bed -g hg38_genomeFile.txt -d > closest_h3k4me3_tucrs_output.bed
 
-bedtools closest -a TUCR_intergenic.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
-closest_h3k4me3_intergenic_tucrs_output.bed
+bedtools closest -a TUCR_intergenic.sort.bed -b h3k4me3.sort.bed -g hg38_genomeFile.txt -d > closest_h3k4me3_intergenic_tucrs_output.bed
 
-bedtools closest -a CHESScoding.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
-closest_h3k4me3_coding_output.bed
+bedtools closest -a CHESScoding.sort.bed -b h3k4me3.sort.bed -g hg38_genomeFile.txt -d > closest_h3k4me3_coding_output.bed
 
-bedtools closest -a CHESSlncRNA.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
-closest_h3k4me3_lncRNA_output.bed
+bedtools closest -a CHESSlncRNA.sort.bed -b h3k4me3.sort.bed -g hg38_genomeFile.txt -d > closest_h3k4me3_lncRNA_output.bed
 
-bedtools closest -a CHESSantisense.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
-closest_h3k4me3_antisense_output.bed
+bedtools closest -a CHESSantisense.sort.bed -b h3k4me3.sort.bed -g hg38_genomeFile.txt -d > closest_h3k4me3_antisense_output.bed
 
-bedtools closest -a CHESSmisc.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
-closest_h3k4me3_misc_output.bed
+bedtools closest -a CHESSmisc.sort.bed -b h3k4me3.sort.bed -g hg38_genomeFile.txt -d > closest_h3k4me3_misc_output.bed
 
 ```
 
@@ -432,7 +655,7 @@ closest_h3k4me3_misc_output.bed
 
 filenames.H3K4me3 <- list.files("./closest_bed/H3K4me3/")
 
-mastertable.H3k4me3 <- data.frame(matrix(ncol=10,nrow=0, dimnames=list(NULL,c("chromosome.gene","start.gene","end.gene","gene","annot",
+mastertable.H3k4me3 <- data.frame(matrix(ncol=11,nrow=0, dimnames=list(NULL,c("chromosome.gene","start.gene","end.gene","gene","strand","annot",
 "chromosome.H3K4me3","start.H3K4me3","end.H3K4me3","H3K4me3","dist"))))
 
 i = 1
@@ -468,10 +691,10 @@ mastertable.H3k4me3.sum <- mastertable.H3k4me3 %>%
   mutate(order = ifelse(annot=="protein_coding", 1,
                           ifelse(annot=="lncRNA", 2,
                           ifelse(annot=="TUCR", 3,
-                          ifelse(annot=="intergenic_TUCR", 4,
-                          ifelse(annot=="antisense_RNA", 5,
-                          ifelse(annot=="misc_RNA", 6,
-                          ifelse(annot=="random", 7,0
+                          ifelse(annot=="intergenic_TUCR", 7,
+                          ifelse(annot=="antisense_RNA", 4,
+                          ifelse(annot=="misc_RNA", 5,
+                          ifelse(annot=="random", 6,0
                           )))))))) %>%
   mutate(annot = fct_reorder(annot,order)) %>%
   group_by(annot,interval,order) %>%
@@ -485,7 +708,8 @@ mastertable.H3k4me3.sum <- mastertable.H3k4me3 %>%
   arrange(order)
 
 p <- ggplot(mastertable.H3k4me3.sum, aes(x=interval,y=log2,fill=annot,order=order)) + 
-  geom_bar(stat="identity")                                                      + 
+  geom_bar(stat="identity", 
+    color = "black")                                                      + 
   scale_fill_manual(values = c("red3","green4","blue3","deeppink","yellow2","orange2")) +
   xlab("distance (nt)")                                           + 
   ylab("log(density)")                                           + 
@@ -514,11 +738,13 @@ ggsave(
 
 ### Graph closest RNA Pol.II Binding Sites
 
+Have to add strand labels to TUCR output.  Have to change random file "annot" column to "random".
+
 ```{r CHIPgraphs-pol2}
 
 filenames.pol2 <- list.files("./closest_bed/pol2/")
 
-mastertable.pol2 <- data.frame(matrix(ncol=10,nrow=0, dimnames=list(NULL,                  c("chromosome.gene","start.gene","end.gene","gene","annot",
+mastertable.pol2 <- data.frame(matrix(ncol=11,nrow=0, dimnames=list(NULL,                  c("chromosome.gene","start.gene","end.gene","gene","strand","annot",
 "chromosome.pol2","start.pol2","end.pol2","pol2","dist"))))
 
 i = 1
@@ -554,10 +780,10 @@ mastertable.pol2.sum <- mastertable.pol2 %>%
   mutate(order = ifelse(annot=="protein_coding", 1,
                           ifelse(annot=="lncRNA", 2,
                           ifelse(annot=="TUCR", 3,
-                          ifelse(annot=="intergenic_TUCR", 4,
-                          ifelse(annot=="antisense_RNA", 5,
-                          ifelse(annot=="misc_RNA", 6,
-                          ifelse(annot=="random", 7,0
+                          ifelse(annot=="intergenic_TUCR", 7,
+                          ifelse(annot=="antisense_RNA", 4,
+                          ifelse(annot=="misc_RNA", 5,
+                          ifelse(annot=="random", 6,0
                           )))))))) %>%
   mutate(annot = fct_reorder(annot,order)) %>%
   group_by(annot,interval,order) %>%
@@ -571,7 +797,8 @@ mastertable.pol2.sum <- mastertable.pol2 %>%
   arrange(order)
 
 p <- ggplot(mastertable.pol2.sum, aes(x=interval,y=log2,fill=annot,order=order)) + 
-  geom_bar(stat="identity")                                                      + 
+  geom_bar(stat="identity",
+    color = "black")                                                      + 
   scale_fill_manual(values = c("red3","green4","blue3","deeppink","yellow2","orange2")) +
   xlab("distance (nt)")                                           + 
   ylab("log(density)")                                           + 
@@ -602,19 +829,21 @@ ggsave(
 
 ```{bash Section1_slop, results="hide", eval = FALSE}
 
+<<<<<<< HEAD
 bedtools slop -b 10000 -i random_intervals.bed -g hg38_genomeFile.txt > random_pm10kb.bed
+=======
+bedtools slop -b 10000 -i hg38.ultraConserved.sort.bed -g hg38_genomeFile.txt > tucrs_pm10kb.bed
+>>>>>>> 4e0fba6348ce12fb6f44cb5236d74db55822a941
 
-bedtools slop -b 10000 -i hg38.ultraConserved.bed -g hg38_genomeFile.txt > tucrs_pm10kb.bed
+bedtools slop -b 10000 -i TUCR_intergenic.sort.bed -g hg38_genomeFile.txt > intergenic_tucrs_pm10kb.bed
 
-bedtools slop -b 10000 -i TUCR_intergenic.bed -g hg38_genomeFile.txt > intergenic_tucrs_pm10kb.bed
+#bedtools slop -b 10000 -i CHESScoding.sort.bed -g hg38_genomeFile.txt > coding_pm10kb.bed
 
-bedtools slop -b 10000 -i CHESScoding.bed -g hg38_genomeFile.txt > coding_pm10kb.bed
+#bedtools slop -b 10000 -i CHESSlncRNA.sort.bed -g hg38_genomeFile.txt > lncRNAs_pm10kb.bed
 
-bedtools slop -b 10000 -i CHESSlncRNA.bed -g hg38_genomeFile.txt > lncRNAs_pm10kb.bed
+#bedtools slop -b 10000 -i CHESSantisense.sort.bed -g hg38_genomeFile.txt > antisense_pm10kb.bed
 
-bedtools slop -b 10000 -i CHESSantisense.bed -g hg38_genomeFile.txt > antisense_pm10kb.bed
-
-bedtools slop -b 10000 -i CHESSmisc.bed -g hg38_genomeFile.txt > misc_pm10kb.bed
+#bedtools slop -b 10000 -i CHESSmisc.sort.bed -g hg38_genomeFile.txt > misc_pm10kb.bed
 
 ```
 
@@ -622,39 +851,33 @@ bedtools slop -b 10000 -i CHESSmisc.bed -g hg38_genomeFile.txt > misc_pm10kb.bed
 
 ```{bash Section1_fisher, results="hide", eval = FALSE}
 
-bedtools fisher -a tucrs_pm10kb.bed -b pol2.bed -g hg38_genomeFile.txt > 
-closest_pol2_tucrs_output.txt
+bedtools fisher -a tucrs_pm10kb.bed -b pol2shuff.sort.bed -g hg38_genomeFile.txt > pol2_random_output.txt
+
+bedtools fisher -a tucrs_pm10kb.bed -b pol2.sort.bed -g hg38_genomeFile.txt > pol2_tucrs_output.txt
 
 bedtools fisher -a intergenic_tucrs_pm10kb.bed -b pol2.bed -g hg38_genomeFile.txt > pol2_intergenic_tucrs_output.txt
 
-bedtools fisher -a CHESScoding.bed -b pol2.bed -g hg38_genomeFile.txt > 
-pol2_coding_output.txt
+bedtools fisher -a CHESScoding.sort.bed -b pol2.sort.bed -g hg38_genomeFile.txt > pol2_coding_output.txt
 
-bedtools fisher -a CHESSlncRNA.bed -b pol2.bed -g hg38_genomeFile.txt > 
-pol2_lncRNA_output.txt
+bedtools fisher -a CHESSlncRNA.sort.bed -b pol2.sort.bed -g hg38_genomeFile.txt > pol2_lncRNA_output.txt
 
-bedtools fisher -a CHESSantisense.bed -b pol2.bed -g hg38_genomeFile.txt > 
-pol2_antisense_output.txt
+bedtools fisher -a CHESSantisense.sort.bed -b pol2.sort.bed -g hg38_genomeFile.txt > pol2_antisense_output.txt
 
-bedtools fisher -a CHESSmisc.bed -b pol2.bed -g hg38_genomeFile.txt > 
-pol2_misc_output.txt
+bedtools fisher -a CHESSmisc.sort.bed -b pol2.sort.bed -g hg38_genomeFile.txt > pol2_misc_output.txt
 
-bedtools fisher -a tucrs_pm10kb.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
-h3k4me3_tucrs_output.txt
+bedtools fisher -a tucrs_pm10kb.bed -b h3k4me3shuff.sort.bed -g hg38_genomeFile.txt > h3k4me3_random_output.txt
 
-bedtools fisher -a intergenic_tucrs_pm10kb.bed -b h3k4me3.bed -g hg38_genomeFile.txt >
-h3k4me3_intergenic_tucrs_output.txt
+bedtools fisher -a tucrs_pm10kb.bed -b h3k4me3.sort.bed -g hg38_genomeFile.txt > h3k4me3_tucrs_output.txt
 
-bedtools fisher -a CHESScoding.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
-h3k4me3_coding_output.txt
+bedtools fisher -a intergenic_tucrs_pm10kb.bed -b h3k4me3.sort.bed -g hg38_genomeFile.txt > h3k4me3_intergenic_tucrs_output.txt
 
-bedtools fisher -a CHESSlncRNA.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
-h3k4me3_lncRNA_output.txt
+bedtools fisher -a CHESScoding.sort.bed -b h3k4me3.sort.bed -g hg38_genomeFile.txt > h3k4me3_coding_output.txt
 
-bedtools fisher -a CHESSantisense.bed -b h3k4me3.bed -g hg38_genomeFile.txt > h3k4me3_antisense_output.txt
+bedtools fisher -a CHESSlncRNA.sort.bed -b h3k4me3.sort.bed -g hg38_genomeFile.txt > h3k4me3_lncRNA_output.txt
 
-bedtools fisher -a CHESSmisc.bed -b h3k4me3.bed -g hg38_genomeFile.txt > 
-h3k4me3_misc_output.txt
+bedtools fisher -a CHESSantisense.sort.bed -b h3k4me3.sort.bed -g hg38_genomeFile.txt > h3k4me3_antisense_output.txt
+
+bedtools fisher -a CHESSmisc.sort.bed -b h3k4me3.sort.bed -g hg38_genomeFile.txt > h3k4me3_misc_output.txt
 
 ```
 
@@ -665,12 +888,12 @@ if(makeannotate == TRUE){
 tucr_lncRNAs <- read.csv("tucr_lncRNAsA.csv")
 
 tucr_lncRNAs <- tucr_lncRNAs %>%
-  mutate(row = fct_reorder(row,order))
+  mutate(row = fct_reorder(row,Order))
   
 p <- ggplot(tucr_lncRNAs, aes(x=row,y=value,fill=as.factor(fill)))                + 
   geom_bar(
     stat="identity", 
-    width = 0.7)                                                      + 
+    color = "black",width=0.7)                                                      + 
   scale_fill_manual(values = c("red3","green4","blue3","deeppink","yellow2","orange2")) +
   #geom_text(
   #  aes(label=round(value,2)), 
@@ -696,7 +919,8 @@ p <- ggplot(tucr_lncRNAs, aes(x=row,y=value,fill=as.factor(fill)))              
     panel.grid.minor = element_blank(),
     panel.background = element_blank(), 
     axis.line = element_line(
-      colour = "black"))
+      colour = "black")) #+
+    #facet_wrap(~wrap)
 
 ggsave(
     file=paste(outputdir,"/tucr_lncRNAs.png",sep=""),
@@ -707,7 +931,7 @@ ggsave(
 }
 ```
 
-# TUCRs are deregulated in GBM and LGG tumors
+# Section 2: TUCRs are deregulated in GBM and LGG tumors
 
 ## Results
 
@@ -955,10 +1179,12 @@ res_TUCR_summary <-
                     ifelse(res_TUCR$log2FoldChange <=-1,"downregulated","unchanged"))) %>%
   filter(dereg == "upregulated" | dereg == "downregulated") %>%
   group_by(dereg) %>%
-  summarise(n = n())
+  summarise(n = n()) %>%
+  mutate(count = ifelse(dereg=="downregulated",-n,n))
 
 p <- ggplot(res_TUCR_summary, aes(x=dereg,y=n,fill=dereg)) + 
-  geom_bar(stat="identity", width = 0.7) + 
+  geom_bar(stat="identity", width = 0.7, 
+    color = "black") + 
   geom_text(aes(label=n), vjust=1.6, color="black", size=7) + 
   scale_fill_manual(values=c("green", "red")) + 
   ggtitle(paste("TUCR Deregulation in ",disease)) + 
@@ -1138,7 +1364,7 @@ done
 
 ### Identifying and comparing TUCR absolute expression in GBM and LGG
 
-```{r Section2_DESeq2_TUCRs}
+```{r Section2_RPKM_TUCRs}
 if(!dir.exists(paste(outputdir,"/RPKM",sep=""))){
   dir.create(paste(outputdir,"/RPKM",sep=""))
 }
@@ -1213,9 +1439,9 @@ rownames(rpkmcounts) <- as.character(rpkmcounts.info$id)
 
 genelength <- rpkmcounts.info$length/1000
 
-seqdepth <- read.csv(file = "seqdepth_counts.csv",row.names=1)
+seqdepth <- read.csv(file = seqdepthfile)
 
-seqdepth <- as.vector(seqdepth$counts)
+seqdepth <- as.vector(seqdepth$counts/1000000)
 
 rpkm <- function(counts,len,dep){
   x <- counts/len
@@ -1263,37 +1489,6 @@ ggsave(p,file=paste(outputdir,"/RPKM","/",annotation,"_heatmap.png",sep=""), wid
 
 ```
 
-### Generate RPKMs for filtering
-
-```{r Section2_RPKM_TUCRs}
-
-rpkmcounts <- tucrcounts[,6:ncol(tucrcounts)]
-rpkmcounts.info <- tucrcounts[,1:5]
-rownames(rpkmcounts) <- tucrcounts$id
-
-genelength <- tucrcounts$length
-
-seqdepth <- read.csv(file = "seqdepth_counts.csv",row.names=1)
-
-seqdepth <- as.vector(seqdepth$counts)
-
-rpkm <- function(counts,len,dep){
-  x <- counts/len
-  return(t(t(x)/dep))
-}
-
-rpkm.TUCRs <- rpkm(rpkmcounts,genelength,seqdepth)
-rpkm.TUCRs2 <- cbind(rpkmcounts.info,rpkm.TUCRs)
-
-rpkm.median <- rpkm.TUCRs2 %>% dplyr::summarise(median_RPKM = rowMedians(rpkm.TUCRs))
-rpkm.median <- cbind(rpkmcounts.info,rpkm.median)
-rpkm.median <- rpkm.median %>% dplyr::select(id,median_RPKM)
-
-write.csv(rpkm.TUCRs2,paste(outputdir,"/rpkm.TUCRs.csv",sep=""))
-
-write.csv(rpkm.median,paste(outputdir,"/medianrpkm.TUCRs.csv",sep=""))
-```
-
 ### Generate RPKM Box Plots for each TUCR
 
 ```{r Section2_boxplot_TUCRs}
@@ -1330,12 +1525,6 @@ ggsave(p,file=paste(outputdir,"/RPKM","/RPKMboxplots/",TUCR,"_rpkm_boxplot.png",
 }
 
 }
-```
-
-### Generate RPKM heatmap for all TUCRs
-
-```{r Section2_heatmap_TUCRs}
-
 ```
 
 # Section 3: TUCR expression correlates with survival in LGG and GBM
@@ -1687,7 +1876,7 @@ tucr.cor.matrix3 <- cor(tucr.cor.matrix2,method="spearman", use = "complete.obs"
 save(tucr.cor.matrix3,geneindex,TUCRids,file=intermediatefile)
 rm(list=ls())
 load(file=intermediatefile)}else{
-  load("matrixintermediate.rData")
+  load("lgg_matrixintermediate.rData")
 }
 
 header <- head(tucr.cor.matrix3)
@@ -1697,7 +1886,7 @@ summarycor <- data.frame(searchTUCR=character(0),ngenes=integer(0),meancor=numer
 i = 1
 
 for(i in 1:length(TUCRids)){
-  print(i)
+  #print(i)
   searchTUCR <- TUCRids[i]
   #searchTUCR <- "uc.110"
 ###uc.110 is at row 20972 in tucr.cor.matrix3 via manual confirmation.
@@ -1708,7 +1897,7 @@ tucr.cor.matrix.match.plus <- tucr.cor.matrix.match %>%
   mutate(gene = searchTUCR) %>%
   dplyr::select(gene,partner,"cor"=tucr.cor.matrix.match) %>%
   dplyr::filter(cor>=0.3 & partner != searchTUCR) %>%
-  dplyr::mutate(direction = "negative")
+  dplyr::mutate(direction = "positive")
 
 write.csv(tucr.cor.matrix.match.plus,
           paste(outputdir,"/correlations/",searchTUCR,"_plus_correlations.csv",sep=""))
@@ -1723,11 +1912,11 @@ tucr.cor.matrix.match.minus <- tucr.cor.matrix.match %>%
 write.csv(tucr.cor.matrix.match.minus,
           paste(outputdir,"/correlations/",searchTUCR,"_minus_correlations.csv",sep=""))
 
-meancor <- mean(tucr.cor.matrix.match$cor,na.rm=TRUE)
-mediancor <- median(tucr.cor.matrix.match$cor)
-ngenes <- length(tucr.cor.matrix.match$cor)
-mincor <- min(tucr.cor.matrix.match$cor)
-maxcor <- max(tucr.cor.matrix.match$cor)
+meancor <- mean(tucr.cor.matrix.match$tucr.cor.matrix.match,na.rm=TRUE)
+mediancor <- median(tucr.cor.matrix.match$tucr.cor.matrix.match,na.rm=TRUE)
+ngenes <- length(tucr.cor.matrix.match$tucr.cor.matrix.match)
+mincor <- min(tucr.cor.matrix.match$tucr.cor.matrix.match,na.rm=TRUE)
+maxcor <- max(tucr.cor.matrix.match$tucr.cor.matrix.match,na.rm=TRUE)
 newrow <- cbind(searchTUCR,ngenes,meancor,mediancor,mincor,maxcor)
 summarycor <- rbind(summarycor,newrow)}
 
@@ -1769,7 +1958,7 @@ allgo_cc <- data.frame(matrix(ncol=7,nrow=0, dimnames=list(NULL, c("GO Term","On
 i = 2
 
 for(i in 2:length(filenames)){
-  print(i)
+  #print(i)
   skip_to_next <- FALSE
   df <- read.csv(paste(outputdir,"/correlations/",filenames[i],sep=""))
   gene <- as.character(df$gene[1])
@@ -1834,14 +2023,63 @@ write_csv(allgo_mf,paste(outputdir,"/GOterm_mf_summary_TUCRs.csv",sep=""))
 write_csv(allgo_cc,paste(outputdir,"/GOterm_cc_summary_TUCRs.csv",sep=""))
 ```
 
+### Summarize GO term data for oncogenes and tumor suppressors
+
+```{r summary GO Terms GSEA}
+
+if(!dir.exists(paste(outputdir,"/Cancermine/",sep=""))){
+  dir.create(paste(outputdir,"/Cancermine/",sep=""))
+}
+
+GSEA <- read.csv("GSEA.csv",header = TRUE)
+
+annotations <- as.character(unique(GSEA$annot))
+
+topGO_onctsg <- ""
+
+i <- 1
+
+for(i in 1:length(annotations)){
+  
+#print(annotations[i])
+
+group <- GSEA %>%
+  filter(annot == annotations[i])
+
+entrezIDs <- mapIds(org.Hs.eg.db, as.character(group$gene), 'ENTREZID', 'SYMBOL')
+
+Genes <- entrezIDs
+g <- goana(Genes)
+topGO <- topGO(g)
+topGO$annot <- annotations[i]
+
+topGO_onctsg <- rbind(topGO_onctsg,topGO)
+}
+
+topGO_cancermine <- topGO_onctsg %>%
+    filter(Ont == "BP") %>%
+    dplyr::select(Term,P.DE,annot)
+
+cancerTerms <- topGO_cancermine %>%
+  dplyr::select(Term) %>%
+  unique()
+  
+write.csv(topGO_cancermine,paste(outputdir,"/Cancermine/topGO_cancermine.csv",sep=""))
+
+```  
+
 ### Summarize GO Term Data (new)
 
 ```{r summary GO Terms new}
 
+cancerTerms <- read.csv(paste(outputdir,"/Cancermine/topGO_cancermine.csv",sep=""),header=TRUE) %>%
+  dplyr::select(Term) %>%
+  distinct()
+
 TUCRids <- read.table(countfilename,header = TRUE)
 TUCRids <- as.character(TUCRids[,4])
 
-allgo <- read.csv(paste(outputdir,"/GOterm_all_summary_TUCRs.csv",sep=""),header=TRUE)
+allgo <- read.csv(paste(outputdir,"/GOterm_all_summary_TUCRs.csv",sep=""),header=TRUE,stringsAsFactors=FALSE)
 allgo <- allgo %>%
   dplyr::select(Term)
 
@@ -1851,6 +2089,7 @@ heatmap.allgo <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("Term","
 i <- 1
 
 for(i in 1:length(TUCRids)){
+#for(i in 1:30){
   print(i)
   TUCR <- TUCRids[i]
   skip_to_next_p <<- FALSE
@@ -1876,8 +2115,87 @@ for(i in 1:length(TUCRids)){
 
 
 heatmap.allgo[is.na(heatmap.allgo)] <- 0
+heatmap.allgo2 <- heatmap.allgo[which(as.character(heatmap.allgo$Term) %in% as.character(cancerTerms$Term)),]
+
+#heatmap.allgo2 <- heatmap.allgo
+
+heatmap.allgo2 <- heatmap.allgo2 %>%
+  distinct() %>%
+  dplyr::group_by(Term,gene) %>%
+  mutate(n=n(),onedirection = ifelse(n>1,0,direction)) %>%
+  dplyr::select(-n,-direction) %>%
+  distinct() %>%
+  group_by(Term,onedirection) %>%
+  mutate(ysums = ifelse(onedirection==0,0,sum(onedirection))) %>%
+  ungroup() %>%
+  group_by(Term) %>%
+  mutate(y = sum(abs(onedirection))) %>%
+  ungroup() %>%
+  group_by(gene) %>%
+  mutate(x = sum(onedirection)) %>%
+  ungroup() %>%
+  arrange(desc(y)) 
+  #spread(Term,onedirection) %>%
+  #ungroup()
 
 
+
+colors <- colorRampPalette(c("red","white","blue"))(3)
+
+heatmap.allgo2$onedirection <- factor(heatmap.allgo2$onedirection)
+N <- nlevels(heatmap.allgo2$onedirection)
+
+p <- ggplot(data = heatmap.allgo2,mapping = aes(x = reorder(gene,x),y = reorder(Term,y), fill = onedirection)) +
+guides(fill = guide_legend(reverse=TRUE)) + 
+  geom_tile() +
+   scale_fill_manual(values=colors, breaks=levels(heatmap.allgo2$onedirection)[seq(1, N, by=1)]) + 
+  ggtitle(paste("TUcR cancer associated functions in ",disease,sep="")) + 
+  xlab(paste("TUCRs (n=",length(unique(heatmap.allgo2$gene)),")",sep = "")) + 
+  ylab(paste("Cancer associated GO Terms (n=",length(unique(heatmap.allgo2$Term)),")",sep = "")) +
+  labs(fill = "Correlation") +
+  theme(plot.title = element_text(hjust = 0.5),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+ggsave(p,file=paste(outputdir,"/GOTerms_heatmap.png",sep=""))
+
+chart.mostrep <- heatmap.allgo2 %>%
+  dplyr::select(Term,y) %>%
+  distinct() %>%
+  arrange(desc(y))
+
+chart.allgo.mostrep <- chart.mostrep[1:8,]
+
+chart.allgo.up <- heatmap.allgo2 %>%
+  filter(ysums>0) %>%
+  dplyr::select(Term,ysums) %>%
+  distinct() %>%
+  arrange(desc(ysums))
+
+chart.allgo.up.top10 <- chart.allgo.up[1:10,]
+
+chart.allgo.down <- heatmap.allgo2 %>%
+  filter(ysums<0) %>%
+  dplyr::select(Term,ysums) %>%
+  distinct() %>%
+  arrange(ysums)
+
+chart.allgo.down.bottom10 <- chart.allgo.down[1:10,]
+
+p <- ggplot(chart.allgo.mostrep, aes(x=reorder(Term,y),y=y,fill=Term)) +
+geom_bar(stat="identity", width = 0.7,color="black") + geom_text(aes(label=round(y,2)), hjust=2, color="black", size=rel(7.5)) + ggtitle("") +xlab("") + ylab("# of TUCRs") + 
+  theme(
+  plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
+axis.title = element_text(size = rel(1.25), face="bold"),
+legend.title = element_blank(),
+legend.position = "none",
+axis.text.x = element_text(size=rel(2.0)),
+axis.text.y = element_text(size=rel(2.0)),
+panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black")) + coord_flip()
+
+ggsave(file=paste(outputdir,"/tucr_allgo.png",sep=""),plot = print(p), width = 15, height = 10, dpi = 300) 
 
 ```  
 
@@ -1935,7 +2253,7 @@ cp stringtie_merged.gtf stringtie_merged.bed
 
 ### Stringtie LGG
 
-```{bash stringtie, eval = FALSE}
+```{bash stringtie lgg, eval = FALSE}
 wget ftp://ftp.ensembl.org/pub/release-99/gtf/homo_sapiens/Homo_sapiens.GRCh38.99.gtf.gz
 mv Homo_sapiens.GRCh38.99.gtf.gz stringtie
 gunzip stringtie/Homo_sapiens.GRCh38.99.gtf.gz
@@ -1966,11 +2284,10 @@ cd stringtie
 
 stringtie --merge *rehead.gtf -G Homo_sapiens.GRCh38.99.gtf -o stringtie_merged.gtf
 
-intersectBed -a hg38.ultraConserved.bed -b CHESSgenes.bed -wa -wb 
-  > intersectchess_TUCRs.bed
+intersectBed -a TUCR_intergenic.bed -b stringtie_merged.gtf -wa -wb > intersectintergenic_TUCRs.bed
 
-intersectBed -a hg38.ultraConserved.bed -b stringtie_merged.gtf -wa -wb 
-  > intersectstringtie_TUCRs.bed
+intersectBed -a intersectintergenic_TUCRs.bed -b stringtie_merged.gtf -wa -wb 
+  > intersectintergenic_TUCRs.bed
 
 cp stringtie_merged.gtf stringtie_merged.bed
 ```
@@ -1978,10 +2295,88 @@ cp stringtie_merged.gtf stringtie_merged.bed
 ## Show that TUCRs are contained within novel genes
 
 ```{r novelgenes, eval = FALSE}
-tucr_novelgenes <- read.csv("tucr_novelgenes.csv")
+lgg_novelgenes <- read_delim("lgg_novelgenes.bed", col_names = FALSE, delim = "\t",skip_empty_rows = FALSE) %>%     dplyr::select(X5,X7,X9,X10,X11,X13) %>%
+  filter(X9 == "transcript") %>%
+  mutate(disease = "LGG",name = paste("TUC",str_remove(X5,"uc."),X13,sep = ""), length = X11-X10) %>%
+  filter(length <= 30000) %>%
+  group_by(name) %>%
+  mutate(max = max(length,na.rm=TRUE)) %>%
+  filter(length == max) %>%
+  ungroup() %>%
+  dplyr::select(name,disease,length,"chromosome" = X7,"start" = X10,"end" = X11, "strand" = X13)
+
+gbm_novelgenes <- read_delim("gbm_novelgenes.bed", col_names = FALSE, delim = "\t",skip_empty_rows = FALSE) %>%     dplyr::select(X5,X7,X9,X10,X11,X13) %>%
+  filter(X9 == "transcript") %>%
+  mutate(disease = "GBM",name = paste("TUC",str_remove(X5,"uc."),X13,sep = ""), length = X11-X10) %>%
+  filter(length <= 30000) %>%
+  group_by(name) %>%
+  mutate(max = max(length,na.rm=TRUE)) %>%
+  filter(length == max) %>%
+  ungroup() %>%
+  dplyr::select(name,disease,length,"chromosome" = X7,"start" = X10,"end" = X11, "strand" = X13)
+
+all_novelgenes <- rbind(gbm_novelgenes,lgg_novelgenes) 
+all_novelgenes <- all_novelgenes %>%
+  group_by(name) %>%
+  mutate(n = n(), annot = ifelse(n==2, "GBM/LGG",disease)) %>%
+  dplyr::select(-n)
+
+
   
-p <- ggplot(tucr_novelgenes, aes(x=row,y=value,fill=row)) + geom_bar(stat="identity", width = 0.7) +
-  geom_text(aes(label=round(value,2)), vjust=1.6, color="black", size=rel(4)) + ggtitle(paste("Some intergenic TUCRs are \n contained within Novel Genes")) + xlab("Gene Annotation and Disease") + ylab("Number of Genes") + theme(
+
+write.csv(all_novelgenes,file="all_novelgenes.csv")
+
+CPAT_bedfile <- all_novelgenes %>%
+  dplyr::select(chromosome,start,end,strand,name)
+
+write_delim(CPAT_bedfile,file="CPAT.bed",delim = "\t",col_name = FALSE)
+
+```
+
+### Get Fasta
+
+```{bash novelgenes_getFASTA}
+
+```
+
+### Use CPAT Web Browser
+
+### Integrate CPAT results
+
+```{r}
+all_novelgenes <- read.csv(file="all_novelgenes.csv",header=TRUE,row.names=1)
+
+CPAT_results <- read_delim("result.txt", col_names = TRUE, delim = "\t",skip_empty_rows = FALSE) %>%
+  dplyr::select("length" = `RNA size`, `ORF size`,`Ficket Score`,`Hexamer Score`,`Coding Probability`,`Coding Label`)
+
+CPAT_novelgenes <- all_novelgenes %>%
+  full_join(CPAT_results, by = "length")
+
+write.csv(CPAT_novelgenes,file="CPAT_novelgenes.csv")
+
+```
+
+
+### Summarizing Novel Gene data
+
+``` {r sum_novelgenes}
+
+CPAT_novelgenes <- read.csv(file="CPAT_novelgenes.csv",header=TRUE,row.names=1)
+
+CPAT_novelgenes_sum <- CPAT_novelgenes %>%
+  group_by(annot,Coding.Label) %>% 
+  mutate(group_id = cur_group_id(),count = n(),Group = 
+    ifelse(group_id==1, "GBM_non_coding",
+    ifelse(group_id==2, "GBM_coding",
+    ifelse(group_id==3, "GBM/LGG_non_coding",
+    ifelse(group_id==4, "GBM/LGG_coding",
+    ifelse(group_id==5, "LGG_non_coding",
+    ifelse(group_id==6, "LGG_coding","ERROR"))))))) %>%
+  group_by(Group,group_id) %>%
+  summarize(count=n())
+
+p <- ggplot(CPAT_novelgenes_sum, aes(x=reorder(Group,group_id),y=count,fill=Group)) + geom_bar(stat="identity", width = 0.7, color="black") +
+  geom_text(aes(label=round(count,2)), vjust=1.6, color="black", size=rel(4)) + ggtitle(paste("Some intergenic TUCRs are \n contained within Novel Genes")) + xlab("Disease") + ylab("Number of Genes") + theme(
 plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
 axis.title = element_text(size = rel(1.25), face="bold"),
 axis.text.x = element_text(angle = -90, size = 10),

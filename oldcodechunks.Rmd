@@ -4,9 +4,103 @@ author: "Myron K Gibert Jr"
 date: "7/12/2020"
 output: pdf_document
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{bash ATAC, eval = FALSE}
+
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3669nnn/GSM3669999/suppl/GSM3669999_GSC23_ATAC.highPValue.distal_intersect.H3K27Ac.bed.gz
+
+gunzip GSM3669999_GSC23_ATAC.highPValue.distal_intersect.H3K27Ac.bed.gz
+
+bedtools shuffle -i GSM3669999_GSC23_ATAC.highPValue.distal_intersect.H3K27Ac.bed -g hg38_genomeFile.txt > GSC23_ATAC.shuffle.bed
+
+bedtools sort -i GSM3669999_GSC23_ATAC.highPValue.distal_intersect.H3K27Ac.bed > GSC23_ATAC.sort.bed
+
+bedtools sort -i GSC23_ATAC.shuffle.bed > GSC23_ATAC.shuffle.sort.bed
+
+bedtools fisher -a tucrs_pm10kb.bed -b GSC23_ATAC.shuffle.sort.bed -g hg38_genomeFile.txt > GSC23_ATAC_random_output.txt
+
+bedtools fisher -a tucrs_pm10kb.bed -b GSC23_ATAC.sort.bed -g hg38_genomeFile.txt > GSC23_ATAC_tucrs_output.txt
+
+
+
+wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3669nnn/GSM3669993/suppl/GSM3669993_U87_ATAC.highPValue.distal_intersect.H3K27Ac.bed.gz
+
+gunzip GSM3669993_U87_ATAC.highPValue.distal_intersect.H3K27Ac.bed.gz
+
+bedtools shuffle -i GSM3669993_U87_ATAC.highPValue.distal_intersect.H3K27Ac.bed -g hg38_genomeFile.txt > U87_ATAC.shuffle.bed
+
+bedtools sort -i GSM3669993_U87_ATAC.highPValue.distal_intersect.H3K27Ac.bed > U87_ATAC.sort.bed
+
+bedtools sort -i U87_ATAC.shuffle.bed > U87_ATAC.shuffle.sort.bed
+
+bedtools fisher -a tucrs_pm10kb.bed -b U87_ATAC.shuffle.sort.bed -g hg38_genomeFile.txt > U87_ATAC_random_output.txt
+
+bedtools fisher -a tucrs_pm10kb.bed -b U87_ATAC.sort.bed -g hg38_genomeFile.txt > U87_ATAC_tucrs_output.txt
+
+```
+
+```{r}
+tidy_heatmap(heatmap.allgo2,
+             rows = gene,
+             columns = Term,
+             values = direction,
+             scale = "row",
+             #annotation_col = c(sample_type, condition, group),
+             #annotation_row = c(is_immune_gene, direction),
+             #gaps_row = direction,
+             #gaps_col = group
+)
+
+tidy_heatmap(df,
+             rows = external_gene_name,
+             columns = sample,
+             values = expression,
+             scale = "row",
+             #annotation_col = c(sample_type, condition, group),
+             #annotation_row = c(is_immune_gene, direction),
+             #gaps_row = direction,
+             #gaps_col = group
+)
+
+class1 <- lapply(data_exprs,class)
+class2 <- lapply(heatmap.allgo2,class)
+class2 <- lapply(df,class)
+
+write.csv(data_exprs,"datatest1.csv")
+
+df <- read.csv("datatest1.csv",header=TRUE)
+
+write.csv(heatmap.allgo2,"datatest2.csv")
+```
+
+
+```{r}
+
+heatmap.allgo.up <- heatmap.allgo2 %>%
+  filter(sum >0) %>%
+  group_by(Term,sum) %>%
+  summarise()
+
+colors <- colorRampPalette(c("blue","white","red"))(length(unique(heatmap.allgo2$direction)))
+heatmap.allgo2$direction <- factor(heatmap.allgo2$direction)
+N <- nlevels(heatmap.allgo2$direction)
+
+p <- ggplot(data = heatmap.allgo2,mapping = aes(x = reorder(Term,sum),y = gene, fill = direction)) +
+  geom_tile() +
+  scale_fill_manual(values = colors,breaks=levels(heatmap.allgo2$direction)[seq(1, N, by=1)]) + 
+  ggtitle("Title") + 
+  xlab("X-axis") + 
+  ylab("Y-axis") +
+  theme(plot.title = element_text(hjust = 0.5),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+ggsave(p,file=paste(outputdir,"/GOTerms_heatmap.png",sep=""), width = 2.5, height = 7, dpi = 300)
+
 ```
 
 ## Acquiring SNPs
@@ -88,18 +182,43 @@ gunzip bed_chr_X.bed.gz
 wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/BED/bed_chr_Y.bed.gz
 gunzip bed_chr_Y.bed.gz
 
+<<<<<<< HEAD
 
+=======
+```
+
+### Remove first line
+
+``` {r SNPgetter}
+for bed in bed_chr_*
+do
+
+tail -n +2 $bed > $bed.stdout
+mv $bed.stdout $bed
+
+done
+>>>>>>> 4e0fba6348ce12fb6f44cb5236d74db55822a941
 
 module load gcc/7.1.0
 module load bedtools/2.26.0
 
-for bed in *.bed
+for bed in bed_chr_*
 do
 echo $bed
 intersectBed -a hg38.ultraConserved.bed -b $bed -wa -wb > $bed.txt
 done
 
 cat *.txt > merged.txt
+```
+
+### 
+
+``` {r SNPreader}
+
+library("tidyverse")
+
+SNPcounts <- read.csv("TUCR_SNPs.csv")
+
 ```
 
 ## Make figures for fold change
