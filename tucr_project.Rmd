@@ -847,7 +847,11 @@ ggsave(
 
 ```{bash Section1_slop, results="hide", eval = FALSE}
 
+<<<<<<< HEAD
+bedtools slop -b 10000 -i random_intervals.bed -g hg38_genomeFile.txt > random_pm10kb.bed
+=======
 bedtools slop -b 10000 -i hg38.ultraConserved.sort.bed -g hg38_genomeFile.txt > tucrs_pm10kb.bed
+>>>>>>> 4e0fba6348ce12fb6f44cb5236d74db55822a941
 
 bedtools slop -b 10000 -i TUCR_intergenic.sort.bed -g hg38_genomeFile.txt > intergenic_tucrs_pm10kb.bed
 
@@ -1318,6 +1322,33 @@ write.csv(res_intergenic, file = paste(outputdir,"/results_intergenicOnly.csv",s
 volcanoplot(res_intergenic,genes=c("uc.62","uc.110"), 
             title = paste("Intergenic TUCR deregulation in ",disease,sep=""),
             output = paste(outputdir,"/intergenic_tucr_results_volcanoplot.png",sep=""))
+
+res_exonic <- inner_join(res_TUCR,tucr_annot,by = "row") %>%
+  filter(annot == "exonic")
+
+write.csv(res_exonic, file = paste(outputdir,"/results_exonicOnly.csv",sep=""))
+
+volcanoplot(res_exonic,genes=c("uc.90","uc.213"), 
+            title = paste("exonic TUCR deregulation in ",disease,sep=""),
+            output = paste(outputdir,"/exonic_tucr_results_volcanoplot.png",sep=""))
+
+res_intronic <- inner_join(res_TUCR,tucr_annot,by = "row") %>%
+  filter(annot == "intronic")
+
+write.csv(res_intronic, file = paste(outputdir,"/results_intronicOnly.csv",sep=""))
+
+volcanoplot(res_intronic,genes=c("uc.430","uc.275"), 
+            title = paste("intronic TUCR deregulation in ",disease,sep=""),
+            output = paste(outputdir,"/intronic_tucr_results_volcanoplot.png",sep=""))
+
+res_exonic_intronic <- inner_join(res_TUCR,tucr_annot,by = "row") %>%
+  filter(annot == "exonic/intronic")
+
+write.csv(res_exonic_intronic, file = paste(outputdir,"/results_exonic_intronicOnly.csv",sep=""))
+
+volcanoplot(res_exonic_intronic,genes=c("uc.282","uc.341"), 
+            title = paste("exonic/intronic TUCR deregulation in ",disease,sep=""),
+            output = paste(outputdir,"/exonic_intronic_tucr_results_volcanoplot.png",sep=""))
 
 ```
 
