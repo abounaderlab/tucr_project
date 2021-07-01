@@ -1437,6 +1437,7 @@ annot_unique <- as.character(unique(mergedcounts$annot))
 
 annotation <- as.character(annot_unique[i])
 
+print(i)
 print(annotation)
     
 rpkmcounts <- mergedcounts %>%
@@ -1503,6 +1504,8 @@ p <- ggplot(data = heatmap.df2,mapping = aes(x = Sample,y = reorder(id,means), f
 
 ggsave(p,file=paste(outputdir,"/RPKM","/",annotation,"_heatmap.png",sep=""), width = 2.5, height = 7, dpi = 300)
 
+if(annotation == "TUCR"){rpkm.TUCRs2 <- rpkm.df2}
+
 }
 
 ```
@@ -1516,31 +1519,36 @@ if(!dir.exists(paste(outputdir,"/RPKM","/RPKMboxplots",sep=""))){
   dir.create(paste(outputdir,"/RPKM","/RPKMboxplots",sep=""))
 }
 rpkm.dotplot <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
-TUCRids <- rpkm.TUCRs2[,4]
+TUCRids <- as.character(rpkm.TUCRs2$id)
 rpkm.dotplot <- cbind(TUCRids,rpkm.dotplot)
+rpkm.dotplot <- rpkm.dotplot %>% 
+  gather(key = "Sample", value = "RPKM",-TUCRids,-annot,-length)
 
 i = 1
 for(i in 1:length(TUCRids)){
 #TUCR <- "uc.110"
 TUCR <- TUCRids[i]
 print(i)
-rpkm.dotplot2 <- rpkm.dotplot %>% 
-  gather(key = "Sample", value = "RPKM",-TUCRids) %>%
+print(TUCR)
+rpkm.dotplot2 <- rpkm.dotplot %>%
   dplyr::filter(TUCRids == TUCR)
 
 p<- ggplot(rpkm.dotplot2, aes(x=TUCRids, y=RPKM)) +
-  geom_boxplot() +
+  #geom_boxplot() +
+  geom_violin(trim = FALSE)+
   geom_dotplot(binaxis='y', stackdir='center',
-               stackratio=0.75, dotsize=0.20) + 
+               stackratio=1.10, dotsize=0.40) + 
   ggtitle(paste("RPKM expression of ",TUCR)) +
   theme(plot.title = element_text(hjust = 0.5),
-panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+  panel.background = element_blank(), axis.line = element_line(colour = "black")) +
   labs(y="Reads per kilobase million (RPKM)", x = "TUCR") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color="red", fill="red")
 
 ggsave(p,file=paste(outputdir,"/RPKM","/RPKMboxplots/",TUCR,"_rpkm_boxplot.png",sep = ""))
 }
+
+
 
 }
 ```
