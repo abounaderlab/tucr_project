@@ -1390,8 +1390,13 @@ if(!dir.exists(paste(outputdir,"/RPKM",sep=""))){
 mergedcounts <- 
   read.table(mergedcountfile,header = TRUE)
 
+normal_mergedcounts <- read.table("normal_mergedcounts.txt",header = TRUE) %>%
+  dplyr::select(-chrom,-start,-end)
+
+mergedcounts <- left_join(mergedcounts,normal_mergedcounts,by="id")
+
 metadata <- 
-  read_csv(file = metadatafile)
+  read_csv(file = metadatafile) 
 
 CHESSantisense <- read.table("CHESSantisense.bed",header=FALSE)
 CHESSantisense <- CHESSantisense %>%
@@ -1522,7 +1527,14 @@ rpkm.dotplot <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
 TUCRids <- as.character(rpkm.TUCRs2$id)
 rpkm.dotplot <- cbind(TUCRids,rpkm.dotplot)
 rpkm.dotplot <- rpkm.dotplot %>% 
-  gather(key = "Sample", value = "RPKM",-TUCRids,-annot,-length)
+  gather(key = "Sample", value = "RPKM",-TUCRids,-annot,-length) %>%
+  mutate(Key = gsub("[.]","-",Sample)) %>%
+    mutate(string = sub(".*TCGA", "", Key),barcode = tolower(paste("TCGA",substr(string, 1, 8),sep=""))) %>%
+  left_join(metadata,by="barcode") %>%
+  dplyr::select(-Sample,-Key,-id,-string)
+
+
+
 
 i = 1
 for(i in 1:length(TUCRids)){
@@ -1533,21 +1545,20 @@ print(TUCR)
 rpkm.dotplot2 <- rpkm.dotplot %>%
   dplyr::filter(TUCRids == TUCR)
 
-p<- ggplot(rpkm.dotplot2, aes(x=TUCRids, y=RPKM)) +
-  #geom_boxplot() +
-  geom_violin(trim = FALSE)+
-  geom_dotplot(binaxis='y', stackdir='center',
-               stackratio=1.10, dotsize=0.40) + 
+p<- ggplot(rpkm.dotplot2, aes(x=dex, y=RPKM)) +
+  geom_boxplot(outlier.color="white") +
+  #geom_violin(trim = FALSE)+
+  #geom_point(pch=21, size=1.5) +
+  geom_jitter(binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray") +
   ggtitle(paste("RPKM expression of ",TUCR)) +
   theme(plot.title = element_text(hjust = 0.5),
   panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
   panel.background = element_blank(), axis.line = element_line(colour = "black")) +
-  labs(y="Reads per kilobase million (RPKM)", x = "TUCR") +
-  stat_summary(fun.y=mean, geom="point", shape=20, size=10, color="red", fill="red")
+  labs(y="Reads per kilobase million (RPKM)", x = "Sample") +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=10, color="red", fill="red") 
 
 ggsave(p,file=paste(outputdir,"/RPKM","/RPKMboxplots/",TUCR,"_rpkm_boxplot.png",sep = ""))
 }
-
 
 
 }
