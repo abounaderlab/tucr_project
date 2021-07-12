@@ -205,20 +205,29 @@ First, publicly available U87 H3K4me3 and RNA Pol.II CHIP-Seq data were download
 
 ### Generate Figure 1E for TUCR annotation
 
+Figures 1A-1D were manually generated using Microsoft Powerpoint. TUCRs were then manually annotated, creating the "tucr_annot.csv" file provided in this repository.  As previously mentioned, we have identified 46 exonic, 150 intronic, 67 intronic/exonic, and 218 intergenic TUCRs. Figure 1E was generated using GGPlot2.
+
+In the following code chunk, if the variable "makeannotate" is set to true, all subsequent lines will be run.  The chunk then reads in the "tucr_annot.csv" file and compiles the relevant information into a proportion ring chart as depicted in Figure 1E. The results are placed in the output directory as defined by the variable outputdir.
+
 ```{r Section1_annotation}
 if(makeannotate == TRUE){
+#Read in Data
 tucr_annot <- read.csv("tucr_annot.csv")
 
+#Prepare data for visualization
 plot_annotation <- tucr_annot %>% 
   group_by(annot) %>%
   summarise(count = n()) %>%
   mutate(percent = count/sum(count)) %>%
   arrange(desc(count)) %>%
+#Determine label positions
   mutate(lab.ypos = cumsum(count) - 0.5*count)
 
+#Set factor levels
 names(plot_annotation)[names(plot_annotation) == 'annot'] <- 
   'Annotation'
-  
+
+#Create Chart
 p <- ggplot(plot_annotation, aes(x=2,y=count,fill=Annotation))          + 
   geom_bar(
     stat="identity",colour="black", 
@@ -245,6 +254,7 @@ p <- ggplot(plot_annotation, aes(x=2,y=count,fill=Annotation))          +
 
 p
 
+#Save Chart to output directory
 ggsave(file=paste(outputdir,"/tucr_annotation.png",sep=""),
        plot = print(p), 
        width = 5, 
@@ -254,6 +264,8 @@ ggsave(file=paste(outputdir,"/tucr_annotation.png",sep=""),
 ```
 
 ## Acquiring SNPs
+
+Bejerano et al, 2004, reported that TUCRs are resistant to variation. We sought to update our understanding of TUCR variation using the latest resources.  The following code chunk using bash scripting to download and decompress the most recent database for known SNPs (as of 2021) by chromosome.
 
 ```{bash, Section1_SNPget, eval = FALSE}
 mkdir SNPs
@@ -336,6 +348,10 @@ gunzip bed_chr_Y.bed.gz
 
 ### Getting SNP intersects for genes
 
+After downloading and unzipping the SNP genomic location files, we then use bedtools to identify and report all SNPs that overlap with TUCR bases/nucleotides.  
+
+The following chunk contains a for-loop that does this for all bed files in the directory created during the previous step for TUCRs.  These were then compared to results for protein coding genes, long non-coding RNAs, antisense RNAs, and miscellaneous RNAs to determine comparable resistance to variation.
+
 ```{bash Section1_SNPintersect, eval = FALSE}
 ### TUCRs ###
 for bed in bed_chr_*
@@ -415,6 +431,8 @@ rm *misc.SNPs.bed
 ```
 
 ### Count intersecting SNPs
+
+This file counts the number of rows in each file.  Each row represents a single SNP, thus providing a count of all overlapping SNPs by annotation category.
 
 ```{bash Section1_SNPcount, eval = FALSE}
 
@@ -1379,8 +1397,13 @@ if(!dir.exists(paste(outputdir,"/RPKM",sep=""))){
 mergedcounts <- 
   read.table(mergedcountfile,header = TRUE)
 
+normal_mergedcounts <- read.table("normal_mergedcounts.txt",header = TRUE) %>%
+  dplyr::select(-chrom,-start,-end)
+
+mergedcounts <- left_join(mergedcounts,normal_mergedcounts,by="id")
+
 metadata <- 
-  read_csv(file = metadatafile)
+  read_csv(file = metadatafile) 
 
 CHESSantisense <- read.table("CHESSantisense.bed",header=FALSE)
 CHESSantisense <- CHESSantisense %>%
@@ -1429,6 +1452,7 @@ annot_unique <- as.character(unique(mergedcounts$annot))
 
 annotation <- as.character(annot_unique[i])
 
+print(i)
 print(annotation)
     
 rpkmcounts <- mergedcounts %>%
@@ -1495,6 +1519,8 @@ p <- ggplot(data = heatmap.df2,mapping = aes(x = Sample,y = reorder(id,means), f
 
 ggsave(p,file=paste(outputdir,"/RPKM","/",annotation,"_heatmap.png",sep=""), width = 2.5, height = 7, dpi = 300)
 
+if(annotation == "TUCR"){rpkm.TUCRs2 <- rpkm.df2}
+
 }
 
 ```
@@ -1508,31 +1534,42 @@ if(!dir.exists(paste(outputdir,"/RPKM","/RPKMboxplots",sep=""))){
   dir.create(paste(outputdir,"/RPKM","/RPKMboxplots",sep=""))
 }
 rpkm.dotplot <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
-TUCRids <- rpkm.TUCRs2[,4]
+TUCRids <- as.character(rpkm.TUCRs2$id)
 rpkm.dotplot <- cbind(TUCRids,rpkm.dotplot)
+rpkm.dotplot <- rpkm.dotplot %>% 
+  gather(key = "Sample", value = "RPKM",-TUCRids,-annot,-length) %>%
+  mutate(Key = gsub("[.]","-",Sample)) %>%
+    mutate(string = sub(".*TCGA", "", Key),barcode = tolower(paste("TCGA",substr(string, 1, 8),sep=""))) %>%
+  left_join(metadata,by="barcode") %>%
+  dplyr::select(-Sample,-Key,-id,-string)
+
+
+
 
 i = 1
 for(i in 1:length(TUCRids)){
 #TUCR <- "uc.110"
 TUCR <- TUCRids[i]
 print(i)
-rpkm.dotplot2 <- rpkm.dotplot %>% 
-  gather(key = "Sample", value = "RPKM",-TUCRids) %>%
+print(TUCR)
+rpkm.dotplot2 <- rpkm.dotplot %>%
   dplyr::filter(TUCRids == TUCR)
 
-p<- ggplot(rpkm.dotplot2, aes(x=TUCRids, y=RPKM)) +
-  geom_boxplot() +
-  geom_dotplot(binaxis='y', stackdir='center',
-               stackratio=0.75, dotsize=0.20) + 
+p<- ggplot(rpkm.dotplot2, aes(x=dex, y=RPKM)) +
+  geom_boxplot(outlier.color="white") +
+  #geom_violin(trim = FALSE)+
+  #geom_point(pch=21, size=1.5) +
+  geom_jitter(binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray") +
   ggtitle(paste("RPKM expression of ",TUCR)) +
   theme(plot.title = element_text(hjust = 0.5),
-panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black")) +
-  labs(y="Reads per kilobase million (RPKM)", x = "TUCR") +
-  stat_summary(fun.y=mean, geom="point", shape=20, size=10, color="red", fill="red")
+  panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+  panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(y="Reads per kilobase million (RPKM)", x = "Sample") +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=10, color="red", fill="red") 
 
 ggsave(p,file=paste(outputdir,"/RPKM","/RPKMboxplots/",TUCR,"_rpkm_boxplot.png",sep = ""))
 }
+
 
 }
 ```
@@ -2245,6 +2282,7 @@ ggsave(file=paste(outputdir,"/GuiltAnalysis/tucr_allgo_",annotation,".png",sep="
 }
 ```  
 
+<<<<<<< HEAD
 # Section 5: TUCRs are contained within mRNA or lncRNA transcripts
 
 ## Results 
@@ -2587,3 +2625,5 @@ ggsave(file=paste(outputdir,"/miRNA/tucr_annotation_mirna_minus.png",sep=""),
 
 ```
 
+=======
+>>>>>>> 26d12b0565a1567eed00c78fab1975c07df99278

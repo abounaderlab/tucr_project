@@ -71,7 +71,7 @@ tcga_analysis/reindex/TCGA-06-5418-01A-01R-1849-01.bam,tumor,tcga-06-5418
 tcga_analysis/reindex/TCGA-06-5856-01A-01R-1849-01.bam,tumor,tcga-06-5856
 tcga_analysis/reindex/TCGA-06-5858-01A-01R-1849-01.bam,tumor,tcga-06-5858
 tcga_analysis/reindex/TCGA-06-5859-01A-01R-1849-01.bam,tumor,tcga-06-5859
-tcga_analysis/reindex/TCGA-06-AABW-11A-31R-A36H-07.bam,normal,tcga-06-AABW
+tcga_analysis/reindex/TCGA-06-AABW-11A-31R-A36H-07.bam,normal,tcga-06-aabw
 tcga_analysis/reindex/TCGA-08-0386-01A-01R-1849-01.bam,tumor,tcga-08-0386
 tcga_analysis/reindex/TCGA-12-0616-01A-01R-1849-01.bam,tumor,tcga-12-0616
 tcga_analysis/reindex/TCGA-12-0618-01A-01R-1849-01.bam,tumor,tcga-12-0618
