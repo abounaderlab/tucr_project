@@ -2668,7 +2668,7 @@ p<- ggplot(cellcountdatafiltered, aes(x=Day, y=FoldChange,col=Sample)) +
   labs(y="Fold Change", x = "Days after T-zero") + 
   facet_wrap(~Cell.Line)
 
-ggsave(p,file=paste(outputdir,"/cellcountingdata/",experimentlabel,".png",sep = ""),width=15,height=7,dpi=300)}
+ggsave(p,file=paste(outputdir,"/cellcountingdata/",experimentlabel,".png",sep = ""),width=12,height=8,dpi=300)}
 
 ```
 
