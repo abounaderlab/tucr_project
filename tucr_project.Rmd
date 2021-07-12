@@ -2655,8 +2655,9 @@ cellcountdatafiltered <- cellcountdata %>%
 cellcountdatafiltered <- cellcountdatafiltered[complete.cases(cellcountdatafiltered),]
 
 p<- ggplot(cellcountdatafiltered, aes(x=Day, y=FoldChange,col=Sample)) +
-  geom_line(aes(x=Day,y=mean,col=Sample)) +
-  geom_point(aes(x=Day,y=mean,col=Sample),size=2) +
+  #geom_line(aes(x=Day,y=mean,col=Sample)) +
+  #geom_point(aes(x=Day,y=mean,col=Sample),size=2) +
+  geom_bar(stat="identity",aes(x=Day,y=mean,fill=Sample),position="dodge") +
   geom_jitter(binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30) +
   scale_fill_brewer(palette="Dark2") +
   scale_color_brewer(palette="Dark2") +
