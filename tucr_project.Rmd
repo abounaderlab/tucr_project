@@ -137,9 +137,9 @@ library(RColorBrewer)
 
 ###
 
-disease <- "LGG"
+disease <- "GBM"
 
-outputdir <- "Outputs_LGG"
+outputdir <- "Outputs_GBM"
 
 makeSNP <- TRUE
 
@@ -149,17 +149,19 @@ makelncRNA <- TRUE
 
 makeDE <- TRUE
 
-countfilename <- "lgg_TUCR_counts.txt"
+countfilename <- "TUCR_counts.txt"
 
-metadatafile <- "lgg_tcga_metadata.csv"
+metadatafile <- "tcga_metadata.csv"
 
 repel <- TRUE
 
 makesurvival <- TRUE
 
-mergedcountfile <- "lgg_mergedcounts.txt"
+makekpmplots <- TRUE
 
-seqdepthfile <- "lgg_seqdepth.csv"
+mergedcountfile <- "mergedcounts.txt"
+
+seqdepthfile <- "seqdepth.csv"
 
 makeSuvivalplots <- TRUE 
 
@@ -169,11 +171,11 @@ makecorrelations <- TRUE
 
 useintermediate <- TRUE
 
-intermediatefile <- "lgg_matrixintermediate.Rdata"
+intermediatefile <- "matrixintermediate.Rdata"
 
 makeGOterms <- TRUE
 
-novelgenesfile <- "lgg_novelgenes.bed"
+novelgenesfile <- "novelgenes.bed"
 
 ```
 
@@ -1150,12 +1152,17 @@ rownames(tucrcounts2) <-
 tucrcounts.info <- 
   tucrcounts[,1:4]
 
+tucrannot <- read.csv("tucr_annot.csv",header=TRUE) %>%
+  dplyr::select("id" = row, annot)
+
+tucrcounts.info <- tucrcounts.info %>%
+  left_join(tucrannot,by="id")
+
 tucrcounts.info$length <- 
   (tucrcounts$end - tucrcounts$start)/1000
 
 tucrcounts <- 
   cbind(tucrcounts.info,tucrcounts2)
-
 
 dds_TUCR <- 
   DESeqDataSetFromMatrix(countData = tucrcounts2,
@@ -1394,14 +1401,17 @@ CHESSmisc <- CHESSmisc %>%
   dplyr::select("V4","V6")
 
 
-TUCRids <- read.table("hg38.ultraconserved.bed",header=FALSE,fill=TRUE)
-TUCRids <- TUCRids %>%
-  dplyr::select("V4","V6"="V5")
+#TUCRids <- read.table("hg38.ultraconserved.bed",header=FALSE,fill=TRUE)
+#TUCRids <- TUCRids %>%
+#  dplyr::select("V4","V6"="V5")
 
+TUCRids <- read.csv("tucr_annot.csv",header=TRUE) %>%
+  dplyr::select("V4" = row, "V6" = annot)
 
 count_annot <- rbind(TUCRids,CHESSantisense,CHESScoding,CHESSlncRNA,CHESSmisc)
-colnames(count_annot) <- c("id","annot")
 
+
+colnames(count_annot) <- c("id","annot")
 
 mergedcounts <- mergedcounts %>%
   left_join(count_annot,by="id")
@@ -1555,6 +1565,11 @@ mv gdac.broadinstitute.org_GBM.Merge_Clinical.Level_1.2016012800.0.0 GBM.Merge_C
 ### Completing survival analysis for TUCRs
 
 ```{r Section3_surcor_TUCRs}
+
+if(!dir.exists(paste(outputdir,"/SurvivalAnalysis",sep=""))){
+  dir.create(paste(outputdir,"/SurvivalAnalysis",sep=""))
+}
+
 if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
 
 countdata <- read.table(countfilename,header = TRUE)
@@ -1619,12 +1634,12 @@ for(x in 1:nrow(count_vm)){
 surv_TUCR <- cbind(posdata,out.tab)
 surv_TUCR <- surv_TUCR %>% dplyr::select(-term)
 
-write_csv(surv_TUCR,paste(outputdir,"/survival_TUCRs.csv",sep=""))
+write_csv(surv_TUCR,paste(outputdir,"/SurvivalAnalysis/survival_TUCRs.csv",sep=""))
 
 if(makekpmplots == TRUE){
 
-if(!dir.exists(paste(outputdir,"/tucrKPMplots",sep=""))){
-  dir.create(paste(outputdir,"/tucrKPMplots",sep=""))
+if(!dir.exists(paste(outputdir,"/SurvivalAnalysis/tucrKPMplots",sep=""))){
+  dir.create(paste(outputdir,"/SurvivalAnalysis/tucrKPMplots",sep=""))
 }
 
 km_countdata <- countdata
@@ -1663,72 +1678,16 @@ for(i in 1:length(TUCRids)){
     rbinder <- cbind(as.character(TUCR),NA,NA)
     ptable[i,] <- rbinder
     next } 
-  ggsave(file=paste(outputdir,"/tucrKPMplots/",TUCR,"_kpmplot.png",sep = ""),
+  ggsave(file=paste(outputdir,"/SurvivalAnalysis/tucrKPMplots/",TUCR,"_kpmplot.png",sep = ""),
          plot = print(p))
     p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff")
   rbinder <- cbind(as.character(TUCR),p2value$pval,p2value$method)
   ptable[i,] <- rbinder
 }}
 
-write_csv(ptable,paste(outputdir,"/kpm_summary_TUCRs.csv",sep=""))
+write_csv(ptable,paste(outputdir,"/SurvivalAnalysis/kpm_summary_TUCRs.csv",sep=""))
 
 ```
-
-### Summarize Survival Data 
-
-```{r Section3_summary surv}
-
-surv_TUCR <- read.csv(paste(outputdir,"/survival_TUCRs.csv",sep=""),header=TRUE)
-
-ptable <- read.csv(paste(outputdir,"/kpm_summary_TUCRs.csv",sep=""),header=TRUE)
-
-res_surv <- inner_join(ptable,surv_TUCR,by="id")
-
-res_surv_sum <- res_surv
-
-res_surv_sum <- res_surv_sum %>% mutate(gene="",Survival="")
-
-for (i in 1:length(res_surv_sum$id)){
-  ifelse(is.na(res_surv_sum$pvalue[i]),res_surv_sum$pvalue[i] <- 1,res_surv_sum$pvalue[i] 
-         <- res_surv_sum$pvalue[i])
-    
-  ifelse(genes!="all",ifelse(!is.na(match(res_surv_sum$id[i],genes)),
-                             res_surv_sum$gene[i] <- as.character(res_surv_sum$id[i]), ""),
-                                  res_surv_sum$gene[i] <- res_surv_sum$id[i])
-  
-  ifelse((res_surv_sum$pvalue[i] <0.05 & res_surv_sum$p.value[i] <0.05 & 
-            res_surv_sum$estimate[i] < 0),
-         res_surv_sum$Survival[i] <- "Significant (Both, Good Prognosis)",
-  ifelse((res_surv_sum$pvalue[i] <0.05 & res_surv_sum$p.value[i] <0.05 &
-            res_surv_sum$estimate[i] > 0),
-         res_surv_sum$Survival[i] <- "Significant (Both, Poor Prognosis)",
-  ifelse((res_surv_sum$pvalue[i] >0.05 & res_surv_sum$p.value[i] <0.05 &
-            res_surv_sum$estimate[i] < 0),
-         res_surv_sum$Survival[i] <- "Significant (CH, Good Prognosis)",
-  ifelse((res_surv_sum$pvalue[i] >0.05 & res_surv_sum$p.value[i] <0.05 &
-            res_surv_sum$estimate[i] > 0),
-         res_surv_sum$Survival[i] <- "Significant (CH, Poor Prognosis)",
-  ifelse((res_surv_sum$pvalue[i] <0.05 & res_surv_sum$p.value[i] >0.05),
-         res_surv_sum$Survival[i] <- "Significant (KM)",
-  ifelse(res_surv_sum$Survival[i] <- "Not significant"))))))}
-
-res_surv_sum <- res_surv_sum %>%
-  group_by(Survival) %>%
-  summarise(count = n())
-
-write.csv(res_surv_sum,file=paste(outputdir,"/tucr_surv_table.csv",sep=""))
-
-p <- ggplot(res_surv_sum, aes(x=Survival,y=count,fill=Survival)) + geom_bar(stat="identity", width = 0.7) + scale_fill_manual(values = c("gray","#619cff","#f8766d","#00ba38","#c77cff","black")) + ylab("# of TUCRs") + theme(
-plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
-axis.title = element_text(size = rel(1.25), face="bold"),
-panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black"),
-axis.text.x = element_blank())
-
-ggsave(file=paste(outputdir,"/tucr_surv_bar.png",sep=""),plot = print(p), width = 5, height = 5, dpi = 300) 
-
-```
-
 
 ### Writing a script to generate a volcano plot for survival
 
@@ -1785,11 +1744,80 @@ ggsave(output, width = width, height = height, dpi = dpi)
 
 ```
 
-### Draw Volcano plot for TUCRs
+### Summarize Survival Data 
 
-```{r Section3_volcanosurv TUCRs}
+```{r Section3_summary surv}
 
-volcanosurv(res_surv,genes=c("uc.174","uc.325","uc.363"), title = paste("TUCR correlation with patient survival in ",disease,sep=""),output = paste(outputdir,"/intergenic_tucr_results_volcanosurv.png",sep=""))
+genes <- ""
+
+surv_TUCR <- read.csv(paste(outputdir,"/SurvivalAnalysis/survival_TUCRs.csv",sep=""),header=TRUE)
+
+ptable <- read.csv(paste(outputdir,"/SurvivalAnalysis/kpm_summary_TUCRs.csv",sep=""),header=TRUE)
+
+res_surv <- inner_join(ptable,surv_TUCR,by="id")
+
+res_surv_sum <- res_surv
+
+res_surv_sum <- res_surv_sum %>% mutate(gene="",Survival="")
+
+tucrannot <- read.csv("tucr_annot.csv",header=TRUE) %>%
+  dplyr::select("id" = row, annot)
+
+res_surv_sum <- res_surv_sum %>%
+  left_join(tucrannot,by="id")
+
+annot_unique <- as.character(unique(tucrannot$annot))
+
+for (h in 1:length(annot_unique)){
+  annotation <- as.character(annot_unique[h])  
+  print(annotation)
+  res_surv_sum2 <- res_surv_sum %>%
+    filter(annot == annotation)
+  res_surv_sum3 <- res_surv_sum %>%
+    filter(annot == annotation)
+
+for (i in 1:length(res_surv_sum2$id)){
+  #print(as.character(res_surv_sum2$id[i]))
+  ifelse(is.na(res_surv_sum2$pvalue[i]),res_surv_sum2$pvalue[i] <- 1,res_surv_sum2$pvalue[i] 
+         <- res_surv_sum2$pvalue[i])
+    
+  ifelse(genes!="all",ifelse(!is.na(match(res_surv_sum2$id[i],genes)),
+                             res_surv_sum2$gene[i] <- as.character(res_surv_sum2$id[i]), ""),
+                                  res_surv_sum2$gene[i] <- res_surv_sum2$id[i])
+  
+  ifelse((res_surv_sum2$pvalue[i] <0.05 & res_surv_sum2$p.value[i] <0.05 & 
+            res_surv_sum2$estimate[i] < 0),
+         res_surv_sum2$Survival[i] <- "Significant (Both, Good Prognosis)",
+  ifelse((res_surv_sum2$pvalue[i] <0.05 & res_surv_sum2$p.value[i] <0.05 &
+            res_surv_sum2$estimate[i] > 0),
+         res_surv_sum2$Survival[i] <- "Significant (Both, Poor Prognosis)",
+  ifelse((res_surv_sum2$pvalue[i] >0.05 & res_surv_sum2$p.value[i] <0.05 &
+            res_surv_sum2$estimate[i] < 0),
+         res_surv_sum2$Survival[i] <- "Significant (CH, Good Prognosis)",
+  ifelse((res_surv_sum2$pvalue[i] >0.05 & res_surv_sum2$p.value[i] <0.05 &
+            res_surv_sum2$estimate[i] > 0),
+         res_surv_sum2$Survival[i] <- "Significant (CH, Poor Prognosis)",
+  ifelse((res_surv_sum2$pvalue[i] <0.05 & res_surv_sum2$p.value[i] >0.05),
+         res_surv_sum2$Survival[i] <- "Significant (KM)",
+  ifelse(res_surv_sum2$Survival[i] <- "Not significant"))))))}
+
+res_surv_sum2 <- res_surv_sum2 %>%
+  group_by(Survival) %>%
+  summarise(count = n())
+
+write.csv(res_surv_sum2,file=paste(outputdir,"/SurvivalAnalysis/tucr_surv_table_",annotation,".csv",sep=""))
+
+p <- ggplot(res_surv_sum2, aes(x=Survival,y=count,fill=Survival)) + geom_bar(stat="identity", width = 0.7) + scale_fill_manual(values = c("gray","#619cff","#f8766d","#00ba38","#c77cff","black")) + ylab("# of TUCRs") + theme(
+plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
+axis.title = element_text(size = rel(1.25), face="bold"),
+panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),
+axis.text.x = element_blank())
+
+ggsave(file=paste(outputdir,"/SurvivalAnalysis/tucr_surv_bar_",annotation,".png",sep=""),plot = print(p), width = 5, height = 5, dpi = 300)
+
+volcanosurv(res_surv_sum3, genes = "", title = paste(annotation," TUCR correlation with patient survival in ",disease,sep=""),output = paste(outputdir,"/SurvivalAnalysis/",annotation,"_tucr_results_volcanosurv.png",sep=""))
+}
 
 ```
 
@@ -1807,8 +1835,8 @@ Coregulated genes lists for each TUCR were subset into separate lists by directi
 
 ```{r Section4_correlations}
 
-if(!dir.exists(paste(outputdir,"/correlations",sep=""))){
-  dir.create(paste(outputdir,"/correlations",sep=""))
+if(!dir.exists(paste(outputdir,"/GuiltAnalysis/correlations",sep=""))){
+  dir.create(paste(outputdir,"/GuiltAnalysis/correlations",sep=""))
 }
 
 if(useintermediate==FALSE){
@@ -1900,7 +1928,7 @@ tucr.cor.matrix.match.plus <- tucr.cor.matrix.match %>%
   dplyr::mutate(direction = "positive")
 
 write.csv(tucr.cor.matrix.match.plus,
-          paste(outputdir,"/correlations/",searchTUCR,"_plus_correlations.csv",sep=""))
+          paste(outputdir,"/GuiltAnalysis/correlations/",searchTUCR,"_plus_correlations.csv",sep=""))
 
 tucr.cor.matrix.match.minus <- tucr.cor.matrix.match %>% 
   mutate(partner = geneindex) %>%
@@ -1910,7 +1938,7 @@ tucr.cor.matrix.match.minus <- tucr.cor.matrix.match %>%
   dplyr::mutate(direction = "negative")
 
 write.csv(tucr.cor.matrix.match.minus,
-          paste(outputdir,"/correlations/",searchTUCR,"_minus_correlations.csv",sep=""))
+          paste(outputdir,"/GuiltAnalysis/correlations/",searchTUCR,"_minus_correlations.csv",sep=""))
 
 meancor <- mean(tucr.cor.matrix.match$tucr.cor.matrix.match,na.rm=TRUE)
 mediancor <- median(tucr.cor.matrix.match$tucr.cor.matrix.match,na.rm=TRUE)
@@ -1921,30 +1949,33 @@ newrow <- cbind(searchTUCR,ngenes,meancor,mediancor,mincor,maxcor)
 summarycor <- rbind(summarycor,newrow)}
 
 summarycor %>%
-readr::write_excel_csv(here::here(paste(outputdir,"/correlations",sep=""),paste("cor_summary.csv",sep="")))
+readr::write_excel_csv(here::here(paste(outputdir,"/GuiltAnalysis/correlations",sep=""),paste("cor_summary.csv",sep="")))
 
 ```
 
 ### Generate GO Terms for coregulated genes
 
 ```{r GO Terms}
- 
-filenames <- list.files(paste(outputdir,"/correlations",sep=""))
+ if(!dir.exists(paste(outputdir,"/GuiltAnalysis",sep=""))){
+  dir.create(paste(outputdir,"/GuiltAnalysis",sep=""))
+ }
 
-if(!dir.exists(paste(outputdir,"/GO_terms",sep=""))){
-  dir.create(paste(outputdir,"/GO_terms",sep=""))
+filenames <- list.files(paste(outputdir,"/GuiltAnalysis/correlations",sep=""))
+
+if(!dir.exists(paste(outputdir,"/GuiltAnalysis/GO_terms",sep=""))){
+  dir.create(paste(outputdir,"/GuiltAnalysis/GO_terms",sep=""))
 }
 
-if(!dir.exists(paste(outputdir,"/GO_terms_bp",sep=""))){
-  dir.create(paste(outputdir,"/GO_terms_bp",sep=""))
+if(!dir.exists(paste(outputdir,"/GuiltAnalysis/GO_terms_bp",sep=""))){
+  dir.create(paste(outputdir,"/GuiltAnalysis/GO_terms_bp",sep=""))
 }
 
-if(!dir.exists(paste(outputdir,"/GO_terms_mf",sep=""))){
-  dir.create(paste(outputdir,"/GO_terms_mf",sep=""))
+if(!dir.exists(paste(outputdir,"/GuiltAnalysis/GO_terms_mf",sep=""))){
+  dir.create(paste(outputdir,"/GuiltAnalysis/GO_terms_mf",sep=""))
 }
 
-if(!dir.exists(paste(outputdir,"/GO_terms_cc",sep=""))){
-  dir.create(paste(outputdir,"/GO_terms_cc",sep=""))
+if(!dir.exists(paste(outputdir,"/GuiltAnalysis/GO_terms_cc",sep=""))){
+  dir.create(paste(outputdir,"/GuiltAnalysis/GO_terms_cc",sep=""))
 }
 
 allgo <- data.frame(matrix(ncol=7,nrow=0, dimnames=list(NULL, c("GO Term","Ont","N","DE","P.DE","direction","gene"))))
@@ -1960,7 +1991,7 @@ i = 2
 for(i in 2:length(filenames)){
   #print(i)
   skip_to_next <- FALSE
-  df <- read.csv(paste(outputdir,"/correlations/",filenames[i],sep=""))
+  df <- read.csv(paste(outputdir,"/GuiltAnalysis/correlations/",filenames[i],sep=""))
   gene <- as.character(df$gene[1])
   
   if(length(df[,1] > 0)){
@@ -1988,25 +2019,25 @@ for(i in 2:length(filenames)){
     mutate(direction = direction) %>%
     mutate(gene = gene)
   
-  write.csv(topGO_all,paste(outputdir,"/GO_terms/",filenames[i],sep=""))
+  write.csv(topGO_all,paste(outputdir,"/GuiltAnalysis/GO_terms/",filenames[i],sep=""))
   topGO_bp <- topGO %>%
     filter(Ont == "BP") %>%
     mutate(direction = direction) %>%
     mutate(gene = gene)
   
-  write.csv(topGO_bp,paste(outputdir,"/GO_terms_bp/",filenames[i],sep=""))
+  write.csv(topGO_bp,paste(outputdir,"/GuiltAnalysis/GO_terms_bp/",filenames[i],sep=""))
   topGO_mf <- topGO %>%
     filter(Ont == "MF") %>%
     mutate(direction = direction) %>%
     mutate(gene = gene)
   
-  write.csv(topGO_mf,paste(outputdir,"/GO_terms_mf/",filenames[i],sep=""))
+  write.csv(topGO_mf,paste(outputdir,"/GuiltAnalysis/GO_terms_mf/",filenames[i],sep=""))
   topGO_cc <- topGO %>%
     filter(Ont == "CC") %>%
     mutate(direction = direction) %>%
     mutate(gene = gene)
   
-  write.csv(topGO_cc,paste(outputdir,"/GO_terms_cc/",filenames[i],sep=""))
+  write.csv(topGO_cc,paste(outputdir,"/GuiltAnalysis/GO_terms_cc/",filenames[i],sep=""))
   }else{}
   allgo <- rbind(allgo,topGO)
   allgo_bp <- rbind(allgo_bp,topGO_bp)
@@ -2014,21 +2045,21 @@ for(i in 2:length(filenames)){
   allgo_cc <- rbind(allgo_cc,topGO_cc)
 }
 
-write_csv(allgo,paste(outputdir,"/GOterm_all_summary_TUCRs.csv",sep=""))
+write_csv(allgo,paste(outputdir,"/GuiltAnalysis/GOterm_all_summary_TUCRs.csv",sep=""))
 
-write_csv(allgo_bp,paste(outputdir,"/GOterm_bp_summary_TUCRs.csv",sep=""))
+write_csv(allgo_bp,paste(outputdir,"/GuiltAnalysis/GOterm_bp_summary_TUCRs.csv",sep=""))
 
-write_csv(allgo_mf,paste(outputdir,"/GOterm_mf_summary_TUCRs.csv",sep=""))
+write_csv(allgo_mf,paste(outputdir,"/GuiltAnalysis/GOterm_mf_summary_TUCRs.csv",sep=""))
 
-write_csv(allgo_cc,paste(outputdir,"/GOterm_cc_summary_TUCRs.csv",sep=""))
+write_csv(allgo_cc,paste(outputdir,"/GuiltAnalysis/GOterm_cc_summary_TUCRs.csv",sep=""))
 ```
 
 ### Summarize GO term data for oncogenes and tumor suppressors
 
 ```{r summary GO Terms GSEA}
 
-if(!dir.exists(paste(outputdir,"/Cancermine/",sep=""))){
-  dir.create(paste(outputdir,"/Cancermine/",sep=""))
+if(!dir.exists(paste(outputdir,"/GuiltAnalysis/Cancermine/",sep=""))){
+  dir.create(paste(outputdir,"/GuiltAnalysis/Cancermine/",sep=""))
 }
 
 GSEA <- read.csv("GSEA.csv",header = TRUE)
@@ -2063,8 +2094,12 @@ topGO_cancermine <- topGO_onctsg %>%
 cancerTerms <- topGO_cancermine %>%
   dplyr::select(Term) %>%
   unique()
+
+cancerTerms_summary <- read.csv(paste(outputdir,"/GuiltAnalysis/Cancermine/topGO_cancermine.csv",sep=""),header=TRUE) %>%
+  group_by(Term) %>%
+  summarise(n = n())
   
-write.csv(topGO_cancermine,paste(outputdir,"/Cancermine/topGO_cancermine.csv",sep=""))
+write.csv(topGO_cancermine,paste(outputdir,"/GuiltAnalysis/Cancermine/topGO_cancermine.csv",sep=""))
 
 ```  
 
@@ -2072,14 +2107,11 @@ write.csv(topGO_cancermine,paste(outputdir,"/Cancermine/topGO_cancermine.csv",se
 
 ```{r summary GO Terms new}
 
-cancerTerms <- read.csv(paste(outputdir,"/Cancermine/topGO_cancermine.csv",sep=""),header=TRUE) %>%
+cancerTerms <- read.csv(paste(outputdir,"/GuiltAnalysis/Cancermine/topGO_cancermine.csv",sep=""),header=TRUE) %>%
   dplyr::select(Term) %>%
   distinct()
 
-TUCRids <- read.table(countfilename,header = TRUE)
-TUCRids <- as.character(TUCRids[,4])
-
-allgo <- read.csv(paste(outputdir,"/GOterm_all_summary_TUCRs.csv",sep=""),header=TRUE,stringsAsFactors=FALSE)
+allgo <- read.csv(paste(outputdir,"/GuiltAnalysis/GOterm_all_summary_TUCRs.csv",sep=""),header=TRUE,stringsAsFactors=FALSE)
 allgo <- allgo %>%
   dplyr::select(Term)
 
@@ -2088,16 +2120,30 @@ heatmap.allgo <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("Term","
 
 i <- 1
 
-for(i in 1:length(TUCRids)){
+tucrannot <- read.csv("tucr_annot.csv",header=TRUE) %>%
+  dplyr::select("id" = row, annot)
+
+annot_unique <- as.character(unique(tucrannot$annot))
+
+h <- 1
+
+for (h in 1:length(annot_unique)){
+  annotation <- as.character(annot_unique[h])  
+  print(annotation)
+  TUCRids <- tucrannot %>%
+    filter(annot == annotation) %>%
+    dplyr::select(id)
+
+for(i in 1:length(TUCRids$id)){
 #for(i in 1:30){
   print(i)
-  TUCR <- TUCRids[i]
+  TUCR <- TUCRids[i,]
   skip_to_next_p <<- FALSE
   skip_to_next_n <<- FALSE
-  positive <- tryCatch(read.csv(paste(outputdir,"/GO_Terms/",TUCR,"_plus_correlations.csv",sep=""),
+  positive <- tryCatch(read.csv(paste(outputdir,"/GuiltAnalysis/GO_Terms/",TUCR,"_plus_correlations.csv",sep=""),
                        header=TRUE), error = function(e) { skip_to_next_p <<- TRUE})
 
-  negative <- tryCatch(read.csv(paste(outputdir,"/GO_Terms/",TUCR,"_minus_correlations.csv",sep=""),
+  negative <- tryCatch(read.csv(paste(outputdir,"/GuiltAnalysis/GO_Terms/",TUCR,"_minus_correlations.csv",sep=""),
                        header=TRUE), error = function(e) { skip_to_next_n <<- TRUE})
 
   
@@ -2149,7 +2195,7 @@ p <- ggplot(data = heatmap.allgo2,mapping = aes(x = reorder(gene,x),y = reorder(
 guides(fill = guide_legend(reverse=TRUE)) + 
   geom_tile() +
    scale_fill_manual(values=colors, breaks=levels(heatmap.allgo2$onedirection)[seq(1, N, by=1)]) + 
-  ggtitle(paste("TUcR cancer associated functions in ",disease,sep="")) + 
+  ggtitle(paste(annotation," TUCR cancer associated functions in ",disease,sep="")) + 
   xlab(paste("TUCRs (n=",length(unique(heatmap.allgo2$gene)),")",sep = "")) + 
   ylab(paste("Cancer associated GO Terms (n=",length(unique(heatmap.allgo2$Term)),")",sep = "")) +
   labs(fill = "Correlation") +
@@ -2158,7 +2204,7 @@ guides(fill = guide_legend(reverse=TRUE)) +
         axis.text = element_blank(),
         axis.ticks = element_blank())
 
-ggsave(p,file=paste(outputdir,"/GOTerms_heatmap.png",sep=""))
+ggsave(p,file=paste(outputdir,"/GuiltAnalysis/GOTerms_heatmap_",annotation,".png",sep=""))
 
 chart.mostrep <- heatmap.allgo2 %>%
   dplyr::select(Term,y) %>%
@@ -2195,8 +2241,8 @@ axis.text.y = element_text(size=rel(2.0)),
 panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
 panel.background = element_blank(), axis.line = element_line(colour = "black")) + coord_flip()
 
-ggsave(file=paste(outputdir,"/tucr_allgo.png",sep=""),plot = print(p), width = 15, height = 10, dpi = 300) 
-
+ggsave(file=paste(outputdir,"/GuiltAnalysis/tucr_allgo_",annotation,".png",sep=""),plot = print(p), width = 15, height = 10, dpi = 300) 
+}
 ```  
 
 # Section 5: TUCRs are contained within mRNA or lncRNA transcripts
@@ -2389,3 +2435,155 @@ ggsave(file=paste(outputdir,"/tucr_novelgenes.png",sep=""),plot = print(p), widt
   
 
 ```
+
+## Checking for miRNA binding to TUCRs
+
+```{r}
+
+if(!dir.exists(paste(outputdir,"/miRNA/",sep=""))){
+  dir.create(paste(outputdir,"/miRNA/",sep=""))
+}
+
+tucr_sequence <- read.csv("tucr_sequence.csv",header=TRUE)
+
+mirna_seeds <- read.csv("mirna-seeds.csv",header=TRUE)
+
+tucrannot <- read.csv("tucr_annot.csv",header=TRUE) %>%
+  dplyr::select("id" = row, annot)
+
+uc.110 <- tucr_sequence %>%
+  mutate(i=1) %>%
+  full_join(mutate(mirna_seeds, i=1), by="i") %>%
+  dplyr::select(-i) %>%
+  filter(stringr::str_detect(sequence, as.character(revcomp))) %>%
+  left_join(tucrannot,by="id") %>%
+  distinct() %>%
+  filter(id == "uc.110-" | id == "uc.110+") %>%
+  write_csv(paste(outputdir,"/miRNA/uc110_mirna.csv",sep=""))
+
+uc.454 <- tucr_sequence %>%
+  mutate(i=1) %>%
+  full_join(mutate(mirna_seeds, i=1), by="i") %>%
+  dplyr::select(-i) %>%
+  filter(stringr::str_detect(sequence, as.character(revcomp))) %>%
+  left_join(tucrannot,by="id") %>%
+  distinct() %>%
+  filter(id == "uc.454-" | id == "uc.454+") %>%
+  write_csv(paste(outputdir,"/miRNA/uc454_mirna.csv",sep=""))
+
+tucr_sequence_plus <- tucr_sequence[1:481,]
+
+tucr_mirna_plus <- tucr_sequence_plus %>%
+mutate(i=1) %>%
+mutate(id = gsub("\\+","",id)) %>%
+full_join(mutate(mirna_seeds, i=1), by="i") %>%
+dplyr::select(-i) %>%
+filter(stringr::str_detect(sequence, as.character(revcomp))) %>%
+left_join(tucrannot,by="id") %>%
+distinct()
+
+miRNA_summary_plus <- tucr_mirna_plus %>%
+  group_by(mirna) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n)) %>%
+  write_csv(paste(outputdir,"/miRNA/mirna_summary_plus.csv",sep=""))
+
+TUCR_summary_plus <- tucr_mirna_plus %>%
+  group_by(id) %>%
+  summarise(n = n()) %>%
+  mutate(id = gsub("\\+","",id)) %>%
+  left_join(tucrannot,by="id") %>%
+  arrange(desc(n)) %>%
+  write_csv(paste(outputdir,"/miRNA/tucr_summary_plus.csv",sep=""))
+
+annot_summary_plus <- tucr_mirna_plus %>%
+  dplyr::select(annot,mirna) %>%
+  group_by(annot) %>%
+  distinct() %>%
+  summarise(n = n())
+
+p <- ggplot(annot_summary_plus, aes(x=annot,y=n,fill=annot))          + 
+  geom_bar(
+    stat="identity",colour="black", 
+    width = 1)                                                          +
+  geom_text(
+    aes(label = n), 
+    color = "black")                                                    + 
+  scale_fill_manual(values=c("#F8766D","#00BFC4","#7CAE00","#C77CFF"))  + 
+  ggtitle(paste("Plus strand TUCRs are targeted by miRNAs"))            + 
+  theme(
+    plot.title = element_text(size=rel(1.0),
+    face="bold",hjust = 0.5),
+    axis.line=element_blank(),
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    axis.ticks=element_blank(),
+    panel.background = element_blank())
+
+p
+
+ggsave(file=paste(outputdir,"/miRNA/tucr_annotation_mirna_plus.png",sep=""),
+       plot = print(p), 
+       width = 5, 
+       height = 5, 
+       dpi = 300)
+
+tucr_sequence_minus <- tucr_sequence[482:962,]
+
+tucr_mirna_minus <- tucr_sequence_minus %>%
+mutate(i=1) %>%
+mutate(id = gsub("\\-","",id)) %>%
+full_join(mutate(mirna_seeds, i=1), by="i") %>%
+dplyr::select(-i) %>%
+filter(stringr::str_detect(sequence, as.character(revcomp))) %>%
+left_join(tucrannot,by="id") %>%
+distinct()
+
+miRNA_summary_minus <- tucr_mirna_minus %>%
+  group_by(mirna) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n)) %>%
+  write_csv(paste(outputdir,"/miRNA/mirna_summary_minus.csv",sep=""))
+
+TUCR_summary_minus <- tucr_mirna_minus %>%
+  group_by(id) %>%
+  summarise(n = n()) %>%
+  mutate(id = gsub("\\+","",id)) %>%
+  left_join(tucrannot,by="id") %>%
+  arrange(desc(n)) %>%
+  write_csv(paste(outputdir,"/miRNA/tucr_summary_minus.csv",sep=""))
+
+annot_summary_minus <- tucr_mirna_minus %>%
+  dplyr::select(annot,mirna) %>%
+  group_by(annot) %>%
+  distinct() %>%
+  summarise(n = n())
+
+p <- ggplot(annot_summary_minus, aes(x=annot,y=n,fill=annot))          + 
+  geom_bar(
+    stat="identity",colour="black", 
+    width = 1)                                                          +
+  geom_text(
+    aes(label = n), 
+    color = "black")                                                    + 
+  scale_fill_manual(values=c("#F8766D","#00BFC4","#7CAE00","#C77CFF"))  + 
+  ggtitle(paste("Minus strand TUCRs are targeted by miRNAs"))            + 
+  theme(
+    plot.title = element_text(size=rel(1.0),
+    face="bold",hjust = 0.5),
+    axis.line=element_blank(),
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    axis.ticks=element_blank(),
+    panel.background = element_blank())
+
+p
+
+ggsave(file=paste(outputdir,"/miRNA/tucr_annotation_mirna_minus.png",sep=""),
+       plot = print(p), 
+       width = 5, 
+       height = 5, 
+       dpi = 300)
+
+```
+
