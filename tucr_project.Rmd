@@ -2625,5 +2625,50 @@ ggsave(file=paste(outputdir,"/miRNA/tucr_annotation_mirna_minus.png",sep=""),
 
 ```
 
-=======
->>>>>>> 26d12b0565a1567eed00c78fab1975c07df99278
+# Making Figures for cell counting assay
+
+```{r cellcounting}
+
+if(!dir.exists(paste(outputdir,"/cellcountingdata/",sep=""))){
+  dir.create(paste(outputdir,"/cellcountingdata/",sep=""))
+}
+
+cellcountdata <- read.csv("cellcountingdata.csv",header=TRUE)
+
+cellcountdata$mean <- rowMeans(cellcountdata[,5:12],na.rm = TRUE)
+
+cellcountdata <- cellcountdata %>%
+  gather(key = "Replicate", value = "FoldChange",-Cell.Line,-Experiment,-Sample,-Day,-mean)
+
+experimentlabels <- unique(as.character(cellcountdata$Experiment))
+
+i = 1
+
+for(i in 1:length(cellcountdata$Experiment)){
+  print(i)
+  experimentlabel <- experimentlabels[i]
+  print(experimentlabel)
+
+cellcountdatafiltered <- cellcountdata %>%
+  filter(Experiment == experimentlabel)
+
+cellcountdatafiltered <- cellcountdatafiltered[complete.cases(cellcountdatafiltered),]
+
+p<- ggplot(cellcountdatafiltered, aes(x=Day, y=FoldChange,col=Sample)) +
+  geom_line(aes(x=Day,y=mean,col=Sample)) +
+  geom_point(aes(x=Day,y=mean,col=Sample),size=2) +
+  geom_jitter(binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30) +
+  scale_fill_brewer(palette="Dark2") +
+  scale_color_brewer(palette="Dark2") +
+  scale_x_continuous(breaks = c(0,1,3,5,7))+ 
+  ggtitle(paste(experimentlabel," of uc.110",sep="")) +
+  theme(plot.title = element_text(hjust = 0.5),
+  panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+  panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(y="Fold Change", x = "Days after T-zero") + 
+  facet_wrap(~Cell.Line)
+
+ggsave(p,file=paste(outputdir,"/cellcountingdata/",experimentlabel,".png",sep = ""),width=15,height=7,dpi=300)}
+
+```
+
