@@ -841,3 +841,37 @@ p <- ggplot(data = heatmap.sdt2,mapping = aes(x = Sample,y = reorder(id,means), 
 
 ggsave(p,file=paste(outputdir,"/sdt_heatmap.png",sep=""))
 ```
+
+```{r TUCRintrons}
+library(tidyverse)
+
+tucr.introns <- read.table("TUCRintrons.bed",header=FALSE)
+
+i = 1
+
+df <- as.data.frame(matrix(nrow=0,ncol=4))
+
+for(i in 1:length(tucr.introns$V1)){
+  print(i)
+  data <- tucr.introns[i,]
+  chrom <- data$V1
+  start <- data$V2
+  end <- data$V3
+  TUCR <- data$V4
+  d <- seq(start,end)
+  breaks <- as.matrix(split(d, ceiling(seq_along(d)/50)))
+  breaks <- as.data.frame(matrix(unlist(breaks), nrow=length(breaks), byrow=TRUE))
+  colnames(breaks)[ncol(breaks)] <- "last"
+  breaks$row_num <- seq.int(nrow(breaks))
+  breaks$TUCR <- TUCR
+  breaks$chrom  <- chrom
+  breaks_rbind <- breaks %>%
+    mutate(TUCR_num = paste(TUCR,row_num,sep="_")) %>%
+    dplyr::select(chrom,"start"=V1,"end"=last,TUCR_num)
+  df <- rbind(df,breaks_rbind)
+}
+
+write_delim(df,file="TUCRintervals.bed",delim="\t")
+
+```
+
