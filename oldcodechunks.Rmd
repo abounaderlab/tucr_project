@@ -868,7 +868,10 @@ for(i in 1:length(tucr.introns$V1)){
   breaks_rbind <- breaks %>%
     mutate(TUCR_num = paste(TUCR,row_num,sep="_")) %>%
     dplyr::select(chrom,"start"=V1,"end"=last,TUCR_num)
-  df <- rbind(df,breaks_rbind)
+  df <- rbind(df,breaks_rbind) %>%
+    mutate(diff = end - start) %>%
+    filter(diff >0) %>%
+    select(-diff)
 }
 
 write_delim(df,file="TUCRintervals.bed",delim="\t")
