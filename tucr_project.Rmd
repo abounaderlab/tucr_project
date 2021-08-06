@@ -137,9 +137,9 @@ library(RColorBrewer)
 
 ###
 
-disease <- "GBM"
+disease <- "LGG"
 
-outputdir <- "Outputs_GBM"
+outputdir <- "Outputs_LGG"
 
 makeSNP <- TRUE
 
@@ -149,9 +149,9 @@ makelncRNA <- TRUE
 
 makeDE <- TRUE
 
-countfilename <- "TUCR_counts.txt"
+countfilename <- "lgg_TUCR_counts.txt"
 
-metadatafile <- "tcga_metadata.csv"
+metadatafile <- "lgg_tcga_metadata.csv"
 
 repel <- TRUE
 
@@ -159,9 +159,9 @@ makesurvival <- TRUE
 
 makekpmplots <- TRUE
 
-mergedcountfile <- "mergedcounts.txt"
+mergedcountfile <- "lgg_mergedcounts.txt"
 
-seqdepthfile <- "seqdepth.csv"
+seqdepthfile <- "lgg_seqdepth.csv"
 
 makeSuvivalplots <- TRUE 
 
@@ -171,11 +171,9 @@ makecorrelations <- TRUE
 
 useintermediate <- TRUE
 
-intermediatefile <- "matrixintermediate.Rdata"
+intermediatefile <- "lgg_matrixintermediate.Rdata"
 
 makeGOterms <- TRUE
-
-novelgenesfile <- "novelgenes.bed"
 
 ```
 
@@ -1428,7 +1426,7 @@ CHESSmisc <- CHESSmisc %>%
 #TUCRids <- TUCRids %>%
 #  dplyr::select("V4","V6"="V5")
 
-TUCRids <- read.csv("tucr_annot.csv",header=TRUE) %>%
+TUCRids <- read.csv("tucr_annot_TUCR.csv",header=TRUE) %>%
   dplyr::select("V4" = row, "V6" = annot)
 
 count_annot <- rbind(TUCRids,CHESSantisense,CHESScoding,CHESSlncRNA,CHESSmisc)
@@ -1519,7 +1517,10 @@ p <- ggplot(data = heatmap.df2,mapping = aes(x = Sample,y = reorder(id,means), f
 
 ggsave(p,file=paste(outputdir,"/RPKM","/",annotation,"_heatmap.png",sep=""), width = 2.5, height = 7, dpi = 300)
 
-if(annotation == "TUCR"){rpkm.TUCRs2 <- rpkm.df2}
+if(annotation == "TUCR"){
+  rpkm.TUCRs2 <- rpkm.df2
+  write.csv(rpkm.TUCRs2,paste(outputdir,"/",disease,"_rpkm_TUCRs2.csv",sep=""))
+}
 
 }
 
@@ -1533,17 +1534,41 @@ if(makeRPKMboxplots == TRUE){
 if(!dir.exists(paste(outputdir,"/RPKM","/RPKMboxplots",sep=""))){
   dir.create(paste(outputdir,"/RPKM","/RPKMboxplots",sep=""))
 }
-rpkm.dotplot <- rpkm.TUCRs2[,6:ncol(rpkm.TUCRs2)]
+  
+if(!dir.exists(paste(outputdir,"/RPKM","/FCplots",sep=""))){
+  dir.create(paste(outputdir,"/RPKM","/FCplots",sep=""))
+}
+  
+rpkm.TUCRs2 <- read.csv(paste(outputdir,"/",disease,"_rpkm_TUCRs2.csv",sep=""),header=TRUE)
+rpkm.dotplot <- rpkm.TUCRs2[,8:ncol(rpkm.TUCRs2)]
 TUCRids <- as.character(rpkm.TUCRs2$id)
-rpkm.dotplot <- cbind(TUCRids,rpkm.dotplot)
+annot <- as.character(rpkm.TUCRs2$annot)
+length <- as.character(rpkm.TUCRs2$length)
+rpkm.dotplot <- cbind(TUCRids,annot,length,rpkm.dotplot)
 rpkm.dotplot <- rpkm.dotplot %>% 
   gather(key = "Sample", value = "RPKM",-TUCRids,-annot,-length) %>%
   mutate(Key = gsub("[.]","-",Sample)) %>%
     mutate(string = sub(".*TCGA", "", Key),barcode = tolower(paste("TCGA",substr(string, 1, 8),sep=""))) %>%
-  left_join(metadata,by="barcode") %>%
-  dplyr::select(-Sample,-Key,-id,-string)
+  left_join(metadata,by="barcode") 
 
+rpkm.dotplot.nmeans <- rpkm.dotplot %>%
+  filter(dex == "normal") %>%
+  group_by(TUCRids) %>%
+  mutate(mean = mean(RPKM,na.rm=TRUE)) %>%
+  dplyr::select(TUCRids,mean) %>%
+  distinct()
 
+res_TUCR <- read_csv(paste(outputdir,"/results_TUCR.csv",sep="")) %>%
+  dplyr::select("TUCRids"=row,log2FoldChange)
+
+rpkm.dotplot <- rpkm.dotplot %>%
+  left_join(rpkm.dotplot.nmeans,by="TUCRids") %>%
+  left_join(res_TUCR,by="TUCRids") %>%
+  mutate(DESeq2 = ifelse(dex=="normal",0,log2FoldChange)) %>%
+  mutate(foldchange = ifelse(mean==0,RPKM/0.001,ifelse((RPKM/mean)>=0,RPKM/mean,ifelse((RPKM/mean)<0,(-1/(RPKM/mean)),NA)))) %>%
+mutate(log2FC = ifelse(foldchange==0,0,log2(foldchange))) %>%
+  dplyr::select(-Sample,-Key,-id,-string,-log2FoldChange) %>%
+  filter(!is.na(dex))
 
 
 i = 1
@@ -1565,9 +1590,30 @@ p<- ggplot(rpkm.dotplot2, aes(x=dex, y=RPKM)) +
   panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
   panel.background = element_blank(), axis.line = element_line(colour = "black")) +
   labs(y="Reads per kilobase million (RPKM)", x = "Sample") +
-  stat_summary(fun.y=mean, geom="point", shape=20, size=10, color="red", fill="red") 
+  stat_summary(fun.y=mean, geom="point", shape=20, size=10, color="red", fill="red")
+
+rpkm.dotplot3 <- rpkm.dotplot2 %>% 
+  dplyr::select(TUCRids,DESeq2,dex) %>%
+  mutate(fill = ifelse(DESeq2>=1,"red",ifelse(DESeq2<=-1,"green","snow3"))) %>%
+  distinct()
+
+rpkm.dotplot3$fill <- as.character(rpkm.dotplot3$fill)
+foldchange.DESeq2 <- round(rpkm.dotplot3$DESeq2[1],2)
+
+p2 <- ggplot(data = rpkm.dotplot3,aes(x=dex, y=DESeq2,fill=fill)) +
+  geom_bar(colour="black",stat="identity") +
+  scale_fill_identity() +
+  #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
+  geom_jitter(data = rpkm.dotplot2, aes(x=dex, y=log2FC),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray") +
+  ggtitle(paste("Deregulation of ",TUCR," in ",disease," (",foldchange.DESeq2,"-log2fold)",sep="")) +
+  theme(plot.title = element_text(hjust = 0.5),
+  panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+  panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(y="log2FoldChange", x = "Tissue Type")
+  
 
 ggsave(p,file=paste(outputdir,"/RPKM","/RPKMboxplots/",TUCR,"_rpkm_boxplot.png",sep = ""))
+ggsave(p2,file=paste(outputdir,"/RPKM","/FCplots/",TUCR,"_FC_plot.png",sep = ""))
 }
 
 
@@ -2281,395 +2327,3 @@ panel.background = element_blank(), axis.line = element_line(colour = "black")) 
 ggsave(file=paste(outputdir,"/GuiltAnalysis/tucr_allgo_",annotation,".png",sep=""),plot = print(p), width = 15, height = 10, dpi = 300) 
 }
 ```  
-
-<<<<<<< HEAD
-# Section 5: TUCRs are contained within mRNA or lncRNA transcripts
-
-## Results 
-
-Of the 481 TUCRs, 186 were previously characterized as intergenic, or not being contained within a known coding or non-coding transcript.  We chose to focus on these TUCRs, as they potentially represent a partial or full novel long non-coding RNA (lncRNA) transcripts.  To identify the RNA transcript(s) that contain these TUCRs, we performed a de novo transcript reassembly using GBM RNA-Seq data from TCGA.  Using this method, we identified 2636 transcripts that contain TUCRs.  We prioritized transcripts that did not overlap with known genes, as these are likely to represent novel genes.  Transcripts that were greater than 10,000 nucleotide (nt) were also eliminated.  Using these criteria, 8 transcripts were identified in GBM, LGG, or both disease types. (Figure 7A, Table 1)  These transcripts were submitted to the Coding Potential Assessing Tool (CPAT) to determine whether they express any coding potential.  Of the 8 transcripts, five represented no coding potential, while three contained coding potential.  In particular, one of these transcripts with coding potential (TUC110-) overlaps with the most highly upregulated TUCR in both LGG and GBM (uc.110, Figures 7B and 7C).
-
-## Methodology
-
-### Stringtie GBM
-
-The hg19 genomic coordinates for each TUCR were acquired from _____________ and were lifted over to hg38 coordinates. The stringtie bioinformatics package was then used to perform a de novo transcript reassembly of all transcripts in 161 GBM, 400 LGG, and 5 normal brain TCGA Cancer RNA-Seq datasets.  First, transcripts present in each RNA-Seq BAM file were compiled into individual BED/GTF format genomic coordinate files using Stringtie.  These files were then merged into one master file containing all transcripts in all samples using Stringtie and an hg38 genome reference file.  The bedtools package was then used to find the genomic coordinates of all transcripts containing ultraconserved regions.  The ________________ group used stringtie to analyze the entirety of the GTex RNA-Seq normal tissue catalog, so bedtools was also used to determine the intersection of TUCRs with their results.  This methodology provides insight into TUCR transcript presence in normal tissues and in brain cancer.
-
-```{bash stringtie, eval = FALSE}
-wget ftp://ftp.ensembl.org/pub/release-99/gtf/homo_sapiens/Homo_sapiens.GRCh38.99.gtf.gz
-mv Homo_sapiens.GRCh38.99.gtf.gz stringtie
-gunzip stringtie/Homo_sapiens.GRCh38.99.gtf.gz
-
-module load gcc/7.1.0
-module load stringtie/2.0.6
-
-for bam in $(find GBM-RNASEQ-RAW/* -name '*.bam')
-do
-name=$(echo $bam | awk -F ".bam" '{print $1}')
-name2=$(basename "$name")
-if [ ! -f stringtie/$name2.gtf ] 
-then
-    echo "$name2.gtf does not exist"
-    stringtie $bam -o $name.gtf
-    mv $name.gtf ./stringtie
-else
-    echo "$name2.gtf exists... skipping"
-fi
-
-if [ ! -f $name.gtf ]; then
-  stringtie $bam -o $name.gtf
-fi
-mv $name.gtf ./stringtie
-done
-
-cd stringtie
-
-stringtie --merge *rehead.gtf -G Homo_sapiens.GRCh38.99.gtf -o stringtie_merged.gtf
-
-intersectBed -a hg38.ultraConserved.bed -b CHESSgenes.bed -wa -wb 
-  > intersectchess_TUCRs.bed
-
-intersectBed -a hg38.ultraConserved.bed -b stringtie_merged.gtf -wa -wb 
-  > intersectstringtie_TUCRs.bed
-
-cp stringtie_merged.gtf stringtie_merged.bed
-```
-
-### Stringtie LGG
-
-```{bash stringtie lgg, eval = FALSE}
-wget ftp://ftp.ensembl.org/pub/release-99/gtf/homo_sapiens/Homo_sapiens.GRCh38.99.gtf.gz
-mv Homo_sapiens.GRCh38.99.gtf.gz stringtie
-gunzip stringtie/Homo_sapiens.GRCh38.99.gtf.gz
-
-module load gcc/7.1.0
-module load stringtie/2.0.6
-
-for bam in $(find LGG-RNASEQ-RAW/* -name '*.bam')
-do
-name=$(echo $bam | awk -F ".bam" '{print $1}')
-name2=$(basename "$name")
-if [ ! -f stringtie/$name2.gtf ] 
-then
-    echo "$name2.gtf does not exist"
-    stringtie $bam -o $name.gtf
-    mv $name.gtf ./stringtie
-else
-    echo "$name2.gtf exists... skipping"
-fi
-
-if [ ! -f $name.gtf ]; then
-  stringtie $bam -o $name.gtf
-fi
-mv $name.gtf ./stringtie
-done
-
-cd stringtie
-
-stringtie --merge *rehead.gtf -G Homo_sapiens.GRCh38.99.gtf -o stringtie_merged.gtf
-
-intersectBed -a TUCR_intergenic.bed -b stringtie_merged.gtf -wa -wb > intersectintergenic_TUCRs.bed
-
-intersectBed -a intersectintergenic_TUCRs.bed -b stringtie_merged.gtf -wa -wb 
-  > intersectintergenic_TUCRs.bed
-
-cp stringtie_merged.gtf stringtie_merged.bed
-```
-
-## Show that TUCRs are contained within novel genes
-
-```{r novelgenes, eval = FALSE}
-lgg_novelgenes <- read_delim("lgg_novelgenes.bed", col_names = FALSE, delim = "\t",skip_empty_rows = FALSE) %>%     dplyr::select(X5,X7,X9,X10,X11,X13) %>%
-  filter(X9 == "transcript") %>%
-  mutate(disease = "LGG",name = paste("TUC",str_remove(X5,"uc."),X13,sep = ""), length = X11-X10) %>%
-  filter(length <= 30000) %>%
-  group_by(name) %>%
-  mutate(max = max(length,na.rm=TRUE)) %>%
-  filter(length == max) %>%
-  ungroup() %>%
-  dplyr::select(name,disease,length,"chromosome" = X7,"start" = X10,"end" = X11, "strand" = X13)
-
-gbm_novelgenes <- read_delim("gbm_novelgenes.bed", col_names = FALSE, delim = "\t",skip_empty_rows = FALSE) %>%     dplyr::select(X5,X7,X9,X10,X11,X13) %>%
-  filter(X9 == "transcript") %>%
-  mutate(disease = "GBM",name = paste("TUC",str_remove(X5,"uc."),X13,sep = ""), length = X11-X10) %>%
-  filter(length <= 30000) %>%
-  group_by(name) %>%
-  mutate(max = max(length,na.rm=TRUE)) %>%
-  filter(length == max) %>%
-  ungroup() %>%
-  dplyr::select(name,disease,length,"chromosome" = X7,"start" = X10,"end" = X11, "strand" = X13)
-
-all_novelgenes <- rbind(gbm_novelgenes,lgg_novelgenes) 
-all_novelgenes <- all_novelgenes %>%
-  group_by(name) %>%
-  mutate(n = n(), annot = ifelse(n==2, "GBM/LGG",disease)) %>%
-  dplyr::select(-n)
-
-
-  
-
-write.csv(all_novelgenes,file="all_novelgenes.csv")
-
-CPAT_bedfile <- all_novelgenes %>%
-  dplyr::select(chromosome,start,end,strand,name)
-
-write_delim(CPAT_bedfile,file="CPAT.bed",delim = "\t",col_name = FALSE)
-
-```
-
-### Get Fasta
-
-```{bash novelgenes_getFASTA}
-
-```
-
-### Use CPAT Web Browser
-
-### Integrate CPAT results
-
-```{r}
-all_novelgenes <- read.csv(file="all_novelgenes.csv",header=TRUE,row.names=1)
-
-CPAT_results <- read_delim("result.txt", col_names = TRUE, delim = "\t",skip_empty_rows = FALSE) %>%
-  dplyr::select("length" = `RNA size`, `ORF size`,`Ficket Score`,`Hexamer Score`,`Coding Probability`,`Coding Label`)
-
-CPAT_novelgenes <- all_novelgenes %>%
-  full_join(CPAT_results, by = "length")
-
-write.csv(CPAT_novelgenes,file="CPAT_novelgenes.csv")
-
-```
-
-
-### Summarizing Novel Gene data
-
-``` {r sum_novelgenes}
-
-CPAT_novelgenes <- read.csv(file="CPAT_novelgenes.csv",header=TRUE,row.names=1)
-
-CPAT_novelgenes_sum <- CPAT_novelgenes %>%
-  group_by(annot,Coding.Label) %>% 
-  mutate(group_id = cur_group_id(),count = n(),Group = 
-    ifelse(group_id==1, "GBM_non_coding",
-    ifelse(group_id==2, "GBM_coding",
-    ifelse(group_id==3, "GBM/LGG_non_coding",
-    ifelse(group_id==4, "GBM/LGG_coding",
-    ifelse(group_id==5, "LGG_non_coding",
-    ifelse(group_id==6, "LGG_coding","ERROR"))))))) %>%
-  group_by(Group,group_id) %>%
-  summarize(count=n())
-
-p <- ggplot(CPAT_novelgenes_sum, aes(x=reorder(Group,group_id),y=count,fill=Group)) + geom_bar(stat="identity", width = 0.7, color="black") +
-  geom_text(aes(label=round(count,2)), vjust=1.6, color="black", size=rel(4)) + ggtitle(paste("Some intergenic TUCRs are \n contained within Novel Genes")) + xlab("Disease") + ylab("Number of Genes") + theme(
-plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
-axis.title = element_text(size = rel(1.25), face="bold"),
-axis.text.x = element_text(angle = -90, size = 10),
-legend.title = element_blank(),
-legend.position = "none",
-panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black"))
-
-ggsave(file=paste(outputdir,"/tucr_novelgenes.png",sep=""),plot = print(p), width = 5, height = 5, dpi = 300) 
-  
-
-```
-
-## Checking for miRNA binding to TUCRs
-
-```{r}
-
-if(!dir.exists(paste(outputdir,"/miRNA/",sep=""))){
-  dir.create(paste(outputdir,"/miRNA/",sep=""))
-}
-
-tucr_sequence <- read.csv("tucr_sequence.csv",header=TRUE)
-
-mirna_seeds <- read.csv("mirna-seeds.csv",header=TRUE)
-
-tucrannot <- read.csv("tucr_annot.csv",header=TRUE) %>%
-  dplyr::select("id" = row, annot)
-
-uc.110 <- tucr_sequence %>%
-  mutate(i=1) %>%
-  full_join(mutate(mirna_seeds, i=1), by="i") %>%
-  dplyr::select(-i) %>%
-  filter(stringr::str_detect(sequence, as.character(revcomp))) %>%
-  left_join(tucrannot,by="id") %>%
-  distinct() %>%
-  filter(id == "uc.110-" | id == "uc.110+") %>%
-  write_csv(paste(outputdir,"/miRNA/uc110_mirna.csv",sep=""))
-
-uc.454 <- tucr_sequence %>%
-  mutate(i=1) %>%
-  full_join(mutate(mirna_seeds, i=1), by="i") %>%
-  dplyr::select(-i) %>%
-  filter(stringr::str_detect(sequence, as.character(revcomp))) %>%
-  left_join(tucrannot,by="id") %>%
-  distinct() %>%
-  filter(id == "uc.454-" | id == "uc.454+") %>%
-  write_csv(paste(outputdir,"/miRNA/uc454_mirna.csv",sep=""))
-
-tucr_sequence_plus <- tucr_sequence[1:481,]
-
-tucr_mirna_plus <- tucr_sequence_plus %>%
-mutate(i=1) %>%
-mutate(id = gsub("\\+","",id)) %>%
-full_join(mutate(mirna_seeds, i=1), by="i") %>%
-dplyr::select(-i) %>%
-filter(stringr::str_detect(sequence, as.character(revcomp))) %>%
-left_join(tucrannot,by="id") %>%
-distinct()
-
-miRNA_summary_plus <- tucr_mirna_plus %>%
-  group_by(mirna) %>%
-  summarise(n = n()) %>%
-  arrange(desc(n)) %>%
-  write_csv(paste(outputdir,"/miRNA/mirna_summary_plus.csv",sep=""))
-
-TUCR_summary_plus <- tucr_mirna_plus %>%
-  group_by(id) %>%
-  summarise(n = n()) %>%
-  mutate(id = gsub("\\+","",id)) %>%
-  left_join(tucrannot,by="id") %>%
-  arrange(desc(n)) %>%
-  write_csv(paste(outputdir,"/miRNA/tucr_summary_plus.csv",sep=""))
-
-annot_summary_plus <- tucr_mirna_plus %>%
-  dplyr::select(annot,mirna) %>%
-  group_by(annot) %>%
-  distinct() %>%
-  summarise(n = n())
-
-p <- ggplot(annot_summary_plus, aes(x=annot,y=n,fill=annot))          + 
-  geom_bar(
-    stat="identity",colour="black", 
-    width = 1)                                                          +
-  geom_text(
-    aes(label = n), 
-    color = "black")                                                    + 
-  scale_fill_manual(values=c("#F8766D","#00BFC4","#7CAE00","#C77CFF"))  + 
-  ggtitle(paste("Plus strand TUCRs are targeted by miRNAs"))            + 
-  theme(
-    plot.title = element_text(size=rel(1.0),
-    face="bold",hjust = 0.5),
-    axis.line=element_blank(),
-    panel.grid.major = element_blank(), 
-    panel.grid.minor = element_blank(),
-    axis.ticks=element_blank(),
-    panel.background = element_blank())
-
-p
-
-ggsave(file=paste(outputdir,"/miRNA/tucr_annotation_mirna_plus.png",sep=""),
-       plot = print(p), 
-       width = 5, 
-       height = 5, 
-       dpi = 300)
-
-tucr_sequence_minus <- tucr_sequence[482:962,]
-
-tucr_mirna_minus <- tucr_sequence_minus %>%
-mutate(i=1) %>%
-mutate(id = gsub("\\-","",id)) %>%
-full_join(mutate(mirna_seeds, i=1), by="i") %>%
-dplyr::select(-i) %>%
-filter(stringr::str_detect(sequence, as.character(revcomp))) %>%
-left_join(tucrannot,by="id") %>%
-distinct()
-
-miRNA_summary_minus <- tucr_mirna_minus %>%
-  group_by(mirna) %>%
-  summarise(n = n()) %>%
-  arrange(desc(n)) %>%
-  write_csv(paste(outputdir,"/miRNA/mirna_summary_minus.csv",sep=""))
-
-TUCR_summary_minus <- tucr_mirna_minus %>%
-  group_by(id) %>%
-  summarise(n = n()) %>%
-  mutate(id = gsub("\\+","",id)) %>%
-  left_join(tucrannot,by="id") %>%
-  arrange(desc(n)) %>%
-  write_csv(paste(outputdir,"/miRNA/tucr_summary_minus.csv",sep=""))
-
-annot_summary_minus <- tucr_mirna_minus %>%
-  dplyr::select(annot,mirna) %>%
-  group_by(annot) %>%
-  distinct() %>%
-  summarise(n = n())
-
-p <- ggplot(annot_summary_minus, aes(x=annot,y=n,fill=annot))          + 
-  geom_bar(
-    stat="identity",colour="black", 
-    width = 1)                                                          +
-  geom_text(
-    aes(label = n), 
-    color = "black")                                                    + 
-  scale_fill_manual(values=c("#F8766D","#00BFC4","#7CAE00","#C77CFF"))  + 
-  ggtitle(paste("Minus strand TUCRs are targeted by miRNAs"))            + 
-  theme(
-    plot.title = element_text(size=rel(1.0),
-    face="bold",hjust = 0.5),
-    axis.line=element_blank(),
-    panel.grid.major = element_blank(), 
-    panel.grid.minor = element_blank(),
-    axis.ticks=element_blank(),
-    panel.background = element_blank())
-
-p
-
-ggsave(file=paste(outputdir,"/miRNA/tucr_annotation_mirna_minus.png",sep=""),
-       plot = print(p), 
-       width = 5, 
-       height = 5, 
-       dpi = 300)
-
-```
-
-# Making Figures for cell counting assay
-
-```{r cellcounting}
-
-if(!dir.exists(paste(outputdir,"/cellcountingdata/",sep=""))){
-  dir.create(paste(outputdir,"/cellcountingdata/",sep=""))
-}
-
-cellcountdata <- read.csv("cellcountingdata.csv",header=TRUE)
-
-cellcountdata$mean <- rowMeans(cellcountdata[,5:12],na.rm = TRUE)
-
-cellcountdata <- cellcountdata %>%
-  gather(key = "Replicate", value = "FoldChange",-Cell.Line,-Experiment,-Sample,-Day,-mean)
-
-experimentlabels <- unique(as.character(cellcountdata$Experiment))
-
-i = 1
-
-for(i in 1:length(cellcountdata$Experiment)){
-  print(i)
-  experimentlabel <- experimentlabels[i]
-  print(experimentlabel)
-
-cellcountdatafiltered <- cellcountdata %>%
-  filter(Experiment == experimentlabel)
-
-cellcountdatafiltered <- cellcountdatafiltered[complete.cases(cellcountdatafiltered),]
-
-p<- ggplot(cellcountdatafiltered, aes(x=Day, y=FoldChange,col=Sample)) +
-  #geom_line(aes(x=Day,y=mean,col=Sample)) +
-  #geom_point(aes(x=Day,y=mean,col=Sample),size=2) +
-  geom_bar(stat="identity",aes(x=Day,y=mean,fill=Sample),position="dodge") +
-  geom_jitter(binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30) +
-  scale_fill_brewer(palette="Dark2") +
-  scale_color_brewer(palette="Dark2") +
-  scale_x_continuous(breaks = c(0,1,3,5,7))+ 
-  ggtitle(paste(experimentlabel," of uc.110",sep="")) +
-  theme(plot.title = element_text(hjust = 0.5),
-  panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-  panel.background = element_blank(), axis.line = element_line(colour = "black")) +
-  labs(y="Fold Change", x = "Days after T-zero") + 
-  facet_wrap(~Cell.Line)
-
-ggsave(p,file=paste(outputdir,"/cellcountingdata/",experimentlabel,".png",sep = ""),width=12,height=8,dpi=300)}
-
-```
-
