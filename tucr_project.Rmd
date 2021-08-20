@@ -46,9 +46,12 @@ knitr::opts_chunk$set(
 	message = FALSE,
 	warning = FALSE
 )
-if (!require("reticulate")) install.packages("reticulate")
-library("reticulate")
-#use_python("/usr/local/bin/python")
+
+if (!require("jsonlite")) install.packages("jsonlite")
+library("jsonlite")
+
+if (!require("tidyjson")) install.packages("tidyjson")
+library("tidyjson")
 
 if (!require("tidyverse")) install.packages("tidyverse")
 library("tidyverse")
@@ -56,24 +59,24 @@ library("tidyverse")
 if (!require("ggplot2")) install.packages("ggplot2")
 library("ggplot2")
 
-if (!require("ggforce")) install.packages("ggforce")
-library("ggforce")
+#if (!require("ggforce")) install.packages("ggforce")
+#library("ggforce")
 
 if (!require("ggrepel")) install.packages("ggrepel")
 library("ggrepel")
 
-if (!require("ggfortify")) install.packages("ggfortify")
-library("ggfortify")
+#if (!require("ggfortify")) install.packages("ggfortify")
+#library("ggfortify")
 
-if (!require("ggdendro")) install.packages("ggdendro")
-library("ggdendro")
+#if (!require("ggdendro")) install.packages("ggdendro")
+#library("ggdendro")
 
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
 library("DESeq2")
 
-if (!require("survival")) install.packages("survival")
-library("survival")
+#if (!require("survival")) install.packages("survival")
+#library("survival")
 
 if (!require("broom")) install.packages("broom")
 library("broom")
@@ -81,23 +84,23 @@ library("broom")
 if (!requireNamespace("limma", quietly = TRUE))BiocManager::install("limma")
 library("limma")
 
-if (!require("Tmisc")) install.packages("Tmisc")
-library("Tmisc")
+#if (!require("Tmisc")) install.packages("Tmisc")
+#library("Tmisc")
 
-if (!require("survminer")) install.packages("survminer")
-library("survminer")
+#if (!require("survminer")) install.packages("survminer")
+#library("survminer")
 
-if (!require("corrr")) install.packages("corrr")
-library("corrr")
+#if (!require("corrr")) install.packages("corrr")
+#library("corrr")
 
-if (!require("here")) install.packages("here")
-library("here")
+#if (!require("here")) install.packages("here")
+#library("here")
 
-if (!require("lessR")) install.packages("lessR")
-library("lessR")
+#if (!require("lessR")) install.packages("lessR")
+#library("lessR")
 
-if (!require("splitstackshape")) install.packages("splitstackshape")
-library(splitstackshape)
+#if (!require("splitstackshape")) install.packages("splitstackshape")
+#library(splitstackshape)
 
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 
@@ -110,20 +113,20 @@ library(GO.db)
 if (!require('limma')) BiocManager::install('limma')
 library(limma)
 
-if (!require("ggthemes")) install.packages('ggthemes', dependencies = TRUE)
-library(ggthemes)
+#if (!require("ggthemes")) install.packages('ggthemes', dependencies = TRUE)
+#library(ggthemes)
 
-if (!require("gplots")) 
-install.packages("gplots")
-library(gplots)
+#if (!require("gplots")) 
+#install.packages("gplots")
+#library(gplots)
 
-if (!require("heatmap.plus")) 
-install.packages("heatmap.plus")
-library(heatmap.plus)
+#if (!require("heatmap.plus")) 
+#install.packages("heatmap.plus")
+#library(heatmap.plus)
 
-if (!require("RColorBrewer")) 
-install.packages("RColorBrewer")
-library(RColorBrewer)
+#if (!require("RColorBrewer")) 
+#install.packages("RColorBrewer")
+#library(RColorBrewer)
 
 ###
 
@@ -1023,6 +1026,25 @@ Profile = mkgibertjr
 Manifest = file-manifest-cortexonly.json
 
 Download-Path = ./RNASEQ-PROCESSED/gtex_analysis/cortex/reindex/
+
+```{r Section2_GTexManifest}
+
+GTexManifest <- fromJSON("file-manifest.json")
+
+NeedGTex <- read.table("GTex_Cortex.txt",header=TRUE)
+
+GTexManifest <- GTexManifest %>%
+  mutate(SAMPID = str_remove(file_name,".Aligned.sortedByCoord.out.patched.md.bam")) %>%
+  left_join(NeedGTex, by="SAMPID")
+
+GTexManifest <- GTexManifest[complete.cases(GTexManifest),]
+
+GTexManifest <- GTexManifest %>%
+  select(-SAMPID,-SMTSD)
+
+write_json(GTexManifest,"file-manifest-cortexonly.json",pretty=TRUE)
+
+```
 
 ```{bash Section2_GTexDownload}
 
