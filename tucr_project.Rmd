@@ -127,9 +127,13 @@ library(RColorBrewer)
 
 ###
 
-disease <- "LGG"
+disease <- "GBM"
 
-outputdir <- "Outputs_LGG"
+normal <- "cortex"
+
+outputdir <- "Outputs_GBM_cortex"
+
+filterannot <- "TUCR"
 
 makeSNP <- TRUE
 
@@ -137,21 +141,15 @@ makeannotate <- TRUE
 
 makelncRNA <- TRUE
 
+makeBEDs <- TRUE
+
 makeDE <- TRUE
-
-countfilename <- "lgg_TUCR_counts.txt"
-
-metadatafile <- "lgg_tcga_metadata.csv"
 
 repel <- TRUE
 
 makesurvival <- TRUE
 
 makekpmplots <- TRUE
-
-mergedcountfile <- "lgg_mergedcounts.txt"
-
-seqdepthfile <- "lgg_seqdepth.csv"
 
 makeSuvivalplots <- TRUE 
 
@@ -160,8 +158,6 @@ makeRPKMboxplots <- TRUE
 makecorrelations <- TRUE
 
 useintermediate <- TRUE
-
-intermediatefile <- "lgg_matrixintermediate.Rdata"
 
 makeGOterms <- TRUE
 
@@ -189,6 +185,21 @@ This script checks to see if the defined output directory already exists.  If it
 if(!dir.exists(outputdir)){
   dir.create(outputdir)
 }
+
+t_countfile <- paste(disease,"mergedcounts.txt",sep="_")
+
+n_countfile <- paste(normal,"mergedcounts.txt",sep="_")
+
+t_metadatafile <- paste(disease,"tcga_metadata.csv",sep="_")
+
+n_metadatafile <- paste(normal,"tcga_metadata.csv",sep="_")
+
+t_seqdepthfile <- paste(disease,"seqdepth_counts.csv",sep="_")
+
+n_seqdepthfile <- paste(normal,"seqdepth_counts.csv",sep="_")
+
+intermediatefile <- paste(disease,"matrixintermediate.Rdata",sep="_")
+
 ```
 
 # Section 1: Transcribed Ultra-conserved Regions (TUCRs) are a broad class of molecules
@@ -207,14 +218,15 @@ First, publicly available U87 H3K4me3 and RNA Pol.II CHIP-Seq data were download
 
 ### Generate Figure 1E for TUCR annotation
 
-Figures 1A-1D were manually generated using Microsoft Powerpoint. TUCRs were then manually annotated, creating the "tucr_annot.csv" file provided in this repository.  As previously mentioned, we have identified 46 exonic, 150 intronic, 67 intronic/exonic, and 218 intergenic TUCRs. Figure 1E was generated using GGPlot2.
+Figures 1A-1D were manually generated using Microsoft Powerpoint. TUCRs were then manually annotated, creating the "hg38.ultraconserved.bed" file provided in this repository.  As previously mentioned, we have identified 46 exonic, 150 intronic, 67 intronic/exonic, and 218 intergenic TUCRs. Figure 1E was generated using GGPlot2.
 
-In the following code chunk, if the variable "makeannotate" is set to true, all subsequent lines will be run.  The chunk then reads in the "tucr_annot.csv" file and compiles the relevant information into a proportion ring chart as depicted in Figure 1E. The results are placed in the output directory as defined by the variable outputdir.
+In the following code chunk, if the variable "makeannotate" is set to true, all subsequent lines will be run.  The chunk then reads in the "hg38.ultraconserved.bed" file and compiles the relevant information into a proportion ring chart as depicted in Figure 1E. The results are placed in the output directory as defined by the variable outputdir.
 
 ```{r Section1_annotation}
 if(makeannotate == TRUE){
 #Read in Data
-tucr_annot <- read.csv("tucr_annot.csv")
+tucr_annot <- read.table("BEDFiles/hg38.ultraconserved.bed") %>%
+  dplyr::select("row" = V5, "annot" = V7)
 
 #Prepare data for visualization
 plot_annotation <- tucr_annot %>% 
@@ -355,23 +367,29 @@ After downloading and unzipping the SNP genomic location files, we then use bedt
 The following chunk contains a for-loop that does this for all bed files in the directory created during the previous step for TUCRs.  These were then compared to results for protein coding genes, long non-coding RNAs, antisense RNAs, and miscellaneous RNAs to determine comparable resistance to variation.
 
 ```{bash Section1_SNPintersect, eval = FALSE}
+
+mkdir SNPanalysis/
+
 ### TUCRs ###
-for bed in bed_chr_*
+for bed in RNASEQ-PROCESSED/BEDFiles/chr*
 do
 
 name=$(echo $bed | awk -F ".bed" '{print $1}')
 echo $name
 
-intersectBed -a hg38.ultraConserved.bed -b $bed -wa -wb > $name.TUCR.SNPs.bed
+intersectBed -a BEDFiles/hg38.ultraConserved.bed -b $bed -wa -wb > $name.TUCR.SNPs.bed
 
 done
 
-cat *.TUCR.SNPs.bed > merged_TUCR_SNPs.bed
+cat *.TUCR.SNPs.bed > SNPanalysis/merged_TUCR_SNPs.bed
 
 rm *TUCR.SNPs.bed
 
 ### coding genes ###
-for bed in bed_chr_*
+
+awk -F "\t" '{ if($7 == "protein_coding") { print } }' CHESSgenes.bed > CHESScoding.bed
+
+for bed in RNASEQ-PROCESSED/BEDFiles/chr*
 do
 
 name=$(echo $bed | awk -F ".bed" '{print $1}')
@@ -381,12 +399,16 @@ intersectBed -a CHESScoding.bed -b $bed -wa -wb > $name.coding.SNPs.bed
 
 done
 
-cat *coding.SNPs.bed > merged_coding_SNPs.bed
+cat *coding.SNPs.bed > SNPanalysis/merged_coding_SNPs.bed
 
 rm *coding.SNPs.bed
+rm CHESScoding.bed
 
 ### lncRNAs ###
-for bed in bed_chr_*
+
+awk -F "\t" '{ if($7 == "lncRNA") { print } }' CHESSgenes.bed > CHESSlncRNA.bed
+
+for bed in RNASEQ-PROCESSED/BEDFiles/chr*
 do
 
 name=$(echo $bed | awk -F ".bed" '{print $1}')
@@ -396,13 +418,16 @@ intersectBed -a CHESSlncRNA.bed -b $bed -wa -wb > $name.lncRNA.SNPs.bed
 
 done
 
-cat *lncRNA.SNPs.bed > merged_lncRNA_SNPs.bed
+cat *lncRNA.SNPs.bed > SNPanalysis/merged_lncRNA_SNPs.bed
 
 rm *lncRNA.SNPs.bed
+rm *CHESSlncRNA.bed
 
 ### antisense RNAs ###
 
-for bed in bed_chr_*
+awk -F "\t" '{ if($7 == "antisense_RNA") { print } }' CHESSgenes.bed > CHESSantisense.bed
+
+for bed in RNASEQ-PROCESSED/BEDFiles/chr*
 do
 
 name=$(echo $bed | awk -F ".bed" '{print $1}')
@@ -412,12 +437,16 @@ intersectBed -a CHESSantisense.bed -b $bed -wa -wb > $name.antisense.SNPs.bed
 
 done
 
-cat *antisense.SNPs.bed > merged_antisense_SNPs.bed
+cat *antisense.SNPs.bed > SNPanalysis/merged_antisense_SNPs.bed
 
 rm *antisense.SNPs.bed
+rm CHESSantisense.bed
 
 ### miscRNAs ###
-for bed in bed_chr_*
+
+awk -F "\t" '{ if($7 == "antisense_RNA") { print } }' CHESSgenes.bed > CHESSmisc.bed
+
+for bed in RNASEQ-PROCESSED/BEDFiles/chr*
 do
 
 name=$(echo $bed | awk -F ".bed" '{print $1}')
@@ -427,9 +456,10 @@ intersectBed -a CHESSmisc.bed -b $bed -wa -wb > $name.misc.SNPs.bed
 
 done
 
-cat *misc.SNPs.bed > merged_misc_SNPs.bed
+cat *misc.SNPs.bed > SNPanalysis/merged_misc_SNPs.bed
 
 rm *misc.SNPs.bed
+rm CHESSmisc.bed
 ```
 
 ### Count intersecting SNPs
@@ -569,7 +599,7 @@ done
 
 ```
 
-### Download mouse genes and convert to bed
+### Convert to bed
 
 I got this methodology from [here](https://github.com/stevekm/reference-annotations/blob/master/Makefile) since my other methods were not working.
 
@@ -905,7 +935,7 @@ bedtools fisher -a CHESSmisc.sort.bed -b h3k4me3.sort.bed -g hg38_genomeFile.txt
 
 ```{r Section1_lncRNAs}
 if(makeannotate == TRUE){
-tucr_lncRNAs <- read.csv("tucr_lncRNAsA.csv")
+tucr_lncRNAs <- read.csv("tucr_lncRNAs.csv")
 
 tucr_lncRNAs <- tucr_lncRNAs %>%
   mutate(row = fct_reorder(row,Order))
@@ -957,19 +987,92 @@ ggsave(
 
 TUCR expression has not been characterized in glioblastoma (GBM) or low-grade gliomas (LGG).  We performed the first comprehensive bioinformatic analysis of TUCR expression in these diseases by comparing GBM and LGG tumor samples from the Cancer Genome Atlas (TCGA) to their normal brain counterparts.  Of the 481 TUCRs, we identified 115 and 82 that were up- and downregulated in GBM, respectively. (Figure 3A) We also identified 58 and 91 TUCRs that were up- and downregulated in LGG. (Figure 3B) Of the 157 deregulated TUCRs in LGG, 109 were also deregulated in GBM, a 70% overlap. (Figure 3C) Intergenic TUCRs are of particular interest; they may represent markers for novel genes.  Amongst intergenic TUCRs, we identified 6 up- and 6- downregulated TUCR by a magnitude greater that 2-fold and with an FDR of 0.05 or less (Figure 3D).  We performed these same analyses in LGG and identified 3 up- and 5 downregulated TUCRs. (Figure 3E) For both disease types, uc.110 and uc.62 represented the most up- and downregulated TUCRs, respectively.
 
-### Setup for TCGA RNA-Seq analysis
+### Setup for RNA-Seq analyses
 
 The next part of this analysis involves using bash and R scripts to identify TUCRs that are deregulated and/or correlated with survival in GBM and LGG. The GBM analyses were stored in a directory named tcga_analysis, while the LGG analyses were stored in the lgg_tcga_analysis.  The following script generates these two directories.
 
-```{bash Section2_tcga, eval = FALSE}
-## Create directory for all outputs from GBM TCGA analysis data
-mkdir gbm_tcga_analysis/
+### Make Directories
 
-## Do the same for LGG
-mkdir lgg_tcga_analysis/
+```{bash Section2_mkdir, eval = FALSE}
+## Create directory for all raw data from RNA-Seq analysis
+mkdir RNASEQ-RAW
+
+## Create directory for all processed data from RNA-Seq analysis
+mkdir RNASEQ-PROCESSED
+
+## Create directory for all TCGA analyses.
+mkdir RNASEQ-PROCESSED/tcga_analysis/
+
+## Create a subdirectory for each disease
+mkdir RNASEQ-PROCESSED/tcga_analysis/GBM
+
+mkdir RNASEQ-PROCESSED/tcga_analysis/LGG
+
+## Create directory for all GTex analyses.
+mkdir RNASEQ-PROCESSED/gtex_analysis/
+
+## Create a subdirectory for cortex samples
+mkdir RNASEQ-PROCESSED/gtex_analysis/cortex/reindex/
+
 ```
 
-### Extract headers from BAM files
+### GTEX Processing: Download RNA-Seq Data
+
+Profile = mkgibertjr
+
+Manifest = file-manifest-cortexonly.json
+
+Download-Path = ./RNASEQ-PROCESSED/gtex_analysis/cortex/reindex/
+
+```{bash Section2_GTexDownload}
+
+yes | ./gen3-client download-multiple --profile=mkgibertjr --manifest=file-manifest-cortexonly.json --download-path=./gtex_analysis/ --protocol=s3
+
+```
+
+### GTEX Processing: Reindex GTex BAM files
+
+```{bash Section2_gtexindex, eval = FALSE}
+
+# Reindex the renamed files using samtools.
+for bam in $(find mkdir RNASEQ-PROCESSED/gtex_analysis/cortex/reindex -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+echo $name
+samtools index $bam
+done
+
+```
+
+We will complete the counts after processing the TCGA data in a similar fashion.
+
+### GTEX Processing: Acquiring total reads from RNA-Seq BAM files
+
+```{bash Section2_gtexseqdepth, eval = FALSE}
+
+mkdir RNASEQ-PROCESSED/gtex_analysis/cortex/readcounts/
+
+for bam in $(find RNASEQ-PROCESSED/gtex_analysis/cortex/reindex/*.bam -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+echo $name
+samtools view -c -F 260 $bam > $name.readcounts.txt
+mv $name.readcounts.txt ./RNASEQ-PROCESSED/gtex_analysis/cortex/readcounts/
+done
+
+echo "id,counts" > RNASEQ-PROCESSED/gtex_analysis/cortex/readcounts/cortex_seqdepth_counts.csv 
+
+for txt in $(find RNASEQ-PROCESSED/gtex_analysis/cortex/readcounts/* -name '*.txt')
+do
+name=$(echo $txt | awk -F ".readcounts.txt" '{print $1}')
+echo $name
+reads=$(head $txt)
+echo "$name,$reads" >> RNASEQ-PROCESSED/gtex_analysis/cortex/readcounts/cortex_seqdepth_counts.csv 
+done
+
+```
+
+### TCGA Processing: Extract headers from BAM files
 
 The raw BAM files for GBM and LGG were stored in GBM-RNASEQ-RAW and LGG-RNASEQ-RAW, respectively.  Since these files are labeled with unintuitive and encrypted names, I will generate clones of each BAM file using the TCGA ID as the name instead.  This will make it easier to see which files are normal brain and which are tumors at a glance.  TCGA files are not named this way by default because there is patient information contained within the BAM files that can be identified using the TCGA ID.  Therefore, renaming the file in secure storage is preferrable.  The first step to doing this is extracting the TCGA ID from the header present in each BAM file. 
 
@@ -978,46 +1081,46 @@ In the following series of scripts, a bash script was used to extract the header
 ```{bash Section2_tcgaheader, eval = FALSE}
 ## Extract header information from GBM BAM files
 # Create directory for extracted headerfiles
-mkdir tcga_analysis/head/
+mkdir RNASEQ-PROCESSED/tcga_analysis/GBM/head/
 
 # Use a for loop to cycle through BAM files and extract header before creating a 
 #text file containing each BAM file's header.
-for bam in $(find GBM-RNASEQ-RAW/* -name '*.bam')
+for bam in $(find RNASEQ-RAW/GBM/* -name '*.bam')
 do
 name=$(echo $bam | awk -F ".bam" '{print $1}')
 echo $name
 samtools view -H $bam > $name.headerids.txt
-mv $name.headerids.txt ./tcga_analysis/head/
+mv $name.headerids.txt ./RNASEQ-PROCESSED/tcga_analysis/GBM/head/
 done
 
 ## Do the same thing for LGG
 # Create directory for extracted headerfiles
-mkdir lgg_tcga_analysis/head/
+mkdir RNASEQ-PROCESSED/tcga_analysis/LGG/head/
 
-for bam in $(find LGG-RNASEQ-RAW/* -name '*.bam')
+for bam in $(find RNASEQ-RAW/LGG/* -name '*.bam')
 do
 name=$(echo $bam | awk -F ".bam" '{print $1}')
 echo $name
 samtools view -H $bam > $name.headerids.txt
-mv $name.headerids.txt ./lgg_tcga_analysis/head/
+mv $name.headerids.txt ./RNASEQ-PROCESSED/tcga_analysis/LGG/head/
 done
 ```
 
-### Extract TCGA patient barcodes from BAM headers
+### TCGA Processing: Extract TCGA patient barcodes from BAM headers
 
 Once the headers have been extracted from each BAM file, the TCGA ID is then extracted from each header.  A master table is generated that contains the encrypted BAM file name and the new TCGA ID based named, which will be used to generate the renamed clone files in the next step.
 
 ```{bash Section2_tcgaids, eval = FALSE}
 ## Get new file names for BAM files using TCGA IDs from extracted header
-mkdir gbm_tcga_analysis/ids/
+mkdir RNASEQ-PROCESSED/tcga_analysis/GBM/ids/
 
-mkdir lgg_tcga_analysis/ids/
+mkdir RNASEQ-PROCESSED/tcga_analysis/LGG/ids/
 
 # Initialize summary file with TCGA IDs
-echo "RAWID,TCGAID" > tcga_analysis/ids/tcgaIDs.csv
+echo "RAWID,TCGAID" > RNASEQ-PROCESSED/tcga_analysis/GBM/ids/tcgaIDs.csv
 
 # Extract IDs from header files
-for header in $(find tcga_analysis/head/* -name '*headerids.txt')
+for header in $(find RNASEQ-PROCESSED/tcga_analysis/GBM/head/* -name '*headerids.txt')
 do
 name=$(echo $header | awk -F ".headerids.txt" '{print $1}')
 name2=$(echo $name | cut -c20-)
@@ -1025,17 +1128,17 @@ ids1=$(awk '$1=="@RG"{print $3}' $header)
 ids2=$(echo $ids1 | cut -c4-)
 echo "$name2.bam,$ids2.bam"
 echo "$name2.bam,$ids2.bam" > $name.tcgaid.csv
-echo "$name2.bam,$ids2.bam" >> tcga_analysis/ids/tcgaIDs.csv
-mv $name.tcgaid.csv ./gbm_tcga_analysis/ids/
+echo "$name2.bam,$ids2.bam" >> RNASEQ-PROCESSED/tcga_analysis/GBM/ids/tcgaIDs.csv
+mv $name.tcgaid.csv ./RNASEQ-PROCESSED/tcga_analysis/GBM/ids/
 done
 
 ## Do the same thing for LGG
 
 # Initialize summary file with TCGA IDs
-echo "RAWID,TCGAID" > lgg_tcga_analysis/ids/tcgaIDs.csv 
+echo "RAWID,TCGAID" > RNASEQ-PROCESSED/tcga_analysis/LGG/ids/tcgaIDs.csv 
 
 # Extract IDs from header files
-for header in $(find lgg_tcga_analysis/head/* -name '*headerids.txt')
+for header in $(find RNASEQ-PROCESSED/tcga_analysis/LGG/head/* -name '*headerids.txt')
 do
 name=$(echo $header | awk -F ".headerids.txt" '{print $1}')
 name2=$(echo $name | cut -c24-)
@@ -1043,30 +1146,30 @@ ids1=$(awk '$1=="@RG"{print $3}' $header)
 ids2=$(echo $ids1 | cut -c4-)
 echo "$name2.bam,$ids2.bam"
 echo "$name2.bam,$ids2.bam" > $name.tcgaid.csv
-echo "$name2.bam,$ids2.bam" >> lgg_tcga_analysis/ids/tcgaIDs.csv 
-mv $name.tcgaid.csv ./lgg_tcga_analysis/ids/
+echo "$name2.bam,$ids2.bam" >> RNASEQ-PROCESSED/tcga_analysis/LGG/ids/tcgaIDs.csv 
+mv $name.tcgaid.csv ./RNASEQ-PROCESSED/tcga_analysis/LGG/ids/
 done
 ```
 
-### Reindex TCGA BAM files under new names
+### TCGA Processing: Reindex TCGA BAM files under new names
 
 ```{bash Section2_tcgaindex, eval = FALSE}
 
 ##Rename BAM files using TCGA ids
 
 # Create folder for new files
-mkdir gbm_tcga_analysis/reindex/
+mkdir RNASEQ-PROCESSED/tcga_analysis/GBM/reindex/
 
 # Copy BAM files into new directory with updated names
 while IFS=, read orig target; do
-orig2=$(find GBM-RNASEQ-RAW/* -name $orig)
+orig2=$(find RNASEQ-RAW/GBM/* -name $orig)
 echo $orig2
 cp $orig2 $target
-mv $target gbm_tcga_analysis/reindex/
-done < gbm_tcga_analysis/ids/tcgaIDs.csv
+mv $target RNASEQ-PROCESSED/tcga_analysis/GBM/reindex/
+done < RNASEQ-PROCESSED/tcga_analysis/GBM/ids/tcgaIDs.csv
 
 # Reindex the renamed files using samtools.
-for bam in $(find gbm_tcga_analysis/reindex/ -name '*.bam')
+for bam in $(find RNASEQ-PROCESSED/tcga_analysis/GBM/reindex/ -name '*.bam')
 do
 name=$(echo $bam | awk -F ".bam" '{print $1}')
 echo $name
@@ -1075,18 +1178,18 @@ done
 
 ## Do the same thing for LGG
 # Create folder for new files
-mkdir lgg_tcga_analysis/reindex
+mkdir RNASEQ-PROCESSED/tcga_analysis/LGG/reindex
 
 # Copy BAM files into new directory with updated names
 while IFS=, read orig target; do
-orig2=$(find LGG-RNASEQ-RAW/* -name $orig)
+orig2=$(find RNASEQ-RAW/LGG/* -name $orig)
 echo $orig2
 cp $orig2 $target
-mv $target lgg_tcga_analysis/reindex/
-done < lgg_tcga_analysis/ids/tcgaIDs.csv
+mv $target RNASEQ-PROCESSED/tcga_analysis/LGG/reindex/
+done < RNASEQ-PROCESSED/tcga_analysis/LGG/ids/tcgaIDs.csv
 
 # Reindex the renamed files using samtools.
-for bam in $(find lgg_tcga_analysis/reindex/ -name '*.bam')
+for bam in $(find RNASEQ-PROCESSED/tcga_analysis/LGG/reindex/ -name '*.bam')
 do
 samtools view -H TCGA-CS-4938-01B-11R-1896-07.bam > header
 name=$(echo $bam | awk -F ".bam" '{print $1}')
@@ -1097,57 +1200,157 @@ done
 
 ```
 
-### Generating count tables for survival and differential expression.
+### TCGA Processing: Acquiring total reads from RNA-Seq BAM files
 
-```{bash Section2_tcgacounts, eval = FALSE}
-# Making directory
-mkdir tcga_analysis/foldchange
+```{bash Section2_tcgaseqdepth, eval = FALSE}
 
-#Write header line
-echo -e chrom"\t"start"\t"end"\t"id tcga_analysis/reindex/*bam | sed -e "s/ /\t/g" 
-  > tcga_analysis/foldchange/TUCR_counts_80.txt
+mkdir RNASEQ-PROCESSED/tcga_analysis/GBM/readcounts/
 
-#Counts
-multiBamCov -bams tcga_analysis/reindex/*bam -bed hg38.ultraConserved.bed -q 10 -f 0.80 
-  >> tcga_analysis/foldchange/TUCR_counts_80.txt
-  
-#Do the same for LGG
-mkdir lgg_tcga_analysis/foldchange
-
-#Write header line
-echo -e chrom"\t"start"\t"end"\t"id *bam | sed -e "s/ /\t/g" 
-  > gene_counts.txt
-
-#Counts
-multiBamCov -bams lgg_tcga_analysis/reindex/*bam -bed CHESSgenes.bed -q 10 
-  >> gene_counts.txt
-```
-
-### Acquiring total reads from RNA-Seq BAM files
-
-```{bash Section2_seqdepth, eval = FALSE}
-
-mkdir tcga_analysis/readcounts/
-
-module load samtools/1.9
-
-for bam in $(find tcga_analysis/reindex/*.bam -name '*.bam')
+for bam in $(find RNASEQ-PROCESSED/tcga_analysis/GBM/reindex/*.bam -name '*.bam')
 do
 name=$(echo $bam | awk -F ".bam" '{print $1}')
 echo $name
 samtools view -c -F 260 $bam > $name.readcounts.txt
-mv $name.readcounts.txt ./tcga_analysis/readcounts/
+mv $name.readcounts.txt ./RNASEQ-PROCESSED/tcga_analysis/GBM/readcounts/
 done
 
-echo "id,counts" > tcga_analysis/readcounts/seqdepth_counts.csv 
+echo "id,counts" > RNASEQ-PROCESSED/tcga_analysis/GBM/readcounts/GBM_seqdepth_counts.csv 
 
-for txt in $(find tcga_analysis/readcounts/* -name '*.txt')
+for txt in $(find RNASEQ-PROCESSED/tcga_analysis/GBM/readcounts/* -name '*.txt')
 do
 name=$(echo $txt | awk -F ".readcounts.txt" '{print $1}')
 echo $name
 reads=$(head $txt)
-echo "$name,$reads" >> tcga_analysis/readcounts/seqdepth_counts.csv 
+echo "$name,$reads" >> RNASEQ-PROCESSED/tcga_analysis/GBM/readcounts/GBM_seqdepth_counts.csv 
 done
+
+## Do the same for LGG
+
+mkdir RNASEQ-PROCESSED/tcga_analysis/LGG/readcounts/
+
+for bam in $(find RNASEQ-PROCESSED/tcga_analysis/LGG/reindex/*.bam -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+echo $name
+samtools view -c -F 260 $bam > $name.readcounts.txt
+mv $name.readcounts.txt ./RNASEQ-PROCESSED/tcga_analysis/LGG/readcounts/
+done
+
+echo "id,counts" > RNASEQ-PROCESSED/tcga_analysis/LGG/readcounts/LGG_seqdepth_counts.csv 
+
+for txt in $(find RNASEQ-PROCESSED/tcga_analysis/LGG/readcounts/* -name '*.txt')
+do
+name=$(echo $txt | awk -F ".readcounts.txt" '{print $1}')
+echo $name
+reads=$(head $txt)
+echo "$name,$reads" >> RNASEQ-PROCESSED/tcga_analysis/LGG/readcounts/LGG_seqdepth_counts.csv 
+done
+
+```
+
+### Generate BED files to get counts
+
+```{r Section2_bedbreaker}
+
+if(!dir.exists("CHESSBED")){dir.create("CHESSBED")}
+
+if(makeBEDs == TRUE){
+bedbreaker <- function(file){  
+
+bed <- read.table(file)
+chrom <- unique(as.vector(bed$V1))
+i = 1
+
+for(i in 1:length(chrom)){
+  x <- bed %>%
+    filter(V1 == chrom[i]) %>%
+    write.table(paste("CHESSBED/",chrom[i],"_CHESSgenes.bed",sep=""),quote = F,col.names = F,row.names = F,sep = '\t')
+}}
+
+bedbreaker("CHESSGenes.bed")
+}
+
+## MOVE these files to the RNASEQ-PROCESSED directory in the next step
+
+```
+
+### Move BED Files to RNASEQ-PROCESSED Directory
+
+```{bash Section2_mkdir_BEDFiles}
+
+mkdir RNASEQ-PROCESSED/BEDFiles
+
+```
+
+
+### GTEX Processing: Generating count tables for survival and differential expression.
+
+```{bash Section2_gtexcounts, eval = FALSE}
+# Making directory
+mkdir RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange
+
+for bed in $(find RNASEQ-PROCESSED/BEDFiles/ -name '*.bed')
+do
+
+name=$(echo $bed | awk -F ".bed" '{print $1}')
+echo $name
+
+#Write header line
+echo -e chrom"\t"start"\t"end"\t"id RNASEQ-PROCESSED/gtex_analysis/cortex/reindex/*bam | sed -e "s/ /\t/g" 
+  > RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/$name.counts.txt
+
+#Counts
+multiBamCov -bams RNASEQ-PROCESSED/gtex_analysis/cortex/reindex/*bam -bed $bed -q 10
+  >> RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/$name.counts.txt
+
+done
+
+head -1 RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/chr10_CHESSgenes.counts.txt > RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/cortex_mergedcounts.txt; tail -n +2 -q RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/*.counts.txt >> RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/cortex_mergedcounts.txt
+
+```
+
+### TCGA Processing: Generating count tables for survival and differential expression.
+
+```{bash Section2_gtexcounts, eval = FALSE}
+# Making directory
+mkdir RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange
+
+for bed in $(find RNASEQ-PROCESSED/BEDFiles/ -name '*.bed')
+do
+
+name=$(echo $bed | awk -F ".bed" '{print $1}')
+echo $name
+
+#Write header line
+echo -e chrom"\t"start"\t"end"\t"id RNASEQ-PROCESSED/tcga_analysis/GBM/reindex/*bam | sed -e "s/ /\t/g" 
+  > RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/$name.counts.txt
+
+#Counts
+multiBamCov -bams RNASEQ-PROCESSED/tcga_analysis/GBM/reindex/*bam -bed $bed -q 10
+  >> RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/$name.counts.txt
+
+done
+
+head -1 RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/chr10_CHESSgenes.counts.txt > RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/GBM_mergedcounts.txt; tail -n +2 -q RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/*.counts.txt >> RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/GBM_mergedcounts.txt
+
+# Making directory
+mkdir RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange
+
+for bed in $(find RNASEQ-PROCESSED/BEDFiles/ -name '*.bed')
+do
+
+name=$(echo $bed | awk -F ".bed" '{print $1}')
+echo $name
+
+#Write header line
+echo -e chrom"\t"start"\t"end"\t"id RNASEQ-PROCESSED/tcga_analysis/LGG/reindex/*bam | sed -e "s/ /\t/g" > RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/$name.counts.txt
+
+#Counts
+multiBamCov -bams RNASEQ-PROCESSED/tcga_analysis/LGG/reindex/*bam -bed $bed -q 10 >> RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/$name.counts.txt
+
+done
+
+head -1 RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/chr10_CHESSgenes.counts.txt > RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/LGG_mergedcounts.txt; tail -n +2 -q RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/*.counts.txt >> RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/LGG_mergedcounts.txt
 
 ```
 
@@ -1159,64 +1362,82 @@ if(!dir.exists(paste(outputdir,"/ExpressionAnalysis",sep=""))){
   dir.create(paste(outputdir,"/ExpressionAnalysis",sep=""))
 }
 
-tucrcounts <- 
-  read.table(countfilename,header = TRUE)
+if(!is.na(normalcountfilename)){
+  mergedcounts <- read.table(t_countfile,header = TRUE)
+  
+  normalcounts <- read.table(n_countfile,header = TRUE)
+  
+  mergedcounts <- left_join(normalcounts,by="id")
+  
+  metadata <- 
+  read_csv(file = t_metadatafile)
+  
+  n_metadata <- 
+  read_csv(file = n_metadatafile)
+  
+  metadata <- rbind(metadata,n_metadata)
+  
+}else{
+    mergedcounts <- read.table(t_countfile,header = TRUE)
 
-metadata <- 
-  read_csv(file = metadatafile)
+    metadata <- read_csv(file = t_metadatafile)
+}
 
-tucrcounts2 <- 
-  tucrcounts[,5:ncol(tucrcounts)]
+if(!is.na(filterannot)){
+  mergedcounts <- mergedcounts %>%
+    filter(annot == filterannot)
+}
 
-rownames(tucrcounts2) <- 
-  tucrcounts[,4]
 
-tucrcounts.info <- 
-  tucrcounts[,1:4]
+mergedcounts2 <- 
+  mergedcounts[,7:ncol(mergedcounts)]
 
-tucrannot <- read.csv("tucr_annot.csv",header=TRUE) %>%
-  dplyr::select("id" = row, annot)
+rownames(mergedcounts2) <- 
+  mergedcounts[,5]
 
-tucrcounts.info <- tucrcounts.info %>%
-  left_join(tucrannot,by="id")
+mergedcounts.info <- 
+  mergedcounts[,1:6]
 
-tucrcounts.info$length <- 
-  (tucrcounts$end - tucrcounts$start)/1000
+mergedcounts.info$length <- 
+  (mergedcounts$end - mergedcounts$start)/1000
 
-tucrcounts <- 
-  cbind(tucrcounts.info,tucrcounts2)
+mergedcounts <- 
+  cbind(mergedcounts.info,mergedcounts2)
 
-dds_TUCR <- 
-  DESeqDataSetFromMatrix(countData = tucrcounts2,
+dds <- 
+  DESeqDataSetFromMatrix(countData = mergedcounts2,
                               colData = metadata,
                               design = ~dex)
-dds_TUCR <- 
-  DESeq(dds_TUCR)
+dds <- 
+  DESeq(dds)
 
-res_TUCR <- 
-  results(dds_TUCR, tidy=TRUE)
+res <- 
+  results(dds, tidy=TRUE)
 
-res_TUCR <- 
-  as_tibble(res_TUCR)
+res <- 
+  as_tibble(res)
 
-write.csv(res_TUCR, file = paste(outputdir,"/ExpressionAnalysis/",disease,"_results_TUCR.csv",sep=""))
+if(!is.na(filterannot) & filterannot != ""){
+write.csv(res, file = paste(outputdir,"/ExpressionAnalysis/",disease,"_results_",filterannot,".csv",sep=""))}else{
+write.csv(res, file = paste(outputdir,"/ExpressionAnalysis/",disease,"_results_allgenes.csv",sep=""))
+}
 
-res_TUCR_summary <- 
-  res_TUCR %>%
+res_summary <- 
+  res %>%
   mutate(dereg = 
-           ifelse(res_TUCR$log2FoldChange >=1, "upregulated",
-                    ifelse(res_TUCR$log2FoldChange <=-1,"downregulated","unchanged"))) %>%
+           ifelse(res$log2FoldChange >=1, "upregulated",
+                    ifelse(res$log2FoldChange <=-1,"downregulated","unchanged"))) %>%
   filter(dereg == "upregulated" | dereg == "downregulated") %>%
   group_by(dereg) %>%
   summarise(n = n()) %>%
   mutate(count = ifelse(dereg=="downregulated",-n,n))
 
-p <- ggplot(res_TUCR_summary, aes(x=dereg,y=n,fill=dereg)) + 
+p <- ggplot(res_summary, aes(x=dereg,y=n,fill=dereg)) + 
   geom_bar(stat="identity", width = 0.7, 
     color = "black") + 
   geom_text(aes(label=n), vjust=1.6, color="black", size=7) + 
   scale_fill_manual(values=c("green", "red")) + 
-  ggtitle(paste("TUCR Deregulation in ",disease)) + 
+  ggtitle(paste(filterannot," Deregulation in ",disease)) + 
   xlab("Direction of Deregulation") + 
   ylab("Number of Deregulated Genes") + 
   theme(
@@ -1229,7 +1450,7 @@ p <- ggplot(res_TUCR_summary, aes(x=dereg,y=n,fill=dereg)) +
     panel.background = element_blank(), 
     axis.line = element_line(colour = "black"))
 
-ggsave(file=paste(outputdir,"/ExpressionAnalysis/",disease,"_deregGraph.png",sep=""),
+ggsave(file=paste(outputdir,"/ExpressionAnalysis/",disease,"_deregGraph_",filterannot,".png",sep=""),
        plot = print(p),
        width = 5, 
        height = 5, 
@@ -1321,7 +1542,8 @@ repel = repel_hold
 
 ```{r Section2_DESeq2plots_intergenicTUCRs}
 
-tucr_annot <- read.csv("tucr_annot.csv")
+tucr_annot <- read.table("BEDFiles/hg38.ultraconserved.bed") %>%
+  dplyr::select("row" = V5, "annot" = V7)
 
 res_intergenic <- inner_join(res_TUCR,tucr_annot,by = "row") %>%
   filter(annot == "intergenic")
@@ -1404,43 +1626,37 @@ mergedcounts <- left_join(mergedcounts,normal_mergedcounts,by="id")
 metadata <- 
   read_csv(file = metadatafile) 
 
-CHESSantisense <- read.table("CHESSantisense.bed",header=FALSE)
-CHESSantisense <- CHESSantisense %>%
-  dplyr::select("V4","V6")
+#CHESSantisense <- read.table("BEDFiles/CHESSgenes.bed") %>%
+#  filter(V6 == "antisense_RNA") %>%
+#  dplyr::select("V5","V6")
+
+#CHESScoding <- read.table("BEDFiles/CHESSgenes.bed") %>%
+#  filter(V6 == "protein_coding") %>%
+#  dplyr::select("V5","V6")
+
+#CHESSlncRNA <- read.table("BEDFiles/CHESSgenes.bed") %>%
+#  filter(V6 == "lncRNA") %>%
+#  dplyr::select("V5","V6")
 
 
-CHESScoding <- read.table("CHESScoding.bed",header=FALSE)
-CHESScoding <- CHESScoding %>%
-  dplyr::select("V4","V6")
+#CHESSmisc <- read.table("BEDFiles/CHESSgenes.bed") %>%
+#  filter(V6 == "misc_RNA") %>%
+#  dplyr::select("V5","V6")
 
-CHESSlncRNA <- read.table("CHESSlncRNA.bed",header=FALSE)
-CHESSlncRNA <- CHESSlncRNA %>%
-  dplyr::select("V4","V6")
+#TUCRids <- tucr_annot <- read.table("BEDFiles/hg38.ultraconserved.bed") %>%
+#  dplyr::select("row" = V5, "annot" = V7)
 
-
-CHESSmisc <- read.table("CHESSmisc.bed",header=FALSE)
-CHESSmisc <- CHESSmisc %>%
-  dplyr::select("V4","V6")
+#count_annot <- rbind(TUCRids,CHESSantisense,CHESScoding,CHESSlncRNA,CHESSmisc)
 
 
-#TUCRids <- read.table("hg38.ultraconserved.bed",header=FALSE,fill=TRUE)
-#TUCRids <- TUCRids %>%
-#  dplyr::select("V4","V6"="V5")
+#colnames(count_annot) <- c("id","annot")
 
-TUCRids <- read.csv("tucr_annot_TUCR.csv",header=TRUE) %>%
-  dplyr::select("V4" = row, "V6" = annot)
+#mergedcounts <- mergedcounts %>%
+#  left_join(count_annot,by="id")
 
-count_annot <- rbind(TUCRids,CHESSantisense,CHESScoding,CHESSlncRNA,CHESSmisc)
+#NAchecker_mergedcounts<- mergedcounts[is.na(mergedcounts$annot),]
 
-
-colnames(count_annot) <- c("id","annot")
-
-mergedcounts <- mergedcounts %>%
-  left_join(count_annot,by="id")
-
-NAchecker_mergedcounts<- mergedcounts[is.na(mergedcounts$annot),]
-
-mergedcounts <- mergedcounts[complete.cases(mergedcounts),]
+#mergedcounts <- mergedcounts[complete.cases(mergedcounts),]
 
 i <- 1
 
@@ -1847,13 +2063,13 @@ res_surv_sum <- res_surv
 
 res_surv_sum <- res_surv_sum %>% mutate(gene="",Survival="")
 
-tucrannot <- read.csv("tucr_annot.csv",header=TRUE) %>%
-  dplyr::select("id" = row, annot)
+tucr_annot <- read.table("BEDFiles/hg38.ultraconserved.bed") %>%
+  dplyr::select("id" = V5, "annot" = V7)
 
 res_surv_sum <- res_surv_sum %>%
-  left_join(tucrannot,by="id")
+  left_join(tucr_annot,by="id")
 
-annot_unique <- as.character(unique(tucrannot$annot))
+annot_unique <- as.character(unique(tucr_annot$annot))
 
 annotation <- "All"
 
@@ -1984,7 +2200,7 @@ if(useintermediate==FALSE){
 TUCRids <- read.table(countfilename,header = TRUE)
 TUCRids <- as.character(TUCRids[,4])
 normcounts <- read.table("normal_mergedcounts.txt",header = TRUE)
-expcounts <- read.table(mergedcounts,header = TRUE)
+expcounts <- read.table(mergedcountfile,header = TRUE)
 posdata <- normcounts[,1:4]
 normcounts <- normcounts[4:ncol(normcounts)]
 expcounts <- expcounts[4:ncol(expcounts)]
@@ -2263,16 +2479,16 @@ heatmap.allgo <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("Term","
 
 i <- 1
 
-tucrannot <- read.csv("tucr_annot.csv",header=TRUE) %>%
-  dplyr::select("id" = row, annot)
+tucr_annot <- read.table("BEDFiles/hg38.ultraconserved.bed") %>%
+  dplyr::select("id" = V5, "annot" = V7)
 
-annot_unique <- as.character(unique(tucrannot$annot))
+annot_unique <- as.character(unique(tucr_annot$annot))
 
 h <- 1
 
   annotation <- "All"  
   print(annotation)
-  TUCRids <- tucrannot %>%
+  TUCRids <- tucr_annot %>%
     dplyr::select(id)
 
 for(i in 1:length(TUCRids$id)){
@@ -2388,7 +2604,7 @@ ggsave(file=paste(outputdir,"/GuiltAnalysis/tucr_allgo_",annotation,".png",sep="
 for (h in 1:length(annot_unique)){
   annotation <- as.character(annot_unique[h])  
   print(annotation)
-  TUCRids <- tucrannot %>%
+  TUCRids <- tucr_annot %>%
     filter(annot == annotation) %>%
     dplyr::select(id)
 

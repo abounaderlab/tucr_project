@@ -8,6 +8,197 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Section 5: TUCRs are contained within mRNA or lncRNA transcripts
+
+## Results 
+
+Of the 481 TUCRs, 186 were previously characterized as intergenic, or not being contained within a known coding or non-coding transcript.  We chose to focus on these TUCRs, as they potentially represent a partial or full novel long non-coding RNA (lncRNA) transcripts.  To identify the RNA transcript(s) that contain these TUCRs, we performed a de novo transcript reassembly using GBM RNA-Seq data from TCGA.  Using this method, we identified 2636 transcripts that contain TUCRs.  We prioritized transcripts that did not overlap with known genes, as these are likely to represent novel genes.  Transcripts that were greater than 10,000 nucleotide (nt) were also eliminated.  Using these criteria, 8 transcripts were identified in GBM, LGG, or both disease types. (Figure 7A, Table 1)  These transcripts were submitted to the Coding Potential Assessing Tool (CPAT) to determine whether they express any coding potential.  Of the 8 transcripts, five represented no coding potential, while three contained coding potential.  In particular, one of these transcripts with coding potential (TUC110-) overlaps with the most highly upregulated TUCR in both LGG and GBM (uc.110, Figures 7B and 7C).
+
+## Methodology
+
+### Stringtie GBM
+
+The hg19 genomic coordinates for each TUCR were acquired from _____________ and were lifted over to hg38 coordinates. The stringtie bioinformatics package was then used to perform a de novo transcript reassembly of all transcripts in 161 GBM, 400 LGG, and 5 normal brain TCGA Cancer RNA-Seq datasets.  First, transcripts present in each RNA-Seq BAM file were compiled into individual BED/GTF format genomic coordinate files using Stringtie.  These files were then merged into one master file containing all transcripts in all samples using Stringtie and an hg38 genome reference file.  The bedtools package was then used to find the genomic coordinates of all transcripts containing ultraconserved regions.  The ________________ group used stringtie to analyze the entirety of the GTex RNA-Seq normal tissue catalog, so bedtools was also used to determine the intersection of TUCRs with their results.  This methodology provides insight into TUCR transcript presence in normal tissues and in brain cancer.
+
+```{bash stringtie, eval = FALSE}
+wget ftp://ftp.ensembl.org/pub/release-99/gtf/homo_sapiens/Homo_sapiens.GRCh38.99.gtf.gz
+mv Homo_sapiens.GRCh38.99.gtf.gz stringtie
+gunzip stringtie/Homo_sapiens.GRCh38.99.gtf.gz
+
+module load gcc/7.1.0
+module load stringtie/2.0.6
+
+for bam in $(find GBM-RNASEQ-RAW/* -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+name2=$(basename "$name")
+if [ ! -f stringtie/$name2.gtf ] 
+then
+    echo "$name2.gtf does not exist"
+    stringtie $bam -o $name.gtf
+    mv $name.gtf ./stringtie
+else
+    echo "$name2.gtf exists... skipping"
+fi
+
+if [ ! -f $name.gtf ]; then
+  stringtie $bam -o $name.gtf
+fi
+mv $name.gtf ./stringtie
+done
+
+cd stringtie
+
+stringtie --merge *rehead.gtf -G Homo_sapiens.GRCh38.99.gtf -o stringtie_merged.gtf
+
+intersectBed -a hg38.ultraConserved.bed -b CHESSgenes.bed -wa -wb 
+  > intersectchess_TUCRs.bed
+
+intersectBed -a hg38.ultraConserved.bed -b stringtie_merged.gtf -wa -wb 
+  > intersectstringtie_TUCRs.bed
+
+cp stringtie_merged.gtf stringtie_merged.bed
+```
+
+### Stringtie LGG
+
+```{bash stringtie lgg, eval = FALSE}
+wget ftp://ftp.ensembl.org/pub/release-99/gtf/homo_sapiens/Homo_sapiens.GRCh38.99.gtf.gz
+mv Homo_sapiens.GRCh38.99.gtf.gz stringtie
+gunzip stringtie/Homo_sapiens.GRCh38.99.gtf.gz
+
+module load gcc/7.1.0
+module load stringtie/2.0.6
+
+for bam in $(find LGG-RNASEQ-RAW/* -name '*.bam')
+do
+name=$(echo $bam | awk -F ".bam" '{print $1}')
+name2=$(basename "$name")
+if [ ! -f stringtie/$name2.gtf ] 
+then
+    echo "$name2.gtf does not exist"
+    stringtie $bam -o $name.gtf
+    mv $name.gtf ./stringtie
+else
+    echo "$name2.gtf exists... skipping"
+fi
+
+if [ ! -f $name.gtf ]; then
+  stringtie $bam -o $name.gtf
+fi
+mv $name.gtf ./stringtie
+done
+
+cd stringtie
+
+stringtie --merge *rehead.gtf -G Homo_sapiens.GRCh38.99.gtf -o stringtie_merged.gtf
+
+intersectBed -a TUCR_intergenic.bed -b stringtie_merged.gtf -wa -wb > intersectintergenic_TUCRs.bed
+
+intersectBed -a intersectintergenic_TUCRs.bed -b stringtie_merged.gtf -wa -wb 
+  > intersectintergenic_TUCRs.bed
+
+cp stringtie_merged.gtf stringtie_merged.bed
+```
+
+## Show that TUCRs are contained within novel genes
+
+```{r novelgenes, eval = FALSE}
+lgg_novelgenes <- read_delim("lgg_novelgenes.bed", col_names = FALSE, delim = "\t",skip_empty_rows = FALSE) %>%     dplyr::select(X5,X7,X9,X10,X11,X13) %>%
+  filter(X9 == "transcript") %>%
+  mutate(disease = "LGG",name = paste("TUC",str_remove(X5,"uc."),X13,sep = ""), length = X11-X10) %>%
+  filter(length <= 30000) %>%
+  group_by(name) %>%
+  mutate(max = max(length,na.rm=TRUE)) %>%
+  filter(length == max) %>%
+  ungroup() %>%
+  dplyr::select(name,disease,length,"chromosome" = X7,"start" = X10,"end" = X11, "strand" = X13)
+
+gbm_novelgenes <- read_delim("gbm_novelgenes.bed", col_names = FALSE, delim = "\t",skip_empty_rows = FALSE) %>%     dplyr::select(X5,X7,X9,X10,X11,X13) %>%
+  filter(X9 == "transcript") %>%
+  mutate(disease = "GBM",name = paste("TUC",str_remove(X5,"uc."),X13,sep = ""), length = X11-X10) %>%
+  filter(length <= 30000) %>%
+  group_by(name) %>%
+  mutate(max = max(length,na.rm=TRUE)) %>%
+  filter(length == max) %>%
+  ungroup() %>%
+  dplyr::select(name,disease,length,"chromosome" = X7,"start" = X10,"end" = X11, "strand" = X13)
+
+all_novelgenes <- rbind(gbm_novelgenes,lgg_novelgenes) 
+all_novelgenes <- all_novelgenes %>%
+  group_by(name) %>%
+  mutate(n = n(), annot = ifelse(n==2, "GBM/LGG",disease)) %>%
+  dplyr::select(-n)
+
+
+  
+
+write.csv(all_novelgenes,file="all_novelgenes.csv")
+
+CPAT_bedfile <- all_novelgenes %>%
+  dplyr::select(chromosome,start,end,strand,name)
+
+write_delim(CPAT_bedfile,file="CPAT.bed",delim = "\t",col_name = FALSE)
+
+```
+
+### Get Fasta
+
+```{bash novelgenes_getFASTA}
+
+```
+
+### Use CPAT Web Browser
+
+### Integrate CPAT results
+
+```{r}
+all_novelgenes <- read.csv(file="all_novelgenes.csv",header=TRUE,row.names=1)
+
+CPAT_results <- read_delim("result.txt", col_names = TRUE, delim = "\t",skip_empty_rows = FALSE) %>%
+  dplyr::select("length" = `RNA size`, `ORF size`,`Ficket Score`,`Hexamer Score`,`Coding Probability`,`Coding Label`)
+
+CPAT_novelgenes <- all_novelgenes %>%
+  full_join(CPAT_results, by = "length")
+
+write.csv(CPAT_novelgenes,file="CPAT_novelgenes.csv")
+
+```
+
+
+### Summarizing Novel Gene data
+
+``` {r sum_novelgenes}
+
+CPAT_novelgenes <- read.csv(file="CPAT_novelgenes.csv",header=TRUE,row.names=1)
+
+CPAT_novelgenes_sum <- CPAT_novelgenes %>%
+  group_by(annot,Coding.Label) %>% 
+  mutate(group_id = cur_group_id(),count = n(),Group = 
+    ifelse(group_id==1, "GBM_non_coding",
+    ifelse(group_id==2, "GBM_coding",
+    ifelse(group_id==3, "GBM/LGG_non_coding",
+    ifelse(group_id==4, "GBM/LGG_coding",
+    ifelse(group_id==5, "LGG_non_coding",
+    ifelse(group_id==6, "LGG_coding","ERROR"))))))) %>%
+  group_by(Group,group_id) %>%
+  summarize(count=n())
+
+p <- ggplot(CPAT_novelgenes_sum, aes(x=reorder(Group,group_id),y=count,fill=Group)) + geom_bar(stat="identity", width = 0.7, color="black") +
+  geom_text(aes(label=round(count,2)), vjust=1.6, color="black", size=rel(4)) + ggtitle(paste("Some intergenic TUCRs are \n contained within Novel Genes")) + xlab("Disease") + ylab("Number of Genes") + theme(
+plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
+axis.title = element_text(size = rel(1.25), face="bold"),
+axis.text.x = element_text(angle = -90, size = 10),
+legend.title = element_blank(),
+legend.position = "none",
+panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+ggsave(file=paste(outputdir,"/tucr_novelgenes.png",sep=""),plot = print(p), width = 5, height = 5, dpi = 300) 
+  
+
+```
+
 ```{bash ATAC, eval = FALSE}
 
 wget ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM3669nnn/GSM3669999/suppl/GSM3669999_GSC23_ATAC.highPValue.distal_intersect.H3K27Ac.bed.gz
