@@ -1274,7 +1274,7 @@ done
 
 ```{r Section2_bedbreaker}
 
-if(!dir.exists("CHESSBED")){dir.create("CHESSBED")}
+if(!dir.exists("BEDFiles")){dir.create("BEDFiles")}
 
 if(makeBEDs == TRUE){
 bedbreaker <- function(file){  
@@ -1286,10 +1286,10 @@ i = 1
 for(i in 1:length(chrom)){
   x <- bed %>%
     filter(V1 == chrom[i]) %>%
-    write.table(paste("CHESSBED/",chrom[i],"_CHESSgenes.bed",sep=""),quote = F,col.names = F,row.names = F,sep = '\t')
+    write.table(paste("BEDFiles/",chrom[i],"_CHESSgenes.bed",sep=""),quote = F,col.names = F,row.names = F,sep = '\t')
 }}
 
-bedbreaker("CHESSGenes.bed")
+bedbreaker("BEDFiles/CHESSGenes.bed")
 }
 
 ## MOVE these files to the RNASEQ-PROCESSED directory in the next step
@@ -1384,8 +1384,8 @@ if(!dir.exists(paste(outputdir,"/ExpressionAnalysis",sep=""))){
   dir.create(paste(outputdir,"/ExpressionAnalysis",sep=""))
 }
 
-if(!is.na(normalcountfilename)){
-  mergedcounts <- read.table(t_countfile,header = TRUE)
+if(!is.na(n_countfile)){
+  mergedcounts <- read_table(t_countfile)
   
   normalcounts <- read.table(n_countfile,header = TRUE)
   
