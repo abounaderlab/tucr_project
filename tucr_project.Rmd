@@ -6,6 +6,55 @@ output: pdf_document
 toc: true
 ---
 
+```{r refseq}
+
+refseq <- read.table("BEDFiles/refseq.bed",header=TRUE) %>%
+  dplyr::select(chrom,"start"=txStart,"end"=txEnd,strand,"id"=name2,annot,tag) 
+
+CHESSgenes <- read.table("BEDFiles/CHESSgenes.bed",header=FALSE) %>%
+  dplyr::select("chrom"=V1,"start"=V2,"end"=V3,"strand"=V4,"id"=V5,"annot"=V6,"tag"=V7)
+
+mergedref <- rbind(refseq,CHESSgenes) %>%
+  group_by(id,strand) %>%
+  mutate(
+    trustart = min(start,na.rm=TRUE),
+    truend = max(end,na.rm=TRUE),
+    truannot=(
+      ifelse(annot=="protein_coding",4,
+      ifelse(annot=="lncRNA",3,
+      ifelse(annot=="antisense_RNA",2,
+      ifelse(annot=="misc_RNA",1,0))))),
+    trufilter=max(truannot,na.rm=TRUE)
+  ) %>%
+  ungroup() %>%
+  filter(truannot==trufilter) %>%
+  dplyr::select(chrom,"start"=trustart,"end"=truend,strand,id,annot,tag) %>%
+  distinct() %>%
+  mutate(id2 = paste(id,"___",chrom,strand,":",start,"_",end,sep=""),
+    antisense = str_detect(id, "-AS"),
+         lncRNA = str_detect(id, "LINC"),
+    dot = ifelse(
+    tag == "refseq" & annot == "misc_RNA" & antisense == TRUE,"antisense_RNA",
+    ifelse(tag == "refseq" & annot == "misc_RNA" & lncRNA ==  TRUE,"lncRNA",
+    as.character(annot)))) %>%
+  dplyr::select(chrom,start,end,strand,"id"=id2,"annot"=dot) %>%
+  distinct() %>%
+  filter(!grepl("_",chrom)) %>%
+  group_by(id,chrom,start,end) %>%
+  mutate(n=n()) %>%
+  ungroup() %>%
+  filter(!(n>1 & annot == "misc_RNA")) %>%
+  dplyr::select(-n)
+
+write_delim(mergedref,"BEDFiles/allgenes.bed",delim="\t")
+
+```
+
+
+*https://www.nature.com/articles/sdata201861
+
+This methodology is less relevant to GBM and LGG because there are only 5 normals in these datasets to compare GTex to.
+
 # Abstract
 
 Gliomas represent the most common brain tumors.  Particularly, glioblastoma (GBM) is the most common and most deadly malignant brain tumor. Most glioma research has focused on protein-coding genes and much less on the non-coding transcripts that make up 98% of cellular RNA. Transcribed Ultra-Conserved Regions (TUCRs) represent an understudied class of molecules that are found conserved across multiple species. These transcripts are highly resistant to variation and are commonly deregulated in cancer, suggesting regulatory and functional importance.  Intergenic TUCRs specifically represent potential novel protein coding and non-coding transcripts, as they do not overlap with known genes.  We performed the first analysis of TUCRs in glioblastoma and low grade glioma (LGG).  Previously established methodologies were used to annotate TUCRs and confirm that they are transcribed.  Then, differentially expressed (DE) TUCRs were identified in GBM (n = 197) and LGG (n = 149), along with those who correlate with survival in GBM (n = 36) and LGG (n = 167).  TUCRs were then scored by their absolute and relative expression in GBM and LGG, frequency of deregulation, and correlation with survival.  These scores provide a means for prioritizing TUCRs for future experiments. Using a GBM and LGG RNA-Seq data to generate a list of co-regulated genes, a guilt-by-association analysis was performed to determine what biological processes and molecular functions may be shared by TUCRs and their co-regulated genes.  Lastly, as TUCRs represent fractions of larger host transcripts, we sought to identify and characterize the parent transcripts of intergenic TUCRs.  We propose that these host transcripts represent novel genes, with the TUCR itself serving as a component of these transcripts.  The results of this study provide an insight into several exciting future research directions.
@@ -189,13 +238,15 @@ if(!dir.exists(outputdir)){
   dir.create(outputdir)
 }
 
-t_countfile <- paste(disease,"mergedcounts.txt",sep="_")
+#t_countfile <- paste(disease,"mergedcounts.txt",sep="_")
+t_countfile <- paste(disease,"hg38.ultraConserved.counts.txt",sep="_")
 
-n_countfile <- paste(normal,"mergedcounts.txt",sep="_")
+#n_countfile <- paste(normal,"mergedcounts.txt",sep="_")
+n_countfile <- paste(normal,"hg38.ultraConserved.counts.txt",sep="_")
 
 t_metadatafile <- paste(disease,"tcga_metadata.csv",sep="_")
 
-n_metadatafile <- paste(normal,"tcga_metadata.csv",sep="_")
+n_metadatafile <- paste(normal,"gtex_metadata.csv",sep="_")
 
 t_seqdepthfile <- paste(disease,"seqdepth_counts.csv",sep="_")
 
@@ -1286,10 +1337,10 @@ i = 1
 for(i in 1:length(chrom)){
   x <- bed %>%
     filter(V1 == chrom[i]) %>%
-    write.table(paste("BEDFiles/",chrom[i],"_CHESSgenes.bed",sep=""),quote = F,col.names = F,row.names = F,sep = '\t')
+    write.table(paste("BEDFiles/",chrom[i],"_genes.bed",sep=""),quote = F,col.names = F,row.names = F,sep = '\t')
 }}
 
-bedbreaker("BEDFiles/CHESSGenes.bed")
+bedbreaker("BEDFiles/allgenes.bed")
 }
 
 ## MOVE these files to the RNASEQ-PROCESSED directory in the next step
@@ -1315,19 +1366,23 @@ for bed in $(find RNASEQ-PROCESSED/BEDFiles/ -name '*.bed')
 do
 
 name=$(echo $bed | awk -F ".bed" '{print $1}')
-echo $name
+name2=$(basename -- $name)
+echo $name2
 
-#Write header line
-echo -e chrom"\t"start"\t"end"\t"id RNASEQ-PROCESSED/gtex_analysis/cortex/reindex/*bam | sed -e "s/ /\t/g" 
-  > RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/$name.counts.txt
+if test -f $name2.counts.txt; then
 
-#Counts
-multiBamCov -bams RNASEQ-PROCESSED/gtex_analysis/cortex/reindex/*bam -bed $bed -q 10
-  >> RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/$name.counts.txt
+echo "$name2.counts.txt exists."
 
+else
+
+echo -e chrom"\t"start"\t"end"\t"strand"\t"id"\t"tag"\t"annot RNASEQ-PROCESSED/gtex_analysis/cortex/reindex/*bam | sed -e "s/ /\t/g" > RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/$name2.counts.txt
+
+multiBamCov -bams RNASEQ-PROCESSED/gtex_analysis/cortex/reindex/*bam -bed $bed -q 10 >> RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/$name2.counts.txt
+
+fi
 done
 
-head -1 RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/chr10_CHESSgenes.counts.txt > RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/cortex_mergedcounts.txt; tail -n +2 -q RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/*.counts.txt >> RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/cortex_mergedcounts.txt
+head -1 RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/chr10_genes.counts.txt > RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/cortex_mergedcounts.txt; tail -n +2 -q RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/*.counts.txt >> RNASEQ-PROCESSED/gtex_analysis/cortex/foldchange/cortex_mergedcounts.txt
 
 ```
 
@@ -1341,19 +1396,23 @@ for bed in $(find RNASEQ-PROCESSED/BEDFiles/ -name '*.bed')
 do
 
 name=$(echo $bed | awk -F ".bed" '{print $1}')
-echo $name
+name2=$(basename -- $name)
+echo $name2
 
-#Write header line
-echo -e chrom"\t"start"\t"end"\t"id RNASEQ-PROCESSED/tcga_analysis/GBM/reindex/*bam | sed -e "s/ /\t/g" 
-  > RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/$name.counts.txt
+if test -f $name2.counts.txt; then
 
-#Counts
-multiBamCov -bams RNASEQ-PROCESSED/tcga_analysis/GBM/reindex/*bam -bed $bed -q 10
-  >> RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/$name.counts.txt
+echo "$name2.counts.txt exists."
 
+else
+
+echo -e chrom"\t"start"\t"end"\t"strand"\t"id"\t"tag"\t"annot RNASEQ-PROCESSED/tcga_analysis/GBM/reindex/*bam | sed -e "s/ /\t/g" > RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/$name2.counts.txt
+
+multiBamCov -bams RNASEQ-PROCESSED/tcga_analysis/GBM/reindex/*bam -bed $bed -q 10 >> RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/$name2.counts.txt
+
+fi
 done
 
-head -1 RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/chr10_CHESSgenes.counts.txt > RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/GBM_mergedcounts.txt; tail -n +2 -q RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/*.counts.txt >> RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/GBM_mergedcounts.txt
+head -1 RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/chr10_genes.counts.txt > RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/GBM_mergedcounts.txt; tail -n +2 -q RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/*.counts.txt >> RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/GBM_mergedcounts.txt
 
 # Making directory
 mkdir RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange
@@ -1362,17 +1421,23 @@ for bed in $(find RNASEQ-PROCESSED/BEDFiles/ -name '*.bed')
 do
 
 name=$(echo $bed | awk -F ".bed" '{print $1}')
-echo $name
+name2=$(basename -- $name)
+echo $name2
 
-#Write header line
-echo -e chrom"\t"start"\t"end"\t"id RNASEQ-PROCESSED/tcga_analysis/LGG/reindex/*bam | sed -e "s/ /\t/g" > RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/$name.counts.txt
+if test -f $name2.counts.txt; then
 
-#Counts
-multiBamCov -bams RNASEQ-PROCESSED/tcga_analysis/LGG/reindex/*bam -bed $bed -q 10 >> RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/$name.counts.txt
+echo "$name2.counts.txt exists."
 
+else
+
+echo -e chrom"\t"start"\t"end"\t"strand"\t"id"\t"tag"\t"annot RNASEQ-PROCESSED/tcga_analysis/LGG/reindex/*bam | sed -e "s/ /\t/g" > RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/$name2.counts.txt
+
+multiBamCov -bams RNASEQ-PROCESSED/tcga_analysis/LGG/reindex/*bam -bed $bed -q 10 >> RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/$name2.counts.txt
+
+fi
 done
 
-head -1 RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/chr10_CHESSgenes.counts.txt > RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/LGG_mergedcounts.txt; tail -n +2 -q RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/*.counts.txt >> RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/LGG_mergedcounts.txt
+head -1 RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/chr10_genes.counts.txt > RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/LGG_mergedcounts.txt; tail -n +2 -q RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/*.counts.txt >> RNASEQ-PROCESSED/tcga_analysis/LGG/foldchange/LGG_mergedcounts.txt
 
 ```
 
@@ -1385,11 +1450,13 @@ if(!dir.exists(paste(outputdir,"/ExpressionAnalysis",sep=""))){
 }
 
 if(!is.na(n_countfile)){
-  mergedcounts <- read_table(t_countfile)
+  mergedcounts <- read.table(t_countfile,header = TRUE)
   
-  normalcounts <- read.table(n_countfile,header = TRUE)
+  normalcounts <- read.table(n_countfile,header = TRUE) %>%
+    dplyr::select(-strand,-tag)
   
-  mergedcounts <- left_join(normalcounts,by="id")
+  mergedcounts <- mergedcounts %>% full_join(normalcounts,by=c("id")) %>%
+    dplyr::select(-chrom.y,-start.y,-end.y,-annot.y)
   
   metadata <- 
   read_csv(file = t_metadatafile)
@@ -1407,21 +1474,21 @@ if(!is.na(n_countfile)){
 
 if(!is.na(filterannot)){
   mergedcounts <- mergedcounts %>%
-    filter(annot == filterannot)
+    filter(annot.x == filterannot)
 }
 
 
 mergedcounts2 <- 
-  mergedcounts[,7:ncol(mergedcounts)]
+  mergedcounts[,6:ncol(mergedcounts)]
 
 rownames(mergedcounts2) <- 
-  mergedcounts[,5]
+  mergedcounts[,4]
 
 mergedcounts.info <- 
-  mergedcounts[,1:6]
+  mergedcounts[,1:5]
 
 mergedcounts.info$length <- 
-  (mergedcounts$end - mergedcounts$start)/1000
+  (mergedcounts$end.x - mergedcounts$start.x)/1000
 
 mergedcounts <- 
   cbind(mergedcounts.info,mergedcounts2)
@@ -1430,6 +1497,55 @@ dds <-
   DESeqDataSetFromMatrix(countData = mergedcounts2,
                               colData = metadata,
                               design = ~dex)
+
+```
+
+## QC for normal samples
+
+I am using Stephen Turner's PCA function and plots for this analysis.
+
+```{r Section2_PCA}
+
+#Stephen's PCA Function
+ggpca <- function (x, intgroup = "condition", ntop = 500, returnData = FALSE, labelpoints=FALSE)
+{
+  rv <- matrixStats::rowVars(assay(x))
+  select <- order(rv, decreasing = TRUE)[seq_len(min(ntop, length(rv)))]
+  pca <- prcomp(t(assay(x)[select, ]))
+  percentVar <- pca$sdev^2/sum(pca$sdev^2)
+  if (!all(intgroup %in% names(colData(x)))) {
+    stop("the argument 'intgroup' should specify columns of colData(dds)")
+  }
+  intgroup.df <- as.data.frame(colData(x)[, intgroup, drop = FALSE])
+  group <- factor(apply(intgroup.df, 1, paste, collapse = " : "))
+  d <- data.frame(PC1 = pca$x[, 1], PC2 = pca$x[, 2], group = group,
+                  intgroup.df, names = colnames(x))
+  if (returnData) {
+    attr(d, "percentVar") <- percentVar[1:2]
+    return(d)
+  }
+  p <- ggplot(data = d, aes_string(x = "PC1", y = "PC2", color = "group", label="names")) +
+    geom_point(size = 3) +
+    xlab(paste0("PC1: ", round(percentVar[1] * 100, digits=2), "% variance")) +
+    ylab(paste0("PC2: ", round(percentVar[2] * 100, digits=2), "% variance"))
+  if (labelpoints) {
+    p <- p+geom_text(hjust=0, vjust=0)
+  }
+  p
+}
+
+## PCA
+rld <- varianceStabilizingTransformation(dds)
+
+ggpca(rld, intgroup = c("dex"), labelpoints=FALSE) + xlim(-20, 25) + ylim(-15,15)
+ggsave(paste(outputdir,"/aboundaer-tucr-qc-pca.png",sep=""), w=10, h=10, scale=.9)
+
+```
+
+### Identifying differentially expressed TUCRs with DESeq2 (Continued)
+
+```{r Section2_DESeq2_TUCRs_continued}
+
 dds <- 
   DESeq(dds)
 
