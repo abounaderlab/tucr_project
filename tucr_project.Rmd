@@ -1097,7 +1097,11 @@ write_json(GTexManifest,"file-manifest-cortexonly.json",pretty=TRUE)
 
 ```
 
-```{bash Section2_GTexDownload}
+```{bash Section2_GTexDownload, eval=false}
+
+./gen3-client configure --profile=<mkgibertjr>
+--cred=<credentials.json>
+--apiendpoint=https://gen3.theanvil.io
 
 yes | ./gen3-client download-multiple --profile=mkgibertjr --manifest=file-manifest-cortexonly.json --download-path=./gtex_analysis/ --protocol=s3
 
