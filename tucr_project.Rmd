@@ -108,24 +108,24 @@ library("tidyverse")
 if (!require("ggplot2")) install.packages("ggplot2")
 library("ggplot2")
 
-#if (!require("ggforce")) install.packages("ggforce")
-#library("ggforce")
+if (!require("ggforce")) install.packages("ggforce")
+library("ggforce")
 
 if (!require("ggrepel")) install.packages("ggrepel")
 library("ggrepel")
 
-#if (!require("ggfortify")) install.packages("ggfortify")
-#library("ggfortify")
+if (!require("ggfortify")) install.packages("ggfortify")
+library("ggfortify")
 
-#if (!require("ggdendro")) install.packages("ggdendro")
-#library("ggdendro")
+if (!require("ggdendro")) install.packages("ggdendro")
+library("ggdendro")
 
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
 library("DESeq2")
 
-#if (!require("survival")) install.packages("survival")
-#library("survival")
+if (!require("survival")) install.packages("survival")
+library("survival")
 
 if (!require("broom")) install.packages("broom")
 library("broom")
@@ -133,23 +133,23 @@ library("broom")
 if (!requireNamespace("limma", quietly = TRUE))BiocManager::install("limma")
 library("limma")
 
-#if (!require("Tmisc")) install.packages("Tmisc")
-#library("Tmisc")
+if (!require("Tmisc")) install.packages("Tmisc")
+library("Tmisc")
 
-#if (!require("survminer")) install.packages("survminer")
-#library("survminer")
+if (!require("survminer")) install.packages("survminer")
+library("survminer")
 
-#if (!require("corrr")) install.packages("corrr")
-#library("corrr")
+if (!require("corrr")) install.packages("corrr")
+library("corrr")
 
-#if (!require("here")) install.packages("here")
-#library("here")
+if (!require("here")) install.packages("here")
+library("here")
 
-#if (!require("lessR")) install.packages("lessR")
-#library("lessR")
+if (!require("lessR")) install.packages("lessR")
+library("lessR")
 
-#if (!require("splitstackshape")) install.packages("splitstackshape")
-#library(splitstackshape)
+if (!require("splitstackshape")) install.packages("splitstackshape")
+library(splitstackshape)
 
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 
@@ -162,20 +162,20 @@ library(GO.db)
 if (!require('limma')) BiocManager::install('limma')
 library(limma)
 
-#if (!require("ggthemes")) install.packages('ggthemes', dependencies = TRUE)
-#library(ggthemes)
+if (!require("ggthemes")) install.packages('ggthemes', dependencies = TRUE)
+library(ggthemes)
 
-#if (!require("gplots")) 
-#install.packages("gplots")
-#library(gplots)
+if (!require("gplots")) 
+install.packages("gplots")
+library(gplots)
 
-#if (!require("heatmap.plus")) 
-#install.packages("heatmap.plus")
-#library(heatmap.plus)
+if (!require("heatmap.plus")) 
+install.packages("heatmap.plus")
+library(heatmap.plus)
 
-#if (!require("RColorBrewer")) 
-#install.packages("RColorBrewer")
-#library(RColorBrewer)
+if (!require("RColorBrewer")) 
+install.packages("RColorBrewer")
+library(RColorBrewer)
 
 ###
 
@@ -197,6 +197,8 @@ makeBEDs <- TRUE
 
 makeDE <- TRUE
 
+RPKmethod <- "RPKM"
+
 repel <- TRUE
 
 makesurvival <- TRUE
@@ -205,13 +207,19 @@ makekpmplots <- TRUE
 
 makeSuvivalplots <- TRUE 
 
-makeRPKMboxplots <- TRUE
+makeRPKboxplots <- TRUE
 
 makecorrelations <- TRUE
 
 useintermediate <- TRUE
 
 makeGOterms <- TRUE
+
+
+##############################################################################################
+##############################################################################################
+
+
 
 ```
 
@@ -238,11 +246,9 @@ if(!dir.exists(outputdir)){
   dir.create(outputdir)
 }
 
-#t_countfile <- paste(disease,"mergedcounts.txt",sep="_")
-t_countfile <- paste(disease,"hg38.ultraConserved.counts.txt",sep="_")
+t_countfile <- paste(disease,"mergedcounts.txt",sep="_")
 
-#n_countfile <- paste(normal,"mergedcounts.txt",sep="_")
-n_countfile <- paste(normal,"hg38.ultraConserved.counts.txt",sep="_")
+n_countfile <- paste(normal,"mergedcounts.txt",sep="_")
 
 t_metadatafile <- paste(disease,"tcga_metadata.csv",sep="_")
 
@@ -1409,7 +1415,7 @@ echo "$name2.counts.txt exists."
 
 else
 
-echo -e chrom"\t"start"\t"end"\t"strand"\t"id"\t"tag"\t"annot RNASEQ-PROCESSED/tcga_analysis/GBM/reindex/*bam | sed -e "s/ /\t/g" > RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/$name2.counts.txt
+echo -e chrom"\t"start"\t"end"\t"strand"\t"id"\t"tag"\t"annot RNASEQ-PROCESSED/tcga_analysis/GBM/reindex/*bam | sed -e "s/ /\t/g" > RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/GBM_mergedcounts.txt$name2.counts.txt
 
 multiBamCov -bams RNASEQ-PROCESSED/tcga_analysis/GBM/reindex/*bam -bed $bed -q 10 >> RNASEQ-PROCESSED/tcga_analysis/GBM/foldchange/$name2.counts.txt
 
@@ -1456,11 +1462,10 @@ if(!dir.exists(paste(outputdir,"/ExpressionAnalysis",sep=""))){
 if(!is.na(n_countfile)){
   mergedcounts <- read.table(t_countfile,header = TRUE)
   
-  normalcounts <- read.table(n_countfile,header = TRUE) %>%
-    dplyr::select(-strand,-tag)
+  normalcounts <- read.table(n_countfile,header = TRUE) 
   
-  mergedcounts <- mergedcounts %>% full_join(normalcounts,by=c("id")) %>%
-    dplyr::select(-chrom.y,-start.y,-end.y,-annot.y)
+  mergedcounts <- mergedcounts %>% left_join(normalcounts,by=c("id")) %>%
+    dplyr::select(-chrom.y,-start.y,-end.y,-strand.y,-tag.y,-annot.y)
   
   metadata <- 
   read_csv(file = t_metadatafile)
@@ -1478,24 +1483,26 @@ if(!is.na(n_countfile)){
 
 if(!is.na(filterannot)){
   mergedcounts <- mergedcounts %>%
-    filter(annot.x == filterannot)
+    filter(tag.x == filterannot)
 }
 
 
 mergedcounts2 <- 
-  mergedcounts[,6:ncol(mergedcounts)]
+  mergedcounts[,8:ncol(mergedcounts)]
 
 rownames(mergedcounts2) <- 
   mergedcounts[,4]
 
 mergedcounts.info <- 
-  mergedcounts[,1:5]
+  mergedcounts[,1:6]
 
 mergedcounts.info$length <- 
   (mergedcounts$end.x - mergedcounts$start.x)/1000
 
 mergedcounts <- 
   cbind(mergedcounts.info,mergedcounts2)
+
+#write.csv(mergedcounts2,"mergedcounts2.csv")
 
 dds <- 
   DESeqDataSetFromMatrix(countData = mergedcounts2,
@@ -1509,6 +1516,10 @@ dds <-
 I am using Stephen Turner's PCA function and plots for this analysis.
 
 ```{r Section2_PCA}
+
+if(!dir.exists(paste(outputdir,"/QualityControl/",sep=""))){
+  dir.create(paste(outputdir,"/QualityControl/",sep=""))
+}
 
 #Stephen's PCA Function
 ggpca <- function (x, intgroup = "condition", ntop = 500, returnData = FALSE, labelpoints=FALSE)
@@ -1542,13 +1553,17 @@ ggpca <- function (x, intgroup = "condition", ntop = 500, returnData = FALSE, la
 rld <- varianceStabilizingTransformation(dds)
 
 ggpca(rld, intgroup = c("dex"), labelpoints=FALSE) + xlim(-20, 25) + ylim(-15,15)
-ggsave(paste(outputdir,"/aboundaer-tucr-qc-pca.png",sep=""), w=10, h=10, scale=.9)
+ggsave(paste(outputdir,"/QualityControl/aboundaer-tucr-qc-pca.png",sep=""), w=10, h=10, scale=.9)
 
 ```
 
 ### Identifying differentially expressed TUCRs with DESeq2 (Continued)
 
 ```{r Section2_DESeq2_TUCRs_continued}
+
+if(!dir.exists(paste(outputdir,"/ExpressionAnalysis/DESeq2Results/",sep=""))){
+  dir.create(paste(outputdir,"/ExpressionAnalysis/DESeq2Results/",sep=""))
+}
 
 dds <- 
   DESeq(dds)
@@ -1560,8 +1575,8 @@ res <-
   as_tibble(res)
 
 if(!is.na(filterannot) & filterannot != ""){
-write.csv(res, file = paste(outputdir,"/ExpressionAnalysis/",disease,"_results_",filterannot,".csv",sep=""))}else{
-write.csv(res, file = paste(outputdir,"/ExpressionAnalysis/",disease,"_results_allgenes.csv",sep=""))
+write.csv(res, file = paste(outputdir,"/ExpressionAnalysis/DESeq2Results/",disease,"_results_",filterannot,".csv",sep=""))}else{
+write.csv(res, file = paste(outputdir,"/ExpressionAnalysis/DESeq2Results/",disease,"_results_allgenes.csv",sep=""))
 }
 
 res_summary <- 
@@ -1610,8 +1625,8 @@ volcanoplot <- function (res,
                          genes = "all",
                          title = paste("Deregulated Genes in ",disease,sep=""), 
                          output = paste("/ExpressionAnalysis",disease,"_results_volcanoplot.png",sep=""),
-                         height = 5, 
-                         width = 6, 
+                         height = 7, 
+                         width = 7, 
                          dpi = 300){
   #res <- res_TUCR
   #genes = c("uc.110","uc.62")
@@ -1631,30 +1646,45 @@ volcanoplot <- function (res,
   }}
     ifelse(genes!="all",
            ifelse(!is.na(match(vres$row[i],genes)),vres$gene[i] <- vres$row[i], ""),vres$gene[i] <- vres$row[i])
-    }
+  }
+  
+  vres <- vres %>%
+    mutate(color = ifelse(Legend==">2-Fold & <0.05 FDR","red",
+                   ifelse(Legend==">2-Fold","blue",
+                   ifelse(Legend=="Not deregulated","black","gray"
+                          ))),
+           order = ifelse(Legend==">2-Fold & <0.05 FDR",1,
+                   ifelse(Legend==">2-Fold",2,
+                   ifelse(Legend=="Not deregulated","black",3
+                          )))) %>%
+    arrange(order)
   
   ## plot
 if(repel==TRUE){p <- ggplot(vres) + 
-  geom_point(aes(x=log2FoldChange, y=-log10(padj),col=Legend)) + 
-  scale_color_manual(values = c("blue","red","black")) + 
+  geom_point(aes(x=log2FoldChange, y=-log10(padj),col=color)) + 
+  scale_color_identity(guide = "legend", labels = vres$Legend, breaks = vres$color) + 
   ggtitle(title) + 
-  xlab("log2 fold change") + 
-  ylab("-log10 adjusted p-value") + 
-  theme(plot.title = element_text(size = rel(1.5), hjust = 0.5, face="bold"),
+  labs(x = "log2 fold change",
+        ylab = "-log10 adjusted p-value",
+        color = "Legend") + 
+  theme(plot.title = element_text(size = rel(1.5), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
               axis.title = element_text(size = rel(1.25), face="bold"),
 panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
 panel.background = element_blank(), axis.line = element_line(colour = "black")) + 
-  geom_text_repel(aes(x=log2FoldChange, y=-log10(padj),label = gene),force=50)}
+  geom_text_repel(aes(x=log2FoldChange, y=-log10(padj),label = gene),force=25,hjust=1,vjust=1) +
+  coord_cartesian(clip = "off")}
 else{p <- ggplot(vres) +
-        geom_point(aes(x=log2FoldChange, y=-log10(padj),col=Legend)) +
-        scale_color_manual(values = c("blue","red","black")) +
+        geom_point(aes(x=log2FoldChange, y=-log10(padj),col=color)) +
+        scale_color_identity(guide = "legend", labels = vres$Legend, breaks = vres$color) +
         ggtitle(title) +
-        xlab("log2 fold change") + 
-        ylab("-log10 adjusted p-value") +
-        theme(plot.title = element_text(size = rel(1.5), hjust = 0.5, face="bold"),
+        labs(x = "log2 fold change",
+        ylab = "-log10 adjusted p-value",
+        color = "Legend") +
+        theme(plot.title = element_text(size = rel(1.5), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
               axis.title = element_text(size = rel(1.25), face="bold"),
 panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black"))}
+panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  coord_cartesian(clip = "off")}
 ggsave(output, width = width, height = height, dpi = dpi)
 }
 
@@ -1664,17 +1694,21 @@ ggsave(output, width = width, height = height, dpi = dpi)
 
 ```{r Section2_DESeq2plots_TUCRs}
 
-volcanoplot(res_TUCR,genes=c("uc.110","uc.210","uc.427","uc.62"),
+if(!dir.exists(paste(outputdir,"/ExpressionAnalysis/VolcanoPlots/",sep=""))){
+  dir.create(paste(outputdir,"/ExpressionAnalysis/VolcanoPlots/",sep=""))
+}
+
+volcanoplot(res,genes=c("uc.110","uc.210","uc.427","uc.62"),
             title = paste("Deregulated Genes in ",disease,sep=""), 
-            output = paste(outputdir,"/ExpressionAnalysis/",disease,"_myron_tucr_results_volcanoplot.png",sep=""))
+            output = paste(outputdir,"/ExpressionAnalysis/VolcanoPlots/",disease,"_myron_tucr_results_volcanoplot.png",sep=""))
 
 repel_hold = repel
 
 repel = FALSE
 
-volcanoplot(res_TUCR,
+volcanoplot(res,
             title = paste("Deregulated Genes in ",disease,sep=""), 
-            output = paste(outputdir,"/ExpressionAnalysis/",disease,"_tucr_results_volcanoplot.png",sep=""))
+            output = paste(outputdir,"/ExpressionAnalysis/VolcanoPlots/",disease,"_tucr_results_volcanoplot.png",sep=""))
 
 repel = repel_hold
 
@@ -1682,46 +1716,46 @@ repel = repel_hold
 
 ### Volcano plot for intergenic TUCRs only
 
-```{r Section2_DESeq2plots_intergenicTUCRs}
+```{r Section2_DESeq2plots_annotatedTUCRs}
 
 tucr_annot <- read.table("BEDFiles/hg38.ultraconserved.bed") %>%
-  dplyr::select("row" = V5, "annot" = V7)
+  dplyr::select("row" = V4, "annot" = V7)
 
-res_intergenic <- inner_join(res_TUCR,tucr_annot,by = "row") %>%
+res_intergenic <- inner_join(res,tucr_annot,by = "row") %>%
   filter(annot == "intergenic")
 
-write.csv(res_intergenic, file = paste(outputdir,"/ExpressionAnalysis/",disease,"_results_intergenicOnly.csv",sep=""))
+write.csv(res_intergenic, file = paste(outputdir,"/ExpressionAnalysis/DESeq2Results/",disease,"_results_intergenicOnly.csv",sep=""))
 
 volcanoplot(res_intergenic,genes=c("uc.62","uc.110"), 
             title = paste("Intergenic TUCR deregulation in ",disease,sep=""),
-            output = paste(outputdir,"/ExpressionAnalysis/",disease,"_intergenic_tucr_results_volcanoplot.png",sep=""))
+            output = paste(outputdir,"/ExpressionAnalysis/VolcanoPlots/",disease,"_intergenic_tucr_results_volcanoplot.png",sep=""))
 
-res_exonic <- inner_join(res_TUCR,tucr_annot,by = "row") %>%
+res_exonic <- inner_join(res,tucr_annot,by = "row") %>%
   filter(annot == "exonic")
 
-write.csv(res_exonic, file = paste(outputdir,"/",disease,"_results_exonicOnly.csv",sep=""))
+write.csv(res_exonic, file = paste(outputdir,"/ExpressionAnalysis/DESeq2Results/",disease,"_results_exonicOnly.csv",sep=""))
 
 volcanoplot(res_exonic,genes=c("uc.90","uc.213"), 
             title = paste("exonic TUCR deregulation in ",disease,sep=""),
-            output = paste(outputdir,"/ExpressionAnalysis/",disease,"_exonic_tucr_results_volcanoplot.png",sep=""))
+            output = paste(outputdir,"/ExpressionAnalysis/VolcanoPlots/",disease,"_exonic_tucr_results_volcanoplot.png",sep=""))
 
-res_intronic <- inner_join(res_TUCR,tucr_annot,by = "row") %>%
+res_intronic <- inner_join(res,tucr_annot,by = "row") %>%
   filter(annot == "intronic")
 
-write.csv(res_intronic, file = paste(outputdir,"/ExpressionAnalysis/",disease,"_results_intronicOnly.csv",sep=""))
+write.csv(res_intronic, file = paste(outputdir,"/ExpressionAnalysis/DESeq2Results/",disease,"_results_intronicOnly.csv",sep=""))
 
-volcanoplot(res_intronic,genes=c("uc.430","uc.275"), 
+volcanoplot(res_intronic,genes=c("uc.430","uc.35"), 
             title = paste("intronic TUCR deregulation in ",disease,sep=""),
-            output = paste(outputdir,"/ExpressionAnalysis/",disease,"_intronic_tucr_results_volcanoplot.png",sep=""))
+            output = paste(outputdir,"/ExpressionAnalysis/VolcanoPlots/",disease,"_intronic_tucr_results_volcanoplot.png",sep=""))
 
-res_exonic_intronic <- inner_join(res_TUCR,tucr_annot,by = "row") %>%
+res_exonic_intronic <- inner_join(res,tucr_annot,by = "row") %>%
   filter(annot == "exonic_intronic")
 
-write.csv(res_exonic_intronic, file = paste(outputdir,"/ExpressionAnalysis/",disease,"_results_exonic_intronicOnly.csv",sep=""))
+write.csv(res_exonic_intronic, file = paste(outputdir,"/ExpressionAnalysis/DESeq2Results/",disease,"_results_exonic_intronicOnly.csv",sep=""))
 
 volcanoplot(res_exonic_intronic,genes=c("uc.282","uc.341"), 
             title = paste("exonic/intronic TUCR deregulation in ",disease,sep=""),
-            output = paste(outputdir,"/ExpressionAnalysis/",disease,"_exonic_intronic_tucr_results_volcanoplot.png",sep=""))
+            output = paste(outputdir,"/ExpressionAnalysis/VolcanoPlots/",disease,"_exonic_intronic_tucr_results_volcanoplot.png",sep=""))
 
 ```
 
@@ -1757,53 +1791,128 @@ done
 
 ```{r Section2_RPKM_TUCRs}
 
-mergedcounts <- 
-  read.table(mergedcountfile,header = TRUE)
+if(!dir.exists(paste(outputdir,"/ExpressionAnalysis/RPKM_allresults/",sep=""))){
+  dir.create(paste(outputdir,"/ExpressionAnalysis/RPKM_allresults/",sep=""))
+}
 
-normal_mergedcounts <- read.table("normal_mergedcounts.txt",header = TRUE) %>%
-  dplyr::select(-chrom,-start,-end)
-
-mergedcounts <- left_join(mergedcounts,normal_mergedcounts,by="id")
-
-metadata <- 
-  read_csv(file = metadatafile) 
-
-#CHESSantisense <- read.table("BEDFiles/CHESSgenes.bed") %>%
-#  filter(V6 == "antisense_RNA") %>%
-#  dplyr::select("V5","V6")
-
-#CHESScoding <- read.table("BEDFiles/CHESSgenes.bed") %>%
-#  filter(V6 == "protein_coding") %>%
-#  dplyr::select("V5","V6")
-
-#CHESSlncRNA <- read.table("BEDFiles/CHESSgenes.bed") %>%
-#  filter(V6 == "lncRNA") %>%
-#  dplyr::select("V5","V6")
+if(!dir.exists(paste(outputdir,"/ExpressionAnalysis/RPKM_medianonly/",sep=""))){
+  dir.create(paste(outputdir,"/ExpressionAnalysis/RPKM_medianonly/",sep=""))
+}
 
 
-#CHESSmisc <- read.table("BEDFiles/CHESSgenes.bed") %>%
-#  filter(V6 == "misc_RNA") %>%
-#  dplyr::select("V5","V6")
+if(!dir.exists(paste(outputdir,"/ExpressionAnalysis/RPKM_heatmaps/",sep=""))){
+  dir.create(paste(outputdir,"/ExpressionAnalysis/RPKM_heatmaps/",sep=""))
+}
 
-#TUCRids <- tucr_annot <- read.table("BEDFiles/hg38.ultraconserved.bed") %>%
-#  dplyr::select("row" = V5, "annot" = V7)
+if(!is.na(n_countfile)){
+  mergedcounts <- read.table(t_countfile,header = TRUE)
+  
+  normalcounts <- read.table(n_countfile,header = TRUE) 
+  
+  mergedcounts <- mergedcounts %>% left_join(normalcounts,by=c("id")) %>%
+    dplyr::select(-chrom.y,-start.y,-end.y,-strand.y,-tag.y,-annot.y) %>%
+    distinct()
+  
+  metadata <- 
+  read_csv(file = t_metadatafile)
+  
+  n_metadata <- 
+  read_csv(file = n_metadatafile)
+  
+  metadata <- rbind(metadata,n_metadata)
+  
+  seqdepth <- read.csv(file = t_seqdepthfile)
+  
+  n_seqdepth <- read.csv(file = n_seqdepthfile)
+  
+  seqdepth <- rbind(seqdepth,n_seqdepth)
+  
+}else{
+    mergedcounts <- read.table(t_countfile,header = TRUE) %>%
+    distinct()
 
-#count_annot <- rbind(TUCRids,CHESSantisense,CHESScoding,CHESSlncRNA,CHESSmisc)
+    metadata <- read_csv(file = t_metadatafile)
+    
+    seqdepth <- read.csv(file = t_seqdepthfile)
+}
+
+rpkmcounts <- mergedcounts %>%
+  filter(tag.x == "TUCR") %>%
+  mutate(length = end.x - start.x)
+
+rpkmcounts.info <- rpkmcounts %>%
+  dplyr::select(chrom.x,start.x,end.x,length,id,strand.x,tag.x,annot.x)
+
+rpkmcounts <- rpkmcounts %>%
+  dplyr::select(-chrom.x,-start.x,-end.x,-id,-strand.x,-tag.x,-annot.x)
+  
+rownames(rpkmcounts) <- as.character(rpkmcounts.info$id)
+
+genelength <- rpkmcounts.info$length/1000
+
+seqdepth2 <- as.vector(seqdepth$counts)/1000000
+
+rpkm <- function(counts,len,dep){
+  x <- counts/len
+  return(t(t(x)/(dep)))
+}
+
+tpm <- function(counts,len){
+  x <- counts/len
+  x_sum <- sum(x)/1000000
+  return(t(t(x)/(x_sum)))
+}
+
+if(RPKmethod == "tpm" | RPKmethod == "TPM"){
+rpkm.df <- tpm(rpkmcounts,genelength)  
+}else{
+rpkm.df <- rpkm(rpkmcounts,genelength,seqdepth2)  
+}
+
+rpkm.df2 <- cbind(rpkmcounts.info,rpkm.df)
+
+rpkm.median <- as.data.frame(rpkm.df)
+rpkm.median <- rpkm.median %>% 
+  dplyr::summarize(median_RPKM = rowMedians(rpkm.df)) %>%
+  dplyr::mutate(countif = ifelse(median_RPKM >=1,1,0),proportion = sum(countif,na.rm = TRUE)/n())
+rpkm.median <- cbind(rpkmcounts.info,rpkm.median)
+rpkm.median <- rpkm.median %>% dplyr::select(id,median_RPKM,countif,proportion)
+
+proportion.df <- round(as.numeric(rpkm.median$proportion[1]),3)*100
+
+write.csv(rpkm.df2,paste(outputdir,"/ExpressionAnalysis/RPKM_allresults/",disease,"_rpkm_allTUCRs.csv",sep=""))
+
+write.csv(rpkm.median,paste(outputdir,"/ExpressionAnalysis/RPKM_medianonly/",disease,"_medianrpkm_allTUCRs.csv",sep=""))
+
+heatmap.df <- rpkm.df
+geneids <- rpkm.df2 %>%
+  dplyr::select(id)
+means <- apply(heatmap.df,1,mean)
+
+heatmap.df2 <- as.data.frame(apply(heatmap.df,1:2,function(x) {ifelse(x>=10,10,x)}))
+heatmap.df2 <- cbind(geneids,means,heatmap.df2)
+
+heatmap.df2 <- heatmap.df2 %>% 
+  gather(key = "Sample", value = "RPKM",-id,-means)
+
+p <- ggplot(data = heatmap.df2,mapping = aes(x = Sample,y = reorder(id,means), fill = RPKM)) +
+  geom_tile() +
+  scale_fill_gradientn(colours = c("blue", "white", "red"), values = c(0,0.1,1)) + ggtitle(paste("All TUCRs (",proportion.df,"%)",sep="")) + xlab(paste("Samples (n = ",ncol(heatmap.df),")",sep="")) + ylab(paste("genes (n = ",nrow(heatmap.df),")",sep="")) +
+  theme(plot.title = element_text(hjust = 0.5),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+ggsave(p,file=paste(outputdir,"/ExpressionAnalysis/RPKM_heatmaps/",disease,"_allTUCRs_heatmap.png",sep=""), width = 2.5, height = 7, dpi = 300)
+
+  rpkm.TUCRs2 <- rpkm.df2
+  write.csv(rpkm.TUCRs2,paste(outputdir,"/ExpressionAnalysis/",disease,"_rpkm_TUCRs2.csv",sep=""))
 
 
-#colnames(count_annot) <- c("id","annot")
-
-#mergedcounts <- mergedcounts %>%
-#  left_join(count_annot,by="id")
-
-#NAchecker_mergedcounts<- mergedcounts[is.na(mergedcounts$annot),]
-
-#mergedcounts <- mergedcounts[complete.cases(mergedcounts),]
 
 i <- 1
 
 for(i in 1:length(unique(mergedcounts$annot))){
-
   
 annot_unique <- as.character(unique(mergedcounts$annot))
 
@@ -1813,16 +1922,16 @@ print(i)
 print(annotation)
     
 rpkmcounts <- mergedcounts %>%
-  filter(annot == annotation) %>%
-  mutate(length = end - start)
+  filter(annot.x == annotation) %>%
+  mutate(length = end.x - start.x)
 
 #rpkmcounts <- rpkmcounts[481,]
 
 rpkmcounts.info <- rpkmcounts %>%
-  dplyr::select(chrom,start,end,length,id,annot)
+  dplyr::select(chrom.x,start.x,end.x,length,id,strand.x,tag.x,annot.x)
 
 rpkmcounts <- rpkmcounts %>%
-  dplyr::select(-chrom,-start,-end,-id,-annot)
+  dplyr::select(-chrom.x,-start.x,-end.x,-id,-strand.x,-tag.x,-annot.x)
   
 #sum(is.na(mergedcounts$annot))
   
@@ -1830,16 +1939,17 @@ rownames(rpkmcounts) <- as.character(rpkmcounts.info$id)
 
 genelength <- rpkmcounts.info$length/1000
 
-seqdepth <- read.csv(file = seqdepthfile)
-
-seqdepth <- as.vector(seqdepth$counts/1000000)
+seqdepth2 <- as.vector(seqdepth$counts)/1000000
 
 rpkm <- function(counts,len,dep){
+  x <- rpkmcounts/genelength
+  x2 <- t(t(x)/(seqdepth2))
   x <- counts/len
-  return(t(t(x)/dep))
+  return(t(t(x)/(dep)))
 }
 
-rpkm.df <- rpkm(rpkmcounts,genelength,seqdepth)
+rpkm.df <- rpkm(rpkmcounts,genelength,seqdepth2)  
+
 rpkm.df2 <- cbind(rpkmcounts.info,rpkm.df)
 
 rpkm.median <- as.data.frame(rpkm.df)
@@ -1851,9 +1961,9 @@ rpkm.median <- rpkm.median %>% dplyr::select(id,median_RPKM,countif,proportion)
 
 proportion.df <- round(as.numeric(rpkm.median$proportion[i]),3)*100
 
-write.csv(rpkm.df2,paste(outputdir,"/ExpressionAnalysis/",disease,"_rpkm_",annotation,".csv",sep=""))
+write.csv(rpkm.df2,paste(outputdir,"/ExpressionAnalysis/RPKM_allresults/",disease,"_rpkm_",annotation,".csv",sep=""))
 
-write.csv(rpkm.median,paste(outputdir,"/ExpressionAnalysis/",disease,"_medianrpkm_",annotation,".csv",sep=""))
+write.csv(rpkm.median,paste(outputdir,"/ExpressionAnalysis/RPKM_medianonly/",disease,"_medianrpkm_",annotation,".csv",sep=""))
 
 heatmap.df <- rpkm.df
 geneids <- rpkm.df2 %>%
@@ -1874,12 +1984,7 @@ p <- ggplot(data = heatmap.df2,mapping = aes(x = Sample,y = reorder(id,means), f
         axis.text = element_blank(),
         axis.ticks = element_blank())
 
-ggsave(p,file=paste(outputdir,"/ExpressionAnalysis/",disease,"_",annotation,"_heatmap.png",sep=""), width = 2.5, height = 7, dpi = 300)
-
-if(annotation == "TUCR"){
-  rpkm.TUCRs2 <- rpkm.df2
-  write.csv(rpkm.TUCRs2,paste(outputdir,"/ExpressionAnalysis/",disease,"_rpkm_TUCRs2.csv",sep=""))
-}
+ggsave(p,file=paste(outputdir,"/ExpressionAnalysis/RPKM_heatmaps/",disease,"_",annotation,"_heatmap.png",sep=""), width = 2.5, height = 7, dpi = 300)
 
 }
 
@@ -1888,30 +1993,54 @@ if(annotation == "TUCR"){
 ### Generate RPKM Box Plots for each TUCR
 
 ```{r Section2_boxplot_TUCRs}
-if(makeRPKMboxplots == TRUE){
+if(makeRPKboxplots == TRUE){
   
-if(!dir.exists(paste(outputdir,"/ExpressionAnalysis/RPKMboxplots",sep=""))){
-  dir.create(paste(outputdir,"/ExpressionAnalysis/RPKMboxplots",sep=""))
+if(!dir.exists(paste(outputdir,"/ExpressionAnalysis/RPKboxplots",sep=""))){
+  dir.create(paste(outputdir,"/ExpressionAnalysis/RPKboxplots",sep=""))
 }
   
 if(!dir.exists(paste(outputdir,"/ExpressionAnalysis/FCplots",sep=""))){
   dir.create(paste(outputdir,"/ExpressionAnalysis/FCplots",sep=""))
 }
   
-metadata <- 
-  read_csv(file = metadatafile)
+if(!is.na(n_countfile)){
   
-rpkm.TUCRs2 <- read.csv(paste(outputdir,"/ExpressionAnalysis/",disease,"_rpkm_TUCRs2.csv",sep=""),header=TRUE)
-rpkm.dotplot <- rpkm.TUCRs2[,8:ncol(rpkm.TUCRs2)]
+  metadata <- 
+  read_csv(file = t_metadatafile)
+  
+  n_metadata <- 
+  read_csv(file = n_metadatafile)
+  
+  metadata <- rbind(metadata,n_metadata)
+  
+  
+}else{
+  
+    metadata <- read_csv(file = t_metadatafile)
+    
+}
+  
+rpkm.TUCRs2 <- read.csv(paste(outputdir,"/ExpressionAnalysis/",disease,"_rpkm_TUCRs2.csv",sep=""),header=TRUE) %>%
+  dplyr::select(-X)
+rpkm.dotplot <- rpkm.TUCRs2[,9:ncol(rpkm.TUCRs2)]
 TUCRids <- as.character(rpkm.TUCRs2$id)
-annot <- as.character(rpkm.TUCRs2$annot)
+annot <- as.character(rpkm.TUCRs2$tag.x)
 length <- as.character(rpkm.TUCRs2$length)
 rpkm.dotplot <- cbind(TUCRids,annot,length,rpkm.dotplot)
 rpkm.dotplot <- rpkm.dotplot %>% 
   gather(key = "Sample", value = "RPKM",-TUCRids,-annot,-length) %>%
   mutate(Key = gsub("[.]","-",Sample)) %>%
-    mutate(string = sub(".*TCGA", "", Key),barcode = tolower(paste("TCGA",substr(string, 1, 8),sep=""))) %>%
-  left_join(metadata,by="barcode") 
+    mutate(string = ifelse(str_detect(Key,"TCGA"),
+                           sub(".*TCGA", "", Key),
+                           sub(".*GTEX", "", Key)),
+           barcode = ifelse(str_detect(Key,"TCGA"),
+                            tolower(paste("TCGA",substr(string, 1, 8),sep="")),
+                            tolower(paste("GTEX",substr(string, 1, 20),sep="")))) %>%
+  left_join(metadata,by="barcode")
+
+rpkm.dotplot <- rpkm.dotplot[complete.cases(rpkm.dotplot),]
+
+
 
 rpkm.dotplot.nmeans <- rpkm.dotplot %>%
   filter(dex == "normal") %>%
@@ -1920,7 +2049,7 @@ rpkm.dotplot.nmeans <- rpkm.dotplot %>%
   dplyr::select(TUCRids,mean) %>%
   distinct()
 
-res_TUCR <- read_csv(paste(outputdir,"/ExpressionAnalysis/",disease,"_results_TUCR.csv",sep="")) %>%
+res_TUCR <- read_csv(paste(outputdir,"/ExpressionAnalysis/DESeq2Results/",disease,"_results_TUCR.csv",sep="")) %>%
   dplyr::select("TUCRids"=row,log2FoldChange)
 
 rpkm.dotplot <- rpkm.dotplot %>%
@@ -1947,11 +2076,14 @@ p<- ggplot(rpkm.dotplot2, aes(x=dex, y=RPKM)) +
   #geom_violin(trim = FALSE)+
   #geom_point(pch=21, size=1.5) +
   geom_jitter(binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray") +
-  ggtitle(paste("RPKM expression of ",TUCR)) +
+  ggtitle(paste(RPKmethod," expression of ",TUCR)) +
   theme(plot.title = element_text(hjust = 0.5),
   panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
   panel.background = element_blank(), axis.line = element_line(colour = "black")) +
-  labs(y="Reads per kilobase million (RPKM)", x = "Sample") +
+  labs(y=paste(ifelse((RPKmethod=="tpm"|RPKmethod=="TPM"),
+                      "Transcripts per kilobase million (TPM)",
+                      "Reads per kilobase million (RPKM)")),
+       x = "Sample") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color="red", fill="red")
 
 rpkm.dotplot3 <- rpkm.dotplot2 %>% 
@@ -1974,7 +2106,7 @@ p2 <- ggplot(data = rpkm.dotplot3,aes(x=dex, y=DESeq2,fill=fill)) +
   labs(y="log2FoldChange", x = "Tissue Type")
   
 
-ggsave(p,file=paste(outputdir,"/ExpressionAnalysis/RPKMboxplots/",disease,"_",TUCR,"_rpkm_boxplot.png",sep = ""))
+ggsave(p,file=paste(outputdir,"/ExpressionAnalysis/RPKboxplots/",disease,"_",TUCR,"_rpkm_boxplot.png",sep = ""))
 ggsave(p2,file=paste(outputdir,"/ExpressionAnalysis/FCplots/",disease,"_",TUCR,"_FC_plot.png",sep = ""))
 }
 
@@ -2015,18 +2147,55 @@ if(!dir.exists(paste(outputdir,"/SurvivalAnalysis",sep=""))){
   dir.create(paste(outputdir,"/SurvivalAnalysis",sep=""))
 }
 
+if(!dir.exists(paste(outputdir,"/SurvivalAnalysis/SummaryTables/",sep=""))){
+  dir.create(paste(outputdir,"/SurvivalAnalysis/SummaryTables/",sep=""))
+}
+
+
 if(!file.exists("GBM.clin.merged.txt")){unzip("GBM.clin.merged.zip")}
 
-countdata <- read.table(countfilename,header = TRUE)
-metadata <- read_csv(file = metadatafile)
+if(!is.na(n_countfile)){
+  mergedcounts <- read.table(t_countfile,header = TRUE)
+  
+  normalcounts <- read.table(n_countfile,header = TRUE) 
+  
+  mergedcounts <- mergedcounts %>% left_join(normalcounts,by=c("id")) %>%
+    dplyr::select(-chrom.y,-start.y,-end.y,-strand.y,-tag.y,-annot.y) %>%
+    distinct()
+  
+  metadata <- 
+  read_csv(file = t_metadatafile)
+  
+  n_metadata <- 
+  read_csv(file = n_metadatafile)
+  
+  metadata <- rbind(metadata,n_metadata)
+  
+}else{
+    mergedcounts <- read.table(t_countfile,header = TRUE) %>%
+    distinct()
 
-posdata <- countdata[,1:4]
-countdata <- countdata[,5:length(colnames(countdata))]
+    metadata <- read_csv(file = t_metadatafile)
+}
 
-countdata <- as.matrix(countdata)
+if(!is.na(filterannot)){
+  mergedcounts <- mergedcounts %>%
+    filter(tag.x == filterannot)
+}
 
-n_index <- c(seq(1,5))
-t_index <- c(seq(6,ncol(countdata)))
+posdata <- mergedcounts[,1:7]
+mergedcounts <- mergedcounts[,8:length(colnames(mergedcounts))]
+
+is.sequential <- function(x){
+  all(abs(diff(x)) == 1)
+} 
+
+match_colnames <- match(as.character(colnames(mergedcounts)),as.character(metadata$survid))
+
+mergedcounts <- as.matrix(mergedcounts)
+
+n_index <- c(seq(1,5),seq(172,ncol(mergedcounts)))
+t_index <- c(seq(6,171))
 
 vm <- function(x){
   cond <- factor(ifelse(seq(1,dim(x)[2],1) %in% t_index, 1,  0))
@@ -2036,8 +2205,16 @@ vm <- function(x){
   return(ex$E)
 }
 
-count_vm <- vm(countdata)
-colnames(count_vm) <- metadata$barcode
+count_vm <- vm(mergedcounts)
+
+if(is.sequential(match_colnames)){
+  print("metadata rows match countfile columns")
+  colnames(count_vm) <- metadata$id
+}else{
+  "metadata rows do not match countfile columns"
+}
+
+
 
 scal <- function(x,y){
   mean_n <- rowMeans(y)  # mean of normal
@@ -2062,15 +2239,20 @@ clinical <- read.table("GBM.clin.merged.txt",header = TRUE)
 
 clinical$time <- as.numeric(clinical$time)
 
-sum(clinical$patient %in% colnames(z_rna))
+clinical <- clinical %>%
+  dplyr::select("barcode"=patient,time,status)
 
-ind_tum <- which(unique(colnames(z_rna)) %in% clinical$patient)
-ind_clin <- which(clinical$patient %in% colnames(z_rna))
+clinical2 <- metadata %>% left_join(clinical,by = "barcode")
+
+#sum(clinical$patient %in% colnames(z_rna))
+
+ind_tum <- which(unique(colnames(z_rna)) %in% clinical2$id)
+ind_clin <- which(clinical2$id %in% colnames(z_rna))
 
 out.tab <- c()
 for(x in 1:nrow(count_vm)){
   ind_gene <- x
-  s <- Surv(clinical$time[ind_clin],clinical$status[ind_clin])
+  s <- Surv(clinical2$time[ind_clin],clinical2$status[ind_clin])
   cx <- coxph(formula = s ~ count_vm[ind_gene,ind_tum])
   cx <- tidy(cx)
   out.tab <- rbind(out.tab,cx)
@@ -2079,7 +2261,7 @@ for(x in 1:nrow(count_vm)){
 surv_TUCR <- cbind(posdata,out.tab)
 surv_TUCR <- surv_TUCR %>% dplyr::select(-term)
 
-write_csv(surv_TUCR,paste(outputdir,"/SurvivalAnalysis/",disease,"_survival_TUCRs.csv",sep=""))
+write_csv(surv_TUCR,paste(outputdir,"/SurvivalAnalysis/SummaryTables/",disease,"_survival_TUCRs.csv",sep=""))
 
 if(makekpmplots == TRUE){
 
@@ -2087,50 +2269,58 @@ if(!dir.exists(paste(outputdir,"/SurvivalAnalysis/tucrKPMplots",sep=""))){
   dir.create(paste(outputdir,"/SurvivalAnalysis/tucrKPMplots",sep=""))
 }
 
-km_countdata <- countdata
-colnames(km_countdata) <- metadata$barcode
-posdata$median <- rowMedians(countdata)
+km_countdata <- mergedcounts
+colnames(km_countdata) <- metadata$id
+posdata$median <- rowMedians(mergedcounts)
+
+mergedcounts <- mergedcounts[,complete.cases(clinical2)]
 
 probs <- c(0.25,0.5,0.75)
-q <- rowQuantiles(countdata, probs = probs)
+q <- rowQuantiles(mergedcounts, probs = probs)
 posdata$n25 <- q[,1]
 posdata$n75 <- q[,3]
-km_TUCRs <- cbind(posdata,km_countdata)
-km_TUCRs <- km_TUCRs[,4:ncol(km_TUCRs)]
+posdata <- posdata %>%
+  dplyr::select("TUCR"=id,median,n25,n75)
+km_TUCRs <- cbind(posdata,km_countdata[,complete.cases(clinical2)]) 
+
 km_TUCRs <- km_TUCRs %>%
-  gather(key = "sample", value = "count",-id,-median,-n75,-n25) %>%
+  gather(key = "id", value = "count",-TUCR,-median,-n75,-n25) %>%
   mutate(group = ifelse(count>=n75,"high",ifelse(count<=n25,"low",NA))) %>%
-  dplyr::select(id,median,"patient"=sample,group) %>%
-  left_join(clinical,by="patient") %>%
+  distinct %>%
+  dplyr::select(TUCR,median,id,group) %>%
+  left_join(clinical2,by="id") %>%
   dplyr::filter(median != 0)
 
-TUCRids <- posdata$id
+TUCRids <- as.character(posdata$TUCR)
 i = 1
 
-ptable <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("id","pvalue","method"))))
+ptable <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("TUCR","pvalue","method"))))
 
 for(i in 1:length(TUCRids)){
   print(i)
   skip_to_next <- FALSE
-  TUCR <- TUCRids[i]
+  TUCRsurv <- as.character(TUCRids[i])
   #TUCR <- "uc.1"
   kmdata <- km_TUCRs %>%
-    dplyr::filter(id == TUCR)
+    dplyr::filter(TUCR == TUCRsurv) %>%
+    dplyr::select(TUCR,id,group,time,status) 
   fit <- survfit(Surv(time, status) ~ group, data = kmdata)
   p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE),
                 error = function(e) { skip_to_next <<- TRUE})
+  #p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
+                
   if(skip_to_next) { 
-    rbinder <- cbind(as.character(TUCR),NA,NA)
+    rbinder <- cbind(as.character(TUCRsurv),NA,NA)
     ptable[i,] <- rbinder
     next } 
-  ggsave(file=paste(outputdir,"/SurvivalAnalysis/tucrKPMplots/",disease,"_",TUCR,"_kpmplot.png",sep = ""),
+  ggsave(file=paste(outputdir,"/SurvivalAnalysis/tucrKPMplots/",disease,"_",TUCRsurv,"_kpmplot.png",sep = ""),
          plot = print(p))
-    p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff")
-  rbinder <- cbind(as.character(TUCR),p2value$pval,p2value$method)
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff")
+  rbinder <- cbind(as.character(TUCRsurv),p2value$pval,p2value$method)
   ptable[i,] <- rbinder
 }}
 
-write_csv(ptable,paste(outputdir,"/SurvivalAnalysis/",disease,"_kpm_summary_TUCRs.csv",sep=""))
+write_csv(ptable,paste(outputdir,"/SurvivalAnalysis/SummaryTables/",disease,"_kpm_summary_TUCRs.csv",sep=""))
 
 ```
 
@@ -2140,34 +2330,38 @@ write_csv(ptable,paste(outputdir,"/SurvivalAnalysis/",disease,"_kpm_summary_TUCR
 
 ### Volcano plot
 
-volcanosurv <- function (res,genes = "all",title = paste("TUCRs correlated with survival in ",disease,sep=""), output = paste(disease,"_results__survival_volcanoplot.png",sep=""),height = 5, width = 7.5, dpi = 300){
+volcanosurv <- function (res,genes = "all",title = paste("TUCRs correlated with survival in ",disease,sep=""), output = paste(disease,"_results__survival_volcanoplot.png",sep=""),height = 7.5, width = 9, dpi = 300){
   #res <- res_surv
   #genes = c("uc.110","uc.62")
   #title = paste("TUCR correlation with patient survival in ",disease,sep="")
   #output = paste(outputdir,"/intergenic_tucr_results_volcanosurv.png",sep="")
-  i = 9
+  i <- 1
   vres <- res
-  vres <- vres %>% mutate(gene="",Survival="")
+  vres <- vres %>% mutate(gene="",Survival="",color="")
   for (i in 1:length(vres$id)){
   ifelse(is.na(vres$pvalue[i]),vres$pvalue[i] <- 1,vres$pvalue[i] <- vres$pvalue[i])
     
   ifelse(genes!="all",ifelse(!is.na(match(vres$id[i],genes)),vres$gene[i] <- as.character(vres$id[i]), ""),vres$gene[i] <- vres$id[i])
   
-  ifelse((vres$pvalue[i] <0.05 & vres$p.value[i] <0.05 & vres$estimate[i] < 0),vres$Survival[i] <- "Significant (Both, Good Prognosis)",
-  ifelse((vres$pvalue[i] <0.05 & vres$p.value[i] <0.05 & vres$estimate[i] > 0),vres$Survival[i] <- "Significant (Both, Poor Prognosis)",
-  ifelse((vres$pvalue[i] >0.05 & vres$p.value[i] <0.05 & vres$estimate[i] < 0),vres$Survival[i] <- "Significant (CH, Good Prognosis)",
-  ifelse((vres$pvalue[i] >0.05 & vres$p.value[i] <0.05 & vres$estimate[i] > 0),vres$Survival[i] <- "Significant (CH, Poor Prognosis)",
-  ifelse((vres$pvalue[i] <0.05 & vres$p.value[i] >0.05),vres$Survival[i] <- "Significant (KM)",
-  ifelse(vres$Survival[i] <- "Not significant"))))))}
+  ifelse((vres$pvalue[i] <0.05 & vres$p.value[i] <0.05 & vres$estimate[i] < 0),{vres$Survival[i] <- "Significant (Both, Good Prognosis)";vres$color[i] <- "red";},
+  ifelse((vres$pvalue[i] <0.05 & vres$p.value[i] <0.05 & vres$estimate[i] > 0),{vres$Survival[i] <- "Significant (Both, Poor Prognosis)";vres$color[i] <- "blue";},
+  ifelse((vres$pvalue[i] >0.05 & vres$p.value[i] <0.05 & vres$estimate[i] < 0),{vres$Survival[i] <- "Significant (CH, Good Prognosis)";vres$color[i] <- "green";},
+  ifelse((vres$pvalue[i] >0.05 & vres$p.value[i] <0.05 & vres$estimate[i] > 0),{vres$Survival[i] <- "Significant (CH, Poor Prognosis)";vres$color[i] <- "purple";},
+  ifelse((vres$pvalue[i] <0.05 & vres$p.value[i] >0.05),{vres$Survival[i] <- "Significant (KM)";vres$color[i] <- "black";},
+  ifelse({vres$Survival[i] <- "Not significant";vres$color[i] <- "lightgray";}))))))}
+  
+  vres <- vres %>%
+  arrange(desc(Survival))
 
   
   ## plot
 if(repel==TRUE){p <- ggplot(vres) +
-        geom_point(aes(x=estimate, y=-log10(as.numeric(p.value)),col=Survival)) +
-        scale_color_manual(values = c("gray","#619cff","#f8766d","#00ba38","#c77cff","black")) +
+        geom_point(aes(x=estimate, y=-log10(as.numeric(p.value)),col=color)) +
+        scale_color_identity(guide = "legend", labels = vres$Survival, breaks = vres$color) +
         ggtitle(title) +
-        xlab("Cox Estimated Proportional Hazard") + 
-        ylab("-log10 P-Value (CH)") +
+        labs(x = "Cox Estimated Proportional Hazard",
+        y = "-log10 P-Value (CH)",
+        color = "Legend")+
         theme(plot.title = element_text(size = rel(1.5), hjust = 0.5, face="bold"),
               axis.title = element_text(size = rel(1.25), face="bold"),
 panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -2175,11 +2369,12 @@ panel.background = element_blank(), axis.line = element_line(colour = "black")) 
         geom_text_repel(aes(x=estimate, y=-log10(as.numeric(p.value)),label = gene),force=50)
 }else{
   p <- ggplot(vres) +
-        geom_point(aes(x=estimate, y=-log10(as.numeric(pvalue)),col=Survival)) +
-    scale_color_manual(values = c("gray","#619cff","#f8766d","#00ba38","#c77cff","black")) +
+        geom_point(aes(x=estimate, y=-log10(as.numeric(pvalue)),col=color)) +
+    scale_color_identity(guide = "legend", labels = vres$Survival, breaks = vres$color) +
         + ggtitle(title) +
-        xlab("Cox Estimated Proportional Hazard") + 
-        ylab("-log10 P-Value (CH)") +
+        labs(x = "Cox Estimated Proportional Hazard",
+        y = "-log10 P-Value (CH)",
+        color = "Legend") +
         theme(plot.title = element_text(size = rel(1.5), hjust = 0.5, face="bold"),
               axis.title = element_text(size = rel(1.25), face="bold"),
 panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
@@ -2193,20 +2388,33 @@ ggsave(output, width = width, height = height, dpi = dpi)
 
 ```{r Section3_summary surv}
 
+if(!dir.exists(paste(outputdir,"/SurvivalAnalysis/SummaryFigures/",sep=""))){
+  dir.create(paste(outputdir,"/SurvivalAnalysis/SummaryFigures/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/SurvivalAnalysis/SummaryFigures/VolcanoPlots/",sep=""))){
+  dir.create(paste(outputdir,"/SurvivalAnalysis/SummaryFigures/VolcanoPlots/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/SurvivalAnalysis/SummaryFigures/BarGraphs/",sep=""))){
+  dir.create(paste(outputdir,"/SurvivalAnalysis/SummaryFigures/BarGraphs/",sep=""))
+}
+
 genes <- ""
 
-surv_TUCR <- read.csv(paste(outputdir,"/SurvivalAnalysis/",disease,"_survival_TUCRs.csv",sep=""),header=TRUE)
+surv_TUCR <- read.csv(paste(outputdir,"/SurvivalAnalysis/SummaryTables/",disease,"_survival_TUCRs.csv",sep=""),header=TRUE)
 
-ptable <- read.csv(paste(outputdir,"/SurvivalAnalysis/",disease,"_kpm_summary_TUCRs.csv",sep=""),header=TRUE)
+ptable <- read.csv(paste(outputdir,"/SurvivalAnalysis/SummaryTables/",disease,"_kpm_summary_TUCRs.csv",sep=""),header=TRUE) %>%
+  dplyr::select("id"=TUCR,pvalue,method)
 
 res_surv <- inner_join(ptable,surv_TUCR,by="id")
 
 res_surv_sum <- res_surv
 
-res_surv_sum <- res_surv_sum %>% mutate(gene="",Survival="")
+res_surv_sum <- res_surv_sum %>% mutate(gene="",Survival="",color="")
 
 tucr_annot <- read.table("BEDFiles/hg38.ultraconserved.bed") %>%
-  dplyr::select("id" = V5, "annot" = V7)
+  dplyr::select("id" = V4, "annot" = V7)
 
 res_surv_sum <- res_surv_sum %>%
   left_join(tucr_annot,by="id")
@@ -2228,45 +2436,51 @@ for (i in 1:length(res_surv_sum2$id)){
   
   ifelse((res_surv_sum2$pvalue[i] <0.05 & res_surv_sum2$p.value[i] <0.05 & 
             res_surv_sum2$estimate[i] < 0),
-         res_surv_sum2$Survival[i] <- "Significant (Both, Good Prognosis)",
+         {res_surv_sum2$Survival[i] <- "Significant (Both, Good Prognosis)";res_surv_sum2$color[i] <- "red";},
   ifelse((res_surv_sum2$pvalue[i] <0.05 & res_surv_sum2$p.value[i] <0.05 &
             res_surv_sum2$estimate[i] > 0),
-         res_surv_sum2$Survival[i] <- "Significant (Both, Poor Prognosis)",
+         {res_surv_sum2$Survival[i] <- "Significant (Both, Poor Prognosis)";res_surv_sum2$color[i] <- "blue";},
   ifelse((res_surv_sum2$pvalue[i] >0.05 & res_surv_sum2$p.value[i] <0.05 &
             res_surv_sum2$estimate[i] < 0),
-         res_surv_sum2$Survival[i] <- "Significant (CH, Good Prognosis)",
+         {res_surv_sum2$Survival[i] <- "Significant (CH, Good Prognosis)";res_surv_sum2$color[i] <- "green";},
   ifelse((res_surv_sum2$pvalue[i] >0.05 & res_surv_sum2$p.value[i] <0.05 &
             res_surv_sum2$estimate[i] > 0),
-         res_surv_sum2$Survival[i] <- "Significant (CH, Poor Prognosis)",
+         {res_surv_sum2$Survival[i] <- "Significant (CH, Poor Prognosis)";res_surv_sum2$color[i] <- "purple";},
   ifelse((res_surv_sum2$pvalue[i] <0.05 & res_surv_sum2$p.value[i] >0.05),
-         res_surv_sum2$Survival[i] <- "Significant (KM)",
-  ifelse(res_surv_sum2$Survival[i] <- "Not significant"))))))}
+         {res_surv_sum2$Survival[i] <- "Significant (KM)";res_surv_sum2$color[i] <- "black";},
+  {res_surv_sum2$Survival[i] <- "Not significant";res_surv_sum2$color[i] <- "lightgray";})))))}
 
 res_surv_sum2 <- res_surv_sum2 %>%
   group_by(Survival) %>%
-  summarise(count = n())
+  summarise(count = n(),color) %>%
+  distinct() %>%
+  arrange(desc(Survival))
 
-write.csv(res_surv_sum2,file=paste(outputdir,"/SurvivalAnalysis/",disease,"_",annotation,"_tucr_surv_table.csv",sep=""))
+write.csv(res_surv_sum2,file=paste(outputdir,"/SurvivalAnalysis/SummaryFigures/BarGraphs/",disease,"_",annotation,"_tucr_surv_table.csv",sep=""))
 
-p <- ggplot(res_surv_sum2, aes(x=Survival,y=count,fill=Survival)) + geom_bar(stat="identity", width = 0.7) + scale_fill_manual(values = c("gray","#619cff","#f8766d","#00ba38","#c77cff","black")) + ylab("# of TUCRs") + theme(
+p <- ggplot(res_surv_sum2, aes(x=Survival,y=count,fill=color)) + geom_bar(stat="identity", width = 0.7) + 
+  scale_fill_identity(guide = "legend", labels = res_surv_sum2$Survival, breaks = res_surv_sum2$color) + 
+  labs(y = "# of TUCRs", fill = "Legend") + 
+  theme(
 plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
 axis.title = element_text(size = rel(1.25), face="bold"),
 panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
 panel.background = element_blank(), axis.line = element_line(colour = "black"),
 axis.text.x = element_blank())
 
-ggsave(file=paste(outputdir,"/SurvivalAnalysis/",disease,"_",annotation,"_tucr_surv_bar.png",sep=""),plot = print(p), width = 5, height = 5, dpi = 300)
+ggsave(file=paste(outputdir,"/SurvivalAnalysis/SummaryFigures/BarGraphs/",disease,"_",annotation,"_tucr_surv_bar.png",sep=""),plot = print(p), width = 5, height = 5, dpi = 300)
 
 res_surv_sum3 <- res_surv_sum
 
-volcanosurv(res_surv_sum3, genes = "", title = paste(annotation," TUCR correlation with patient survival in ",disease,sep=""),output = paste(outputdir,"/SurvivalAnalysis/",disease,"_",annotation,"_tucr_results_volcanosurv.png",sep=""))
+volcanosurv(res_surv_sum3, genes = "", title = paste(annotation," TUCR correlation with patient survival in ",disease,sep=""),output = paste(outputdir,"/SurvivalAnalysis/SummaryFigures/VolcanoPlots/",disease,"_",annotation,"_tucr_results_volcanosurv.png",sep=""))
+
+h <- 1
 
 for (h in 1:length(annot_unique)){
   annotation <- as.character(annot_unique[h])  
   print(annotation)
   res_surv_sum2 <- res_surv_sum %>%
     filter(annot == annotation)
-
 
 for (i in 1:length(res_surv_sum2$id)){
   #print(as.character(res_surv_sum2$id[i]))
@@ -2279,39 +2493,43 @@ for (i in 1:length(res_surv_sum2$id)){
   
   ifelse((res_surv_sum2$pvalue[i] <0.05 & res_surv_sum2$p.value[i] <0.05 & 
             res_surv_sum2$estimate[i] < 0),
-         res_surv_sum2$Survival[i] <- "Significant (Both, Good Prognosis)",
+         {res_surv_sum2$Survival[i] <- "Significant (Both, Good Prognosis)";res_surv_sum2$color[i] <- "red";},
   ifelse((res_surv_sum2$pvalue[i] <0.05 & res_surv_sum2$p.value[i] <0.05 &
             res_surv_sum2$estimate[i] > 0),
-         res_surv_sum2$Survival[i] <- "Significant (Both, Poor Prognosis)",
+         {res_surv_sum2$Survival[i] <- "Significant (Both, Poor Prognosis)";res_surv_sum2$color[i] <- "blue";},
   ifelse((res_surv_sum2$pvalue[i] >0.05 & res_surv_sum2$p.value[i] <0.05 &
             res_surv_sum2$estimate[i] < 0),
-         res_surv_sum2$Survival[i] <- "Significant (CH, Good Prognosis)",
+         {res_surv_sum2$Survival[i] <- "Significant (CH, Good Prognosis)";res_surv_sum2$color[i] <- "green";},
   ifelse((res_surv_sum2$pvalue[i] >0.05 & res_surv_sum2$p.value[i] <0.05 &
             res_surv_sum2$estimate[i] > 0),
-         res_surv_sum2$Survival[i] <- "Significant (CH, Poor Prognosis)",
+         {res_surv_sum2$Survival[i] <- "Significant (CH, Poor Prognosis)";res_surv_sum2$color[i] <- "purple";},
   ifelse((res_surv_sum2$pvalue[i] <0.05 & res_surv_sum2$p.value[i] >0.05),
-         res_surv_sum2$Survival[i] <- "Significant (KM)",
-  ifelse(res_surv_sum2$Survival[i] <- "Not significant"))))))}
+         {res_surv_sum2$Survival[i] <- "Significant (KM)";res_surv_sum2$color[i] <- "black";},
+  {res_surv_sum2$Survival[i] <- "Not significant";res_surv_sum2$color[i] <- "lightgray";})))))}
 
 res_surv_sum2 <- res_surv_sum2 %>%
   group_by(Survival) %>%
-  summarise(count = n())
+  summarise(count = n(),color) %>%
+  distinct() %>%
+  arrange(desc(Survival))
 
-write.csv(res_surv_sum2,file=paste(outputdir,"/SurvivalAnalysis/",disease,"_tucr_surv_table_",annotation,".csv",sep=""))
+write.csv(res_surv_sum2,file=paste(outputdir,"/SurvivalAnalysis/SummaryFigures/BarGraphs/",disease,"_",annotation,"_tucr_surv_table.csv",sep=""))
 
-p <- ggplot(res_surv_sum2, aes(x=Survival,y=count,fill=Survival)) + geom_bar(stat="identity", width = 0.7) + scale_fill_manual(values = c("gray","#619cff","#f8766d","#00ba38","#c77cff","black")) + ylab("# of TUCRs") + theme(
+p <- ggplot(res_surv_sum2, aes(x=Survival,y=count,fill=color)) + geom_bar(stat="identity", width = 0.7) + 
+  scale_fill_identity(guide = "legend", labels = res_surv_sum2$Survival, breaks = res_surv_sum2$color) + 
+  labs(y = "# of TUCRs", fill = "Legend") + 
+  theme(
 plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
 axis.title = element_text(size = rel(1.25), face="bold"),
 panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
 panel.background = element_blank(), axis.line = element_line(colour = "black"),
 axis.text.x = element_blank())
 
-ggsave(file=paste(outputdir,"/SurvivalAnalysis/",disease,"tucr_surv_bar_",annotation,".png",sep=""),plot = print(p), width = 5, height = 5, dpi = 300)
+ggsave(file=paste(outputdir,"/SurvivalAnalysis/SummaryFigures/BarGraphs/",disease,"_",annotation,"_tucr_surv_bar.png",sep=""),plot = print(p), width = 5, height = 5, dpi = 300)
 
-res_surv_sum3 <- res_surv_sum %>%
-    filter(annot == annotation)
+res_surv_sum3 <- res_surv_sum
 
-volcanosurv(res_surv_sum3, genes = "", title = paste(annotation," TUCR correlation with patient survival in ",disease,sep=""),output = paste(outputdir,"/SurvivalAnalysis/",disease,"_",annotation,"_tucr_results_volcanosurv.png",sep=""))
+volcanosurv(res_surv_sum3, genes = "", title = paste(annotation," TUCR correlation with patient survival in ",disease,sep=""),output = paste(outputdir,"/SurvivalAnalysis/SummaryFigures/VolcanoPlots/",disease,"_",annotation,"_tucr_results_volcanosurv.png",sep=""))
 }
 
 ```
