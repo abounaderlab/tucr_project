@@ -215,12 +215,6 @@ useintermediate <- TRUE
 
 makeGOterms <- TRUE
 
-
-##############################################################################################
-##############################################################################################
-
-
-
 ```
 
 ```{r tinytex, include=FALSE}
@@ -1465,7 +1459,8 @@ if(!is.na(n_countfile)){
   normalcounts <- read.table(n_countfile,header = TRUE) 
   
   mergedcounts <- mergedcounts %>% left_join(normalcounts,by=c("id")) %>%
-    dplyr::select(-chrom.y,-start.y,-end.y,-strand.y,-tag.y,-annot.y)
+    dplyr::select(-chrom.y,-start.y,-end.y,-strand.y,-tag.y,-annot.y) %>%
+    distinct()
   
   metadata <- 
   read_csv(file = t_metadatafile)
@@ -1485,6 +1480,7 @@ if(!is.na(filterannot)){
   mergedcounts <- mergedcounts %>%
     filter(tag.x == filterannot)
 }
+
 
 
 mergedcounts2 <- 
@@ -1836,9 +1832,13 @@ if(!is.na(n_countfile)){
     seqdepth <- read.csv(file = t_seqdepthfile)
 }
 
-rpkmcounts <- mergedcounts %>%
-  filter(tag.x == "TUCR") %>%
+if(!is.na(filterannot)){
+  rpkmcounts <- mergedcounts %>%
+  filter(tag.x == filterannot) %>%
   mutate(length = end.x - start.x)
+}else{
+rpkmcounts <- mergedcounts %>%
+  mutate(length = end.x - start.x)}
 
 rpkmcounts.info <- rpkmcounts %>%
   dplyr::select(chrom.x,start.x,end.x,length,id,strand.x,tag.x,annot.x)
@@ -1999,10 +1999,6 @@ if(!dir.exists(paste(outputdir,"/ExpressionAnalysis/RPKboxplots",sep=""))){
   dir.create(paste(outputdir,"/ExpressionAnalysis/RPKboxplots",sep=""))
 }
   
-if(!dir.exists(paste(outputdir,"/ExpressionAnalysis/FCplots",sep=""))){
-  dir.create(paste(outputdir,"/ExpressionAnalysis/FCplots",sep=""))
-}
-  
 if(!is.na(n_countfile)){
   
   metadata <- 
@@ -2045,22 +2041,9 @@ rpkm.dotplot <- rpkm.dotplot[complete.cases(rpkm.dotplot),]
 rpkm.dotplot.nmeans <- rpkm.dotplot %>%
   filter(dex == "normal") %>%
   group_by(TUCRids) %>%
-  mutate(mean = mean(RPKM,na.rm=TRUE)) %>%
-  dplyr::select(TUCRids,mean) %>%
+  mutate(median = median(RPKM,na.rm=TRUE)) %>%
+  dplyr::select(TUCRids,median) %>%
   distinct()
-
-res_TUCR <- read_csv(paste(outputdir,"/ExpressionAnalysis/DESeq2Results/",disease,"_results_TUCR.csv",sep="")) %>%
-  dplyr::select("TUCRids"=row,log2FoldChange)
-
-rpkm.dotplot <- rpkm.dotplot %>%
-  left_join(rpkm.dotplot.nmeans,by="TUCRids") %>%
-  left_join(res_TUCR,by="TUCRids") %>%
-  mutate(DESeq2 = ifelse(dex=="normal",0,log2FoldChange)) %>%
-  mutate(foldchange = ifelse(mean==0,RPKM/0.001,ifelse((RPKM/mean)>=0,RPKM/mean,ifelse((RPKM/mean)<0,(-1/(RPKM/mean)),NA)))) %>%
-mutate(log2FC = ifelse(foldchange==0,0,log2(foldchange))) %>%
-  dplyr::select(-Sample,-Key,-id,-string,-log2FoldChange) %>%
-  filter(!is.na(dex))
-
 
 i = 1
 for(i in 1:length(TUCRids)){
@@ -2085,33 +2068,184 @@ p<- ggplot(rpkm.dotplot2, aes(x=dex, y=RPKM)) +
                       "Reads per kilobase million (RPKM)")),
        x = "Sample") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color="red", fill="red")
+  
 
-rpkm.dotplot3 <- rpkm.dotplot2 %>% 
-  dplyr::select(TUCRids,DESeq2,dex) %>%
-  mutate(fill = ifelse(DESeq2>=1,"red",ifelse(DESeq2<=-1,"green","snow3"))) %>%
+ggsave(p,file=paste(outputdir,"/ExpressionAnalysis/RPKboxplots/",disease,"_",TUCR,"_rpkm_boxplot.png",sep = ""))
+
+}
+
+
+}
+```
+
+## Generate FC Plots for each TUCR
+
+```{r Section2_FC Plots}
+
+if(!dir.exists(paste(outputdir,"/ExpressionAnalysis/FCplots",sep=""))){
+  dir.create(paste(outputdir,"/ExpressionAnalysis/FCplots",sep=""))
+}
+
+if(!is.na(n_countfile)){
+  mergedcounts <- read.table(t_countfile,header = TRUE)
+  
+  normalcounts <- read.table(n_countfile,header = TRUE) 
+  
+  mergedcounts <- mergedcounts %>% left_join(normalcounts,by=c("id")) %>%
+    dplyr::select(-chrom.y,-start.y,-end.y,-strand.y,-tag.y,-annot.y) %>%
+    distinct()
+  
+  metadata <- 
+  read_csv(file = t_metadatafile)
+  
+  n_metadata <- 
+  read_csv(file = n_metadatafile)
+  
+  metadata <- rbind(metadata,n_metadata)
+  
+  seqdepth <- read.csv(file = t_seqdepthfile)
+  
+  n_seqdepth <- read.csv(file = n_seqdepthfile)
+  
+  seqdepth <- rbind(seqdepth,n_seqdepth)
+  
+}else{
+    mergedcounts <- read.table(t_countfile,header = TRUE) %>%
+    distinct()
+
+    metadata <- read_csv(file = t_metadatafile)
+    
+    seqdepth <- read.csv(file = t_seqdepthfile)
+}
+
+if(!is.na(filterannot)){
+  mergedcounts <- mergedcounts %>%
+  filter(tag.x == filterannot)
+}
+
+is.sequential <- function(x){
+  all(abs(diff(x)) == 1)
+} 
+
+posdata <- mergedcounts[,1:7]
+
+mergedcounts <- mergedcounts[,8:length(colnames(mergedcounts))]
+
+match_colnames <- match(as.character(colnames(mergedcounts)),as.character(metadata$survid))
+
+
+
+mergedcounts <- as.matrix(mergedcounts)
+
+n_index <- which(as.character(metadata$dex) %in% "normal")
+t_index <- which(as.character(metadata$dex) %in% "tumor")
+
+vm <- function(x){
+  cond <- factor(ifelse(seq(1,dim(x)[2],1) %in% t_index, 1,  0))
+  d <- model.matrix(~1+cond)
+  x <- t(apply(x,1,as.numeric))
+  ex <- voom(x,d,plot=F)
+  return(ex$E)
+}
+
+count_vm <- vm(mergedcounts)
+
+if(is.sequential(match_colnames)){
+  print("metadata rows match countfile columns")
+  colnames(count_vm) <- metadata$id
+}else{
+  "metadata rows do not match countfile columns"
+}
+
+
+
+scal <- function(x,y){
+  median_n <- rowMedians(y)  # mean of normal
+  sd_n <- apply(y,1,sd)  # SD of normal
+  # z score as (value - mean normal)/SD normal
+  res <- matrix(nrow=nrow(x), ncol=ncol(x))
+  colnames(res) <- colnames(x)
+  rownames(res) <- rownames(x)
+  for(i in 1:dim(x)[1]){
+    for(j in 1:dim(x)[2]){
+      res[i,j] <- (x[i,j]-median_n[i])/sd_n[i]
+    }
+  }
+  return(res)
+}
+
+z_rna <- scal(count_vm,count_vm[,n_index])
+
+rownames(z_rna) <- posdata[,4]
+
+fc_counts <- cbind(posdata,z_rna) %>%
+  dplyr::select(-chrom.x,-start.x,-end.x,-strand.x,)
+
+fc.dotplot <- fc_counts %>% 
+  gather(key = "Sample", value = "ZScore",-id,-tag.x,-annot.x) %>%
+  mutate(Key = gsub("[.]","-",Sample)) %>%
+    mutate(string = ifelse(str_detect(Key,"TCGA"),
+                           sub(".*TCGA", "", Key),
+                           sub(".*GTEX", "", Key)),
+           barcode = ifelse(str_detect(Key,"TCGA"),
+                            tolower(paste("TCGA",substr(string, 1, 8),sep="")),
+                            tolower(paste("GTEX",substr(string, 1, 20),sep="")))) %>%
+  left_join(metadata,by="barcode")
+
+
+res_TUCR <- read_csv(paste(outputdir,"/ExpressionAnalysis/DESeq2Results/",disease,"_results_",filterannot,".csv",sep="")) %>%
+  dplyr::select("id.x"=row,log2FoldChange)
+
+fc.dotplot <- fc.dotplot %>%
+  left_join(res_TUCR,by="id.x") %>%
+  mutate(DESeq2 = ifelse(dex=="normal",0,log2FoldChange)) %>%
+  mutate(fill = ifelse(DESeq2 >= 1,"red",
+                ifelse(DESeq2 <= -1,"green","lightgray"))) %>%
+  dplyr::select(-Sample,-Key,-id.y,-string,-log2FoldChange) %>%
+  filter(!is.na(dex))
+
+i <- 1
+
+for(i in 1:length(unique(fc.dotplot$id.x))){
+  
+filterdotplot <- as.character(unique(fc.dotplot$id.x[i]))
+
+print(i)
+print(filterdotplot)
+  
+fc.dotplot2 <- fc.dotplot %>%
+  filter(id.x == filterdotplot)
+
+foldchange.DESeq2 <- fc.dotplot2 %>%
+  filter(dex == "tumor") %>%
+  dplyr::select(DESeq2)
+
+foldchange.DESeq2 <- round(foldchange.DESeq2[1,1],2)
+
+fc.dotplot3 <- fc.dotplot2 %>%
+  dplyr::select(dex,DESeq2,fill) %>%
   distinct()
 
-rpkm.dotplot3$fill <- as.character(rpkm.dotplot3$fill)
-foldchange.DESeq2 <- round(rpkm.dotplot3$DESeq2[1],2)
-
-p2 <- ggplot(data = rpkm.dotplot3,aes(x=dex, y=DESeq2,fill=fill)) +
+p2 <- ggplot(data = fc.dotplot3,aes(x=dex, y=DESeq2,fill=fill)) +
   geom_bar(colour="black",stat="identity") +
   scale_fill_identity() +
   #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
-  geom_jitter(data = rpkm.dotplot2, aes(x=dex, y=log2FC),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray") +
-  ggtitle(paste("Deregulation of ",TUCR," in ",disease," (",foldchange.DESeq2,"-log2fold)",sep="")) +
+  geom_jitter(data = fc.dotplot2, aes(x=dex, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray") +
+  ggtitle(paste("Deregulation of ",filterdotplot," in ",disease," (",foldchange.DESeq2,"-log2fold)",sep="")) +
   theme(plot.title = element_text(hjust = 0.5),
   panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
   panel.background = element_blank(), axis.line = element_line(colour = "black")) +
   labs(y="log2FoldChange", x = "Tissue Type")
-  
 
-ggsave(p,file=paste(outputdir,"/ExpressionAnalysis/RPKboxplots/",disease,"_",TUCR,"_rpkm_boxplot.png",sep = ""))
-ggsave(p2,file=paste(outputdir,"/ExpressionAnalysis/FCplots/",disease,"_",TUCR,"_FC_plot.png",sep = ""))
+ggsave(p2,file=paste(outputdir,"/ExpressionAnalysis/FCplots/",disease,"_",filterdotplot,"_FC_plot.png",sep = ""))
+
+if(filterdotplot == "uc.110"){
+write.csv(fc.dotplot2,file=paste(outputdir,"/ExpressionAnalysis/FCplots/",disease,"_",filterdotplot,"_zscoretable.csv",sep = ""))}
+
 }
 
 
-}
+
 ```
 
 # Section 3: TUCR expression correlates with survival in LGG and GBM
@@ -2194,8 +2328,8 @@ match_colnames <- match(as.character(colnames(mergedcounts)),as.character(metada
 
 mergedcounts <- as.matrix(mergedcounts)
 
-n_index <- c(seq(1,5),seq(172,ncol(mergedcounts)))
-t_index <- c(seq(6,171))
+n_index <- which(as.character(metadata$dex) %in% "normal")
+t_index <- which(as.character(metadata$dex) %in% "tumor")
 
 vm <- function(x){
   cond <- factor(ifelse(seq(1,dim(x)[2],1) %in% t_index, 1,  0))
