@@ -1,0 +1,262 @@
+Target gene	Representative transcript	Gene name	3P-seq tags + 5	Conserved sites total	Conserved 8mer sites	Conserved 7mer-m8 sites	Conserved 7mer-A1 sites	Poorly conserved sites total	Poorly conserved 8mer sites	Poorly conserved 7mer-m8 sites	Poorly conserved 7mer-A1 sites	6mer sites	Representative miRNA	Predicted occupancy (low miRNA)	Predicted occupancy (high miRNA)	Predicted occupancy (transfected miRNA)	Cumulative weighted context++ score	Total context++ score	Aggregate PCT	Previous TargetScan publication(s)
+PTPLA	ENST00000361271.3	"protein tyrosine phosphatase-like (proline instead of catalytic arginine), member A "	826	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0038	0.0274	0.1745	-0.69	-0.69	N/A	NULL
+RBMX	ENST00000562646.1	"RNA binding motif protein, X-linked "	77	1	1	0	0	1	0	1	0	1	hsa-miR-544a	0.0062	0.0451	0.2991	-0.61	-0.62	N/A	NULL
+IMPG1	ENST00000369963.3	interphotoreceptor matrix proteoglycan 1 	5	2	0	1	1	1	1	0	0	1	hsa-miR-544a	0.0072	0.0522	0.3566	-0.48	-0.48	N/A	NULL
+DOK6	ENST00000382713.5	docking protein 6 	8	1	0	1	0	3	1	1	1	1	hsa-miR-544a	0.0087	0.0638	0.4396	-0.46	-0.46	N/A	NULL
+PPP3R1	ENST00000234310.3	"protein phosphatase 3, regulatory subunit B, alpha "	117	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.004	0.0291	0.184	-0.42	-0.42	N/A	NULL
+PPIF	ENST00000394579.3	peptidylprolyl isomerase F 	9304	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0042	0.0302	0.187	-0.41	-0.41	N/A	NULL
+E2F5	ENST00000418930.2	"E2F transcription factor 5, p130-binding "	10	1	1	0	0	0	0	0	0	1	hsa-miR-544a	0.0028	0.0206	0.1403	-0.41	-0.41	N/A	NULL
+AL589765.1	ENST00000442233.2	"Uncharacterized protein; cDNA FLJ36032 fis, clone TESTI2017069  "	5	1	0	0	1	1	1	0	0	1	hsa-miR-544a	0.0027	0.0201	0.1435	-0.41	-0.41	N/A	NULL
+FNTA	ENST00000302279.3	"farnesyltransferase, CAAX box, alpha "	7	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0052	0.0371	0.2218	-0.4	-0.4	N/A	NULL
+C15orf32	ENST00000556865.1	chromosome 15 open reading frame 32 	5	1	1	0	0	0	0	0	0	1	hsa-miR-544a	0.0025	0.0181	0.1237	-0.4	-0.4	N/A	NULL
+TNFRSF19	ENST00000382263.3	"tumor necrosis factor receptor superfamily, member 19 "	376	1	1	0	0	1	1	0	0	0	hsa-miR-544a	0.0078	0.0565	0.3673	-0.4	-0.4	N/A	NULL
+TMEM170B	ENST00000379426.1	transmembrane protein 170B 	489	1	0	1	0	3	1	2	0	0	hsa-miR-544a	0.0068	0.0495	0.3251	-0.39	-0.43	N/A	NULL
+ZNF639	ENST00000326361.3	zinc finger protein 639 	614	1	0	1	0	1	0	1	0	0	hsa-miR-544a	0.0031	0.0225	0.1481	-0.37	-0.44	N/A	NULL
+CAV2	ENST00000222693.4	caveolin 2 	1191	1	1	0	0	0	0	0	0	1	hsa-miR-544a	0.0039	0.0282	0.1867	-0.37	-0.4	N/A	NULL
+PFN2	ENST00000239940.7	profilin 2 	2184	1	1	0	0	1	0	0	1	0	hsa-miR-544a	0.0032	0.0234	0.1596	-0.37	-0.37	N/A	NULL
+MUC7	ENST00000304887.5	"mucin 7, secreted "	5	1	1	0	0	1	0	0	1	0	hsa-miR-544a	0.0064	0.0464	0.3012	-0.36	-0.36	N/A	NULL
+ARPP19	ENST00000566423.1	"cAMP-regulated phosphoprotein, 19kDa "	1316	1	0	1	0	1	0	1	0	0	hsa-miR-544a	0.0011	0.0084	0.0598	-0.34	-0.34	N/A	NULL
+TXNL4A	ENST00000588162.1	thioredoxin-like 4A 	4755	1	0	0	1	0	0	0	0	2	hsa-miR-544a	0.0013	0.0093	0.0668	-0.33	-0.33	N/A	NULL
+DMWD	ENST00000377735.3	"dystrophia myotonica, WD repeat containing "	229	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0052	0.0372	0.2329	-0.32	-0.32	N/A	NULL
+IGF2BP2	ENST00000382199.2	insulin-like growth factor 2 mRNA binding protein 2 	5	1	1	0	0	1	0	0	1	0	hsa-miR-544a	0.0043	0.0315	0.2099	-0.29	-0.29	N/A	NULL
+GPATCH2L	ENST00000553588.1	G patch domain containing 2-like 	96	1	0	0	1	2	0	0	2	1	hsa-miR-544a	0.0039	0.029	0.2058	-0.28	-0.34	N/A	NULL
+TVP23C-CDRT4	ENST00000522212.2	TVP23C-CDRT4 readthrough 	109	1	1	0	0	0	0	0	0	2	hsa-miR-544a	0.0033	0.0242	0.1587	-0.28	-0.28	N/A	NULL
+HSCB	ENST00000398941.2	HscB mitochondrial iron-sulfur cluster co-chaperone 	102	1	0	0	1	0	0	0	0	0	hsa-miR-544a	0.0011	0.0081	0.0572	-0.27	-0.27	N/A	NULL
+VTI1B	ENST00000554659.1	vesicle transport through interaction with t-SNAREs 1B 	264	1	0	0	1	2	0	0	2	3	hsa-miR-544a	0.0037	0.0275	0.1958	-0.26	-0.3	N/A	NULL
+C11orf30	ENST00000529032.1	chromosome 11 open reading frame 30 	230	1	1	0	0	2	0	0	2	0	hsa-miR-544a	0.0037	0.0268	0.1864	-0.26	-0.28	N/A	NULL
+AQP4	ENST00000383168.4	aquaporin 4 	10	1	1	0	0	2	0	2	0	1	hsa-miR-544a	0.0043	0.0317	0.2238	-0.25	-0.33	N/A	NULL
+LNX1	ENST00000306888.2	"ligand of numb-protein X 1, E3 ubiquitin protein ligase "	156	2	1	0	1	1	0	0	1	0	hsa-miR-544a	0.0015	0.0109	0.0755	-0.25	-0.71	N/A	NULL
+MBNL3	ENST00000370839.3	muscleblind-like splicing regulator 3 	593	1	1	0	0	3	1	1	1	1	hsa-miR-544a	0.0093	0.0683	0.4713	-0.25	-0.31	N/A	NULL
+CAMK2B	ENST00000457475.1	calcium/calmodulin-dependent protein kinase II beta 	11	1	0	0	1	1	0	0	1	1	hsa-miR-544a	0.0034	0.025	0.1743	-0.24	-0.24	N/A	NULL
+SH2D4B	ENST00000339284.2	SH2 domain containing 4B 	5	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0058	0.0417	0.2563	-0.24	-0.24	N/A	NULL
+ING1	ENST00000333219.7	"inhibitor of growth family, member 1 "	142	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0016	0.0119	0.0835	-0.23	-0.23	N/A	NULL
+ITGA2	ENST00000296585.5	"integrin, alpha 2 (CD49B, alpha 2 subunit of VLA-2 receptor) "	50	1	1	0	0	1	0	1	0	1	hsa-miR-544a	0.0058	0.0428	0.3021	-0.23	-0.23	N/A	NULL
+NTRK2	ENST00000395882.1	"neurotrophic tyrosine kinase, receptor, type 2 "	48	1	0	1	0	2	1	0	1	1	hsa-miR-544a	0.0053	0.039	0.273	-0.23	-0.23	N/A	NULL
+SAV1	ENST00000324679.4	salvador homolog 1 (Drosophila) 	162	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0013	0.0097	0.0689	-0.22	-0.26	N/A	NULL
+SMAD7	ENST00000262158.2	SMAD family member 7 	142	1	0	0	1	1	0	0	1	0	hsa-miR-544a	0.0034	0.0249	0.1752	-0.22	-0.23	N/A	NULL
+TGFB2	ENST00000366930.4	"transforming growth factor, beta 2 "	157	2	2	0	0	0	0	0	0	0	hsa-miR-544a	0.0031	0.0226	0.1553	-0.22	-0.26	N/A	NULL
+FAM118B	ENST00000533050.1	"family with sequence similarity 118, member B "	788	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0015	0.0113	0.0803	-0.22	-0.22	N/A	NULL
+TBPL1	ENST00000237264.4	TBP-like 1 	69	1	1	0	0	1	0	1	0	0	hsa-miR-544a	0.005	0.0364	0.248	-0.21	-0.34	N/A	NULL
+SESN1	ENST00000436639.2	sestrin 1 	96	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0032	0.0234	0.1566	-0.21	-0.21	N/A	NULL
+PTBP2	ENST00000609116.1	polypyrimidine tract binding protein 2 	70	1	1	0	0	3*	0	2	0	3	hsa-miR-544a	0.0065	0.0471	0.3176	-0.21	-0.26	N/A	NULL
+TMEM178B	ENST00000565468.1	transmembrane protein 178B 	129	1	1	0	0	4	0	1	3	1	hsa-miR-544a	0.0085	0.062	0.426	-0.21	-0.21	N/A	NULL
+SYNCRIP	ENST00000355238.6	"synaptotagmin binding, cytoplasmic RNA interacting protein "	4864	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0043	0.0314	0.2035	-0.2	-0.2	N/A	NULL
+SLC35B1	ENST00000240333.6	"solute carrier family 35, member B1 "	119	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0013	0.0096	0.0651	-0.2	-0.61	N/A	NULL
+NUP62CL	ENST00000372461.3	nucleoporin 62kDa C-terminal like 	73	1	0	0	1	1	0	1	0	1	hsa-miR-544a	0.0006	0.0046	0.0329	-0.2	-0.34	N/A	NULL
+BBIP1	ENST00000454061.1	BBSome interacting protein 1 	772	1	0	0	1	0	0	0	0	0	hsa-miR-544a	0.0008	0.0061	0.0442	-0.2	-0.2	N/A	NULL
+ATRN	ENST00000262919.5	attractin 	39	1	0	0	1	0	0	0	0	1	hsa-miR-544a	0.0027	0.0199	0.1442	-0.2	-0.2	N/A	NULL
+MAFB	ENST00000373313.2	v-maf avian musculoaponeurotic fibrosarcoma oncogene homolog B 	333	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0026	0.0187	0.1228	-0.2	-0.21	N/A	NULL
+CAPZB	ENST00000375142.1	"capping protein (actin filament) muscle Z-line, beta "	545	1	0	0	1	0	0	0	0	0	hsa-miR-544a	0.0017	0.0121	0.0843	-0.19	-0.19	N/A	NULL
+RUNX1T1	ENST00000523629.1	"runt-related transcription factor 1; translocated to, 1 (cyclin D-related) "	9	2	2	0	0	0	0	0	0	0	hsa-miR-544a	0.0081	0.0586	0.3757	-0.19	-0.19	N/A	NULL
+SRSF10	ENST00000343255.5	serine/arginine-rich splicing factor 10 	1920	1	0	0	1	1	0	0	1	0	hsa-miR-544a	0.0034	0.0252	0.1791	-0.18	-0.2	N/A	NULL
+RHOBTB3	ENST00000379982.3	Rho-related BTB domain containing 3 	487	1	1	0	0	0	0	0	0	1	hsa-miR-544a	0.0036	0.0263	0.1741	-0.18	-0.29	N/A	NULL
+PLLP	ENST00000219207.5	plasmolipin 	22	1	0	1	0	1	0	1	0	0	hsa-miR-544a	0.0015	0.0111	0.0793	-0.18	-0.18	N/A	NULL
+VEZT	ENST00000436874.1	"vezatin, adherens junctions transmembrane protein "	1054	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0016	0.0116	0.0819	-0.18	-0.18	N/A	NULL
+CCDC147	ENST00000369704.3	coiled-coil domain containing 147 	5	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0029	0.0212	0.1487	-0.18	-0.18	N/A	NULL
+SCRN3	ENST00000272732.6	secernin 3 	80	1	1	0	0	1	0	0	1	0	hsa-miR-544a	0.0032	0.0234	0.1595	-0.17	-0.22	N/A	NULL
+LSM12	ENST00000585388.1	LSM12 homolog (S. cerevisiae) 	20	1	0	1	0	1	0	0	1	0	hsa-miR-544a	0.0013	0.0095	0.0683	-0.17	-0.23	N/A	NULL
+ERLIN1	ENST00000421367.2	ER lipid raft associated 1 	86	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0013	0.0095	0.0675	-0.17	-0.17	N/A	NULL
+FGFR2	ENST00000369061.4	fibroblast growth factor receptor 2 	75	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0015	0.0107	0.0745	-0.17	-0.28	N/A	NULL
+ERP29	ENST00000455836.1	endoplasmic reticulum protein 29 	1210	1	0	0	1	0	0	0	0	0	hsa-miR-544a	0.001	0.0074	0.0529	-0.17	-0.17	N/A	NULL
+PLP1	ENST00000303958.2	proteolipid protein 1 	5	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0026	0.0191	0.1342	-0.17	-0.17	N/A	NULL
+ACVR1C	ENST00000243349.8	"activin A receptor, type IC "	27	1	1	0	0	1	0	0	1	0	hsa-miR-544a	0.0052	0.0382	0.2598	-0.16	-0.19	N/A	NULL
+EP300	ENST00000263253.7	E1A binding protein p300 	785	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0041	0.0302	0.2062	-0.16	-0.16	N/A	NULL
+MPZL1	ENST00000474859.1	myelin protein zero-like 1 	3146	1	0	1	0	2	1	0	1	0	hsa-miR-544a	0.0014	0.0104	0.0736	-0.16	-0.29	N/A	NULL
+BLOC1S2	ENST00000441611.1	"biogenesis of lysosomal organelles complex-1, subunit 2 "	83	1	0	0	1	0	0	0	0	0	hsa-miR-544a	0.0015	0.0112	0.0773	-0.16	-0.18	N/A	NULL
+PANX2	ENST00000159647.5	pannexin 2 	169	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0016	0.012	0.0841	-0.16	-0.16	N/A	NULL
+FSD2	ENST00000334574.8	fibronectin type III and SPRY domain containing 2 	5	1	0	0	1	2	0	1	1	1	hsa-miR-544a	0.0037	0.0269	0.1918	-0.15	-0.15	N/A	NULL
+RSPO3	ENST00000356698.4	R-spondin 3 	118	1	0	1	0	2	0	0	2	1	hsa-miR-544a	0.0017	0.0126	0.0916	-0.15	-0.4	N/A	NULL
+RIMKLB	ENST00000357529.3	ribosomal modification protein rimK-like family member B 	164	1	1	0	0	1	0	0	1	0	hsa-miR-544a	0.0022	0.0164	0.1135	-0.15	-0.17	N/A	NULL
+SMNDC1	ENST00000369603.5	survival motor neuron domain containing 1 	949	1	0	0	1	2	0	1	1	0	hsa-miR-544a	0.0013	0.0094	0.0667	-0.15	-0.36	N/A	NULL
+YBX1	ENST00000321358.7	Y box binding protein 1 	4740	1	0	0	1	0	0	0	0	1	hsa-miR-544a	0.001	0.0074	0.054	-0.15	-0.18	N/A	NULL
+LRFN3	ENST00000588831.1	leucine rich repeat and fibronectin type III domain containing 3 	207	1	0	0	1	1	0	0	1	0	hsa-miR-544a	0.001	0.0075	0.053	-0.15	-0.2	N/A	NULL
+G3BP2	ENST00000395719.3	GTPase activating protein (SH3 domain) binding protein 2 	4413	1	1	0	0	0	0	0	0	1	hsa-miR-544a	0.0047	0.034	0.2239	-0.15	-0.19	N/A	NULL
+ST6GAL2	ENST00000361686.4	"ST6 beta-galactosamide alpha-2,6-sialyltranferase 2 "	5	1	0	1	0	1	0	0	1	0	hsa-miR-544a	0.0037	0.0275	0.1933	-0.15	-0.15	N/A	NULL
+DIO2	ENST00000438257.4	"deiodinase, iodothyronine, type II "	98	1	1	0	0	1	0	0	1	3	hsa-miR-544a	0.0034	0.0249	0.1673	-0.15	-0.23	N/A	NULL
+SHC4	ENST00000332408.4	"SHC (Src homology 2 domain containing) family, member 4 "	61	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0011	0.0082	0.0588	-0.14	-0.14	N/A	NULL
+PPM1A	ENST00000395076.4	"protein phosphatase, Mg2+/Mn2+ dependent, 1A "	412	1	0	0	1	3	0	1	2	0	hsa-miR-544a	0.002	0.0145	0.1035	-0.14	-0.47	N/A	NULL
+POU4F1	ENST00000377208.5	POU class 4 homeobox 1 	61	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0068	0.049	0.3001	-0.14	-0.14	N/A	NULL
+ATP13A3	ENST00000439040.1	ATPase type 13A3 	243	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.005	0.0364	0.2324	-0.14	-0.14	N/A	NULL
+HNRNPA3	ENST00000411529.2	heterogeneous nuclear ribonucleoprotein A3 	329	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0017	0.0128	0.0928	-0.14	-0.15	N/A	NULL
+KCNH8	ENST00000328405.2	"potassium voltage-gated channel, subfamily H (eag-related), member 8 "	5	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0043	0.0313	0.2059	-0.14	-0.14	N/A	NULL
+NPTX1	ENST00000306773.4	neuronal pentraxin I 	1876	1	0	0	1	1	0	0	1	3	hsa-miR-544a	0.0024	0.0173	0.122	-0.14	-0.14	N/A	NULL
+CDH8	ENST00000584337.1	"cadherin 8, type 2 "	11	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0024	0.0173	0.1239	-0.14	-0.14	N/A	NULL
+MED20	ENST00000409312.1	mediator complex subunit 20 	32	1	0	0	1	0	0	0	0	1	hsa-miR-544a	0.0007	0.0051	0.0365	-0.14	-0.17	N/A	NULL
+RC3H1	ENST00000367696.2	ring finger and CCCH-type domains 1 	165	1	1	0	0	2	0	1	1	3	hsa-miR-544a	0.0068	0.0502	0.3536	-0.14	-0.15	N/A	NULL
+PRKCA	ENST00000413366.3	"protein kinase C, alpha "	726	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0026	0.0191	0.1326	-0.13	-0.14	N/A	NULL
+CTNNA3	ENST00000433211.2	"catenin (cadherin-associated protein), alpha 3 "	5	1	0	1	0	1	0	0	1	1	hsa-miR-544a	0.0057	0.0416	0.2962	-0.13	-0.13	N/A	NULL
+TCTE1	ENST00000371505.4	t-complex-associated-testis-expressed 1 	34	1	0	0	1	0	0	0	0	0	hsa-miR-544a	0.0012	0.0087	0.0627	-0.13	-0.13	N/A	NULL
+ZFHX3	ENST00000268489.5	zinc finger homeobox 3 	57	1	1	0	0	2	0	1	1	0	hsa-miR-544a	0.0072	0.0525	0.3561	-0.13	-0.14	N/A	NULL
+ARID4A	ENST00000431317.2	AT rich interactive domain 4A (RBP1-like) 	33	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0041	0.0297	0.2024	-0.13	-0.13	N/A	NULL
+SOX1	ENST00000330949.1	SRY (sex determining region Y)-box 1 	5	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0053	0.0376	0.2241	-0.13	-0.13	N/A	NULL
+SLC44A2	ENST00000586078.1	"solute carrier family 44 (choline transporter), member 2 "	720	2	0	0	2	0	0	0	0	1	hsa-miR-544a	0.0014	0.01	0.0719	-0.13	-0.13	N/A	NULL
+PLD1	ENST00000342215.6	"phospholipase D1, phosphatidylcholine-specific "	128	1	1	0	0	1	0	0	1	2	hsa-miR-544a	0.0042	0.0311	0.2175	-0.13	-0.15	N/A	NULL
+PDCL	ENST00000259467.4	phosducin-like 	154	1	0	1	0	1	0	1	0	2	hsa-miR-544a	0.0012	0.0089	0.0636	-0.13	-0.15	N/A	NULL
+RP11-366L20.2	ENST00000356215.2	Uncharacterized protein  	5	1	1	0	0	1	0	1	0	1	hsa-miR-544a	0.0039	0.0285	0.2031	-0.13	-0.13	N/A	NULL
+FMNL2	ENST00000475377.2	formin-like 2 	31	1	0	1	0	0	0	0	0	2	hsa-miR-544a	0.0016	0.0118	0.0852	-0.12	-0.13	N/A	NULL
+SOS2	ENST00000216373.5	son of sevenless homolog 2 (Drosophila) 	70	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0024	0.0175	0.1171	-0.12	-0.2	N/A	NULL
+KCTD10	ENST00000228495.6	potassium channel tetramerization domain containing 10 	147	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0008	0.0057	0.041	-0.12	-0.12	N/A	NULL
+TBC1D2B	ENST00000409931.3	"TBC1 domain family, member 2B "	5	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0018	0.0136	0.0961	-0.12	-0.12	N/A	NULL
+MBTD1	ENST00000586178.1	mbt domain containing 1 	113	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0035	0.026	0.1804	-0.12	-0.12	N/A	NULL
+SRPK2	ENST00000393651.3	SRSF protein kinase 2 	381	1	0	1	0	1	0	0	1	0	hsa-miR-544a	0.0016	0.0119	0.0852	-0.12	-0.14	N/A	NULL
+HSPH1	ENST00000320027.5	heat shock 105kDa/110kDa protein 1 	4109	1	0	0	1	0	0	0	0	0	hsa-miR-544a	0.0022	0.016	0.1102	-0.12	-0.12	N/A	NULL
+LARP4B	ENST00000316157.3	"La ribonucleoprotein domain family, member 4B "	705	1	1	0	0	0	0	0	0	1	hsa-miR-544a	0.0031	0.0225	0.1507	-0.11	-0.15	N/A	NULL
+KCNJ15	ENST00000328656.4	"potassium inwardly-rectifying channel, subfamily J, member 15 "	5	1	1	0	0	2	0	0	2	0	hsa-miR-544a	0.0089	0.065	0.4505	-0.11	-0.11	N/A	NULL
+XPO7	ENST00000252512.9	exportin 7 	647	1	0	1	0	0	0	0	0	2	hsa-miR-544a	0.0015	0.0113	0.081	-0.11	-0.12	N/A	NULL
+MAGT1	ENST00000358075.6	magnesium transporter 1 	937	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0011	0.0081	0.0576	-0.11	-0.12	N/A	NULL
+INHBA	ENST00000242208.4	"inhibin, beta A "	1260	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0019	0.0138	0.0964	-0.11	-0.11	N/A	NULL
+AKIRIN1	ENST00000432648.3	akirin 1 	798	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0013	0.0093	0.0668	-0.11	-0.11	N/A	NULL
+SLC6A11	ENST00000254488.2	"solute carrier family 6 (neurotransmitter transporter), member 11 "	83	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0015	0.0108	0.0758	-0.11	-0.11	N/A	NULL
+EIF4H	ENST00000265753.8	eukaryotic translation initiation factor 4H 	5	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0011	0.0083	0.0595	-0.1	-0.1	N/A	NULL
+CSNK1A1	ENST00000261798.5	"casein kinase 1, alpha 1 "	769	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0016	0.0114	0.0751	-0.1	-0.18	N/A	NULL
+BAK1	ENST00000442998.2	BCL2-antagonist/killer 1 	15	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0009	0.007	0.0495	-0.1	-0.15	N/A	NULL
+GATA6	ENST00000269216.3	GATA binding protein 6 	691	1	0	0	1	0	0	0	0	5	hsa-miR-544a	0.002	0.0145	0.1026	-0.1	-0.12	N/A	NULL
+ZFP36L2	ENST00000282388.3	ZFP36 ring finger protein-like 2 	317	1	1	0	0	0	0	0	0	2	hsa-miR-544a	0.0016	0.0115	0.0802	-0.1	-0.17	N/A	NULL
+UBN2	ENST00000473989.3	ubinuclein 2 	238	1	1	0	0	3	0	1	2	1	hsa-miR-544a	0.0088	0.0641	0.4427	-0.1	-0.12	N/A	NULL
+MSL2	ENST00000309993.2	male-specific lethal 2 homolog (Drosophila) 	175	1	1	0	0	0	0	0	0	1	hsa-miR-544a	0.0022	0.0165	0.1162	-0.1	-0.1	N/A	NULL
+ST5	ENST00000526757.1	suppression of tumorigenicity 5 	139	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0006	0.0044	0.0321	-0.09	-0.09	N/A	NULL
+RCAN3	ENST00000374395.4	RCAN family member 3 	395	1	0	1	0	2	0	1	1	0	hsa-miR-544a	0.0026	0.0191	0.1352	-0.09	-0.12	N/A	NULL
+ARIH1	ENST00000379887.4	ariadne RBR E3 ubiquitin protein ligase 1 	671	1	0	0	1	0	0	0	0	2	hsa-miR-544a	0.0015	0.0112	0.0805	-0.09	-0.16	N/A	NULL
+TENM4	ENST00000278550.7	teneurin transmembrane protein 4 	34	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0019	0.0137	0.0972	-0.09	-0.09	N/A	NULL
+UBE2G1	ENST00000396981.2	ubiquitin-conjugating enzyme E2G 1 	5620	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0009	0.0065	0.0471	-0.09	-0.09	N/A	NULL
+PANX1	ENST00000227638.3	pannexin 1 	576	1	0	1	0	2	1	1	0	2	hsa-miR-544a	0.0034	0.0251	0.1737	-0.09	-0.22	N/A	NULL
+HS3ST3A1	ENST00000284110.1	heparan sulfate (glucosamine) 3-O-sulfotransferase 3A1 	148	1	1	0	0	1	0	0	1	0	hsa-miR-544a	0.0027	0.0195	0.1284	-0.09	-0.17	N/A	NULL
+SBNO1	ENST00000420886.2	strawberry notch homolog 1 (Drosophila) 	87	1	1	0	0	1	0	0	1	1	hsa-miR-544a	0.0038	0.0282	0.1985	-0.09	-0.13	N/A	NULL
+TIAL1	ENST00000369093.2	TIA1 cytotoxic granule-associated RNA binding protein-like 1 	1342	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.002	0.0148	0.0945	-0.09	-0.23	N/A	NULL
+PTCHD4	ENST00000339488.4	patched domain containing 4 	19	1	0	1	0	0	0	0	0	2	hsa-miR-544a	0.0021	0.0154	0.1106	-0.09	-0.1	N/A	NULL
+FAM126A	ENST00000409923.1	"family with sequence similarity 126, member A "	241	1	0	1	0	1	0	1	0	2	hsa-miR-544a	0.002	0.0148	0.1067	-0.08	-0.18	N/A	NULL
+FAM208A	ENST00000493960.2	"family with sequence similarity 208, member A "	60	1	0	0	1	0	0	0	0	1	hsa-miR-544a	0.0022	0.0161	0.1164	-0.08	-0.09	N/A	NULL
+JAM3	ENST00000299106.4	junctional adhesion molecule 3 	85	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0008	0.0057	0.0412	-0.08	-0.08	N/A	NULL
+AAK1	ENST00000409085.4	AP2 associated kinase 1 	27	1	1	0	0	5	1	0	4	2	hsa-miR-544a	0.0093	0.0679	0.4632	-0.08	-0.14	N/A	NULL
+ATP1B4	ENST00000218008.3	"ATPase, Na+/K+ transporting, beta 4 polypeptide "	5	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0022	0.0164	0.1175	-0.08	-0.08	N/A	NULL
+IRAK4	ENST00000431837.1	interleukin-1 receptor-associated kinase 4 	223	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0008	0.0062	0.0449	-0.08	-0.08	N/A	NULL
+CPEB4	ENST00000265085.5	cytoplasmic polyadenylation element binding protein 4 	472	1	1	0	0	1	0	0	1	1	hsa-miR-544a	0.0042	0.0304	0.2038	-0.08	-0.25	N/A	NULL
+CCDC88C	ENST00000389857.6	coiled-coil domain containing 88C 	42	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0017	0.0126	0.0874	-0.08	-0.08	N/A	NULL
+RAB18	ENST00000356940.6	"RAB18, member RAS oncogene family "	1410	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0019	0.0139	0.0985	-0.08	-0.14	N/A	NULL
+BNC2	ENST00000380672.4	basonuclin 2 	770	1	1	0	0	1	0	0	1	3	hsa-miR-544a	0.003	0.0219	0.1502	-0.08	-0.11	N/A	NULL
+RAB2A	ENST00000262646.7	"RAB2A, member RAS oncogene family "	788	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0005	0.0035	0.0249	-0.08	-0.11	N/A	NULL
+KIAA2022	ENST00000055682.6	KIAA2022 	5	1	1	0	0	1	0	1	0	3	hsa-miR-544a	0.0077	0.0557	0.3667	-0.07	-0.07	N/A	NULL
+PRR14L	ENST00000434485.1	proline rich 14-like 	39	1	0	0	1	1	0	0	1	0	hsa-miR-544a	0.0026	0.0192	0.1379	-0.07	-0.07	N/A	NULL
+POU6F2	ENST00000518318.2	POU class 6 homeobox 2 	5	1	1	0	0	0	0	0	0	3	hsa-miR-544a	0.0049	0.0356	0.2438	-0.07	-0.07	N/A	NULL
+FAM168B	ENST00000409185.1	"family with sequence similarity 168, member B "	122	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0006	0.0045	0.0308	-0.07	-0.18	N/A	NULL
+GAB1	ENST00000262995.4	GRB2-associated binding protein 1 	26	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0031	0.023	0.1581	-0.07	-0.1	N/A	NULL
+ATXN2	ENST00000550104.1	ataxin 2 	7	1	1	0	0	0	0	0	0	1	hsa-miR-544a	0.0023	0.0169	0.1186	-0.07	-0.07	N/A	NULL
+YY1	ENST00000262238.4	YY1 transcription factor 	1803	1	1	0	0	1	0	0	1	1	hsa-miR-544a	0.003	0.0221	0.1497	-0.07	-0.09	N/A	NULL
+MAFG	ENST00000357736.4	v-maf avian musculoaponeurotic fibrosarcoma oncogene homolog G 	5	1	0	0	1	0	0	0	0	1	hsa-miR-544a	0.0012	0.0087	0.0624	-0.07	-0.07	N/A	NULL
+11-Sep	ENST00000264893.6	septin 11 	515	1	1	0	0	0	0	0	0	1	hsa-miR-544a	0.0042	0.031	0.2148	-0.07	-0.07	N/A	NULL
+SLC35A4	ENST00000323146.3	"solute carrier family 35, member A4 "	334	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.001	0.0074	0.0529	-0.07	-0.07	N/A	NULL
+CDC27	ENST00000066544.3	cell division cycle 27 	438	1	1	0	0	0	0	0	0	2	hsa-miR-544a	0.0026	0.0194	0.1342	-0.07	-0.07	N/A	NULL
+ZNRF3	ENST00000544604.2	zinc and ring finger 3 	179	1	0	1	0	0	0	0	0	5	hsa-miR-544a	0.0024	0.0174	0.1265	-0.07	-0.16	N/A	NULL
+UFL1	ENST00000369278.4	UFM1-specific ligase 1 	298	1	1	0	0	0	0	0	0	1	hsa-miR-544a	0.0033	0.0241	0.1604	-0.07	-0.07	N/A	NULL
+FAM53C	ENST00000513056.1	"family with sequence similarity 53, member C "	592	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0021	0.0157	0.1108	-0.06	-0.07	N/A	NULL
+ZNF638	ENST00000355812.3	zinc finger protein 638 	15	1	0	0	1	0	0	0	0	0	hsa-miR-544a	0.0026	0.0193	0.139	-0.06	-0.06	N/A	NULL
+DCTN3	ENST00000447983.2	dynactin 3 (p22) 	1816	1	0	0	1	0	0	0	0	0	hsa-miR-544a	0.0005	0.0039	0.0279	-0.06	-0.06	N/A	NULL
+TRIM71	ENST00000383763.5	"tripartite motif containing 71, E3 ubiquitin protein ligase "	67	2	0	1	1	0	0	0	0	2	hsa-miR-544a	0.0024	0.0175	0.1266	-0.06	-0.07	N/A	NULL
+ATXN7	ENST00000295900.6	ataxin 7 	264	1	0	1	0	1	0	1	0	0	hsa-miR-544a	0.0017	0.0123	0.0868	-0.06	-0.07	N/A	NULL
+DMXL1	ENST00000311085.8	Dmx-like 1 	136	1	0	1	0	1	1	0	0	1	hsa-miR-544a	0.0031	0.0231	0.1661	-0.06	-0.09	N/A	NULL
+LEPROTL1	ENST00000321250.8	leptin receptor overlapping transcript-like 1 	1242	1	0	1	0	1	0	1	0	0	hsa-miR-544a	0.0006	0.0041	0.0283	-0.06	-0.24	N/A	NULL
+GPT2	ENST00000340124.4	glutamic pyruvate transaminase (alanine aminotransferase) 2 	1750	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0009	0.0066	0.0477	-0.06	-0.1	N/A	NULL
+SLC6A12	ENST00000359674.4	"solute carrier family 6 (neurotransmitter transporter), member 12 "	13	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0007	0.0049	0.0349	-0.06	-0.17	N/A	NULL
+HSD17B13	ENST00000302219.6	hydroxysteroid (17-beta) dehydrogenase 13 	11	1	0	0	1	1	0	0	1	0	hsa-miR-544a	0.0008	0.0057	0.0411	-0.06	-0.13	N/A	NULL
+KLF7	ENST00000423015.1	Kruppel-like factor 7 (ubiquitous) 	737	1	0	1	0	2	0	1	1	0	hsa-miR-544a	0.002	0.0147	0.1046	-0.06	-0.06	N/A	NULL
+YIPF4	ENST00000238831.4	"Yip1 domain family, member 4 "	3482	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0012	0.0091	0.0657	-0.06	-0.13	N/A	NULL
+KIF2A	ENST00000381103.2	kinesin heavy chain member 2A 	905	1	1	0	0	1	1	0	0	1	hsa-miR-544a	0.0029	0.0211	0.1408	-0.06	-0.19	N/A	NULL
+VAPB	ENST00000395802.3	VAMP (vesicle-associated membrane protein)-associated protein B and C 	391	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0035	0.0258	0.1762	-0.05	-0.06	N/A	NULL
+MCM9	ENST00000316316.6	minichromosome maintenance complex component 9 	15	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0013	0.0094	0.0685	-0.05	-0.05	N/A	NULL
+STC2	ENST00000265087.4	stanniocalcin 2 	1112	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0014	0.0104	0.0663	-0.05	-0.12	N/A	NULL
+PTAR1	ENST00000377200.5	protein prenyltransferase alpha subunit repeat containing 1 	161	1	0	1	0	0	0	0	0	2	hsa-miR-544a	0.0025	0.0187	0.1354	-0.05	-0.08	N/A	NULL
+ANKRD40	ENST00000285243.6	ankyrin repeat domain 40 	409	1	0	1	0	1	0	1	0	0	hsa-miR-544a	0.0003	0.0024	0.0171	-0.05	-0.3	N/A	NULL
+RAPGEF6	ENST00000509018.1	Rap guanine nucleotide exchange factor (GEF) 6 	38	1	0	1	0	2	0	1	1	0	hsa-miR-544a	0.0024	0.0173	0.1249	-0.05	-0.05	N/A	NULL
+GAPVD1	ENST00000470056.1	GTPase activating protein and VPS9 domains 1 	1805	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0023	0.017	0.1219	-0.05	-0.05	N/A	NULL
+FLT1	ENST00000282397.4	fms-related tyrosine kinase 1 	7	1	1	0	0	0	0	0	0	1	hsa-miR-544a	0.0033	0.0241	0.1677	-0.05	-0.05	N/A	NULL
+FOXD3	ENST00000371116.2	forkhead box D3 	7	1	0	1	0	1	0	0	1	1	hsa-miR-544a	0.0006	0.0046	0.0322	-0.05	-0.22	N/A	NULL
+ESR2	ENST00000557772.1	estrogen receptor 2 (ER beta) 	5	1	0	1	0	1	0	0	1	4	hsa-miR-544a	0.0026	0.019	0.1384	-0.05	-0.05	N/A	NULL
+CTC-432M15.3	ENST00000514667.1	Folliculin-interacting protein 1  	38	1	0	1	0	2	0	1	1	0	hsa-miR-544a	0.0022	0.0164	0.1184	-0.05	-0.05	N/A	NULL
+C10orf2	ENST00000370228.1	chromosome 10 open reading frame 2 	17	1	0	0	1	0	0	0	0	1	hsa-miR-544a	0.0006	0.0044	0.0319	-0.05	-0.05	N/A	NULL
+JAKMIP2	ENST00000507386.1	janus kinase and microtubule interacting protein 2 	26	1	0	0	1	2	0	0	2	2	hsa-miR-544a	0.0016	0.0121	0.0873	-0.05	-0.17	N/A	NULL
+KRIT1	ENST00000394507.1	"KRIT1, ankyrin repeat containing "	574	1	1	0	0	0	0	0	0	2	hsa-miR-544a	0.0014	0.0103	0.0749	-0.05	-0.19	N/A	NULL
+CCDC88A	ENST00000336838.6	coiled-coil domain containing 88A 	141	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0036	0.0264	0.1881	-0.04	-0.04	N/A	NULL
+GABBR2	ENST00000259455.2	"gamma-aminobutyric acid (GABA) B receptor, 2 "	214	1	1	0	0	0	0	0	0	1	hsa-miR-544a	0.0033	0.0241	0.1623	-0.04	-0.04	N/A	NULL
+ONECUT2	ENST00000491143.2	one cut homeobox 2 	847	1	0	0	1	0	0	0	0	3	hsa-miR-544a	0.0035	0.0259	0.1864	-0.04	-0.05	N/A	NULL
+CDC73	ENST00000367435.3	cell division cycle 73 	579	1	0	0	1	3	0	2	1	1	hsa-miR-544a	0.001	0.0077	0.0548	-0.04	-0.23	N/A	NULL
+CCDC71L	ENST00000523505.1	coiled-coil domain containing 71-like 	410	1	1	0	0	1*	0	0	0	1	hsa-miR-544a	0.0007	0.0053	0.0377	-0.04	-0.08	N/A	NULL
+EIF4E3	ENST00000425534.3	eukaryotic translation initiation factor 4E family member 3 	475	1	0	0	1	1	0	1	0	2	hsa-miR-544a	0.0011	0.0082	0.0578	-0.04	-0.15	N/A	NULL
+SYNPO2L	ENST00000372873.4	synaptopodin 2-like 	5	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0022	0.0164	0.1126	-0.04	-0.04	N/A	NULL
+SLC7A1	ENST00000380752.5	"solute carrier family 7 (cationic amino acid transporter, y+ system), member 1 "	338	1	0	1	0	1	0	0	1	0	hsa-miR-544a	0.0015	0.0112	0.0794	-0.04	-0.05	N/A	NULL
+ROCK1	ENST00000399799.2	"Rho-associated, coiled-coil containing protein kinase 1 "	7	1	1	0	0	1	0	0	1	0	hsa-miR-544a	0.0044	0.0322	0.2306	-0.04	-0.04	N/A	NULL
+WNT10B	ENST00000407467.1	"wingless-type MMTV integration site family, member 10B "	13	1	0	0	1	0	0	0	0	0	hsa-miR-544a	0.0006	0.0042	0.0301	-0.04	-0.04	N/A	NULL
+CLPB	ENST00000294053.3	ClpB caseinolytic peptidase B homolog (E. coli) 	476	1	1	0	0	4	1	2	1	0	hsa-miR-544a	0.0029	0.0211	0.1397	-0.04	-0.28	N/A	NULL
+FBXL4	ENST00000369244.2	F-box and leucine-rich repeat protein 4 	321	1	1	0	0	0	0	0	0	1	hsa-miR-544a	0.0022	0.0164	0.1161	-0.04	-0.07	N/A	NULL
+SH2B3	ENST00000341259.2	SH2B adaptor protein 3 	89	1	0	1	0	1	0	1	0	1	hsa-miR-544a	0.0015	0.011	0.079	-0.04	-0.04	N/A	NULL
+HHIP	ENST00000296575.3	hedgehog interacting protein 	65	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0017	0.0125	0.0904	-0.04	-0.1	N/A	NULL
+SRSF1	ENST00000258962.4	serine/arginine-rich splicing factor 1 	1430	1	0	1	0	2	0	1	1	0	hsa-miR-544a	0.001	0.0076	0.055	-0.03	-0.06	N/A	NULL
+XIAP	ENST00000371199.3	X-linked inhibitor of apoptosis 	153	1	0	1	0	2	0	1	1	0	hsa-miR-544a	0.0024	0.0177	0.1277	-0.03	-0.05	N/A	NULL
+GRIN2B	ENST00000609686.1	"glutamate receptor, ionotropic, N-methyl D-aspartate 2B "	5	1	0	0	1	1	0	1	0	5	hsa-miR-544a	0.0076	0.0556	0.3975	-0.03	-0.03	N/A	NULL
+DACH1	ENST00000305425.4	dachshund homolog 1 (Drosophila) 	18	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0014	0.01	0.0722	-0.03	-0.04	N/A	NULL
+KIAA0226	ENST00000273582.5	KIAA0226 	89	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0018	0.0129	0.0899	-0.03	-0.03	N/A	NULL
+BICD2	ENST00000356884.6	bicaudal D homolog 2 (Drosophila) 	38	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0017	0.0127	0.0885	-0.03	-0.03	N/A	NULL
+SCN2A	ENST00000375437.2	"sodium channel, voltage-gated, type II, alpha subunit "	7	1	1	0	0	0	0	0	0	1	hsa-miR-544a	0.0041	0.0302	0.2029	-0.03	-0.03	N/A	NULL
+PITPNM3	ENST00000421306.3	PITPNM family member 3 	5	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.002	0.0147	0.1015	-0.03	-0.03	N/A	NULL
+RGP1	ENST00000378078.4	RGP1 retrograde golgi transport homolog (S. cerevisiae) 	203	2	0	1	1	0	0	0	0	2	hsa-miR-544a	0.0008	0.0061	0.0432	-0.03	-0.06	N/A	NULL
+KIAA1244	ENST00000251691.4	KIAA1244 	169	1	0	1	0	1	0	1	0	2	hsa-miR-544a	0.0023	0.0168	0.1207	-0.03	-0.04	N/A	NULL
+POU2F1	ENST00000367866.2	POU class 2 homeobox 1 	83	1	0	1	0	1	0	0	1	1	hsa-miR-544a	0.0044	0.0322	0.2249	-0.03	-0.03	N/A	NULL
+DIEXF	ENST00000491415.2	digestive organ expansion factor homolog (zebrafish) 	493	1	0	0	1	1	0	1	0	2	hsa-miR-544a	0.0022	0.0162	0.1158	-0.03	-0.04	N/A	NULL
+ZXDB	ENST00000374888.1	"zinc finger, X-linked, duplicated B "	33	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.001	0.0071	0.0492	-0.03	-0.07	N/A	NULL
+SMAD6	ENST00000288840.5	SMAD family member 6 	660	1	0	0	1	0	0	0	0	0	hsa-miR-544a	0.0002	0.0012	0.0085	-0.03	-0.22	N/A	NULL
+TMEM65	ENST00000297632.6	transmembrane protein 65 	769	1	0	1	0	1	0	0	1	0	hsa-miR-544a	0.0009	0.0065	0.0458	-0.02	-0.06	N/A	NULL
+GPR144	ENST00000334810.1	G protein-coupled receptor 144 	5	1	0	0	1	0	0	0	0	0	hsa-miR-544a	0.0007	0.0054	0.0388	-0.02	-0.02	N/A	NULL
+SLC25A21	ENST00000331299.5	"solute carrier family 25 (mitochondrial oxoadipate carrier), member 21 "	110	1	1	0	0	1	0	0	1	0	hsa-miR-544a	0.0009	0.0069	0.0478	-0.02	-0.21	N/A	NULL
+ANKRD12	ENST00000262126.4	ankyrin repeat domain 12 	11	1	0	0	1	1	0	0	1	0	hsa-miR-544a	0.0034	0.0248	0.1788	-0.02	-0.03	N/A	NULL
+RRAS2	ENST00000537760.1	related RAS viral (r-ras) oncogene homolog 2 	57	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0003	0.0025	0.0181	-0.02	-0.26	N/A	NULL
+CDH6	ENST00000265071.2	"cadherin 6, type 2, K-cadherin (fetal kidney) "	213	1	0	1	0	3	0	2	1	1	hsa-miR-544a	0.0005	0.0035	0.0255	-0.02	-0.13	N/A	NULL
+KIAA0556	ENST00000261588.4	KIAA0556 	169	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0005	0.0039	0.0282	-0.02	-0.02	N/A	NULL
+OLIG3	ENST00000367734.2	oligodendrocyte transcription factor 3 	5	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0003	0.0021	0.0156	-0.02	-0.02	N/A	NULL
+CHRM3	ENST00000255380.4	"cholinergic receptor, muscarinic 3 "	47	1	0	0	1	1	0	0	1	1	hsa-miR-544a	0.0009	0.0063	0.0449	-0.02	-0.06	N/A	NULL
+PLAGL2	ENST00000246229.4	pleiomorphic adenoma gene-like 2 	254	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0004	0.003	0.0208	-0.02	-0.17	N/A	NULL
+STK10	ENST00000176763.5	serine/threonine kinase 10 	655	1	0	1	0	1	0	0	1	0	hsa-miR-544a	0.0007	0.0052	0.0373	-0.02	-0.19	N/A	NULL
+HEATR1	ENST00000366582.3	HEAT repeat containing 1 	282	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0023	0.0172	0.1239	-0.02	-0.07	N/A	NULL
+NF1	ENST00000358273.4	neurofibromin 1 	161	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.003	0.022	0.1543	-0.02	-0.03	N/A	NULL
+TBC1D12	ENST00000225235.4	"TBC1 domain family, member 12 "	172	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0012	0.0091	0.0661	-0.02	-0.02	N/A	NULL
+SNX11	ENST00000393405.2	sorting nexin 11 	20	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0003	0.0022	0.0156	-0.01	-0.02	N/A	NULL
+GATAD2B	ENST00000368655.4	GATA zinc finger domain containing 2B 	48	1	0	1	0	1	0	0	1	0	hsa-miR-544a	0.0009	0.0069	0.0498	-0.01	-0.03	N/A	NULL
+CENPA	ENST00000335756.4	centromere protein A 	360	1	0	0	1	0	0	0	0	1	hsa-miR-544a	0.0003	0.0023	0.0164	-0.01	-0.21	N/A	NULL
+WAC	ENST00000375664.4	WW domain containing adaptor with coiled-coil 	322	1	0	0	1	0	0	0	0	0	hsa-miR-544a	0.0011	0.0079	0.0573	-0.01	-0.04	N/A	NULL
+XYLT1	ENST00000261381.6	xylosyltransferase I 	159	1	0	0	1	1	1	0	0	1	hsa-miR-544a	0.0012	0.009	0.064	-0.01	-0.04	N/A	NULL
+MFRP	ENST00000555262.1	membrane frizzled-related protein 	5	1	0	0	1	0	0	0	0	0	hsa-miR-544a	0.0005	0.004	0.0287	-0.01	-0.01	N/A	NULL
+ALX1	ENST00000316824.3	ALX homeobox 1 	37	1	1	0	0	1	0	0	1	1	hsa-miR-544a	0.0002	0.0017	0.0116	-0.01	-0.25	N/A	NULL
+XRRA1	ENST00000527087.1	X-ray radiation resistance associated 1 	136	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0004	0.0027	0.018	-0.01	-0.13	N/A	NULL
+RSRC2	ENST00000331738.7	arginine/serine-rich coiled-coil 2 	320	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0014	0.0105	0.0757	-0.01	-0.15	N/A	NULL
+METTL8	ENST00000375258.4	methyltransferase like 8 	124	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0019	0.0139	0.1004	-0.01	-0.03	N/A	NULL
+SMAD2	ENST00000262160.6	SMAD family member 2 	1196	1	0	0	1	2*	0	1	0	1	hsa-miR-544a	0.0009	0.0063	0.0456	-0.01	-0.05	N/A	NULL
+CENPM	ENST00000404067.1	centromere protein M 	68	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0001	0.0007	0.0047	-0.01	-0.16	N/A	NULL
+RPGRIP1L	ENST00000262135.4	RPGRIP1-like 	55	1	1	0	0	0	0	0	0	1	hsa-miR-544a	0.0013	0.0094	0.0682	0	-0.06	N/A	NULL
+EVX1	ENST00000222761.3	even-skipped homeobox 1 	7	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0001	0.0004	0.0028	0	-0.02	N/A	NULL
+VPS13A	ENST00000360280.3	vacuolar protein sorting 13 homolog A (S. cerevisiae) 	110	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0026	0.0193	0.1402	0	-0.03	N/A	NULL
+NFE2L3	ENST00000056233.3	"nuclear factor, erythroid 2-like 3 "	36	1	0	0	1	0	0	0	0	1	hsa-miR-544a	0.0009	0.0064	0.0464	0	-0.07	N/A	NULL
+IRS4	ENST00000372129.2	insulin receptor substrate 4 	56	1	0	1	0	1	0	0	1	2	hsa-miR-544a	0.0003	0.0022	0.0163	0	-0.03	N/A	NULL
+ETNK1	ENST00000266517.4	ethanolamine kinase 1 	1047	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0005	0.0033	0.0239	0	-0.02	N/A	NULL
+ZFYVE9	ENST00000371591.1	"zinc finger, FYVE domain containing 9 "	32	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0012	0.0086	0.0611	0	-0.03	N/A	NULL
+TFCP2L1	ENST00000263707.5	transcription factor CP2-like 1 	36	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0007	0.0055	0.0392	0	-0.02	N/A	NULL
+GLG1	ENST00000422840.2	golgi glycoprotein 1 	2175	1	0	1	0	1	0	0	1	0	hsa-miR-544a	0.0006	0.0047	0.0338	0	-0.03	N/A	NULL
+APOLD1	ENST00000356591.4	apolipoprotein L domain containing 1 	27	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0007	0.005	0.0364	0	-0.06	N/A	NULL
+SFPQ	ENST00000357214.5	splicing factor proline/glutamine-rich 	4735	1	0	1	0	1	0	0	1	1	hsa-miR-544a	0	0.0003	0.0018	0	-0.12	N/A	NULL
+GFRA1	ENST00000439649.3	GDNF family receptor alpha 1 	69	1	0	1	0	0	0	0	0	1	hsa-miR-544a	0.0004	0.0031	0.0224	0	-0.03	N/A	NULL
+UMPS	ENST00000232607.2	uridine monophosphate synthetase 	374	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0002	0.0011	0.0079	0	-0.07	N/A	NULL
+HDAC2	ENST00000519065.1	histone deacetylase 2 	1701	1	0	1	0	0	0	0	0	4	hsa-miR-544a	0.0001	0.0008	0.006	0	-0.17	N/A	NULL
+KCNJ13	ENST00000409779.1	"potassium inwardly-rectifying channel, subfamily J, member 13 "	5	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0005	0.0039	0.028	0	-0.39	N/A	NULL
+IFT74	ENST00000380062.5	intraflagellar transport 74 homolog (Chlamydomonas) 	246	1	0	0	1	0	0	0	0	0	hsa-miR-544a	0.0002	0.0014	0.0105	0	-0.05	N/A	NULL
+CDKN2C	ENST00000262662.1	"cyclin-dependent kinase inhibitor 2C (p18, inhibits CDK4) "	708	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0	0.0001	0.0006	0	-0.04	N/A	NULL
+PFN1	ENST00000225655.5	profilin 1 	7729	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.001	0.0076	0.0543	0	-0.21	N/A	NULL
+LETMD1	ENST00000380123.2	LETM1 domain containing 1 	1619	1	0	1	0	1	0	1	0	1	hsa-miR-544a	0	0.0001	0.0006	0	-0.19	N/A	NULL
+MSH3	ENST00000265081.6	mutS homolog 3 	443	1	1	0	0	1	0	1	0	1	hsa-miR-544a	0.0005	0.004	0.0295	0	-0.05	N/A	NULL
+MRPL44	ENST00000258383.3	mitochondrial ribosomal protein L44 	347	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0.0001	0.0006	0.004	0	-0.03	N/A	NULL
+AKR1D1	ENST00000432161.1	"aldo-keto reductase family 1, member D1 "	5	1	0	1	0	1	0	1	0	2	hsa-miR-544a	0	0.0003	0.0022	0	-0.16	N/A	NULL
+CYB5B	ENST00000512062.1	cytochrome b5 type B (outer mitochondrial membrane) 	2472	1	0	0	1	0	0	0	0	1	hsa-miR-544a	0.0001	0.0004	0.0033	0	-0.12	N/A	NULL
+CHD7	ENST00000423902.2	chromodomain helicase DNA binding protein 7 	925	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0012	0.0085	0.0625	0	-0.02	N/A	NULL
+SGSM2	ENST00000426855.2	small G protein signaling modulator 2 	381	1	0	0	1	0	0	0	0	1	hsa-miR-544a	0.0007	0.0048	0.0351	0	-0.06	N/A	NULL
+ATXN10	ENST00000252934.5	ataxin 10 	4734	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0002	0.0016	0.0114	0	-0.17	N/A	NULL
+ALG14	ENST00000370205.5	"ALG14, UDP-N-acetylglucosaminyltransferase subunit "	572	1	0	0	1	0	0	0	0	1	hsa-miR-544a	0	0.0003	0.002	0	-0.01	N/A	NULL
+ITGB1BP1	ENST00000360635.3	integrin beta 1 binding protein 1 	14310	1	1	0	0	0	0	0	0	0	hsa-miR-544a	0	0.0002	0.0018	0	-0.2	N/A	NULL
+ZMAT2	ENST00000274712.3	"zinc finger, matrin-type 2 "	1926	1	0	1	0	0	0	0	0	0	hsa-miR-544a	0.0002	0.0016	0.0121	0	-0.18	N/A	NULL
+DLGAP3	ENST00000373347.1	"discs, large (Drosophila) homolog-associated protein 3 "	8	1	0	1	0	2	0	0	2	0	hsa-miR-544a	0.0001	0.0009	0.0063	0	-0.04	N/A	NULL
+TNFAIP8L3	ENST00000327536.5	"tumor necrosis factor, alpha-induced protein 8-like 3 "	259	1	0	0	1	0	0	0	0	0	hsa-miR-544a	0.0005	0.0033	0.0243	0	-0.11	N/A	NULL

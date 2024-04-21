@@ -1,0 +1,305 @@
+Target gene	Representative transcript	Gene name	3P-seq tags + 5	Conserved sites total	Conserved 8mer sites	Conserved 7mer-m8 sites	Conserved 7mer-A1 sites	Poorly conserved sites total	Poorly conserved 8mer sites	Poorly conserved 7mer-m8 sites	Poorly conserved 7mer-A1 sites	6mer sites	Representative miRNA	Predicted occupancy (low miRNA)	Predicted occupancy (high miRNA)	Predicted occupancy (transfected miRNA)	Cumulative weighted context++ score	Total context++ score	Aggregate PCT	Previous TargetScan publication(s)
+C3orf38	ENST00000486971.1	chromosome 3 open reading frame 38 	683	2	0	0	2	3	0	0	3	0	hsa-miR-375	0.0148	0.1068	0.6721	-0.63	-0.76	0.31	2007
+ELAVL4	ENST00000371824.1	ELAV like neuron-specific RNA binding protein 4 	5	3	1	0	2	0	0	0	0	0	hsa-miR-375	0.0243	0.1739	1.0600	-0.58	-0.58	0.58	2005, 2007, 2009, 2011
+SLC16A2	ENST00000587091.1	solute carrier family 16, member 2 (thyroid hormone transporter) 	22	2	1	0	1	0	0	0	0	0	hsa-miR-375	0.0127	0.0891	0.4808	-0.41	-0.42	0.36	2005, 2007, 2009, 2011
+GREM2	ENST00000318160.4	gremlin 2, DAN family BMP antagonist 	631	1	0	0	1	1	1	0	0	1	hsa-miR-375	0.0131	0.0925	0.5243	-0.36	-0.39	0.36	2005, 2007, 2009, 2011
+EIF4G3	ENST00000264211.8	eukaryotic translation initiation factor 4 gamma, 3 	48	2	0	0	2	0	0	0	0	1	hsa-miR-375	0.0188	0.1348	0.8181	-0.35	-0.35	0.58	2005, 2007, 2011
+RPN1	ENST00000296255.3	ribophorin I 	9235	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0078	0.0567	0.3821	-0.33	-0.35	0.35	NULL
+ZFP36L2	ENST00000282388.3	ZFP36 ring finger protein-like 2 	317	2	0	0	2	1	0	0	1	0	hsa-miR-375	0.0139	0.0990	0.5891	-0.32	-0.34	0.64	2005, 2007, 2009
+LRAT	ENST00000336356.3	lecithin retinol acyltransferase (phosphatidylcholine--retinol O-acyltransferase) 	9	1	0	0	1	3	0	0	3	2	hsa-miR-375	0.0211	0.1517	0.9412	-0.32	-0.37	0.45	NULL
+POU3F1	ENST00000373012.2	POU class 3 homeobox 1 	9	1	1	0	0	0	0	0	0	0	hsa-miR-375	0.0092	0.0644	0.3533	-0.32	-0.32	< 0.1	NULL
+MXI1	ENST00000332674.5	MAX interactor 1, dimerization protein 	278	2	0	0	2	0	0	0	0	0	hsa-miR-375	0.0095	0.0685	0.4417	-0.28	-0.30	0.58	2005, 2007
+HNF1B	ENST00000225893.4	HNF1 homeobox B 	25	1	1	0	0	0	0	0	0	0	hsa-miR-375	0.0052	0.0372	0.2220	-0.28	-0.28	< 0.1	2011
+HOXA5	ENST00000222726.3	homeobox A5 	63	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0050	0.0367	0.2490	-0.27	-0.27	0.34	NULL
+ISL2	ENST00000290759.4	ISL LIM homeobox 2 	381	1	1	0	0	0	0	0	0	0	hsa-miR-375	0.0070	0.0499	0.2853	-0.26	-0.26	< 0.1	2009, 2011
+FOXF1	ENST00000262426.4	forkhead box F1 	836	1	0	0	1	1	0	1	0	0	hsa-miR-375	0.0098	0.0710	0.4582	-0.25	-0.28	0.36	2009, 2011
+YBX1	ENST00000321358.7	Y box binding protein 1 	4740	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0079	0.0560	0.3318	-0.25	-0.25	0.36	2007
+PLEKHA3	ENST00000234453.5	pleckstrin homology domain containing, family A (phosphoinositide binding specific) member 3 	767	2	0	0	2	3	0	0	3	3	hsa-miR-375	0.0133	0.0943	0.5390	-0.25	-0.36	0.72	NULL
+LRP5	ENST00000294304.7	low density lipoprotein receptor-related protein 5 	397	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0069	0.0487	0.2739	-0.23	-0.23	0.35	2005, 2007, 2009, 2011
+UBE2E2	ENST00000396703.1	ubiquitin-conjugating enzyme E2E 2 	794	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0067	0.0485	0.3011	-0.23	-0.24	0.36	2005, 2007, 2011
+DESI1	ENST00000263256.6	desumoylating isopeptidase 1 	1513	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0082	0.0584	0.3372	-0.23	-0.23	0.36	2011
+IFT20	ENST00000357896.3	intraflagellar transport 20 homolog (Chlamydomonas) 	912	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0043	0.0314	0.2055	-0.23	-0.23	< 0.1	2007, 2009, 2011
+TMEM55A	ENST00000285419.3	transmembrane protein 55A 	151	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0115	0.0804	0.4375	-0.23	-0.25	0.36	NULL
+PAX2	ENST00000370296.2	paired box 2 	8	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0120	0.0858	0.5209	-0.22	-0.22	0.39	2005, 2007
+PIPOX	ENST00000323372.4	pipecolic acid oxidase 	30	1	0	0	1	0	0	0	0	2	hsa-miR-375	0.0083	0.0600	0.3833	-0.22	-0.24	0.34	2011
+MOB1A	ENST00000396049.4	MOB kinase activator 1A 	963	1	0	0	1	1	0	1	0	1	hsa-miR-375	0.0103	0.0745	0.4750	-0.22	-0.24	0.34	2005, 2007
+C19orf44	ENST00000594035.1	chromosome 19 open reading frame 44 	25	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0067	0.0481	0.2882	-0.22	-0.22	0.36	NULL
+KCNE3	ENST00000310128.4	potassium voltage-gated channel, Isk-related family, member 3 	16	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0110	0.0770	0.4065	-0.21	-0.21	0.36	2011
+SHOX2	ENST00000490689.2	short stature homeobox 2 	66	1	1	0	0	1	0	0	1	0	hsa-miR-375	0.0091	0.0655	0.4159	-0.21	-0.33	< 0.1	2007, 2009, 2011
+USPL1	ENST00000255304.4	ubiquitin specific peptidase like 1 	7	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0072	0.0510	0.2977	-0.21	-0.21	0.35	2011
+ATXN7	ENST00000295900.6	ataxin 7 	264	3	0	0	3	0	0	0	0	0	hsa-miR-375	0.0184	0.1296	0.7142	-0.21	-0.28	0.73	2011
+ATP1B1	ENST00000367816.1	ATPase, Na+/K+ transporting, beta 1 polypeptide 	656	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0067	0.0482	0.3006	-0.21	-0.21	0.36	2011
+CEPT1	ENST00000545121.1	choline/ethanolamine phosphotransferase 1 	148	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0118	0.0818	0.4224	-0.21	-0.21	0.35	2011
+C8orf86	ENST00000358138.1	chromosome 8 open reading frame 86 	5	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0080	0.0578	0.3559	-0.20	-0.20	0.36	2005, 2007, 2009, 2011
+CCDC39	ENST00000273654.4	coiled-coil domain containing 39 	5	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0050	0.0369	0.2593	-0.20	-0.20	< 0.1	NULL
+POU4F1	ENST00000377208.5	POU class 4 homeobox 1 	61	1	0	0	1	2	0	0	2	1	hsa-miR-375	0.0144	0.1033	0.6390	-0.20	-0.28	0.47	NULL
+PAX6	ENST00000419022.1	paired box 6 	191	1	0	0	1	0	0	0	0	3	hsa-miR-375	0.0093	0.0674	0.4305	-0.20	-0.20	0.36	2007, 2009, 2011
+SLC11A2	ENST00000262051.7	solute carrier family 11 (proton-coupled divalent metal ion transporter), member 2 	526	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0050	0.0364	0.2424	-0.20	-0.20	0.36	2011
+PDE4D	ENST00000340635.6	phosphodiesterase 4D, cAMP-specific 	747	2	0	0	2	0	0	0	0	0	hsa-miR-375	0.0180	0.1285	0.7671	-0.19	-0.20	0.58	2005, 2007, 2009, 2011
+RBM24	ENST00000379052.5	RNA binding motif protein 24 	43	1	0	1	0	0	0	0	0	2	hsa-miR-375	0.0073	0.0527	0.3328	-0.19	-0.21	< 0.1	2005, 2007, 2009, 2011
+HSPH1	ENST00000320027.5	heat shock 105kDa/110kDa protein 1 	4109	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0083	0.0600	0.3817	-0.19	-0.20	0.36	NULL
+CHSY1	ENST00000254190.3	chondroitin sulfate synthase 1 	200	1	0	0	1	0	0	0	0	2	hsa-miR-375	0.0114	0.0811	0.4878	-0.19	-0.21	0.36	2009, 2011
+ACN9	ENST00000360382.4	ACN9 homolog (S. cerevisiae) 	2260	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0086	0.0602	0.3313	-0.19	-0.19	< 0.1	NULL
+MAL2	ENST00000276681.6	mal, T-cell differentiation protein 2 (gene/pseudogene) 	2056	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0095	0.0675	0.3976	-0.19	-0.21	0.36	2009, 2011
+TSC22D2	ENST00000361875.3	TSC22 domain family, member 2 	1062	1	0	0	1	1	0	0	1	2	hsa-miR-375	0.0088	0.0641	0.4324	-0.19	-0.21	0.38	2005, 2007, 2011
+IGFBP4	ENST00000269593.4	insulin-like growth factor binding protein 4 	4053	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0039	0.0279	0.1733	-0.19	-0.31	0.49	NULL
+ELAVL2	ENST00000380110.4	ELAV like neuron-specific RNA binding protein 2 	78	2	0	0	2	0	0	0	0	0	hsa-miR-375	0.0129	0.0920	0.5504	-0.19	-0.20	0.58	2007, 2009, 2011
+ZBTB20	ENST00000462705.1	zinc finger and BTB domain containing 20 	5	2	0	0	2	4	0	0	4	3	hsa-miR-375	0.0099	0.0708	0.4290	-0.18	-0.23	0.72	2009
+RASSF4	ENST00000374417.2	Ras association (RalGDS/AF-6) domain family member 4 	515	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0072	0.0522	0.3295	-0.18	-0.28	0.34	NULL
+PRKD1	ENST00000331968.5	protein kinase D1 	75	1	0	0	1	0	0	0	0	2	hsa-miR-375	0.0063	0.0458	0.2966	-0.18	-0.20	0.36	2005, 2007, 2009, 2011
+RBPJ	ENST00000504907.1	recombination signal binding protein for immunoglobulin kappa J region 	70	1	0	0	1	2	0	0	2	1	hsa-miR-375	0.0192	0.1375	0.8465	-0.18	-0.25	0.52	NULL
+EIF4H	ENST00000265753.8	eukaryotic translation initiation factor 4H 	5	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0074	0.0527	0.2994	-0.18	-0.18	0.35	NULL
+LYSMD3	ENST00000509384.1	LysM, putative peptidoglycan-binding, domain containing 3 	92	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0109	0.0777	0.4625	-0.18	-0.18	< 0.1	NULL
+TMEM26	ENST00000399298.3	transmembrane protein 26 	10	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0118	0.0850	0.5324	-0.18	-0.18	0.35	2011
+JAK2	ENST00000381652.3	Janus kinase 2 	17	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0101	0.0727	0.4438	-0.18	-0.18	0.58	2011
+TIMM8A	ENST00000372902.3	translocase of inner mitochondrial membrane 8 homolog A (yeast) 	147	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0072	0.0514	0.2989	-0.18	-0.18	0.36	2005, 2007
+GRIN2B	ENST00000609686.1	glutamate receptor, ionotropic, N-methyl D-aspartate 2B 	5	1	0	0	1	4	0	0	4	5	hsa-miR-375	0.0371	0.2699	1.7953	-0.18	-0.18	0.51	NULL
+FAM175B	ENST00000298492.5	family with sequence similarity 175, member B 	525	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0076	0.0544	0.3306	-0.18	-0.18	0.36	NULL
+CAST	ENST00000395812.2	calpastatin 	4674	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0042	0.0308	0.2076	-0.17	-0.21	0.36	2011
+C15orf41	ENST00000567389.1	chromosome 15 open reading frame 41 	48	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0053	0.0384	0.2368	-0.17	-0.33	0.34	2009, 2011
+AC140061.12	ENST00000598429.1	Uncharacterized protein  	11	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0078	0.0558	0.3238	-0.17	-0.17	0.34	NULL
+RASSF8	ENST00000541490.1	Ras association (RalGDS/AF-6) domain family (N-terminal) member 8 	1290	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0112	0.0808	0.5050	-0.17	-0.17	0.38	2011
+AL117190.3	ENST00000599197.1	Esophagus cancer-related gene-2 interaction susceptibility protein; Uncharacterized protein  	30	1	0	0	1	1	0	1	0	0	hsa-miR-375	0.0057	0.0414	0.2682	-0.17	-0.20	0.36	NULL
+HOXA3	ENST00000396352.4	homeobox A3 	57	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0093	0.0652	0.3631	-0.17	-0.17	0.36	2005, 2007, 2009, 2011
+HLCS	ENST00000336648.4	holocarboxylase synthetase (biotin-(proprionyl-CoA-carboxylase (ATP-hydrolysing)) ligase) 	688	1	0	0	1	2	0	0	2	0	hsa-miR-375	0.0108	0.0785	0.5035	-0.16	-0.17	0.49	2005, 2007, 2009, 2011
+CNIH4	ENST00000465271.1	cornichon family AMPA receptor auxiliary protein 4 	1348	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0021	0.0154	0.1055	-0.16	-0.16	0.36	2007
+OTP	ENST00000306422.3	orthopedia homeobox 	9	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0117	0.0805	0.3928	-0.16	-0.16	0.36	2005, 2007, 2009, 2011
+UBE3A	ENST00000232165.3	ubiquitin protein ligase E3A 	529	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0147	0.1040	0.6077	-0.16	-0.16	0.36	2011
+MATR3	ENST00000510056.1	matrin 3 	216	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0075	0.0544	0.3491	-0.16	-0.18	0.36	2011
+KLF4	ENST00000374672.4	Kruppel-like factor 4 (gut) 	22	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0064	0.0452	0.2593	-0.16	-0.16	0.36	2005, 2007, 2009, 2011
+AKIRIN1	ENST00000432648.3	akirin 1 	798	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0132	0.0935	0.5426	-0.16	-0.16	0.35	NULL
+KLF5	ENST00000377687.4	Kruppel-like factor 5 (intestinal) 	161	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0107	0.0756	0.4255	-0.16	-0.16	0.35	2007, 2011
+GRIK2	ENST00000413795.1	glutamate receptor, ionotropic, kainate 2 	28	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0144	0.1020	0.5959	-0.16	-0.16	0.35	2009, 2011
+C7orf55-LUC7L2	ENST00000354926.4	C7orf55-LUC7L2 readthrough 	419	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0052	0.0373	0.2325	-0.16	-0.17	0.36	NULL
+WWC2	ENST00000403733.3	WW and C2 domain containing 2 	717	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0161	0.1144	0.6726	-0.16	-0.16	0.46	2009, 2011
+HERPUD1	ENST00000379792.2	homocysteine-inducible, endoplasmic reticulum stress-inducible, ubiquitin-like domain member 1 	804	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0022	0.0157	0.1053	-0.16	-0.16	0.36	NULL
+YAP1	ENST00000282441.5	Yes-associated protein 1 	1175	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0076	0.0540	0.3184	-0.16	-0.21	0.54	2005, 2007, 2011
+PDGFA	ENST00000354513.5	platelet-derived growth factor alpha polypeptide 	25	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0039	0.0288	0.1976	-0.16	-0.16	0.36	2009, 2011
+LUC7L2	ENST00000541515.3	LUC7-like 2 (S. cerevisiae) 	419	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0051	0.0369	0.2298	-0.15	-0.16	0.36	NULL
+LSM12	ENST00000585388.1	LSM12 homolog (S. cerevisiae) 	20	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0057	0.0405	0.2488	-0.15	-0.21	0.34	2007, 2009, 2011
+RMDN3	ENST00000260385.6	regulator of microtubule dynamics 3 	86	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0052	0.0374	0.2231	-0.15	-0.15	0.35	2009, 2011
+QKI	ENST00000392127.2	QKI, KH domain containing, RNA binding 	323	4	0	0	4	5	0	0	5	2	hsa-miR-375	0.0266	0.1923	1.2309	-0.15	-0.28	0.90	2011
+XPR1	ENST00000367590.4	xenotropic and polytropic retrovirus receptor 1 	544	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0143	0.1025	0.6192	-0.15	-0.16	0.37	2005, 2007
+PIAS1	ENST00000249636.6	protein inhibitor of activated STAT, 1 	368	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0038	0.0272	0.1698	-0.15	-0.17	0.36	2005, 2007, 2011
+PITPNA	ENST00000313486.7	phosphatidylinositol transfer protein, alpha 	366	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0061	0.0439	0.2832	-0.15	-0.15	0.35	2005, 2007, 2011
+INSIG2	ENST00000245787.4	insulin induced gene 2 	562	1	0	0	1	0	0	0	0	2	hsa-miR-375	0.0094	0.0672	0.4076	-0.15	-0.17	0.36	2005, 2007, 2009, 2011
+UST	ENST00000367463.4	uronyl-2-sulfotransferase 	933	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0074	0.0537	0.3437	-0.15	-0.15	0.36	2009, 2011
+AP1AR	ENST00000274000.5	adaptor-related protein complex 1 associated regulatory protein 	89	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0038	0.0277	0.1820	-0.15	-0.15	0.35	NULL
+RS1	ENST00000379984.3	retinoschisin 1 	5	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0044	0.0319	0.1958	-0.14	-0.14	0.36	2011
+PACSIN1	ENST00000244458.2	protein kinase C and casein kinase substrate in neurons 1 	25	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0073	0.0529	0.3376	-0.14	-0.14	0.35	2005, 2007, 2009, 2011
+ZFPM2	ENST00000407775.2	zinc finger protein, FOG family member 2 	595	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0102	0.0724	0.4120	-0.14	-0.14	0.35	2005, 2007
+EIF1	ENST00000469257.1	eukaryotic translation initiation factor 1 	415	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0027	0.0199	0.1355	-0.14	-0.15	0.36	2007, 2011
+KLHL3	ENST00000541417.1	kelch-like family member 3 	40	1	0	0	1	0	0	0	0	2	hsa-miR-375	0.0081	0.0591	0.4025	-0.14	-0.14	< 0.1	NULL
+SLC2A8	ENST00000373360.3	solute carrier family 2 (facilitated glucose transporter), member 8 	324	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0023	0.0168	0.1126	-0.14	-0.14	< 0.1	NULL
+HAS2	ENST00000303924.4	hyaluronan synthase 2 	398	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0075	0.0543	0.3535	-0.14	-0.14	0.36	2005, 2007
+ASCL1	ENST00000266744.3	achaete-scute complex homolog 1 (Drosophila) 	5	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0051	0.0366	0.2190	-0.14	-0.14	0.36	2007, 2009, 2011
+SGMS1	ENST00000361781.2	sphingomyelin synthase 1 	100	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0036	0.0263	0.1715	-0.14	-0.14	0.34	2007
+CCDC176	ENST00000394009.3	coiled-coil domain containing 176 	61	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0082	0.0581	0.3353	-0.14	-0.14	0.34	2011
+TCF12	ENST00000267811.5	transcription factor 12 	101	2	0	0	2	0	0	0	0	0	hsa-miR-375	0.0101	0.0729	0.4638	-0.14	-0.16	0.58	2005, 2007, 2011
+SENP2	ENST00000296257.5	SUMO1/sentrin/SMT3 specific peptidase 2 	1693	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0049	0.0351	0.2226	-0.13	-0.13	0.36	NULL
+USP1	ENST00000339950.4	ubiquitin specific peptidase 1 	436	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0058	0.0424	0.2931	-0.13	-0.13	0.36	2005, 2007
+CCDC117	ENST00000249064.4	coiled-coil domain containing 117 	211	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0107	0.0737	0.3668	-0.13	-0.16	0.35	2007, 2009, 2011
+GPR39	ENST00000329321.3	G protein-coupled receptor 39 	151	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0068	0.0496	0.3244	-0.13	-0.13	0.34	NULL
+SYP	ENST00000263233.4	synaptophysin 	15	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0084	0.0602	0.3666	-0.13	-0.13	0.34	2009, 2011
+TCF4	ENST00000354452.3	transcription factor 4 	394	1	0	0	1	1	0	0	1	2	hsa-miR-375	0.0226	0.1622	0.9969	-0.13	-0.14	0.42	NULL
+PDGFC	ENST00000502773.1	platelet derived growth factor C 	238	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0048	0.0344	0.2064	-0.13	-0.14	0.35	2005, 2007
+YWHAZ	ENST00000395957.2	tyrosine 3-monooxygenase/tryptophan 5-monooxygenase activation protein, zeta polypeptide 	184	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0128	0.0918	0.5637	-0.13	-0.13	0.36	2009, 2011
+C17orf85	ENST00000158149.3	chromosome 17 open reading frame 85 	718	1	0	0	1	1	0	1	0	0	hsa-miR-375	0.0051	0.0365	0.2218	-0.13	-0.15	0.35	NULL
+SPRY3	ENST00000302805.2	sprouty homolog 3 (Drosophila) 	5	1	0	0	1	2	0	0	2	0	hsa-miR-375	0.0230	0.1626	0.9230	-0.13	-0.13	0.37	2011
+GATAD2A	ENST00000360315.3	GATA zinc finger domain containing 2A 	986	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0126	0.0873	0.4383	-0.13	-0.13	0.36	2011
+SPAG9	ENST00000262013.7	sperm associated antigen 9 	509	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0138	0.0980	0.5735	-0.13	-0.13	0.35	2005, 2007, 2011
+AC006372.1	ENST00000444154.1		5	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0038	0.0274	0.1859	-0.13	-0.13	0.35	NULL
+GMFB	ENST00000554908.1	glia maturation factor, beta 	15	1	0	0	1	0	0	0	0	2	hsa-miR-375	0.0098	0.0713	0.4651	-0.13	-0.18	0.34	2005, 2007
+IKZF4	ENST00000262032.5	IKAROS family zinc finger 4 (Eos) 	329	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0067	0.0476	0.2750	-0.13	-0.13	0.36	2009, 2011
+RGS16	ENST00000367558.5	regulator of G-protein signaling 16 	7	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0062	0.0446	0.2707	-0.13	-0.16	0.34	2009, 2011
+ANKHD1	ENST00000360839.2	ankyrin repeat and KH domain containing 1 	247	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0103	0.0737	0.4511	-0.12	-0.12	0.36	2011
+INSM1	ENST00000310227.1	insulinoma-associated 1 	20	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0042	0.0302	0.1870	-0.12	-0.12	0.34	2005, 2007
+HIVEP2	ENST00000367604.1	human immunodeficiency virus type I enhancer binding protein 2 	137	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0054	0.0395	0.2558	-0.12	-0.12	0.35	2009, 2011
+EBF3	ENST00000368648.3	early B-cell factor 3 	101	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0097	0.0704	0.4521	-0.12	-0.12	0.35	2007, 2009, 2011
+GATA6	ENST00000269216.3	GATA binding protein 6 	691	1	0	0	1	0	0	0	0	6	hsa-miR-375	0.0047	0.0341	0.2103	-0.12	-0.12	0.36	2005, 2007, 2009, 2011
+DIAPH2	ENST00000324765.8	diaphanous-related formin 2 	91	1	0	0	1	1	0	0	1	2	hsa-miR-375	0.0261	0.1859	1.1059	-0.12	-0.13	0.56	2005, 2007
+CSNK2A1	ENST00000349736.5	casein kinase 2, alpha 1 polypeptide 	1927	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0064	0.0458	0.2814	-0.12	-0.12	0.35	2005, 2007
+KCNAB3	ENST00000303790.2	potassium voltage-gated channel, shaker-related subfamily, beta member 3 	35	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0065	0.0465	0.2868	-0.12	-0.12	0.35	2005, 2007
+SOCS5	ENST00000306503.5	suppressor of cytokine signaling 5 	72	1	0	0	1	1	0	0	1	4	hsa-miR-375	0.0109	0.0769	0.4216	-0.12	-0.14	0.36	2005, 2007
+UBA2	ENST00000246548.4	ubiquitin-like modifier activating enzyme 2 	122	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0073	0.0524	0.3148	-0.12	-0.12	0.36	NULL
+VAT1L	ENST00000302536.2	vesicle amine transport 1-like 	123	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0075	0.0540	0.3439	-0.12	-0.12	0.36	2009, 2011
+KCNJ3	ENST00000295101.2	potassium inwardly-rectifying channel, subfamily J, member 3 	21	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0124	0.0892	0.5521	-0.12	-0.12	0.35	2005, 2007
+SKI	ENST00000378536.4	v-ski avian sarcoma viral oncogene homolog 	613	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0044	0.0318	0.2086	-0.12	-0.12	0.35	2009, 2011
+SP1	ENST00000426431.2	Sp1 transcription factor 	402	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0070	0.0505	0.3155	-0.12	-0.12	0.35	2005, 2007, 2009, 2011
+ACSL3	ENST00000357430.3	acyl-CoA synthetase long-chain family member 3 	2533	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0049	0.0358	0.2385	-0.12	-0.19	0.42	2005, 2007, 2009, 2011
+EPB41L2	ENST00000531410.1	erythrocyte membrane protein band 4.1-like 2 	353	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0031	0.0223	0.1441	-0.12	-0.12	0.35	2005, 2007
+SERBP1	ENST00000370994.4	SERPINE1 mRNA binding protein 1 	926	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0078	0.0560	0.3365	-0.12	-0.12	0.36	2007, 2009, 2011
+RBM47	ENST00000319592.4	RNA binding motif protein 47 	264	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0078	0.0552	0.3259	-0.12	-0.14	0.36	2009, 2011
+FLG2	ENST00000388718.5	filaggrin family member 2 	5	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0137	0.0995	0.6592	-0.12	-0.12	0.51	2009, 2011
+HS3ST3B1	ENST00000360954.2	heparan sulfate (glucosamine) 3-O-sulfotransferase 3B1 	1489	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0085	0.0612	0.3863	-0.11	-0.12	0.36	NULL
+MEIS1	ENST00000488550.1	Meis homeobox 1 	533	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0053	0.0380	0.2363	-0.11	-0.11	0.35	2009, 2011
+ZFYVE26	ENST00000347230.4	zinc finger, FYVE domain containing 26 	104	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0057	0.0411	0.2477	-0.11	-0.14	0.36	2009, 2011
+ELK4	ENST00000357992.4	ELK4, ETS-domain protein (SRF accessory protein 1) 	39	1	0	0	1	2	1	0	1	0	hsa-miR-375	0.0135	0.0966	0.5811	-0.11	-0.15	0.49	2011
+CSRNP2	ENST00000228515.1	cysteine-serine-rich nuclear protein 2 	104	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0031	0.0228	0.1541	-0.11	-0.12	0.35	2009, 2011
+FZD4	ENST00000531380.1	frizzled family receptor 4 	5	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0091	0.0652	0.3988	-0.10	-0.10	0.53	2011
+SYNJ2BP	ENST00000256366.4	synaptojanin 2 binding protein 	329	1	0	0	1	0	0	0	0	3	hsa-miR-375	0.0099	0.0714	0.4487	-0.10	-0.15	0.35	2011
+ATG2B	ENST00000359933.4	autophagy related 2B 	146	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0094	0.0683	0.4615	-0.10	-0.10	0.36	2005, 2007, 2009, 2011
+ADAT2	ENST00000606514.1	adenosine deaminase, tRNA-specific 2 	303	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0041	0.0296	0.1979	-0.10	-0.11	0.36	2009, 2011
+PPAP2B	ENST00000371250.3	phosphatidic acid phosphatase type 2B 	81	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0035	0.0252	0.1644	-0.10	-0.10	0.35	NULL
+ARAP2	ENST00000303965.4	ArfGAP with RhoGAP domain, ankyrin repeat and PH domain 2 	121	1	1	0	0	1	0	0	1	1	hsa-miR-375	0.0129	0.0928	0.5831	-0.10	-0.10	0.28	NULL
+KLLN	ENST00000445946.3	killin, p53-regulated DNA replication inhibitor 	5	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0046	0.0339	0.2283	-0.10	-0.10	0.35	2011
+SYPL2	ENST00000369872.3	synaptophysin-like 2 	69	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0032	0.0230	0.1522	-0.10	-0.10	0.34	2007
+SCN2B	ENST00000278947.5	sodium channel, voltage-gated, type II, beta subunit 	5	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0058	0.0410	0.2400	-0.10	-0.10	0.35	2009, 2011
+AKAP1	ENST00000337714.3	A kinase (PRKA) anchor protein 1 	843	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0036	0.0265	0.1868	-0.10	-0.10	0.36	2005, 2007
+C15orf54	ENST00000318578.3	chromosome 15 open reading frame 54 	5	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0025	0.0184	0.1305	-0.09	-0.09	0.36	2009, 2011
+PDPK1	ENST00000441549.3	3-phosphoinositide dependent protein kinase-1 	104	1	0	0	1	2	0	0	2	0	hsa-miR-375	0.0129	0.0926	0.5743	-0.09	-0.10	0.46	2005, 2007, 2009, 2011
+AHR	ENST00000242057.4	aryl hydrocarbon receptor 	25	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0085	0.0607	0.3520	-0.09	-0.09	0.35	2005, 2007, 2009, 2011
+DPY19L3	ENST00000586987.1	dpy-19-like 3 (C. elegans) 	146	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0033	0.0238	0.1626	-0.09	-0.09	< 0.1	NULL
+ATXN7L1	ENST00000419735.3	ataxin 7-like 1 	67	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0104	0.0746	0.4647	-0.09	-0.10	0.35	NULL
+MSI1	ENST00000257552.2	musashi RNA-binding protein 1 	287	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0049	0.0349	0.2126	-0.09	-0.09	0.34	NULL
+AEBP2	ENST00000266508.9	AE binding protein 2 	1228	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0087	0.0626	0.4034	-0.09	-0.09	0.36	2005, 2007, 2009, 2011
+NR5A2	ENST00000367362.3	nuclear receptor subfamily 5, group A, member 2 	121	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0116	0.0826	0.4995	-0.09	-0.09	0.36	2007, 2011
+RP11-1055B8.7	ENST00000307745.7	BAH and coiled-coil domain-containing protein 1  	247	1	1	0	0	0	0	0	0	0	hsa-miR-375	0.0156	0.1062	0.5087	-0.09	-0.09	< 0.1	2011
+KIAA1199	ENST00000220244.3	KIAA1199 	660	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0062	0.0441	0.2648	-0.09	-0.09	0.35	2011
+MAPRE2	ENST00000436190.2	microtubule-associated protein, RP/EB family, member 2 	361	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0060	0.0437	0.2973	-0.09	-0.09	0.35	NULL
+CTBP2	ENST00000337195.5	C-terminal binding protein 2 	16	1	0	0	1	2	0	0	2	1	hsa-miR-375	0.0099	0.0721	0.4834	-0.09	-0.14	0.57	2009, 2011
+ZFHX4	ENST00000521891.2	zinc finger homeobox 4 	194	2	0	0	2	0	0	0	0	1	hsa-miR-375	0.0163	0.1182	0.7694	-0.09	-0.09	0.58	2007, 2009, 2011
+ABI2	ENST00000295851.5	abl-interactor 2 	877	2	0	0	2	3	0	1	2	5	hsa-miR-375	0.0082	0.0585	0.3550	-0.09	-0.18	0.65	2009, 2011
+STX7	ENST00000367941.2	syntaxin 7 	1395	1	0	0	1	0	0	0	0	4	hsa-miR-375	0.0053	0.0384	0.2512	-0.09	-0.12	0.36	NULL
+MLK4	ENST00000366624.3	Mitogen-activated protein kinase kinase kinase MLK4  	405	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0049	0.0358	0.2386	-0.09	-0.09	0.36	2009, 2011
+PDE11A	ENST00000286063.6	phosphodiesterase 11A 	7	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0122	0.0885	0.5802	-0.09	-0.09	0.40	2007, 2009
+EHMT1	ENST00000460843.1	euchromatic histone-lysine N-methyltransferase 1 	22	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0049	0.0354	0.2245	-0.09	-0.12	0.36	2005, 2007, 2009, 2011
+SHANK3	ENST00000414786.2	SH3 and multiple ankyrin repeat domains 3 	5	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0087	0.0612	0.3286	-0.09	-0.09	0.35	NULL
+ELAVL3	ENST00000359227.3	ELAV like neuron-specific RNA binding protein 3 	5	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0083	0.0604	0.3989	-0.09	-0.09	0.35	2011
+NFIA	ENST00000403491.3	nuclear factor I/A 	5	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0147	0.1066	0.6925	-0.09	-0.09	0.34	NULL
+GPATCH2L	ENST00000553588.1	G patch domain containing 2-like 	96	1	0	0	1	0	0	0	0	2	hsa-miR-375	0.0093	0.0661	0.3805	-0.08	-0.10	0.36	NULL
+DIP2C	ENST00000280886.6	DIP2 disco-interacting protein 2 homolog C (Drosophila) 	359	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0136	0.0971	0.5802	-0.08	-0.11	0.38	2007, 2011
+PATZ1	ENST00000405309.3	POZ (BTB) and AT hook containing zinc finger 1 	165	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0035	0.0257	0.1726	-0.08	-0.08	< 0.1	NULL
+RNASEH2B	ENST00000336617.3	ribonuclease H2, subunit B 	131	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0015	0.0112	0.0738	-0.08	-0.15	0.34	NULL
+SYTL3	ENST00000367081.3	synaptotagmin-like 3 	16	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0031	0.0223	0.1424	-0.08	-0.15	0.36	NULL
+MSL2	ENST00000309993.2	male-specific lethal 2 homolog (Drosophila) 	175	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0031	0.0225	0.1457	-0.08	-0.08	0.35	2007
+BMPR2	ENST00000374574.2	bone morphogenetic protein receptor, type II (serine/threonine kinase) 	287	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0096	0.0684	0.4174	-0.08	-0.14	0.36	2009, 2011
+GREB1L	ENST00000580732.2	growth regulation by estrogen in breast cancer-like 	30	1	0	0	1	1	0	0	1	2	hsa-miR-375	0.0162	0.1166	0.7334	-0.08	-0.08	0.48	NULL
+DNAJC16	ENST00000375847.3	DnaJ (Hsp40) homolog, subfamily C, member 16 	366	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0092	0.0652	0.3857	-0.08	-0.09	0.36	2007, 2009, 2011
+RTF1	ENST00000389629.4	Rtf1, Paf1/RNA polymerase II complex component, homolog (S. cerevisiae) 	1869	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0060	0.0430	0.2723	-0.08	-0.09	0.35	2007, 2011
+B3GAT2	ENST00000230053.6	beta-1,3-glucuronyltransferase 2 (glucuronosyltransferase S) 	39	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0107	0.0747	0.3906	-0.08	-0.10	0.35	NULL
+ARL4C	ENST00000390645.2	ADP-ribosylation factor-like 4C 	84	1	1	0	0	0	0	0	0	0	hsa-miR-375	0.0023	0.0169	0.1130	-0.07	-0.07	< 0.1	2007, 2009, 2011
+SOCS4	ENST00000395472.2	suppressor of cytokine signaling 4 	336	1	0	0	1	2	0	0	2	2	hsa-miR-375	0.0144	0.1021	0.5991	-0.07	-0.12	0.41	2011
+NBEA	ENST00000379939.2	neurobeachin 	5	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0059	0.0424	0.2650	-0.07	-0.07	0.35	2011
+VTI1A	ENST00000393077.2	vesicle transport through interaction with t-SNAREs 1A 	376	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0044	0.0322	0.2181	-0.07	-0.10	0.36	2007, 2009, 2011
+PTPN3	ENST00000412145.1	protein tyrosine phosphatase, non-receptor type 3 	374	1	0	0	1	1	0	0	1	3	hsa-miR-375	0.0112	0.0802	0.4962	-0.07	-0.08	0.40	2011
+ZRANB1	ENST00000359653.4	zinc finger, RAN-binding domain containing 1 	724	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0075	0.0538	0.3372	-0.07	-0.07	0.36	2007, 2009, 2011
+ATXN1	ENST00000244769.4	ataxin 1 	106	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0100	0.0719	0.4580	-0.07	-0.10	0.45	2005, 2007, 2009, 2011
+C7orf60	ENST00000297145.4	chromosome 7 open reading frame 60 	39	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0052	0.0376	0.2521	-0.07	-0.12	0.34	2007, 2009, 2011
+SOX12	ENST00000342665.2	SRY (sex determining region Y)-box 12 	6341	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0040	0.0288	0.1849	-0.07	-0.07	0.36	2005, 2007, 2009, 2011
+SEMA6D	ENST00000355997.3	sema domain, transmembrane domain (TM), and cytoplasmic domain, (semaphorin) 6D 	179	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0105	0.0765	0.5015	-0.07	-0.07	< 0.1	NULL
+TSC1	ENST00000298552.3	tuberous sclerosis 1 	838	1	0	0	1	2	0	0	2	3	hsa-miR-375	0.0156	0.1140	0.7700	-0.07	-0.07	0.47	2011
+CCND2	ENST00000261254.3	cyclin D2 	66	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0036	0.0266	0.1815	-0.07	-0.08	0.36	NULL
+PRPF4B	ENST00000337659.6	pre-mRNA processing factor 4B 	602	1	0	0	1	0	0	0	0	2	hsa-miR-375	0.0071	0.0517	0.3389	-0.07	-0.07	0.35	2005, 2007, 2011
+PDE3A	ENST00000359062.3	phosphodiesterase 3A, cGMP-inhibited 	1182	1	0	0	1	2	0	1	1	1	hsa-miR-375	0.0112	0.0813	0.5262	-0.07	-0.09	0.56	NULL
+MBNL1	ENST00000357472.3	muscleblind-like splicing regulator 1 	135	1	0	0	1	0	0	0	0	2	hsa-miR-375	0.0084	0.0617	0.4239	-0.07	-0.07	0.36	2005, 2007, 2009, 2011
+TBC1D9	ENST00000442267.2	TBC1 domain family, member 9 (with GRAM domain) 	200	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0030	0.0217	0.1367	-0.07	-0.16	0.36	2007
+RORB	ENST00000376896.3	RAR-related orphan receptor B 	5	1	0	0	1	0	0	0	0	2	hsa-miR-375	0.0114	0.0832	0.5682	-0.07	-0.07	0.36	NULL
+ATG14	ENST00000247178.5	autophagy related 14 	25	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0013	0.0099	0.0693	-0.06	-0.13	0.36	2009
+TRPS1	ENST00000395715.3	trichorhinophalangeal syndrome I 	94	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0080	0.0581	0.3910	-0.06	-0.06	0.36	2005, 2007, 2009, 2011
+FRRS1	ENST00000287474.5	ferric-chelate reductase 1 	97	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0016	0.0114	0.0793	-0.06	-0.11	0.35	NULL
+SOX21	ENST00000376945.2	SRY (sex determining region Y)-box 21 	6	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0028	0.0206	0.1437	-0.06	-0.07	0.36	2005, 2007, 2009, 2011
+MYO9A	ENST00000564571.1	myosin IXA 	137	2	0	0	2	0	0	0	0	0	hsa-miR-375	0.0200	0.1443	0.9267	-0.06	-0.11	0.59	NULL
+RBM48	ENST00000481551.1	RNA binding motif protein 48 	220	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0049	0.0360	0.2394	-0.06	-0.14	0.35	NULL
+CEP41	ENST00000223208.5	centrosomal protein 41kDa 	346	2	0	0	2	0	0	0	0	0	hsa-miR-375	0.0027	0.0198	0.1351	-0.06	-0.13	0.58	2007
+ENAH	ENST00000366844.3	enabled homolog (Drosophila) 	415	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0078	0.0563	0.3684	-0.06	-0.06	0.36	2005, 2007, 2009, 2011
+JUND	ENST00000252818.3	jun D proto-oncogene 	13688	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0005	0.0036	0.0263	-0.06	-0.06	0.36	2005, 2007, 2009, 2011
+CREBZF	ENST00000398294.2	CREB/ATF bZIP transcription factor 	1115	1	0	0	1	2	0	0	2	0	hsa-miR-375	0.0017	0.0125	0.0853	-0.06	-0.19	0.40	2007, 2011
+KLHL9	ENST00000359039.4	kelch-like family member 9 	222	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0073	0.0533	0.3520	-0.06	-0.06	0.35	2009
+NR6A1	ENST00000487099.2	nuclear receptor subfamily 6, group A, member 1 	1082	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0106	0.0764	0.4863	-0.05	-0.05	0.36	NULL
+MIER3	ENST00000381226.3	mesoderm induction early response 1, family member 3 	112	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0079	0.0575	0.3697	-0.05	-0.07	0.34	2007
+TNPO3	ENST00000393245.1	transportin 3 	30	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0088	0.0635	0.4075	-0.05	-0.09	0.36	2011
+LPHN1	ENST00000340736.6	latrophilin 1 	49	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0053	0.0384	0.2548	-0.05	-0.08	0.36	2009, 2011
+CYP7B1	ENST00000310193.3	cytochrome P450, family 7, subfamily B, polypeptide 1 	53	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0054	0.0394	0.2665	-0.05	-0.06	0.35	NULL
+PTPN4	ENST00000263708.2	protein tyrosine phosphatase, non-receptor type 4 (megakaryocyte) 	215	1	1	0	0	0	0	0	0	1	hsa-miR-375	0.0101	0.0716	0.4136	-0.05	-0.05	< 0.1	2009, 2011
+PLXNA4	ENST00000321063.4	plexin A4 	9	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0070	0.0506	0.3310	-0.05	-0.09	0.54	2009, 2011
+NLK	ENST00000407008.3	nemo-like kinase 	61	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0016	0.0120	0.0780	-0.05	-0.16	0.35	2005, 2007, 2011
+TMEM65	ENST00000297632.6	transmembrane protein 65 	769	1	0	0	1	0	0	0	0	3	hsa-miR-375	0.0045	0.0328	0.2118	-0.05	-0.13	0.36	2007, 2009, 2011
+DST	ENST00000312431.6	dystonin 	439	1	0	0	1	4	0	0	4	4	hsa-miR-375	0.0481	0.3480	2.2556	-0.05	-0.05	< 0.1	NULL
+MLLT1	ENST00000252674.7	myeloid/lymphoid or mixed-lineage leukemia (trithorax homolog, Drosophila); translocated to, 1 	33	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0022	0.0158	0.0992	-0.05	-0.09	0.35	2009, 2011
+MPP5	ENST00000261681.4	membrane protein, palmitoylated 5 (MAGUK p55 subfamily member 5) 	354	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0080	0.0583	0.3870	-0.05	-0.12	0.50	2005, 2007, 2011
+FKBP5	ENST00000536438.1	FK506 binding protein 5 	32	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0078	0.0571	0.3917	-0.05	-0.05	0.57	NULL
+ANGEL2	ENST00000535388.1	angel homolog 2 (Drosophila) 	218	1	0	0	1	1	0	0	1	2	hsa-miR-375	0.0021	0.0153	0.1068	-0.04	-0.16	0.54	NULL
+SFXN1	ENST00000321442.5	sideroflexin 1 	1018	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0043	0.0304	0.1720	-0.04	-0.13	0.36	NULL
+FAM168B	ENST00000409185.1	family with sequence similarity 168, member B 	122	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0018	0.0132	0.0919	-0.04	-0.11	0.36	NULL
+MBNL3	ENST00000370839.3	muscleblind-like splicing regulator 3 	593	1	0	0	1	0	0	0	0	3	hsa-miR-375	0.0170	0.1209	0.7198	-0.04	-0.05	0.36	2011
+LDLRAD4	ENST00000399848.3	low density lipoprotein receptor class A domain containing 4 	314	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0060	0.0437	0.2896	-0.04	-0.10	0.56	2011
+GRM5	ENST00000418177.2	glutamate receptor, metabotropic 5 	5	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0071	0.0519	0.3453	-0.04	-0.04	0.36	2011
+BNC2	ENST00000380672.4	basonuclin 2 	770	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0059	0.0432	0.2945	-0.04	-0.06	0.40	2009, 2011
+SETBP1	ENST00000282030.5	SET binding protein 1 	77	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0056	0.0410	0.2692	-0.04	-0.05	0.34	NULL
+SLC4A4	ENST00000340595.3	solute carrier family 4 (sodium bicarbonate cotransporter), member 4 	400	2	0	0	2	0	0	0	0	0	hsa-miR-375	0.0086	0.0622	0.4074	-0.04	-0.04	0.58	2005, 2007, 2009, 2011
+WNT8B	ENST00000343737.5	wingless-type MMTV integration site family, member 8B 	25	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0017	0.0128	0.0892	-0.04	-0.12	0.36	NULL
+EIF3H	ENST00000521861.1	eukaryotic translation initiation factor 3, subunit H 	27	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0040	0.0290	0.1893	-0.04	-0.06	0.36	NULL
+ARHGAP35	ENST00000404338.3	Rho GTPase activating protein 35 	278	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0094	0.0687	0.4719	-0.04	-0.04	0.35	2009, 2011
+SHB	ENST00000377707.3	Src homology 2 domain containing adaptor protein B 	1436	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0027	0.0195	0.1125	-0.04	-0.09	0.36	2007, 2009, 2011
+CASZ1	ENST00000377022.3	castor zinc finger 1 	5	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0043	0.0312	0.1976	-0.04	-0.04	0.36	2007, 2009, 2011
+CDK5R1	ENST00000313401.3	cyclin-dependent kinase 5, regulatory subunit 1 (p35) 	335	1	0	0	1	0	0	0	0	2	hsa-miR-375	0.0043	0.0312	0.2180	-0.04	-0.04	0.34	2009, 2011
+CYB5B	ENST00000512062.1	cytochrome b5 type B (outer mitochondrial membrane) 	2472	1	0	0	1	0	0	0	0	2	hsa-miR-375	0.0025	0.0182	0.1220	-0.04	-0.18	0.35	2007
+TEAD1	ENST00000361905.4	TEA domain family member 1 (SV40 transcriptional enhancer factor) 	740	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0083	0.0605	0.4132	-0.04	-0.04	0.35	2009, 2011
+NOTCH2	ENST00000256646.2	notch 2 	734	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0089	0.0639	0.3910	-0.04	-0.04	0.36	2009, 2011
+SOX6	ENST00000316399.6	SRY (sex determining region Y)-box 6 	22	2	0	0	2	2	0	0	2	2	hsa-miR-375	0.0075	0.0542	0.3375	-0.03	-0.10	0.59	2007, 2009, 2011
+BACH2	ENST00000257749.4	BTB and CNC homology 1, basic leucine zipper transcription factor 2 	74	1	0	0	1	1	0	0	1	2	hsa-miR-375	0.0067	0.0485	0.3266	-0.03	-0.04	0.36	2009, 2011
+EXT2	ENST00000395673.3	exostosin glycosyltransferase 2 	896	1	0	0	1	0	0	0	0	3	hsa-miR-375	0.0033	0.0239	0.1654	-0.03	-0.10	0.36	NULL
+CCDC171	ENST00000380701.3	coiled-coil domain containing 171 	25	1	0	0	1	0	0	0	0	4	hsa-miR-375	0.0049	0.0359	0.2458	-0.03	-0.06	0.36	NULL
+ERC1	ENST00000355446.5	ELKS/RAB6-interacting/CAST family member 1 	159	2	0	0	2	0	0	0	0	0	hsa-miR-375	0.0095	0.0689	0.4370	-0.03	-0.03	0.59	2011
+NFIX	ENST00000360105.4	nuclear factor I/X (CCAAT-binding transcription factor) 	24	1	1	0	0	1	0	0	1	1	hsa-miR-375	0.0063	0.0458	0.3007	-0.03	-0.05	< 0.1	2005, 2007, 2009, 2011
+KLF8	ENST00000468660.1	Kruppel-like factor 8 	8	1	0	0	1	2	0	0	2	1	hsa-miR-375	0.0035	0.0255	0.1660	-0.03	-0.08	0.38	NULL
+PURB	ENST00000395699.2	purine-rich element binding protein B 	497	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0078	0.0565	0.3822	-0.03	-0.06	0.36	2005, 2007, 2009, 2011
+MED13	ENST00000397786.2	mediator complex subunit 13 	561	1	0	0	1	0	0	0	0	3	hsa-miR-375	0.0085	0.0621	0.4198	-0.03	-0.08	0.35	2007, 2009, 2011
+AP1S1	ENST00000337619.5	adaptor-related protein complex 1, sigma 1 subunit 	750	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0017	0.0128	0.0869	-0.03	-0.21	0.36	NULL
+BCORL1	ENST00000540052.1	BCL6 corepressor-like 1 	209	1	0	1	0	0	0	0	0	0	hsa-miR-375	0.0045	0.0326	0.2145	-0.03	-0.07	< 0.1	2009, 2011
+PDK3	ENST00000441463.2	pyruvate dehydrogenase kinase, isozyme 3 	659	1	0	0	1	1	0	1	0	3	hsa-miR-375	0.0098	0.0706	0.4437	-0.03	-0.05	0.36	2011
+DLG3	ENST00000194900.4	discs, large homolog 3 (Drosophila) 	185	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0055	0.0407	0.2884	-0.03	-0.05	0.38	2005, 2007, 2009, 2011
+SLC7A11	ENST00000280612.5	solute carrier family 7 (anionic amino acid transporter light chain, xc- system), member 11 	61	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0033	0.0243	0.1627	-0.03	-0.07	0.56	2007, 2011
+KIAA1549L	ENST00000321505.4	KIAA1549-like 	117	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0114	0.0816	0.4924	-0.02	-0.04	0.36	2009, 2011
+PPARGC1B	ENST00000309241.5	peroxisome proliferator-activated receptor gamma, coactivator 1 beta 	12	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0047	0.0345	0.2315	-0.02	-0.02	0.36	2011
+LHX9	ENST00000367390.3	LIM homeobox 9 	40	1	0	0	1	2	0	0	2	1	hsa-miR-375	0.0077	0.0559	0.3711	-0.02	-0.05	< 0.1	NULL
+SOGA3	ENST00000556132.1	SOGA family member 3 	95	1	0	0	1	0	0	0	0	4	hsa-miR-375	0.0065	0.0477	0.3262	-0.02	-0.02	< 0.1	NULL
+SETX	ENST00000224140.5	senataxin 	270	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0075	0.0544	0.3657	-0.02	-0.05	0.34	NULL
+UNC13A	ENST00000519716.2	unc-13 homolog A (C. elegans) 	5	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0101	0.0736	0.4888	-0.02	-0.02	0.36	2009, 2011
+COL4A4	ENST00000396625.3	collagen, type IV, alpha 4 	133	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0055	0.0398	0.2672	-0.02	-0.02	0.47	NULL
+EMC3	ENST00000245046.2	ER membrane protein complex subunit 3 	4423	1	0	0	1	2	0	0	2	1	hsa-miR-375	0.0012	0.0085	0.0565	-0.02	-0.38	0.37	NULL
+SLC31A1	ENST00000374212.4	solute carrier family 31 (copper transporter), member 1 	171	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0008	0.0055	0.0336	-0.02	-0.16	0.36	2009, 2011
+KLF12	ENST00000377669.2	Kruppel-like factor 12 	251	1	0	0	1	0	0	0	0	3	hsa-miR-375	0.0095	0.0692	0.4782	-0.02	-0.05	0.36	2009, 2011
+CPPED1	ENST00000381774.4	calcineurin-like phosphoesterase domain containing 1 	511	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0011	0.0080	0.0534	-0.02	-0.17	0.35	2011
+ARHGEF12	ENST00000397843.2	Rho guanine nucleotide exchange factor (GEF) 12 	815	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0080	0.0587	0.4083	-0.02	-0.03	0.39	2005, 2007, 2009, 2011
+DACH1	ENST00000305425.4	dachshund homolog 1 (Drosophila) 	18	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0027	0.0200	0.1402	-0.02	-0.06	0.34	NULL
+SAR1A	ENST00000373242.2	SAR1 homolog A (S. cerevisiae) 	253	1	0	0	1	0	0	0	0	2	hsa-miR-375	0.0010	0.0073	0.0474	-0.02	-0.13	0.35	NULL
+RBM27	ENST00000265271.5	RNA binding motif protein 27 	130	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0034	0.0249	0.1746	-0.02	-0.02	0.35	2011
+CDC37L1	ENST00000381854.3	cell division cycle 37-like 1 	280	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0012	0.0087	0.0586	-0.01	-0.13	0.34	NULL
+AGPS	ENST00000264167.4	alkylglycerone phosphate synthase 	1610	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0029	0.0214	0.1535	-0.01	-0.02	0.35	2011
+PHLDA1	ENST00000602540.1	pleckstrin homology-like domain, family A, member 1 	3907	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0016	0.0114	0.0713	-0.01	-0.07	0.36	2007, 2009, 2011
+HOXD12	ENST00000404162.2	homeobox D12 	6	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0010	0.0071	0.0453	-0.01	-0.10	0.35	NULL
+HNRNPD	ENST00000313899.7	heterogeneous nuclear ribonucleoprotein D (AU-rich element RNA binding protein 1, 37kDa) 	1763	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0012	0.0088	0.0606	-0.01	-0.17	0.35	NULL
+SRRM3	ENST00000326382.8	serine/arginine repetitive matrix 3 	16	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0028	0.0208	0.1466	-0.01	-0.01	0.35	2011
+OTUD7B	ENST00000369135.4	OTU domain containing 7B 	299	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0038	0.0278	0.1921	-0.01	-0.03	0.34	NULL
+CORO2A	ENST00000343933.5	coronin, actin binding protein, 2A 	493	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0021	0.0153	0.1039	-0.01	-0.08	0.36	2011
+ING5	ENST00000313552.6	inhibitor of growth family, member 5 	529	1	0	0	1	0	0	0	0	3	hsa-miR-375	0.0024	0.0173	0.1202	-0.01	-0.14	0.36	2011
+PRDM16	ENST00000511072.1	PR domain containing 16 	64	1	0	0	1	0	0	0	0	2	hsa-miR-375	0.0034	0.0247	0.1638	-0.01	-0.02	0.34	2009, 2011
+GOSR1	ENST00000225724.5	golgi SNAP receptor complex member 1 	668	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0017	0.0124	0.0879	-0.01	-0.01	0.35	NULL
+FAM83F	ENST00000333407.6	family with sequence similarity 83, member F 	5	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0080	0.0581	0.3952	-0.01	-0.01	0.35	NULL
+INSR	ENST00000341500.5	insulin receptor 	577	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0061	0.0451	0.3185	-0.01	-0.01	0.35	NULL
+LMLN	ENST00000330198.4	leishmanolysin-like (metallopeptidase M8 family) 	18	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0031	0.0228	0.1599	-0.01	-0.01	0.34	NULL
+PDE5A	ENST00000354960.3	phosphodiesterase 5A, cGMP-specific 	69	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0054	0.0392	0.2688	-0.01	-0.06	0.36	2007, 2009, 2011
+NUFIP2	ENST00000225388.4	nuclear fragile X mental retardation protein interacting protein 2 	440	1	0	0	1	0	0	0	0	2	hsa-miR-375	0.0049	0.0357	0.2428	-0.01	-0.04	0.36	2009, 2011
+MAP3K1	ENST00000399503.3	mitogen-activated protein kinase kinase kinase 1, E3 ubiquitin protein ligase 	137	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0009	0.0066	0.0455	-0.01	-0.19	0.35	NULL
+TNPO1	ENST00000337273.5	transportin 1 	2041	1	0	0	1	0	0	0	0	2	hsa-miR-375	0.0085	0.0615	0.4084	-0.01	-0.01	0.35	2007
+IKZF3	ENST00000346872.3	IKAROS family zinc finger 3 (Aiolos) 	7	1	0	0	1	1	0	0	1	2	hsa-miR-375	0.0051	0.0372	0.2486	-0.01	-0.02	0.36	NULL
+NDUFB9	ENST00000276689.3	NADH dehydrogenase (ubiquinone) 1 beta subcomplex, 9, 22kDa 	225	1	0	0	1	1	1	0	0	1	hsa-miR-375	0.0003	0.0020	0.0123	-0.01	-0.39	0.36	NULL
+GTDC1	ENST00000392869.2	glycosyltransferase-like domain containing 1 	241	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0019	0.0141	0.0928	-0.01	-0.09	0.50	NULL
+SGIP1	ENST00000371036.3	SH3-domain GRB2-like (endophilin) interacting protein 1 	180	1	0	0	1	4	0	0	4	2	hsa-miR-375	0.0040	0.0294	0.2052	0	-0.12	0.46	NULL
+YWHAB	ENST00000353703.4	tyrosine 3-monooxygenase/tryptophan 5-monooxygenase activation protein, beta polypeptide 	272	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0004	0.0028	0.0195	0	-0.13	0.35	NULL
+AP5M1	ENST00000261558.3	adaptor-related protein complex 5, mu 1 subunit 	198	1	0	0	1	0	0	0	0	4	hsa-miR-375	0.0049	0.0357	0.2410	0	-0.01	0.35	NULL
+CADM1	ENST00000452722.3	cell adhesion molecule 1 	676	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0007	0.0053	0.0379	0	-0.17	0.57	2011
+RNF126	ENST00000292363.5	ring finger protein 126 	658	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0001	0.0004	0.0023	0	-0.18	0.35	NULL
+VPS53	ENST00000437048.2	vacuolar protein sorting 53 homolog (S. cerevisiae) 	1332	1	0	0	1	0	0	0	0	1	hsa-miR-375	0.0023	0.0166	0.1113	0	-0.01	0.34	2011
+SLC25A12	ENST00000422440.2	solute carrier family 25 (aspartate/glutamate carrier), member 12 	566	1	0	0	1	1	0	0	1	1	hsa-miR-375	0.0008	0.0057	0.0408	0	-0.06	0.45	NULL
+GALNT15	ENST00000339732.5	UDP-N-acetyl-alpha-D-galactosamine:polypeptide N-acetylgalactosaminyltransferase 15 	114	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0025	0.0182	0.1286	0	-0.01	0.35	NULL
+NAT10	ENST00000257829.3	N-acetyltransferase 10 (GCN5-related) 	132	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0025	0.0183	0.1270	0	-0.03	0.36	NULL
+IGSF10	ENST00000282466.3	immunoglobulin superfamily, member 10 	191	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0035	0.0256	0.1817	0	-0.04	0.35	NULL
+SOX14	ENST00000306087.1	SRY (sex determining region Y)-box 14 	5	1	0	0	1	2	0	0	2	0	hsa-miR-375	0.0000	0.0001	0.0009	0	-0.47	0.41	NULL
+IFT74	ENST00000380062.5	intraflagellar transport 74 homolog (Chlamydomonas) 	246	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0006	0.0045	0.0321	0	-0.07	0.36	NULL
+ORMDL2	ENST00000243045.5	ORM1-like 2 (S. cerevisiae) 	1649	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0001	0.0010	0.0069	0	-0.18	0.36	2005, 2007, 2009, 2011
+CHD7	ENST00000423902.2	chromodomain helicase DNA binding protein 7 	925	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0041	0.0299	0.2142	0	-0.01	0.36	NULL
+CBX2	ENST00000310942.4	chromobox homolog 2 	1816	1	0	0	1	0	0	0	0	0	hsa-miR-375	0.0000	0.0000	0.0002	0	-0.07	0.36	NULL
+ZNF366	ENST00000318442.5	zinc finger protein 366 	5	1	0	0	1	1	0	0	1	0	hsa-miR-375	0.0003	0.0023	0.0165	0	-0.05	0.36	NULL
