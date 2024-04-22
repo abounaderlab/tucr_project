@@ -1,0 +1,14 @@
+# Number of query intervals: 481
+# Number of db intervals: 8305
+# Number of overlaps: 11
+# Number of possible intervals (estimated): 373612
+# phyper(11 - 1, 481, 373612 - 481, 8305, lower.tail=F)
+# Contingency Table Of Counts
+#_________________________________________
+#           |  in -b       | not in -b    |
+#     in -a | 11           | 470          |
+# not in -a | 8294         | 364837       |
+#_________________________________________
+# p-values for fisher's exact test
+left	right	two-tail	ratio
+0.61641	0.50389	0.87642	1.030
