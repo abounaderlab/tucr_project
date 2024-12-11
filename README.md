@@ -33,10 +33,6 @@ Used to declare changes to file handling and display. For this project, specific
 
 [Git definiton](https://git-scm.com/docs/gitignore)
 
-# colorcodelist
-
-A list of hex codes used in this project and their colloquial names.
-
 # Outputs_example.tar.gz
 
 A compressed example output directory with completed data, including the TUCR Database.
@@ -56,6 +52,10 @@ A compressed directory containing expression, survival, and weighted gene correl
 # TinyTeX.zip
 
 Latex compiler that can be used to assist with regenerating the codebook
+
+# colorcodelist
+
+A list of hex codes used in this project and their colloquial names.
 
 # tucr_project
 R project file for the TUCR project
