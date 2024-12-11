@@ -1,4 +1,0 @@
-CellLine,Gene,Sample,FC,n,stderr,pvalue,order,order2,Color
-GSC-34 (Day 5),LV-pCDH,si-SCR,1,8,0.098883068,,1,1,#F8766D
-GSC-34 (Day 5),LV-pCDH,si-uc.110-1,0.504626406,8,0.058277465,*,2,1,#0CB702
-GSC-34 (Day 5),LV-pCDH,si-uc.110-2,0.489943275,8,0.075148658,*,3,1,#00A9FF
