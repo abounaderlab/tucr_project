@@ -17,17 +17,45 @@ TinyTex.zip
 Outputs_example.tar.gz
 TUCR_Database.tar.gz
 
+# Inputs 
+
+Input files for project organized by figure
+
 # .gitattributes
 
-Designates the four files from the installation guide section above as LFS.
+Used to declare changes to file handling and display. For this project, specifically designates the LFS files from the installation guide section above as being tracked by LFS.
+
+[Git definition](https://docs.gitlab.com/ee/user/project/repository/files/git_attributes.html)
+
+# .gitignore
+
+(Git definiton) A gitignore file specifies intentionally untracked files that Git should ignore. Files already tracked by Git are not affected
+
+[Git definiton](https://git-scm.com/docs/gitignore)
+
+# colorcodelist
+
+A list of hex codes used in this project and their colloquial names.
+
+# Outputs_example.tar.gz
+
+A compressed example output directory with completed data, including the TUCR Database.
+
+# README.md
+
+This document
 
 # Extracting Outputs_example and the TUCR_Database
 tar -xvzf Outputs_example.tar.gz 
 tar -xvzf TUCR_Database.tar.gz
 
-# README.md
+# TUCR_Database.tar.gz
 
-This document
+A compressed directory containing expression, survival, and weighted gene correlation data for all 481 TUCRs. 
+
+# TinyTeX.zip
+
+Latex compiler that can be used to assist with regenerating the codebook
 
 # tucr_project
 R project file for the TUCR project
@@ -40,33 +68,7 @@ R Markdown file containing code used to generate all figures, with workflows inc
 
 PDF File of tucr_project_markdown with appropriate section headers
 
-# Inputs 
-
-Input files for project organized by figure
-
-# Outputs_example
-
-An example output directory with completed data, including the TUCR Database.
-
-# colorcodelist
-
-A list of hex codes used in this project and their colloquial names.
-
-# .RData
-
-(Library of Congress definition) The RData format (usually with extension . rdata or . rda) is a format designed for use with R, a system for statistical computation and related graphics, for storing a complete R workspace or selected "objects" from a workspace in a form that can be loaded back by R.
-
-[Library of Congress definition](https://www.loc.gov/preservation/digital/formats/fdd/fdd000470.shtml)
-
-# TinyTeX.zip
-
-Latex compiler that can be used to assist with regenerating the codebook
 
 
 
-# .gitignore
-
-(Git definiton) A gitignore file specifies intentionally untracked files that Git should ignore. Files already tracked by Git are not affected
-
-[Git definiton](https://git-scm.com/docs/gitignore)
 
