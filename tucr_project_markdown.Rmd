@@ -51,7 +51,7 @@ In addition to setting the above variables, this chunk loads the color palette a
 
 ```{r setup, message = FALSE, warning=FALSE}
 knitr::opts_chunk$set(
-eval = FALSE,
+eval = TRUE,
 tidy = TRUE#,
 #	echo = TRUE,
 #	message = FALSE,
