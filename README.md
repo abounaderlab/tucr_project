@@ -54,15 +54,17 @@ A list of hex codes used in this project and their colloquial names.
 
 (Library of Congress definition) The RData format (usually with extension . rdata or . rda) is a format designed for use with R, a system for statistical computation and related graphics, for storing a complete R workspace or selected "objects" from a workspace in a form that can be loaded back by R.
 
+[Library of Congress definition](https://www.loc.gov/preservation/digital/formats/fdd/fdd000470.shtml#:~:text=The%20RData%20format%20(usually%20with,be%20loaded%20back%20by%20R.)
+
 # TinyTeX.zip
 
 Latex compiler that can be used to assist with regenerating the codebook
 
-[https://www.loc.gov/preservation/digital/formats/fdd/fdd000470.shtml#:~:text=The%20RData%20format%20(usually%20with,be%20loaded%20back%20by%20R.](https://www.loc.gov/preservation/digital/formats/fdd/fdd000470.shtml#:~:text=The%20RData%20format%20(usually%20with,be%20loaded%20back%20by%20R.)
+
 
 # .gitignore
 
 (Git definiton) A gitignore file specifies intentionally untracked files that Git should ignore. Files already tracked by Git are not affected
 
-[https://git-scm.com/docs/gitignore](https://git-scm.com/docs/gitignore)
+[Git definiton](https://git-scm.com/docs/gitignore)
 
