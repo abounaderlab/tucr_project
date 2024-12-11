@@ -15,13 +15,15 @@ Inputs/generalfiles/wgcnafiles/TUCR-01-dataInput.rdata
 Inputs/generalfiles/wgcnafiles/allprelims.rdata
 TinyTex.zip
 Outputs_example.tar.gz
+TUCR_Database.tar.gz
 
 # .gitattributes
 
 Designates the four files from the installation guide section above as LFS.
 
-# Extracting Outputs_example
+# Extracting Outputs_example and the TUCR_Database
 tar -xvzf Outputs_example.tar.gz 
+tar -xvzf TUCR_Database.tar.gz
 
 # README.md
 
