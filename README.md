@@ -8,6 +8,21 @@ E-mail: ra6u@virginia.edu.
 # Version History
 R (4.3.1), RStudio (2023.12.1+402), UBuntu (2204.3.49.0), bowtie (2.2.9), salmon (1.5.1), bedtools (2.29.2), samtools (1.12), macs2 (2.2.7.1), sratoolkit (2.10.5). Custom code is available upon request.
 
+# Installation Guide
+
+The following items are stored under Github's Large File Storage (LFS), as they are too large for standard storage:
+Inputs/generalfiles/wgcnafiles/TUCR-01-dataInput.rdata
+Inputs/generalfiles/wgcnafiles/allprelims.rdata
+TinyTex.zip
+Outputs_example.tar.gz
+
+# .gitattributes
+
+Designates the four files from the installation guide section above as LFS.
+
+# Extracting Outputs_example
+tar -xvzf Outputs_example.tar.gz 
+
 # README.md
 
 This document
