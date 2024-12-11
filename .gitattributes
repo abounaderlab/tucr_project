@@ -1,0 +1,4 @@
+Inputs/generalfiles/wgcnafiles/TUCR-01-dataInput.rdata filter=lfs diff=lfs merge=lfs -text
+Inputs/generalfiles/wgcnafiles/allprelims.rdata filter=lfs diff=lfs merge=lfs -text
+TinyTex.zip filter=lfs diff=lfs merge=lfs -text
+Outputs_example.tar.gz filter=lfs diff=lfs merge=lfs -text
