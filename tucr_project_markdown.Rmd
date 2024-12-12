@@ -50,13 +50,7 @@ The following variables can be set:
 In addition to setting the above variables, this chunk loads the color palette and installs (if required) and loads all package dependencies for this document.
 
 ```{r setup, message = FALSE, warning=FALSE}
-knitr::opts_chunk$set(
-eval = TRUE,
-tidy = TRUE#,
-#	echo = TRUE,
-#	message = FALSE,
-#	warning = FALSE
-)
+
 
 ## Variables
 
@@ -246,6 +240,14 @@ library(umap)
 if (!require("igraph")) install.packages("igraph")
 library(igraph)
 
+knitr::opts_chunk$set(
+eval = TRUE,
+tidy = TRUE#,
+#	echo = TRUE,
+#	message = FALSE,
+#	warning = FALSE
+)
+
 if(!dir.exists(outputdir)){
   dir.create(outputdir)
 }
@@ -433,6 +435,20 @@ res <-
 res <- 
   as_tibble(res)
 
+disease <- "GBM"
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))
+}
+
 write_csv(res, file = paste(outputdir,"/TUCR_Database/SummaryTables/GBM/GBM_DESeq2_allTUCRs.csv",sep=""))
 
 dds <- 
@@ -448,6 +464,18 @@ res <-
 
 res <- 
   as_tibble(res)
+
+
+disease <- "LGG"
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))
+}
+
 
 write_csv(res, file = paste(outputdir,"/TUCR_Database/SummaryTables/LGG/LGG_DESeq2_allTUCRs.csv",sep=""))
 
@@ -2468,7 +2496,7 @@ figureorder <- 7
 
 h <- 2
 
-for(h in 2:length(colnames(moduleTraitCor2))){
+for(h in 2:482){
 skip_to_next <<- FALSE
 print(h)
 trait_id <- colnames(moduleTraitCor2)[h]
@@ -2596,12 +2624,24 @@ p
 
 ggsave(p,file=paste(outputdir,"/TUCR_Database/",trait_id,"/",figureorder,"_",trait_id,"_wgcna_modulecorrelation_heatmap.png",sep=""), width = 3, height = 7, dpi = 300)
 
+if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
+}
+
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 300)
 }
 
+if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure7_Supplementary/",sep=""))
+}
+
 if(trait_id == "uc.15"){
   ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 300)
+}
+
+if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
+  dir.create(paste(outputdir,"/Figure2/",sep=""))
 }
 
 if(trait_id == "uc.110"){
@@ -2657,16 +2697,28 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_6_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
+if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
+}
+
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_6.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 300)
+}
+
+if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure7_Supplementary/",sep=""))
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_6.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 300)
+}
+
+if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
+  dir.create(paste(outputdir,"/Figure2/",sep=""))
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_6.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2f.png",sep=""), width = 3, height = 7, dpi = 300)
 }
 
 i <- 2
@@ -2711,16 +2763,28 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_5_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
+if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
+}
+
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_5.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 300)
+}
+
+if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure7_Supplementary/",sep=""))
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_5.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 300)
+}
+
+if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
+  dir.create(paste(outputdir,"/Figure2/",sep=""))
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_5.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2f.png",sep=""), width = 3, height = 7, dpi = 300)
 }
 
 i <- 3
@@ -4627,7 +4691,7 @@ figureorder <- 7
 
 h <- 2
 
-for(h in 2:length(colnames(moduleTraitCor2))){
+for(h in 2:482){
 skip_to_next <<- FALSE
 print(h)
 trait_id <- colnames(moduleTraitCor2)[h]
@@ -4755,12 +4819,24 @@ p
 
 ggsave(p,file=paste(outputdir,"/TUCR_Database/",trait_id,"/",figureorder,"_",trait_id,"_wgcna_modulecorrelation_heatmap.png",sep=""), width = 3, height = 7, dpi = 300)
 
+if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
+}
+
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6g.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 300)
+}
+
+if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure7_Supplementary/",sep=""))
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7g.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 300)
+}
+
+if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
+  dir.create(paste(outputdir,"/Figure2/",sep=""))
 }
 
 if(trait_id == "uc.110"){
@@ -5471,7 +5547,7 @@ ggsave(file=paste("Outputs/Figure3/Figure3i.png",sep=""),
 
 ```{r 3j}
 
-data <- read_csv("/Figure3/Figure3j_input.csv")
+data <- read_csv("./Inputs/Figure3/Figure3j_input.csv")
 
 p <- ggplot(data,aes(x=reorder(Gene,order), y=FC,fill=Gene)) +
         geom_bar(stat="identity",position = "dodge") +
@@ -6718,6 +6794,15 @@ ggsave(
 
 ## Supplementary Figure 3. 
 
+```{r supplementary_Figure3_dircreate}
+
+if(!dir.exists(paste(outputdir,"/Figure3_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure3_Supplementary/",sep=""))
+}
+
+```
+
+
 ### Supplementary Figure 3A
 
 ```{r Supplementary_Figure3a_tpm_TUCRs}
@@ -6823,9 +6908,9 @@ tpm.median <- tpm.median %>% dplyr::select(id,median_tpm,countif,proportion)
 
 proportion.df <- round(as.numeric(tpm.median$proportion[1]),3)*100
 
-write.csv(tpm.df2,paste(outputdir,"/TUCR_Database/",disease,"/SummaryTables/gbm_tpms_allTUCRs.csv",sep=""))
+#write.csv(tpm.df2,paste(outputdir,"/TUCR_Database/SummaryTables/gbm_tpms_allTUCRs.csv",sep=""))
 
-write.csv(tpm.median,paste(outputdir,"/TUCR_Database/",disease,"/SummaryTables/gbm_median_tpm_allTUCRs.csv",sep=""))
+write.csv(tpm.median,paste(outputdir,"/TUCR_Database/SummaryTables/gbm_median_tpm_allTUCRs.csv",sep=""))
 
 heatmap.df <- as.data.frame(tpm.df) %>%
   dplyr::select(-length)
@@ -6864,7 +6949,7 @@ ggsave(p,file=paste(outputdir,"/Figure3_Supplementary/supplementary_figure3a.png
 
 tpm.TUCRs2 <- tpm.df2
   
-write.csv(tpm.TUCRs2,paste(outputdir,"/TUCR_Database/",disease,"/SummaryTables/",disease,"_tpm_TUCRs2.csv",sep=""))
+#write.csv(tpm.TUCRs2,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"_tpm_TUCRs2.csv",sep=""))
   
 
 ```
@@ -6974,9 +7059,9 @@ tpm.median <- tpm.median %>% dplyr::select(id,median_tpm,countif,proportion)
 
 proportion.df <- round(as.numeric(tpm.median$proportion[1]),3)*100
 
-write.csv(tpm.df2,paste(outputdir,"/TUCR_Database/",disease,"/SummaryTables/gbm_tpms_allTUCRs.csv",sep=""))
+#write.csv(tpm.df2,paste(outputdir,"/TUCR_Database/SummaryTables/gbm_tpms_allTUCRs.csv",sep=""))
 
-write.csv(tpm.median,paste(outputdir,"/TUCR_Database/",disease,"/SummaryTables/gbm_median_tpm_allTUCRs.csv",sep=""))
+write.csv(tpm.median,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/gbm_median_tpm_allTUCRs.csv",sep=""))
 
 heatmap.df <- as.data.frame(tpm.df) %>%
   dplyr::select(-length)
@@ -7015,7 +7100,15 @@ ggsave(p,file=paste(outputdir,"/Figure3_Supplementary/supplementary_figure3b.png
 
 ```
 
-## Supplementary Figure 4. 
+## Supplementary Figure 4
+
+```{r supplementary_Figure4_dircreate}
+
+if(!dir.exists(paste(outputdir,"/Figure4_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure4_Supplementary/",sep=""))
+}
+
+```
 
 ### Supplementary Figure 4A
 
@@ -10048,7 +10141,7 @@ figureorder <- 7
 
 h <- 2
 
-for(h in 2:length(colnames(moduleTraitCor2))){
+for(h in 2:482){
 skip_to_next <<- FALSE
 print(h)
 trait_id <- colnames(moduleTraitCor2)[h]
@@ -10176,12 +10269,24 @@ p
 
 ggsave(p,file=paste(outputdir,"/TUCR_Database/",trait_id,"/",figureorder,"_",trait_id,"_wgcna_modulecorrelation_heatmap.png",sep=""), width = 3, height = 7, dpi = 300)
 
+if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
+}
+
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6g.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 300)
+}
+
+if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure7_Supplementary/",sep=""))
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7g.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 300)
+}
+
+if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
+  dir.create(paste(outputdir,"/Figure2/",sep=""))
 }
 
 if(trait_id == "uc.110"){
@@ -12365,7 +12470,7 @@ figureorder <- 7
 
 h <- 2
 
-for(h in 2:length(colnames(moduleTraitCor2))){
+for(h in 2:482){
 skip_to_next <<- FALSE
 print(h)
 trait_id <- colnames(moduleTraitCor2)[h]
@@ -12493,12 +12598,24 @@ p
 
 ggsave(p,file=paste(outputdir,"/TUCR_Database/",trait_id,"/",figureorder,"_",trait_id,"_wgcna_modulecorrelation_heatmap.png",sep=""), width = 3, height = 7, dpi = 300)
 
+if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
+}
+
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6g.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 300)
+}
+
+if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure7_Supplementary/",sep=""))
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7g.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 300)
+}
+
+if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
+  dir.create(paste(outputdir,"/Figure2/",sep=""))
 }
 
 if(trait_id == "uc.110"){
@@ -13329,6 +13446,14 @@ kmdata <- km_TUCRs %>%
 
 ## Supplementary Figure 8
 
+```{r supplementary_Figure8_dircreate}
+
+if(!dir.exists(paste(outputdir,"/Figure8_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure8_Supplementary/",sep=""))
+}
+
+```
+
 ### Supplementary Figure 8A and 8B
 
 ```{r Supplementary_Figure8ab_relatingmodules_1,eval=FALSE}
@@ -13654,6 +13779,14 @@ ggsave(plot = print(p),paste(outputdir,"/Figure9_Supplementary/supplementary_fig
 ```
 
 ## Supplementary Figure 9
+
+```{r supplementary_Figure9_dircreate}
+
+if(!dir.exists(paste(outputdir,"/Figure9_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure9_Supplementary/",sep=""))
+}
+
+```
 
 ### Supplementary Figure 9A and 9B
 
@@ -15028,7 +15161,7 @@ done
 
 ### De Novo Transcript Reassembly example using stringtie
 
-```{bash stringtie}
+```{bash stringtie, eval=FALSE}
 
 module load gcc/7.1.0
 module load stringtie/2.0.6
