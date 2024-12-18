@@ -5731,7 +5731,8 @@ res <-
 
 res_combine <- res %>%
   separate(row,into=c("Target gene","kibble"),sep="___") %>%
-  inner_join(res_miR544,by="Target gene")
+  inner_join(res_miR544,by="Target gene") %>%
+  write_csv(paste(outputdir,"/Supplementary_Table3/supplementary_table3.csv",sep=""))
 
 ```
 
@@ -8018,23 +8019,11 @@ if(!dir.exists(paste(outputdir,"/Figure5_Supplementary/",sep=""))){
   dir.create(paste(outputdir,"/Figure5_Supplementary/",sep=""))
 }
 
-
-Figure_copy <- list.files("./Inputs/Figure14_Supplementary/pregenerated_figures/")
-
-if(!file.exists(paste(outputdir,"/Figure14_Supplementary/","supplementary_figure14ac.png",sep=""))){
-  file.copy(paste0("./Inputs/Figure14_Supplementary/pregenerated_figures/",Figure_copy,sep=""),paste("./",outputdir,"/Figure14_Supplementary/",sep=""))
-}
-
 ```
 
 ### Supplementary Figure 5A
 
 ```{r Supplementary_Figure5a}
-
-if(!dir.exists(paste(outputdir,"/Figure5_Supplementary/",sep=""))){
-  dir.create(paste(outputdir,"/Figure5_Supplementary/",sep=""))
-}
-
 
 Figure_copy <- list.files("./Inputs/Figure5_Supplementary/pregenerated_figures/")
 
