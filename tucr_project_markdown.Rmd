@@ -292,7 +292,8 @@ We predicted TUCR function by identifying coregulated genes with known functions
 
 ```{r figure1_dircreate}
 
-dir.create(paste(outputdir,"/Figure1/",sep=""))
+if(!dir.exists(paste(outputdir,"/Figure1/",sep=""))){
+  dir.create(paste(outputdir,"/Figure1/",sep=""))}
 
 if(!dir.exists(paste(outputdir,"/Figure1/DESeq2Results/",sep=""))){
   dir.create(paste(outputdir,"/Figure1/DESeq2Results/",sep=""))
