@@ -6911,7 +6911,7 @@ proportion.df <- round(as.numeric(tpm.median$proportion[1]),3)*100
 
 #write.csv(tpm.df2,paste(outputdir,"/TUCR_Database/SummaryTables/gbm_tpms_allTUCRs.csv",sep=""))
 
-write.csv(tpm.median,paste(outputdir,"/TUCR_Database/SummaryTables/gbm_median_tpm_allTUCRs.csv",sep=""))
+write.csv(tpm.median,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_median_tpm_allTUCRs.csv",sep=""))
 
 heatmap.df <- as.data.frame(tpm.df) %>%
   dplyr::select(-length)
@@ -7062,7 +7062,7 @@ proportion.df <- round(as.numeric(tpm.median$proportion[1]),3)*100
 
 #write.csv(tpm.df2,paste(outputdir,"/TUCR_Database/SummaryTables/gbm_tpms_allTUCRs.csv",sep=""))
 
-write.csv(tpm.median,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/gbm_median_tpm_allTUCRs.csv",sep=""))
+write.csv(tpm.median,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_median_tpm_allTUCRs.csv",sep=""))
 
 heatmap.df <- as.data.frame(tpm.df) %>%
   dplyr::select(-length)
