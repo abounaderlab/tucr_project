@@ -492,7 +492,7 @@ volcanoplot_expression <- function (res,
                          output = "", 
                          height = 7, 
                          width = 14, 
-                         dpi = 300,
+                         dpi = 600,
                          annot_filter = ""){
   #res <- res_TUCR
   #genes <- "all"
@@ -521,7 +521,8 @@ volcanoplot_expression <- function (res,
                                 ifelse(sum == 1  & dereg == "upregulated" &  disease == "LGG", paper_pink,
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "LGG", paper_skyblue,
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "GBM", paper_blue,
-                                ifelse(disease == "GBM",paper_black,paper_gray))))))))
+                                ifelse(disease == "GBM",paper_black,paper_gray))))))),
+                newdisease = ifelse(str_detect(deregcategory,"both"),"BOTH",disease))
   
   res_summary <- res %>%
     group_by(color) %>%
@@ -576,11 +577,11 @@ p <- ggplot(res) +
 panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
 legend.text=element_text(size=10)) +
   coord_cartesian(clip = "off") + 
-  facet_wrap(~disease,scales="free")
+  facet_wrap(~newdisease,scales="free",ncol=3)
 
 p
 
-ggsave(plot = print(p),filename = output, width = width, height = height, dpi = 300)
+ggsave(plot = print(p),filename = output, width = width, height = height, dpi = 600)
 
 }
 
@@ -620,7 +621,7 @@ volcanoplot_expression(res_TUCR,
                          output = paste(outputdir,"/Figure1/figure1ab.png",sep=""),
                          height = 3, 
                          width = 8, 
-                         dpi = 300,
+                         dpi = 600,
                          annot = "")
 
 ```
@@ -666,7 +667,8 @@ res_summary <- res_TUCR %>%
                                 ifelse(sum == 1 & dereg == "upregulated" & disease == "GBM","Up-GBM",
                                 ifelse(sum == 1  & dereg == "upregulated" &  disease == "LGG", "Up-LGG",
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "LGG", "Down-LGG",
-                                ifelse(sum == -1  & dereg == "downregulated" &  disease == "GBM", "Down-GBM","not deregulated"))))))) %>%
+                                ifelse(sum == -1  & dereg == "downregulated" &  disease == "GBM", "Down-GBM","not deregulated")))))),
+                newdisease = ifelse(str_detect(deregcategory,"both"),"BOTH",disease)) %>%
   filter(deregcategory != "not deregulated" & padj != 0) %>%
   dplyr::select(alias,deregcategory) %>%
   distinct() %>%
@@ -676,7 +678,7 @@ res_summary <- res_TUCR %>%
   group_by(dereg) %>%
   dplyr::mutate(deregcounts = sum(n),circlecounts=(n/deregcounts)*360,min = cumsum(circlecounts) - circlecounts,lab.ypos = 360-(cumsum(circlecounts) - 0.5*circlecounts)) %>%
   ungroup() %>%
-  mutate(allsum = sum(n))
+  mutate(allsum = sum(n))  
   #dplyr::mutate(deregcounts = n(),lab.ypos = (cumsum(n)-deregcounts) - 0.5*n)
 
 p <- ggplot(res_summary, aes(x=2,y=circlecounts,fill=deregcategory))          + 
@@ -710,7 +712,7 @@ ggsave(file=paste(outputdir,"/Figure1/figure1c.png",sep=""),
        plot = print(p),
        width = 6, 
        height = 4, 
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -930,8 +932,10 @@ for(i in 1:length(TUCRids)){
   survminer:::print.ggsurvplot(x, newpage = FALSE)
 }
  ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
-  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff")
-  rbinder <- cbind(as.character(TUCRsurv),p2value$pval,p2value$method)
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
+    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+    dplyr::select(method,pval,padj)
+  rbinder <- cbind(as.character(TUCRsurv),p2value)
   ptable[i,] <- rbinder
    }}
 
@@ -1151,8 +1155,10 @@ for(i in 1:length(TUCRids)){
   survminer:::print.ggsurvplot(x, newpage = FALSE)
 }
  ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
-  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff")
-  rbinder <- cbind(as.character(TUCRsurv),p2value$pval,p2value$method)
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
+    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+    dplyr::select(method,pval,padj)
+  rbinder <- cbind(as.character(TUCRsurv),p2value)
   ptable[i,] <- rbinder
    }}
 
@@ -1168,7 +1174,7 @@ Writing a script to generate a volcano plot for survival
 
 ### Volcano plot
 
-volcanosurv <- function (res,genes = "all",title = "TUCRs correlated with survival in gliomas", output = "glioma_results__survival_volcanoplot.png",width = 8, height = 3, dpi = 300){
+volcanosurv <- function (res,genes = "all",title = "TUCRs correlated with survival in gliomas", output = "glioma_results__survival_volcanoplot.png",width = 8, height = 3, dpi = 600){
   #res <- res_surv
   #genes = c("uc.110","uc.62")
   #title = paste("TUCR correlation with patient survival in ",disease,sep="")
@@ -1314,7 +1320,7 @@ for (i in 1:length(res_surv_sum2$alias)){
 #panel.background = element_blank(), axis.line = element_line(colour = "black"),
 #axis.text.x = element_blank())
 
-#ggsave(file=paste(outputdir,"/SurvivalAnalysis/SummaryFigures/BarGraphs/",disease,"_",annotation,"_tucr_surv_bar.png",sep=""),plot = print(p), width = 5, height = 2.5, dpi = 300)
+#ggsave(file=paste(outputdir,"/SurvivalAnalysis/SummaryFigures/BarGraphs/",disease,"_",annotation,"_tucr_surv_bar.png",sep=""),plot = print(p), width = 5, height = 2.5, dpi = 600)
 
 res_surv_sum3 <- res_surv_sum
 
@@ -1538,8 +1544,10 @@ for(i in 1:length(TUCRids)){
   survminer:::print.ggsurvplot(x, newpage = FALSE)
 }
  ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
-  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff")
-  rbinder <- cbind(as.character(TUCRsurv),p2value$pval,p2value$method)
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
+    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+    dplyr::select(method,pval,padj)
+  rbinder <- cbind(as.character(TUCRsurv),p2value)
   ptable[i,] <- rbinder
    }}
 
@@ -1782,8 +1790,10 @@ for(i in 1:length(TUCRids)){
   survminer:::print.ggsurvplot(x, newpage = FALSE)
 }
  ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
-  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff")
-  rbinder <- cbind(as.character(TUCRsurv),p2value$pval,p2value$method)
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
+    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+    dplyr::select(method,pval,padj)
+  rbinder <- cbind(as.character(TUCRsurv),p2value)
   ptable[i,] <- rbinder
    }}
 
@@ -2351,7 +2361,7 @@ p <- ggplot(data = moduleTraitCor_trait_id,mapping = aes(x = reorder(modules,pos
 
 p
 
-ggsave(p,file=paste(outputdir,"/Figure1/figure1h.png",sep=""), width = 7, height = 3, dpi = 300)
+ggsave(p,file=paste(outputdir,"/Figure1/figure1h.png",sep=""), width = 7, height = 3, dpi = 600)
 ```
 
 ```{r figure1_allgoterms}
@@ -2623,14 +2633,14 @@ p <- ggplot(data = traitmodules2,mapping = aes(x = as.character(trait_id),y = re
 
 p
 
-ggsave(p,file=paste(outputdir,"/TUCR_Database/",trait_id,"/",figureorder,"_",trait_id,"_wgcna_modulecorrelation_heatmap.png",sep=""), width = 3, height = 7, dpi = 300)
+ggsave(p,file=paste(outputdir,"/TUCR_Database/",trait_id,"/",figureorder,"_",trait_id,"_wgcna_modulecorrelation_heatmap.png",sep=""), width = 3, height = 7, dpi = 600)
 
 if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
   dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
 }
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
@@ -2638,7 +2648,7 @@ if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
@@ -2646,7 +2656,7 @@ if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2f.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2f.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 ####Trait Correlation Plots
@@ -2703,7 +2713,7 @@ if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
 }
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
@@ -2711,7 +2721,7 @@ if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
@@ -2719,7 +2729,7 @@ if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2f.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2f.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 i <- 2
@@ -2769,7 +2779,7 @@ if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
 }
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
@@ -2777,7 +2787,7 @@ if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
@@ -2785,7 +2795,7 @@ if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2f.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2f.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 i <- 3
@@ -2831,15 +2841,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_4_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_4.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_4.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_4.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_4.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_4.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_4.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- length(traitmodules3$module)
@@ -2885,15 +2895,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_1_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_1.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_1.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_1.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_1.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_1.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_1.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- length(traitmodules3$module)-1
@@ -2939,15 +2949,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_2_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_2.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_2.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_2.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_2.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_2.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_2.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- length(traitmodules3$module)-2
@@ -2993,15 +3003,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_3_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_3.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_3.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_3.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_3.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_3.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_3.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 
@@ -3173,7 +3183,7 @@ volcanoplot_expression <- function (res,
                          output = "", 
                          height = 7, 
                          width = 14, 
-                         dpi = 300,
+                         dpi = 600,
                          annot_filter = ""){
   #res <- res_TUCR
   #genes <- "all"
@@ -3202,7 +3212,8 @@ volcanoplot_expression <- function (res,
                                 ifelse(sum == 1  & dereg == "upregulated" &  disease == "LGG", paper_pink,
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "LGG", paper_skyblue,
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "GBM", paper_blue,
-                                ifelse(disease == "GBM",paper_black,paper_gray))))))))
+                                ifelse(disease == "GBM",paper_black,paper_gray))))))),
+                newdisease = ifelse(str_detect(deregcategory,"both"),"BOTH",disease))
   
   res_summary <- res %>%
     group_by(color) %>%
@@ -3257,11 +3268,11 @@ p <- ggplot(res) +
 panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
 legend.text=element_text(size=10)) +
   coord_cartesian(clip = "off") + 
-  facet_wrap(~disease,scales="free",ncol=1)
+  facet_wrap(~newdisease,scales="free",ncol=1)
 
 p
 
-ggsave(plot = print(p),filename = output, width = width, height = height, dpi = 300)
+ggsave(plot = print(p),filename = output, width = width, height = height, dpi = 600)
 
 }
 
@@ -3300,7 +3311,7 @@ volcanoplot_expression(res_TUCR,
                          output = paste(outputdir,"/Figure1/figure1i.png",sep=""),
                          height = 5, 
                          width = 5, 
-                         dpi = 300,
+                         dpi = 600,
                          annot = "")
 
 ```
@@ -3556,10 +3567,10 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="none",
-        legend.title=element_blank(),
+        legend.position="top",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
         legend.text=element_blank()) +
-  labs(y="log2FoldChange", x = "Tissue Type") +
+  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)}}
@@ -3600,10 +3611,10 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="none",
-        legend.title=element_blank(),
+        legend.position="top",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
         legend.text=element_blank()) +
-  labs(y="log2FoldChange", x = "Tissue Type") +
+  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=paste(outputdir,"/Figure2/figure2a.png",sep = ""),height=7,width=5)}
@@ -3833,10 +3844,10 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="none",
-        legend.title=element_blank(),
+        legend.position="top",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
         legend.text=element_blank()) +
-  labs(y="log2FoldChange", x = "Tissue Type") +
+  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)}}
@@ -3877,10 +3888,10 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="none",
-        legend.title=element_blank(),
+        legend.position="top",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
         legend.text=element_blank()) +
-  labs(y="log2FoldChange", x = "Tissue Type") +
+  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=paste(outputdir,"/Figure2/figure2b.png",sep = ""),height=7,width=5)}
@@ -4546,7 +4557,7 @@ p <- ggplot(data = moduleTraitCor_trait_id,mapping = aes(x = reorder(modules,pos
 
 p
 
-ggsave(p,file=paste(outputdir,"/Figure1/figure1h.png",sep=""), width = 7, height = 3, dpi = 300)
+ggsave(p,file=paste(outputdir,"/Figure1/figure1h.png",sep=""), width = 7, height = 3, dpi = 600)
 ```
 
 ```{r figure2fg_allgoterms}
@@ -4818,14 +4829,14 @@ p <- ggplot(data = traitmodules2,mapping = aes(x = as.character(trait_id),y = re
 
 p
 
-ggsave(p,file=paste(outputdir,"/TUCR_Database/",trait_id,"/",figureorder,"_",trait_id,"_wgcna_modulecorrelation_heatmap.png",sep=""), width = 3, height = 7, dpi = 300)
+ggsave(p,file=paste(outputdir,"/TUCR_Database/",trait_id,"/",figureorder,"_",trait_id,"_wgcna_modulecorrelation_heatmap.png",sep=""), width = 3, height = 7, dpi = 600)
 
 if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
   dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
 }
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
@@ -4833,7 +4844,7 @@ if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
@@ -4841,7 +4852,7 @@ if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2f.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2f.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 ####Trait Correlation Plots
@@ -4894,15 +4905,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_6_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_6.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_6.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_6.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_6.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_6.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_6.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- 2
@@ -4948,15 +4959,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_5_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_5.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_5.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_5.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_5.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_5.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_5.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- 3
@@ -5002,15 +5013,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_4_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_4.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_4.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_4.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_4.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_4.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_4.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- length(traitmodules3$module)
@@ -5056,15 +5067,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_1_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_1.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_1.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_1.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_1.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_1.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_1.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- length(traitmodules3$module)-1
@@ -5110,15 +5121,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_2_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_2.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_2.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_2.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_2.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_2.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_2.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- length(traitmodules3$module)-2
@@ -5164,15 +5175,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_3_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_3.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_3.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_3.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_3.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_3.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_3.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 
@@ -5235,7 +5246,7 @@ ggsave(file=paste(outputdir,"/Figure3/Figure3a.png",sep=""),
        plot = print(p),
        height = 6,
        width = 6,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -5274,7 +5285,7 @@ ggsave(file=paste(outputdir,"/Figure3/Figure3b.png",sep=""),
        plot = print(p),
        height = 7,
        width = 5,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -5312,7 +5323,7 @@ ggsave(file=paste(outputdir,"/Figure3/Figure3c.png",sep=""),
        plot = print(p),
        height = 6,
        width = 6,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -5352,7 +5363,7 @@ ggsave(file=paste(outputdir,"/Figure3/Figure3d.png",sep=""),
        plot = print(p),
        height = 5,
        width = 10,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -5390,7 +5401,7 @@ ggsave(file=paste(outputdir,"/Figure3/Figure3e.png",sep=""),
        plot = print(p),
        height = 6,
        width = 6,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -5428,7 +5439,7 @@ ggsave(file=paste(outputdir,"/Figure3/Figure3f.png",sep=""),
        plot = print(p),
        height = 6,
        width = 7,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -5466,7 +5477,7 @@ ggsave(file=paste(outputdir,"/Figure3/Figure3g.png",sep=""),
        plot = print(p),
        height = 6,
        width = 6,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -5503,7 +5514,7 @@ ggsave(file=paste(outputdir,"/Figure3/Figure3h.png",sep=""),
        plot = print(p),
        height = 6,
        width = 6,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -5540,7 +5551,7 @@ ggsave(file=paste("Outputs/Figure3/Figure3i.png",sep=""),
        plot = print(p),
        height = 12,
        width = 6,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -5577,7 +5588,7 @@ ggsave(file=paste(outputdir,"/Figure3/Figure3j.png",sep=""),
        plot = print(p),
        height = 8,
        width = 4,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -5749,7 +5760,7 @@ volcanoplot_mirna <- function (res,res2,
                          output2 = "",
                          height = 10, 
                          width = 15, 
-                         dpi = 300){
+                         dpi = 600){
   #res <- uc.110_miRNAs
   #genes <- "all"
   #genes = c("uc.110")
@@ -5899,7 +5910,7 @@ ggsave(file=paste(outputdir,"/Figure5/Figure5c.png",sep=""),
        plot = print(p),
        height = 6,
        width = 6,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -5936,7 +5947,7 @@ ggsave(file=paste(outputdir,"/Figure5/Figure5d.png",sep=""),
        plot = print(p),
        height = 6,
        width = 9,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -5998,7 +6009,7 @@ ggsave(file=paste(outputdir,"/Figure6/Figure6de.png",sep=""),
        plot=print(p),
        height = 6,
        width = 8,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -6036,7 +6047,7 @@ ggsave(file=paste(outputdir,"/Figure6/Figure6gh.png",sep=""),
        plot=print(p),
        height = 7,
        width = 9,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -6124,7 +6135,7 @@ legend.margin=margin(0,0,0,0)) +
 # Save Chart to output directory
 ggsave(file=paste(outputdir,"/Figure1_Supplementary/","supplementary_figure_1c.png",sep=""),
        plot = print(supplementary_figure1c), 
-       dpi = 300,
+       dpi = 600,
        height = 4.75,
        width = 4.75)
 
@@ -6231,7 +6242,7 @@ supplementary_figure1e <-   ggplot(supplementary_figure1e, aes(x=Annotation,y=as
 # Save Chart to output directory
 ggsave(file=paste(outputdir,"/Figure1_Supplementary/","supplementary_figure_1d.png",sep=""),
        plot = print(supplementary_figure1e), 
-       dpi = 300,
+       dpi = 600,
        height = 7,
        width = 6)
 
@@ -6790,7 +6801,7 @@ ggsave(
     plot = print(p),
     width = 25, 
     height = 15, 
-    dpi = 300) 
+    dpi = 600) 
 
 ```
 
@@ -6947,7 +6958,7 @@ p <- ggplot(data = heatmap.df2,mapping = aes(x = Sample,y = reorder(id,means), f
 
 
 
-ggsave(p,file=paste(outputdir,"/Figure3_Supplementary/supplementary_figure3a.png",sep=""), width = 20, height = 5, dpi = 300)
+ggsave(p,file=paste(outputdir,"/Figure3_Supplementary/supplementary_figure3a.png",sep=""), width = 20, height = 5, dpi = 600)
 
 tpm.TUCRs2 <- tpm.df2
   
@@ -7098,7 +7109,7 @@ p <- ggplot(data = heatmap.df2,mapping = aes(x = Sample,y = reorder(id,means), f
 
 
 
-ggsave(p,file=paste(outputdir,"/Figure3_Supplementary/supplementary_figure3b.png",sep=""), width = 20, height = 5, dpi = 300)
+ggsave(p,file=paste(outputdir,"/Figure3_Supplementary/supplementary_figure3b.png",sep=""), width = 20, height = 5, dpi = 600)
 
 ```
 
@@ -7276,7 +7287,7 @@ volcanoplot_expression <- function (res,
                          output = "", 
                          height = 7, 
                          width = 14, 
-                         dpi = 300,
+                         dpi = 600,
                          annot_filter = ""){
   #res <- res_TUCR
   #genes <- "all"
@@ -7305,7 +7316,8 @@ volcanoplot_expression <- function (res,
                                 ifelse(sum == 1  & dereg == "upregulated" &  disease == "LGG", paper_pink,
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "LGG", paper_skyblue,
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "GBM", paper_blue,
-                                ifelse(disease == "GBM",paper_black,paper_gray))))))))
+                                ifelse(disease == "GBM",paper_black,paper_gray))))))),
+                newdisease = ifelse(str_detect(deregcategory,"both"),"BOTH",disease))
   
   res_summary <- res %>%
     group_by(color) %>%
@@ -7360,11 +7372,11 @@ p <- ggplot(res) +
 panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
 legend.text=element_text(size=10)) +
   coord_cartesian(clip = "off") + 
-  facet_wrap(~disease+annot,scales="free",ncol=4)
+  facet_wrap(~newdisease+annot,scales="free",ncol=4)
 
 p
 
-ggsave(plot = print(p),filename = output, width = width, height = height, dpi = 300)
+ggsave(plot = print(p),filename = output, width = width, height = height, dpi = 600)
 
 }
 
@@ -7402,7 +7414,7 @@ volcanoplot_expression(res_TUCR,
                          output = paste(outputdir,"/Figure4_supplementary/supplementary_figure4a.png",sep=""),
                          height = 6, 
                          width = 16, 
-                         dpi = 300,
+                         dpi = 600,
                          annot = "")
 
 ```
@@ -7623,8 +7635,10 @@ for(i in 1:length(TUCRids)){
   survminer:::print.ggsurvplot(x, newpage = FALSE)
 }
  ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
-  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff")
-  rbinder <- cbind(as.character(TUCRsurv),p2value$pval,p2value$method)
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
+    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+    dplyr::select(method,pval,padj)
+  rbinder <- cbind(as.character(TUCRsurv),p2value)
   ptable[i,] <- rbinder
    }}
 
@@ -7844,8 +7858,10 @@ for(i in 1:length(TUCRids)){
   survminer:::print.ggsurvplot(x, newpage = FALSE)
 }
  ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
-  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff")
-  rbinder <- cbind(as.character(TUCRsurv),p2value$pval,p2value$method)
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
+    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+    dplyr::select(method,pval,padj)
+  rbinder <- cbind(as.character(TUCRsurv),p2value)
   ptable[i,] <- rbinder
    }}
 
@@ -7859,7 +7875,7 @@ Writing a script to generate a volcano plot for survival
 
 ### Volcano plot
 
-volcanosurv <- function (res,genes = "all",title = "TUCRs correlated with survival in gliomas", output = "glioma_results__survival_volcanoplot.png",width = 16, height = 6, dpi = 300){
+volcanosurv <- function (res,genes = "all",title = "TUCRs correlated with survival in gliomas", output = "glioma_results__survival_volcanoplot.png",width = 16, height = 6, dpi = 600){
   #res <- res_surv
   #genes = c("uc.110","uc.62")
   #title = paste("TUCR correlation with patient survival in ",disease,sep="")
@@ -8004,7 +8020,7 @@ for (i in 1:length(res_surv_sum2$alias)){
 #panel.background = element_blank(), axis.line = element_line(colour = "black"),
 #axis.text.x = element_blank())
 
-#ggsave(file=paste(outputdir,"/SurvivalAnalysis/SummaryFigures/BarGraphs/",disease,"_",annotation,"_tucr_surv_bar.png",sep=""),plot = print(p), width = 5, height = 2.5, dpi = 300)
+#ggsave(file=paste(outputdir,"/SurvivalAnalysis/SummaryFigures/BarGraphs/",disease,"_",annotation,"_tucr_surv_bar.png",sep=""),plot = print(p), width = 5, height = 2.5, dpi = 600)
 
 res_surv_sum3 <- res_surv_sum
 
@@ -8196,7 +8212,7 @@ volcanoplot_expression <- function (res,
                          output = "", 
                          height = 7, 
                          width = 14, 
-                         dpi = 300,
+                         dpi = 600,
                          annot_filter = ""){
   #res <- res_TUCR
   #genes <- "all"
@@ -8225,7 +8241,8 @@ volcanoplot_expression <- function (res,
                                 ifelse(sum == 1  & dereg == "upregulated" &  disease == "LGG", paper_pink,
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "LGG", paper_skyblue,
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "GBM", paper_blue,
-                                ifelse(disease == "GBM",paper_black,paper_gray))))))))
+                                ifelse(disease == "GBM",paper_black,paper_gray))))))),
+                newdisease = ifelse(str_detect(deregcategory,"both"),"BOTH",disease))
   
   res_summary <- res %>%
     group_by(color) %>%
@@ -8280,11 +8297,11 @@ p <- ggplot(res) +
 panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
 legend.text=element_text(size=10)) +
   coord_cartesian(clip = "off") + 
-  facet_wrap(~disease,scales="free")
+  facet_wrap(~newdisease,scales="free",ncol=3)
 
 p
 
-ggsave(plot = print(p),filename = output, width = width, height = height, dpi = 300)
+ggsave(plot = print(p),filename = output, width = width, height = height, dpi = 600)
 
 }
 
@@ -8322,7 +8339,7 @@ volcanoplot_expression(res_TUCR,
                          output = paste(outputdir,"/Figure5_Supplementary/supplementary_figure5b.png",sep=""),
                          height = 3, 
                          width = 8, 
-                         dpi = 300,
+                         dpi = 600,
                          annot = "")
 
 ```
@@ -8645,7 +8662,7 @@ Writing a script to generate a volcano plot for survival
 
 ### Volcano plot
 
-volcanosurv <- function (res,genes = "all",title = "TUCRs correlated with survival in gliomas", output = "glioma_results__survival_volcanoplot.png",width = 8, height = 3, dpi = 300){
+volcanosurv <- function (res,genes = "all",title = "TUCRs correlated with survival in gliomas", output = "glioma_results__survival_volcanoplot.png",width = 8, height = 3, dpi = 600){
   #res <- res_surv
   #genes = c("uc.110","uc.62")
   #title = paste("TUCR correlation with patient survival in ",disease,sep="")
@@ -8766,7 +8783,7 @@ for (i in 1:length(res_surv_sum2$alias)){
 #panel.background = element_blank(), axis.line = element_line(colour = "black"),
 #axis.text.x = element_blank())
 
-#ggsave(file=paste(outputdir,"/SurvivalAnalysis/SummaryFigures/BarGraphs/",disease,"_",annotation,"_tucr_surv_bar.png",sep=""),plot = print(p), width = 5, height = 2.5, dpi = 300)
+#ggsave(file=paste(outputdir,"/SurvivalAnalysis/SummaryFigures/BarGraphs/",disease,"_",annotation,"_tucr_surv_bar.png",sep=""),plot = print(p), width = 5, height = 2.5, dpi = 600)
 
 res_surv_sum3 <- res_surv_sum
 
@@ -9007,10 +9024,10 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="none",
-        legend.title=element_blank(),
+        legend.position="top",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
         legend.text=element_blank()) +
-  labs(y="log2FoldChange", x = "Tissue Type") +
+  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)}}
@@ -9051,10 +9068,10 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="none",
-        legend.title=element_blank(),
+        legend.position="top",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
         legend.text=element_blank()) +
-  labs(y="log2FoldChange", x = "Tissue Type") +
+  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 p2
@@ -9286,10 +9303,10 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="none",
-        legend.title=element_blank(),
+        legend.position="top",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
         legend.text=element_blank()) +
-  labs(y="log2FoldChange", x = "Tissue Type") +
+  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)}}
@@ -9330,10 +9347,10 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="none",
-        legend.title=element_blank(),
+        legend.position="top",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
         legend.text=element_blank()) +
-  labs(y="log2FoldChange", x = "Tissue Type") +
+  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=paste(outputdir,"/Figure6_Supplementary/figure6b_supplementary.png",sep = ""),height=7,width=5)}
@@ -9985,7 +10002,7 @@ p <- ggplot(data = moduleTraitCor_trait_id,mapping = aes(x = reorder(modules,pos
 
 p
 
-ggsave(p,file=paste(outputdir,"/Figure1/figure1h.png",sep=""), width = 7, height = 3, dpi = 300)
+ggsave(p,file=paste(outputdir,"/Figure1/figure1h.png",sep=""), width = 7, height = 3, dpi = 600)
 ```
 
 ```{r supplementary_figure6gh__allgoterms,eval=FALSE}
@@ -10257,14 +10274,14 @@ p <- ggplot(data = traitmodules2,mapping = aes(x = as.character(trait_id),y = re
 
 p
 
-ggsave(p,file=paste(outputdir,"/TUCR_Database/",trait_id,"/",figureorder,"_",trait_id,"_wgcna_modulecorrelation_heatmap.png",sep=""), width = 3, height = 7, dpi = 300)
+ggsave(p,file=paste(outputdir,"/TUCR_Database/",trait_id,"/",figureorder,"_",trait_id,"_wgcna_modulecorrelation_heatmap.png",sep=""), width = 3, height = 7, dpi = 600)
 
 if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
   dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
 }
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
@@ -10272,7 +10289,7 @@ if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
@@ -10280,7 +10297,7 @@ if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2f.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2f.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 ####Trait Correlation Plots
@@ -10333,15 +10350,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_6_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_6.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_6.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_6.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_6.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_6.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_6.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- 2
@@ -10387,15 +10404,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_5_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_5.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_5.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_5.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_5.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_5.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_5.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- 3
@@ -10441,15 +10458,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_4_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_4.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_4.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_4.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_4.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_4.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_4.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- length(traitmodules3$module)
@@ -10495,15 +10512,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_1_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_1.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_1.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_1.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_1.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_1.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_1.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- length(traitmodules3$module)-1
@@ -10549,15 +10566,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_2_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_2.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_2.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_2.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_2.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_2.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_2.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- length(traitmodules3$module)-2
@@ -10603,15 +10620,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_3_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_3.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_3.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_3.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_3.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_3.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_3.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 
@@ -10835,8 +10852,10 @@ for(i in 1:length(TUCRids)){
   survminer:::print.ggsurvplot(x, newpage = FALSE)
 }
  ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
-  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff")
-  rbinder <- cbind(as.character(TUCRsurv),p2value$pval,p2value$method)
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
+    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+    dplyr::select(method,pval,padj)
+  rbinder <- cbind(as.character(TUCRsurv),p2value)
   ptable[i,] <- rbinder
    }}
 
@@ -11077,8 +11096,10 @@ for(i in 1:length(TUCRids)){
   survminer:::print.ggsurvplot(x, newpage = FALSE)
 }
  ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
-  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff")
-  rbinder <- cbind(as.character(TUCRsurv),p2value$pval,p2value$method)
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
+    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+    dplyr::select(method,pval,padj)
+  rbinder <- cbind(as.character(TUCRsurv),p2value)
   ptable[i,] <- rbinder
    }}
 
@@ -11338,10 +11359,10 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="none",
-        legend.title=element_blank(),
+        legend.position="top",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
         legend.text=element_blank()) +
-  labs(y="log2FoldChange", x = "Tissue Type") +
+  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)}}
@@ -11382,10 +11403,10 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="none",
-        legend.title=element_blank(),
+        legend.position="top",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
         legend.text=element_blank()) +
-  labs(y="log2FoldChange", x = "Tissue Type") +
+  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=paste(outputdir,"/Figure7_Supplementary/figure7a_supplementary.png",sep = ""),height=7,width=5)}
@@ -11615,10 +11636,10 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="none",
-        legend.title=element_blank(),
+        legend.position="top",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
         legend.text=element_blank()) +
-  labs(y="log2FoldChange", x = "Tissue Type") +
+  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)}}
@@ -11649,7 +11670,6 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
   scale_fill_identity() +
   #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
   geom_jitter(data = fc.dotplot2, aes(x=dex, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  ggtitle(disease) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -11659,10 +11679,10 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="none",
-        legend.title=element_blank(),
+        legend.position="top",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
         legend.text=element_blank()) +
-  labs(y="log2FoldChange", x = "Tissue Type") +
+  labs(y="log2FoldChange", x = "Tissue Type", colour=paste(round(padj,4))) +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=paste(outputdir,"/Figure7_Supplementary/figure7b_supplementary.png",sep = ""),height=7,width=5)}
@@ -12314,7 +12334,7 @@ p <- ggplot(data = moduleTraitCor_trait_id,mapping = aes(x = reorder(modules,pos
 
 p
 
-ggsave(p,file=paste(outputdir,"/Figure1/figure1h.png",sep=""), width = 7, height = 3, dpi = 300)
+ggsave(p,file=paste(outputdir,"/Figure1/figure1h.png",sep=""), width = 7, height = 3, dpi = 600)
 ```
 
 ```{r Supplementary_Figure7gh_allgoterms,eval=FALSE}
@@ -12586,14 +12606,14 @@ p <- ggplot(data = traitmodules2,mapping = aes(x = as.character(trait_id),y = re
 
 p
 
-ggsave(p,file=paste(outputdir,"/TUCR_Database/",trait_id,"/",figureorder,"_",trait_id,"_wgcna_modulecorrelation_heatmap.png",sep=""), width = 3, height = 7, dpi = 300)
+ggsave(p,file=paste(outputdir,"/TUCR_Database/",trait_id,"/",figureorder,"_",trait_id,"_wgcna_modulecorrelation_heatmap.png",sep=""), width = 3, height = 7, dpi = 600)
 
 if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
   dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
 }
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6e.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
@@ -12601,7 +12621,7 @@ if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7e.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
@@ -12609,7 +12629,7 @@ if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2f.png",sep=""), width = 3, height = 7, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2f.png",sep=""), width = 3, height = 7, dpi = 600)
 }
 
 ####Trait Correlation Plots
@@ -12662,15 +12682,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_6_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_6.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_6.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_6.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_6.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_6.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_6.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- 2
@@ -12716,15 +12736,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_5_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_5.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_5.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_5.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_5.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_5.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_5.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- 3
@@ -12770,15 +12790,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_4_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_4.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_4.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_4.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_4.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_4.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_4.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- length(traitmodules3$module)
@@ -12824,15 +12844,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_1_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_1.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_1.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_1.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_1.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_1.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_1.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- length(traitmodules3$module)-1
@@ -12878,15 +12898,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_2_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_2.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_2.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_2.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_2.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_2.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_2.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 i <- length(traitmodules3$module)-2
@@ -12932,15 +12952,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
 ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_3_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
-  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_3.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_3.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.15"){
-  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_3.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/supplementary_figure7f_3.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 if(trait_id == "uc.110"){
-  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_3.png",sep=""), width = 5, height = 5, dpi = 300)
+  ggsave(p,file=paste(outputdir,"/Figure2/figure2g_3.png",sep=""), width = 5, height = 5, dpi = 600)
 }
 
 
@@ -13164,8 +13184,10 @@ for(i in 1:length(TUCRids)){
   survminer:::print.ggsurvplot(x, newpage = FALSE)
 }
  ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
-  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff")
-  rbinder <- cbind(as.character(TUCRsurv),p2value$pval,p2value$method)
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
+    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+    dplyr::select(method,pval,padj)
+  rbinder <- cbind(as.character(TUCRsurv),p2value)
   ptable[i,] <- rbinder
    }}
 
@@ -13406,8 +13428,10 @@ for(i in 1:length(TUCRids)){
   survminer:::print.ggsurvplot(x, newpage = FALSE)
 }
  ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
-  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff")
-  rbinder <- cbind(as.character(TUCRsurv),p2value$pval,p2value$method)
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
+    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+    dplyr::select(method,pval,padj)
+  rbinder <- cbind(as.character(TUCRsurv),p2value)
   ptable[i,] <- rbinder
    }}
 
@@ -13633,7 +13657,7 @@ p <- ggplot(data = moduleTraitCor_trait_id,mapping = aes(x = reorder(modules,pos
 
 p
 
-ggsave(p,file=paste(outputdir,"/Figure1/figure1h.png",sep=""), width = 7, height = 3, dpi = 300)
+ggsave(p,file=paste(outputdir,"/Figure1/figure1h.png",sep=""), width = 7, height = 3, dpi = 600)
 ```
 
 ```{r Supplementary_Figure8ab_allgoterms,eval=FALSE}
@@ -13967,7 +13991,7 @@ p <- ggplot(data = moduleTraitCor_trait_id,mapping = aes(x = reorder(modules,pos
 
 p
 
-ggsave(p,file=paste(outputdir,"/Figure1/figure1h.png",sep=""), width = 7, height = 3, dpi = 300)
+ggsave(p,file=paste(outputdir,"/Figure1/figure1h.png",sep=""), width = 7, height = 3, dpi = 600)
 ```
 
 ```{r Supplementary_Figure9ab_figure1_allgoterms,eval=FALSE}
@@ -14151,7 +14175,7 @@ ggsave(file=paste(outputdir,"/Figure10_supplementary/supplementary_figure10d.png
        plot=print(p),
        height = 9,
        width = 5,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -14210,7 +14234,7 @@ ggsave(file=paste(outputdir,"/Figure11_Supplementary/supplementary_Figure11c.png
        plot = print(p),
        height = 6,
        width = 6,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -14249,7 +14273,7 @@ ggsave(file=paste(outputdir,"/Figure11_Supplementary/supplementary_Figure11d.png
        plot = print(p),
        height = 7,
        width = 4,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -14288,7 +14312,7 @@ ggsave(file=paste(outputdir,"/Figure11_Supplementary/supplementary_Figure11e.png
        plot = print(p),
        height = 7,
        width = 4,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -14326,7 +14350,7 @@ ggsave(file=paste(outputdir,"/Figure11_Supplementary/supplementary_Figure11f.png
        plot = print(p),
        height = 6,
        width = 6,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
@@ -14370,7 +14394,7 @@ ggsave(file=paste(outputdir,"/Figure11_Supplementary/supplementary_Figure11g.png
        plot = print(p),
        height = 6,
        width = 6,
-       dpi = 300)
+       dpi = 600)
 
 ```
 
