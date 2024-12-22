@@ -240,6 +240,9 @@ library(umap)
 if (!require("igraph")) install.packages("igraph")
 library(igraph)
 
+if (!require("gtable")) install.packages("gtable")
+library(gtable)
+
 knitr::opts_chunk$set(
 eval = TRUE,
 tidy = TRUE#,
@@ -522,7 +525,9 @@ volcanoplot_expression <- function (res,
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "LGG", paper_skyblue,
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "GBM", paper_blue,
                                 ifelse(disease == "GBM",paper_black,paper_gray))))))),
-                newdisease = ifelse(str_detect(deregcategory,"both"),"BOTH",disease))
+                newdisease = ifelse(str_detect(deregcategory,"Both"),"BOTH",disease),
+                diseasefilter = ifelse((disease == "LGG" & newdisease == "BOTH"),0,1)) %>%
+    dplyr::filter(diseasefilter == 1)
   
   res_summary <- res %>%
     group_by(color) %>%
@@ -532,12 +537,17 @@ if(annot_filter == ""){}else{
   res %>%
     filter(annot == annot_filter)
 }
+  
+res$newdisease <- factor(res$newdisease, levels = c("GBM","LGG","BOTH"))
 
+res <- res %>% 
+  dplyr::mutate(newdisease_order = ifelse(newdisease=="GBM",1,
+                                   ifelse(newdisease=="LGG",2,3)))
 
 res_110_up <- res %>%
    filter(color != paper_gray & color != paper_black & log2FoldChange > 0 | alias == "uc.110") %>%
    dplyr::arrange(desc(log2FoldChange)) %>%
-   dplyr::group_by(disease) %>%
+   dplyr::group_by(newdisease) %>%
    dplyr::mutate(order_rank= row_number()) %>%
    mutate(maxrank = max(order_rank,na.rm=TRUE)) %>%
    ungroup() %>%
@@ -546,7 +556,7 @@ res_110_up <- res %>%
 res_110_down <- res %>%
    filter(color != paper_gray & color != paper_black  & log2FoldChange < 0 | alias == "uc.110") %>%
    dplyr::arrange(log2FoldChange) %>%
-   dplyr::group_by(disease) %>%
+   dplyr::group_by(newdisease) %>%
    dplyr::mutate(order_rank= row_number()) %>%
    mutate(maxrank = max(order_rank,na.rm=TRUE)) %>%
    ungroup() %>%
@@ -577,7 +587,7 @@ p <- ggplot(res) +
 panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
 legend.text=element_text(size=10)) +
   coord_cartesian(clip = "off") + 
-  facet_wrap(~newdisease,scales="free",ncol=3)
+  facet_wrap(~reorder(newdisease,newdisease_order),scales="free",ncol=3)
 
 p
 
@@ -588,9 +598,9 @@ ggsave(plot = print(p),filename = output, width = width, height = height, dpi = 
 
 ```
 
-### Figure 1A and 1B
+### Figure 1A, 1B and 1C (New)
 
-```{r figure1ab}
+```{r figure1abc}
 
 res_TUCR_LGG <- read_csv(paste(outputdir,"/TUCR_Database/SummaryTables/LGG/LGG_DESeq2_allTUCRs.csv",sep=""),col_names = TRUE)
 
@@ -618,17 +628,17 @@ res_TUCR <- rbind(res_TUCR_GBM_2,res_TUCR_LGG_2)
 
 volcanoplot_expression(res_TUCR,
                          genes = "all",
-                         output = paste(outputdir,"/Figure1/figure1ab.png",sep=""),
+                         output = paste(outputdir,"/Figure1/figure1abc.png",sep=""),
                          height = 3, 
-                         width = 8, 
+                         width = 12, 
                          dpi = 600,
                          annot = "")
 
 ```
 
-### Figure 1C
+### Figure 1C (Old)
 
-```{r figure1c}
+```{r figure1c_old}
 
 res_TUCR_LGG <- read_csv(paste(outputdir,"/TUCR_Database/SummaryTables/LGG/LGG_DESeq2_allTUCRs.csv",sep=""),col_names = TRUE)
 
@@ -668,7 +678,9 @@ res_summary <- res_TUCR %>%
                                 ifelse(sum == 1  & dereg == "upregulated" &  disease == "LGG", "Up-LGG",
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "LGG", "Down-LGG",
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "GBM", "Down-GBM","not deregulated")))))),
-                newdisease = ifelse(str_detect(deregcategory,"both"),"BOTH",disease)) %>%
+                newdisease = ifelse(str_detect(deregcategory,"Both"),"BOTH",disease),
+                diseasefilter = ifelse((disease == "LGG" & newdisease == "BOTH"),0,1)) %>%
+    dplyr::filter(diseasefilter == 1)  %>%
   filter(deregcategory != "not deregulated" & padj != 0) %>%
   dplyr::select(alias,deregcategory) %>%
   distinct() %>%
@@ -708,7 +720,7 @@ panel.spacing = unit(-2, "lines")) +
   xlim(0.5, 2.5) +
   facet_wrap(~dereg)
 
-ggsave(file=paste(outputdir,"/Figure1/figure1c.png",sep=""),
+ggsave(file=paste(outputdir,"/Figure1/figure1c_old.png",sep=""),
        plot = print(p),
        width = 6, 
        height = 4, 
@@ -1214,7 +1226,7 @@ if(repel==TRUE){p <- ggplot(vres) +
               strip.text = element_text(size = rel(1.4), face="bold"),
               axis.text = element_text(size = rel(1.0)),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="top",legend.title=element_blank(),
 legend.text=element_text(size=10)) +
         geom_text_repel(aes(x=estimate, y=-log10(as.numeric(p.value)),label = gene),force=50) +
         facet_wrap(~disease.y)
@@ -1232,7 +1244,7 @@ legend.text=element_text(size=10)) +
               strip.text = element_text(size = rel(1.4), face="bold"),
               axis.text = element_text(size = rel(1.0)),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="top",legend.title=element_blank(),
 legend.text=element_text(size=10))}
 ggsave(output, width = width, height = height, dpi = dpi) +
         facet_wrap(~disease.y)
@@ -3213,7 +3225,8 @@ volcanoplot_expression <- function (res,
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "LGG", paper_skyblue,
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "GBM", paper_blue,
                                 ifelse(disease == "GBM",paper_black,paper_gray))))))),
-                newdisease = ifelse(str_detect(deregcategory,"both"),"BOTH",disease))
+                newdisease = ifelse(str_detect(deregcategory,"Both"),"BOTH",disease),
+                diseasefilter = ifelse((disease == "LGG" & newdisease == "BOTH"),0,1))
   
   res_summary <- res %>%
     group_by(color) %>%
@@ -3268,7 +3281,7 @@ p <- ggplot(res) +
 panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
 legend.text=element_text(size=10)) +
   coord_cartesian(clip = "off") + 
-  facet_wrap(~newdisease,scales="free",ncol=1)
+  facet_wrap(~disease,scales="free",ncol=1)
 
 p
 
@@ -3342,7 +3355,7 @@ dir.create(paste(outputdir,"/Figure2/",sep=""))
 
 ```
   
-After determining that uc.110 displays a tumor enhancer phenotype in vitro, we sought to determine whether this effect is recapitulated in vivo.  U251 GBM cells were transfected with si-uc.110-1 or si-uc.110-2.  After 2 days, these cells were implanted into immunodeficient mice using intracranial injection (Supplementary Figure 11A). [37, 38, 45, 46] Tumor growth was monitored by MRI and mouse survival was observed over a period of 70 days.  Mice that were xenografted with U251 cells that were transfected with si-uc.110-1 and si-uc.110-2 expression developed smaller tumors, as depicted, and quantified by MRI (Figure 4A, 4B). The mice that received si-uc.110 also displayed better overall survival than mice that received scrambled control siRNA cells (Figure 4C). 
+After determining that uc.110 displays a tumor enhancer phenotype in vitro, we sought to determine whether this effect is recapitulated in vivo.  U251 GBM cells were transfected with si-uc.110-1 or si-uc.110-2.  After 2 days, these cells were implanted into immunodeficient mice using intracranial injection (Supplementary Figure 11A). [37, 38, 45, 46] Tumor growth was monitored by MRI and mouse survival was observed over a period of 70 days.  Mice that were xenografted with U251 cells that were transfected with si-uc.110-1 and si-uc.110-2 expression developed smaller tumors, as depicted, and quantified by MRI (Figure 4A, 4B). The mice that received si-uc.110 also displayed better overall survival than mice that received scrambled control siRNA cells (Figure 4C). a 
 
 ### Figure 2A
 
@@ -3541,6 +3554,12 @@ if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))){
 if(file.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = ""))){}else{
 
 
+padj.DESeq2 <- fc.dotplot2 %>%
+  filter(dex == "tumor") %>%
+  dplyr::select(padj)
+
+padj.DESeq2 <- formatC(padj.DESeq2[[1]][1], format = "e", digits = 2)
+
 foldchange.DESeq2 <- fc.dotplot2 %>%
   filter(dex == "tumor") %>%
   dplyr::select(DESeq2)
@@ -3557,7 +3576,7 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
   scale_fill_identity() +
   #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
   geom_jitter(data = fc.dotplot2, aes(x=dex, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  ggtitle(disease) +
+  ggtitle(paste0(disease,"\n","FC = ",round(foldchange.DESeq2,2),"\n","FDR = ",padj.DESeq2)) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -3567,10 +3586,9 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="top",
-        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        legend.text=element_blank()) +
-  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
+        legend.position="none",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
+  labs(y="Z-Score", x = "Tissue Type") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)}}
@@ -3585,6 +3603,12 @@ fc.dotplot2 <- fc.dotplot %>%
 print("uc.110")
 TUCRname <- "uc.110"
 
+padj.DESeq2 <- fc.dotplot2 %>%
+  filter(dex == "tumor") %>%
+  dplyr::select(padj)
+
+padj.DESeq2 <- formatC(padj.DESeq2[[1]][1], format = "e", digits = 2)
+
 foldchange.DESeq2 <- fc.dotplot2 %>%
   filter(dex == "tumor") %>%
   dplyr::select(DESeq2)
@@ -3601,7 +3625,7 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
   scale_fill_identity() +
   #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
   geom_jitter(data = fc.dotplot2, aes(x=dex, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  ggtitle(disease) +
+  ggtitle(paste0(disease,"\n","FC = ",round(foldchange.DESeq2,2),"\n","FDR = ",padj.DESeq2)) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -3611,10 +3635,9 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="top",
-        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        legend.text=element_blank()) +
-  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
+        legend.position="none",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
+  labs(y="Z-Score", x = "Tissue Type") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=paste(outputdir,"/Figure2/figure2a.png",sep = ""),height=7,width=5)}
@@ -3817,6 +3840,11 @@ if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))){
 
 if(file.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = ""))){}else{
 
+padj.DESeq2 <- fc.dotplot2 %>%
+  filter(dex == "tumor") %>%
+  dplyr::select(padj)
+
+padj.DESeq2 <- formatC(padj.DESeq2[[1]][1], format = "e", digits = 2)
 
 foldchange.DESeq2 <- fc.dotplot2 %>%
   filter(dex == "tumor") %>%
@@ -3834,7 +3862,7 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
   scale_fill_identity() +
   #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
   geom_jitter(data = fc.dotplot2, aes(x=dex, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  ggtitle(disease) +
+  ggtitle(paste0(disease,"\n","FC = ",round(foldchange.DESeq2,2),"\n","FDR = ",padj.DESeq2)) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -3844,10 +3872,9 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="top",
-        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        legend.text=element_blank()) +
-  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
+        legend.position="none",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
+  labs(y="Z-Score", x = "Tissue Type") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)}}
@@ -3862,6 +3889,12 @@ fc.dotplot2 <- fc.dotplot %>%
 print("uc.110")
 TUCRname <- "uc.110"
 
+padj.DESeq2 <- fc.dotplot2 %>%
+  filter(dex == "tumor") %>%
+  dplyr::select(padj)
+
+padj.DESeq2 <- formatC(padj.DESeq2[[1]][1], format = "e", digits = 2)
+
 foldchange.DESeq2 <- fc.dotplot2 %>%
   filter(dex == "tumor") %>%
   dplyr::select(DESeq2)
@@ -3878,7 +3911,7 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
   scale_fill_identity() +
   #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
   geom_jitter(data = fc.dotplot2, aes(x=dex, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  ggtitle(disease) +
+  ggtitle(paste0(disease,"\n","FC = ",round(foldchange.DESeq2,2),"\n","FDR = ",padj.DESeq2)) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -3888,10 +3921,9 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="top",
-        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        legend.text=element_blank()) +
-  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
+        legend.position="none",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
+  labs(y="Z-Score", x = "Tissue Type") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=paste(outputdir,"/Figure2/figure2b.png",sep = ""),height=7,width=5)}
@@ -7317,7 +7349,9 @@ volcanoplot_expression <- function (res,
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "LGG", paper_skyblue,
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "GBM", paper_blue,
                                 ifelse(disease == "GBM",paper_black,paper_gray))))))),
-                newdisease = ifelse(str_detect(deregcategory,"both"),"BOTH",disease))
+                newdisease = ifelse(str_detect(deregcategory,"Both"),"BOTH",disease),
+                diseasefilter = ifelse((disease == "LGG" & newdisease == "BOTH"),0,1)) %>%
+    dplyr::filter(diseasefilter == 1)
   
   res_summary <- res %>%
     group_by(color) %>%
@@ -7383,7 +7417,7 @@ ggsave(plot = print(p),filename = output, width = width, height = height, dpi = 
 
 ```
 
-```{r figure4ab}
+```{r supplementary_figure4ab}
 
 res_TUCR_LGG <- read_csv(paste(outputdir,"/TUCR_Database/SummaryTables/LGG/LGG_DESeq2_allTUCRs.csv",sep=""),col_names = TRUE)
 
@@ -7412,7 +7446,7 @@ res_TUCR <- rbind(res_TUCR_GBM_2,res_TUCR_LGG_2)
 volcanoplot_expression(res_TUCR,
                          genes = "all",
                          output = paste(outputdir,"/Figure4_supplementary/supplementary_figure4a.png",sep=""),
-                         height = 6, 
+                         height = 9, 
                          width = 16, 
                          dpi = 600,
                          annot = "")
@@ -7915,7 +7949,7 @@ if(repel==TRUE){p <- ggplot(vres) +
               strip.text = element_text(size = rel(1.4), face="bold"),
               axis.text = element_text(size = rel(1.0)),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="top",legend.title=element_blank(),
 legend.text=element_text(size=10)) +
         geom_text_repel(aes(x=estimate, y=-log10(as.numeric(p.value)),label = gene),force=50) +
         facet_wrap(~disease.y+annot.x,scales="free",ncol=4)
@@ -7933,7 +7967,7 @@ legend.text=element_text(size=10)) +
               strip.text = element_text(size = rel(1.4), face="bold"),
               axis.text = element_text(size = rel(1.0)),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="top",legend.title=element_blank(),
 legend.text=element_text(size=10))}
 ggsave(output, width = width, height = height, dpi = dpi) +
         facet_wrap(~disease.y+annot.x,scales="free",ncol=4)
@@ -8242,7 +8276,8 @@ volcanoplot_expression <- function (res,
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "LGG", paper_skyblue,
                                 ifelse(sum == -1  & dereg == "downregulated" &  disease == "GBM", paper_blue,
                                 ifelse(disease == "GBM",paper_black,paper_gray))))))),
-                newdisease = ifelse(str_detect(deregcategory,"both"),"BOTH",disease))
+                newdisease = ifelse(str_detect(deregcategory,"Both"),"BOTH",disease),
+                diseasefilter = ifelse((disease == "LGG" & newdisease == "BOTH"),0,1)) 
   
   res_summary <- res %>%
     group_by(color) %>%
@@ -8297,7 +8332,7 @@ p <- ggplot(res) +
 panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
 legend.text=element_text(size=10)) +
   coord_cartesian(clip = "off") + 
-  facet_wrap(~newdisease,scales="free",ncol=3)
+  facet_wrap(~disease,scales="free",ncol=3)
 
 p
 
@@ -8699,7 +8734,7 @@ if(repel==TRUE){p <- ggplot(vres) +
               strip.text = element_text(size = rel(1.4), face="bold"),
               axis.text = element_text(size = rel(1.0)),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="top",legend.title=element_blank(),
 legend.text=element_text(size=10)) +
         geom_text_repel(aes(x=estimate, y=-log10(as.numeric(p.value)),label = gene),force=50) +
         facet_wrap(~disease)
@@ -8717,7 +8752,7 @@ legend.text=element_text(size=10)) +
               strip.text = element_text(size = rel(1.4), face="bold"),
               axis.text = element_text(size = rel(1.0)),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="top",legend.title=element_blank(),
 legend.text=element_text(size=10))}
 ggsave(output, width = width, height = height, dpi = dpi) +
         facet_wrap(~disease)
@@ -8997,6 +9032,11 @@ if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))){
 
 if(file.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = ""))){}else{
 
+padj.DESeq2 <- fc.dotplot2 %>%
+  filter(dex == "tumor") %>%
+  dplyr::select(padj)
+
+padj.DESeq2 <- formatC(padj.DESeq2[[1]][1], format = "e", digits = 2)
 
 foldchange.DESeq2 <- fc.dotplot2 %>%
   filter(dex == "tumor") %>%
@@ -9014,7 +9054,7 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
   scale_fill_identity() +
   #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
   geom_jitter(data = fc.dotplot2, aes(x=dex, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  ggtitle(disease) +
+  ggtitle(paste0(disease,"\n","FC = ",round(foldchange.DESeq2,2),"\n","FDR = ",padj.DESeq2)) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -9024,10 +9064,9 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="top",
-        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        legend.text=element_blank()) +
-  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
+        legend.position="none",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
+  labs(y="Z-Score", x = "Tissue Type") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)}}
@@ -9042,6 +9081,12 @@ fc.dotplot2 <- fc.dotplot %>%
 print("uc.2")
 TUCRname <- "uc.2"
 
+padj.DESeq2 <- fc.dotplot2 %>%
+  filter(dex == "tumor") %>%
+  dplyr::select(padj)
+
+padj.DESeq2 <- formatC(padj.DESeq2[[1]][1], format = "e", digits = 2)
+
 foldchange.DESeq2 <- fc.dotplot2 %>%
   filter(dex == "tumor") %>%
   dplyr::select(DESeq2)
@@ -9058,7 +9103,7 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
   scale_fill_identity() +
   #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
   geom_jitter(data = fc.dotplot2, aes(x=dex, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  ggtitle(disease) +
+  ggtitle(paste0(disease,"\n","FC = ",round(foldchange.DESeq2,2),"\n","FDR = ",padj.DESeq2)) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -9068,13 +9113,10 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="top",
-        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        legend.text=element_blank()) +
-  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
+        legend.position="none",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
+  labs(y="Z-Score", x = "Tissue Type") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
-
-p2
 
 ggsave(p2,file=paste(outputdir,"/Figure6_Supplementary/figure6a_supplementary.png",sep = ""),height=7,width=5)}
 
@@ -9276,6 +9318,11 @@ if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))){
 
 if(file.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = ""))){}else{
 
+padj.DESeq2 <- fc.dotplot2 %>%
+  filter(dex == "tumor") %>%
+  dplyr::select(padj)
+
+padj.DESeq2 <- formatC(padj.DESeq2[[1]][1], format = "e", digits = 2)
 
 foldchange.DESeq2 <- fc.dotplot2 %>%
   filter(dex == "tumor") %>%
@@ -9293,7 +9340,7 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
   scale_fill_identity() +
   #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
   geom_jitter(data = fc.dotplot2, aes(x=dex, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  ggtitle(disease) +
+  ggtitle(paste0(disease,"\n","FC = ",round(foldchange.DESeq2,2),"\n","FDR = ",padj.DESeq2)) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -9303,10 +9350,9 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="top",
-        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        legend.text=element_blank()) +
-  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
+        legend.position="none",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
+  labs(y="Z-Score", x = "Tissue Type") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)}}
@@ -9321,6 +9367,12 @@ fc.dotplot2 <- fc.dotplot %>%
 print("uc.2")
 TUCRname <- "uc.2"
 
+padj.DESeq2 <- fc.dotplot2 %>%
+  filter(dex == "tumor") %>%
+  dplyr::select(padj)
+
+padj.DESeq2 <- formatC(padj.DESeq2[[1]][1], format = "e", digits = 2)
+
 foldchange.DESeq2 <- fc.dotplot2 %>%
   filter(dex == "tumor") %>%
   dplyr::select(DESeq2)
@@ -9337,7 +9389,7 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
   scale_fill_identity() +
   #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
   geom_jitter(data = fc.dotplot2, aes(x=dex, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  ggtitle(disease) +
+  ggtitle(paste0(disease,"\n","FC = ",round(foldchange.DESeq2,2),"\n","FDR = ",padj.DESeq2)) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -9347,10 +9399,9 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="top",
-        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        legend.text=element_blank()) +
-  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
+        legend.position="none",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
+  labs(y="Z-Score", x = "Tissue Type") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=paste(outputdir,"/Figure6_Supplementary/figure6b_supplementary.png",sep = ""),height=7,width=5)}
@@ -11332,6 +11383,11 @@ if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))){
 
 if(file.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = ""))){}else{
 
+padj.DESeq2 <- fc.dotplot2 %>%
+  filter(dex == "tumor") %>%
+  dplyr::select(padj)
+
+padj.DESeq2 <- formatC(padj.DESeq2[[1]][1], format = "e", digits = 2)
 
 foldchange.DESeq2 <- fc.dotplot2 %>%
   filter(dex == "tumor") %>%
@@ -11349,7 +11405,7 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
   scale_fill_identity() +
   #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
   geom_jitter(data = fc.dotplot2, aes(x=dex, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  ggtitle(disease) +
+  ggtitle(paste0(disease,"\n","FC = ",round(foldchange.DESeq2,2),"\n","FDR = ",padj.DESeq2)) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -11359,10 +11415,9 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="top",
-        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        legend.text=element_blank()) +
-  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
+        legend.position="none",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
+  labs(y="Z-Score", x = "Tissue Type") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)}}
@@ -11377,6 +11432,12 @@ fc.dotplot2 <- fc.dotplot %>%
 print("uc.15")
 TUCRname <- "uc.15"
 
+padj.DESeq2 <- fc.dotplot2 %>%
+  filter(dex == "tumor") %>%
+  dplyr::select(padj)
+
+padj.DESeq2 <- formatC(padj.DESeq2[[1]][1], format = "e", digits = 2)
+
 foldchange.DESeq2 <- fc.dotplot2 %>%
   filter(dex == "tumor") %>%
   dplyr::select(DESeq2)
@@ -11393,7 +11454,7 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
   scale_fill_identity() +
   #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
   geom_jitter(data = fc.dotplot2, aes(x=dex, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  ggtitle(disease) +
+  ggtitle(paste0(disease,"\n","FC = ",round(foldchange.DESeq2,2),"\n","FDR = ",padj.DESeq2)) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -11403,10 +11464,9 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="top",
-        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        legend.text=element_blank()) +
-  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
+        legend.position="none",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
+  labs(y="Z-Score", x = "Tissue Type") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=paste(outputdir,"/Figure7_Supplementary/figure7a_supplementary.png",sep = ""),height=7,width=5)}
@@ -11609,6 +11669,11 @@ if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))){
 
 if(file.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = ""))){}else{
 
+padj.DESeq2 <- fc.dotplot2 %>%
+  filter(dex == "tumor") %>%
+  dplyr::select(padj)
+
+padj.DESeq2 <- formatC(padj.DESeq2[[1]][1], format = "e", digits = 2)
 
 foldchange.DESeq2 <- fc.dotplot2 %>%
   filter(dex == "tumor") %>%
@@ -11626,7 +11691,7 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
   scale_fill_identity() +
   #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
   geom_jitter(data = fc.dotplot2, aes(x=dex, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  ggtitle(disease) +
+  ggtitle(paste0(disease,"\n","FC = ",round(foldchange.DESeq2,2),"\n","FDR = ",padj.DESeq2)) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -11636,10 +11701,9 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="top",
-        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        legend.text=element_blank()) +
-  labs(y="Z-Score", x = "Tissue Type", colour=paste(round(log2foldchange,2),", ",round(padj,4))) +
+        legend.position="none",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
+  labs(y="Z-Score", x = "Tissue Type") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)}}
@@ -11654,6 +11718,12 @@ fc.dotplot2 <- fc.dotplot %>%
 print("uc.15")
 TUCRname <- "uc.15"
 
+padj.DESeq2 <- fc.dotplot2 %>%
+  filter(dex == "tumor") %>%
+  dplyr::select(padj)
+
+padj.DESeq2 <- formatC(padj.DESeq2[[1]][1], format = "e", digits = 2)
+
 foldchange.DESeq2 <- fc.dotplot2 %>%
   filter(dex == "tumor") %>%
   dplyr::select(DESeq2)
@@ -11670,6 +11740,7 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
   scale_fill_identity() +
   #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
   geom_jitter(data = fc.dotplot2, aes(x=dex, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
+  ggtitle(paste0(disease,"\n","FC = ",round(foldchange.DESeq2,2),"\n","FDR = ",padj.DESeq2)) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -11679,10 +11750,9 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="top",
-        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        legend.text=element_blank()) +
-  labs(y="log2FoldChange", x = "Tissue Type", colour=paste(round(padj,4))) +
+        legend.position="none",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
+  labs(y="Z-Score", x = "Tissue Type") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
 
 ggsave(p2,file=paste(outputdir,"/Figure7_Supplementary/figure7b_supplementary.png",sep = ""),height=7,width=5)}
