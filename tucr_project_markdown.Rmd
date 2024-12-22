@@ -243,6 +243,10 @@ library(igraph)
 if (!require("gtable")) install.packages("gtable")
 library(gtable)
 
+if(!dir.exists(outputdir)){
+  dir.create(outputdir)
+}
+
 knitr::opts_chunk$set(
 eval = TRUE,
 tidy = TRUE#,
@@ -251,9 +255,6 @@ tidy = TRUE#,
 #	warning = FALSE
 )
 
-if(!dir.exists(outputdir)){
-  dir.create(outputdir)
-}
 
 ```
 
