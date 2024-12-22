@@ -76,7 +76,7 @@ R Markdown file containing code used to generate all figures, with workflows inc
 To "run all chunks," follow this linked example from RStudio:
 - https://forum.posit.co/t/run-all-chunks-below-shortcut/3729
 
-![Run All Chunks Example (Image Form)]("./Inputs/general_files/runchunks_example.png")
+![Run All Chunks Example Image](./Inputs/general_files/runchunks_example.png)
 
 
 # tucr_project_codebook
