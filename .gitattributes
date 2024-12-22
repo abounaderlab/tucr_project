@@ -3,3 +3,5 @@ Inputs/generalfiles/wgcnafiles/allprelims.rdata filter=lfs diff=lfs merge=lfs -t
 TinyTex.zip filter=lfs diff=lfs merge=lfs -text
 Outputs_example.tar.gz filter=lfs diff=lfs merge=lfs -text
 TUCR_Database.tar.gz filter=lfs diff=lfs merge=lfs -text
+TUCR_Database.zip filter=lfs diff=lfs merge=lfs -text
+Outputs_example.zip filter=lfs diff=lfs merge=lfs -text
