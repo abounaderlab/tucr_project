@@ -14,12 +14,12 @@ The following items are stored under Github's Large File Storage (LFS), as they 
 Inputs/generalfiles/wgcnafiles/TUCR-01-dataInput.rdata
 Inputs/generalfiles/wgcnafiles/allprelims.rdata
 TinyTex.zip
-Outputs_example.tar.gz
-TUCR_Database.tar.gz
+Outputs_example.zip
+TUCR_Database.zip
 
 # Inputs 
 
-Input files for project organized by figure
+Input files for project organized by figure.  Do not modify the contents of this subdirectory without careful consideration.
 
 # .gitattributes
 
@@ -33,25 +33,34 @@ Used to declare changes to file handling and display. For this project, specific
 
 [Git definiton](https://git-scm.com/docs/gitignore)
 
-# Outputs_example.tar.gz
+# Outputs_example.zip
 
-A compressed example output directory with completed data, including the TUCR Database.
+A compressed example output directory with completed data, including the TUCR Database. 
+
+This folder must first be extracted before being accessed, using one of the linked methods below:
+- Windows [Click Here](https://support.microsoft.com/en-us/windows/zip-and-unzip-files-8d28fa72-f2f9-712f-67df-f80cf89fd4e5)
+- Mac [Click Here](https://support.apple.com/guide/mac-help/zip-and-unzip-files-and-folders-on-mac-mchlp2528/mac)
+
 
 # README.md
 
 This document
 
-# Extracting Outputs_example and the TUCR_Database
-tar -xvzf Outputs_example.tar.gz 
-tar -xvzf TUCR_Database.tar.gz
-
-# TUCR_Database.tar.gz
+# TUCR_Database.zip
 
 A compressed directory containing expression, survival, and weighted gene correlation data for all 481 TUCRs. 
+
+This folder must first be extracted before being accessed, using one of the linked methods below:
+- Windows [Click Here](https://support.microsoft.com/en-us/windows/zip-and-unzip-files-8d28fa72-f2f9-712f-67df-f80cf89fd4e5)
+- Mac [Click Here](https://support.apple.com/guide/mac-help/zip-and-unzip-files-and-folders-on-mac-mchlp2528/mac)
 
 # TinyTeX.zip
 
 Latex compiler that can be used to assist with regenerating the codebook
+
+This folder must first be extracted before being accessed, using one of the linked methods below:
+- Windows [Click Here](https://support.microsoft.com/en-us/windows/zip-and-unzip-files-8d28fa72-f2f9-712f-67df-f80cf89fd4e5)
+- Mac [Click Here](https://support.apple.com/guide/mac-help/zip-and-unzip-files-and-folders-on-mac-mchlp2528/mac)
 
 # colorcodelist
 
@@ -62,7 +71,13 @@ R project file for the TUCR project
 
 # tucr_project_markdown
 
-R Markdown file containing code used to generate all figures, with workflows included. Can be used to regenerate the "TUCR Database" as well, which is stored to the output directory assigned in the setup section of this document.
+R Markdown file containing code used to generate all figures, with workflows included, by clicking "run all chunks" in RStudio. Can be used to regenerate the "TUCR Database" as well, which will be contained within the output directory assigned in the setup section of this document.
+
+To "run all chunks," follow this linked example from RStudio:
+- https://forum.posit.co/t/run-all-chunks-below-shortcut/3729
+
+![Run All Chunks Example (Image Form)]("./Inputs/general_files/runchunks_example.png")
+
 
 # tucr_project_codebook
 
