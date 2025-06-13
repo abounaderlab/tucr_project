@@ -29,12 +29,14 @@ Charlottesville VA 22908, USA, Phone: (434) 982-6634, Fax: 434-243-6843
 E-mail: ra6u@virginia.edu.  
  
 # ABSTRACT  
-Transcribed Ultra-Conserved Regions (TUCRs) represent a severely understudied class of putative non-coding RNAs (ncRNAs) that are 100% conserved across multiple species.  We performed the first-ever analysis of TUCRs in glioblastoma (GBM) and low-grade gliomas (LGG).  We leveraged large human datasets to identify the genomic locations, chromatin accessibility, transcription, differential expression, correlation with survival, and predicted functions of all 481 TUCRs, and identified TUCRs that are relevant to glioma biology.  Of these, we investigated the expression, function, and mechanism of action of the most highly upregulated intergenic TUCR, uc.110, identifying it as a new tumor enhancer.  Uc.110 was highly overexpressed in GBM and LGG, where it promoted malignancy and tumor growth. Uc.110 activated the WNT pathway by upregulating the expression of membrane frizzled-related protein (MFRP), by sponging the tumor suppressor microRNA miR-544. This pioneering study shows important roles for TUCRs in gliomas and provides an extensive database and novel methods for future TUCR research.
+Transcribed Ultra-Conserved Regions (TUCRs) represent a severely understudied class of putative non-coding RNAs (ncRNAs) that are 100% conserved across multiple species.  We performed the first-ever analysis of TUCRs in glioblastoma (GBM) and low-grade gliomas (LGG). We leveraged large human datasets to identify the genomic locations, chromatin accessibility, transcription, differential expression, correlation with survival, and predicted functions of all 481 TUCRs, and identified TUCRs that are relevant to glioma biology. Of these, we investigated the expression, function, and mechanism of action of the most highly upregulated intergenic TUCR, uc.110, identifying it as a new tumor enhancer. Uc.110 was highly overexpressed in GBM and LGG, where it promoted malignancy and tumor growth. Uc.110 activated the WNT pathway by upregulating the expression of membrane frizzled-related protein (MFRP), by sponging the tumor suppressor microRNA miR-544. This pioneering study shows important roles for TUCRs in gliomas and provides an extensive database and novel methods for future TUCR research.
 
 # INTRODUCTION 
-Transcribed Ultra-conserved Regions (TUCRs) represent 481 unique transcribed RNA molecules that are “ultraconserved” across multiple species, including in the human, mouse (100%), rat (100%), dog (98%), and chicken (95%) genomes. [1] TUCR expression has been found to be highly deregulated in some cancers.  Because of their ultra-conservation and their deregulation, it is believed that TUCRs may have important regulatory roles in cancer. [2-11] About ~90% of the genome is transcribed, but only ~2 percent of the transcriptome is translated. [2] The remainder of the transcriptome is made up of non-coding elements that serve key regulatory roles. Of these elements, long non-coding RNAs (lncRNAs) serve as important regulators of malignancy and potential therapeutic targets in cancer. [2, 12-19] Due to their size and lack of known associated protein products, it has been suggested that many TUCRs may function as lncRNAs, while those within protein coding genes may represent ultraconserved regions of the coding gene without being independent transcripts themselves.  For example, many homeobox (HOX) genes contain ultraconserved regions.[2]   And yet, the putative existence of “ultraconserved” lncRNAs is particularly significant, as lncRNAs are typically poorly conserved as a class of molecules.[2] Very little is known about TUCRs. [2] In particular, the literature elucidating the expressions, functions, and mechanisms of action of TUCRs in glioblastoma (GBM) and low-grade glioma (LGG) is nonexistent. GBM and LGG represent over 80% of primary malignant brain tumors in humans, of which GBM is the deadliest, with a median survival of approximately 15 months. [20-28] Studying TUCRs in gliomas is therefore an untouched avenue for understanding novel tumor enhancing mechanisms and discovering new biomarkers and therapeutic targets.  
- 
-In this study, we leveraged large human datasets to identify the genomic locations, chromatin accessibility, transcription, differential expression, correlation with survival, and predicted functions of all 481 TUCRs, and identified TUCRs that are relevant to glioma biology (Supplementary Figure 1A). Of these, we investigated the expression, function, and mechanism of action of the most highly upregulated intergenic TUCR, uc.110, identifying it as a new tumor enhancer. Uc.110 was highly overexpressed in GBM and LGG, where it promoted malignancy parameters and tumor growth. Uc.110 activated the WNT pathway by upregulating the expression of membrane frizzled-related protein (MFRP), by sponging the tumor suppressor microRNA miR-544. This work shows important roles for TUCRs in gliomas and provides an extensive database and novel methods for future TUCR research in any disease context.
+Transcribed Ultra-conserved Regions (TUCRs) represent 481 unique transcribed RNA molecules that are “ultraconserved” across multiple species, including human, mouse (100%), rat (100%), dog (98%), and chicken (95%) genomes. [1] TUCR expression has been found to be highly deregulated in some cancers. Because of their ultra-conservation and their deregulation, it is believed that TUCRs may have important regulatory roles in cancer. [2-11] About ~90% of the genome is transcribed, but only ~2 percent of the transcriptome is translated. [2] The remainder of the transcriptome is made up of non-coding elements that serve key regulatory roles. Of these elements, long non-coding RNAs (lncRNAs) serve as important regulators of malignancy and potential therapeutic targets in cancer. [2, 12-19] Due to their size and lack of known associated protein products, it has been suggested that many TUCRs, especially the intergenic ones, may function as lncRNAs, while those within introns or spanning introns and exons of protein coding
+genes may represent either lncRNAs or ultraconserved regions of the coding gene without being independent transcripts themselves. For example, many homeobox (HOX) genes contain ultraconserved regions.[2] Yet, the putative existence of “ultraconserved” lncRNAs is particularly significant, as lncRNAs are typically poorly conserved as a class of molecules.[2] Very little is known about TUCRs. [2] In particular, the literature elucidating the expressions, functions, and mechanisms of action of TUCRs in glioblastoma (GBM) and low-grade glioma (LGG) is nonexistent. To address this gap in knowledge, we leveraged large human glioma datasets to identify the genomic locations, chromatin accessibility, transcription, differential expression, correlation with survival, and predicted functions of all 481 TUCRs, and identified TUCRs that are relevant to glioma biology (Supplementary Figure 1A). GBM and LGG represent over 80% of primary malignant brain tumors in humans, of which GBM is the deadliest, with a median survival of approximately 15 months. [20-28]
+
+We performed expression, survival, chromatin accessibility, and functional predictions, for all 481 TUCRs. Furthermore, we prioritized a further in depth investigation of the expression, function, and mechanism of action, of the most highly upregulated intergenic TUCR, uc.110, identifying it as a new tumor promoter, utilizing both novel and established [2] computational and experimental approaches. Uc.110 was highly overexpressed in GBM and LGG, where it promoted malignancy parameters and tumor growth. Uc.110 activated the WNT pathway by upregulating the expression of membrane frizzled-related protein (MFRP), by sponging the tumor suppressor microRNA miR-544. This work shows important roles for TUCRs in gliomas and provides an extensive database and novel methods for future TUCR research in any disease context.
+
 
 ## Setup
 ### Set parameters and install required programs
@@ -54,7 +56,7 @@ In addition to setting the above variables, this chunk loads the color palette a
 
 ## Variables
 
-outputdir <- "Outputs_20250611"
+outputdir <- "Outputs"
 
 filterannot <- "TUCR"
 
@@ -248,7 +250,7 @@ if(!dir.exists(outputdir)){
 }
 
 knitr::opts_chunk$set(
-eval = TRUE,
+eval = FALSE,
 tidy = TRUE#,
 #	echo = TRUE,
 #	message = FALSE,
@@ -275,23 +277,83 @@ tinytex::reinstall_tinytex(repository = "illinois")
 
 # RESULTS  
 ## TUCRs are encoded throughout the genome, resistant to variation, and actively transcribed. 
-We analyzed TUCR genomic locations published in Bejerano et al, [1] using hg38 genome coordinates lifted over from the provided hg19 coordinates.  We found that some TUCRs are exonic and are contained within an exon of the “host” gene. Others are contained within an intron instead.  Some TUCRs straddle a region that spans exonic and intronic regions of the host gene (exonic/intronic), and others are not contained within a known genetic element at all (intergenic) (Supplementary Figure 1B).  We manually annotated each TUCR using a combination of UCSC Genome Browser tracks, [29, 30] Quinlan Laboratory’s bedtools, [31, 32] and TUCR genomic locations lifted over to hg38 from hg19. [1] We updated the initial annotations by Bejerano et al, 2004, to now include 45 exonic, 231 intronic, 68 intronic/exonic, and 137 intergenic TUCRs (Supplementary Figure 1C).  Intragenic TUCRs (exonic, intronic, and exonic/intronic) tend to congregate in protein coding genes, while intergenic TUCRs likely represent independent and potentially novel transcripts. (Supplementary Figure 1D). We confirmed that TUCRs are located on all 21 numbered chromosomes and the X chromosome.  There were no annotated TUCRs on chromosome 21 (chr21), the Y chromosome (chrY) or in the mitochondrial DNA (chrM) (Supplementary Figure 1E). Detailed TUCR annotation information for all 481 TUCRs is provided in the supplementary materials (Supplementary Table 1).   
- 
-Since TUCRs are expected to be resistant to variation [2], we characterized the overlap of current dbSNP (build 156) single nucleotide polymorphism (SNP) annotations to the lifted over hg38 TUCR genomic coordinates.  We found that TUCRs overlap with fewer SNPs than protein coding genes and non-coding RNAs, suggesting that they are more resistant to variation.  Remarkably, the results that we have acquired from this same independent analysis suggests that the lncRNAs in our dataset are more resistant to variation than protein coding genes, which are more resistant than antisense RNAs, which are more resistant than small miscellaneous RNAs, which are the least resistant to single nucleotide polymorphism variation. These results provide further insight into the mutational burden of different gene categories across the genome. (Supplementary Figure 1F)
- 
-We also investigated TUCR transcription levels in comparison to transcription of known protein-coding and non-coding genes.  To accomplish this, we first analyzed their spatial associations with markers for active chromatin (H3K4me3), active enhancers (H3K27ac), lncRNA transcription (RNA Pol.II) and open chromatin (ATAC-Seq). We determined the significance of the spatial relationships between these marks and TUCRs utilizing publicly available U87 CHIP- and ATAC-Seq datasets. Then, we compared the data to TUCR intervals that were randomly shuffled to create a negative control, other classes of non-coding RNAs, and TUCRs subset by genomic annotation (Supplementary Figure 2A). We found that TUCRs displayed a significant enrichment for all transcriptional activity markers over expected and compared to control. The above data show that TUCRs are distributed throughout the genome, resistant to variation, and actively transcribed in GBM and LGG.  
+We analyzed TUCR genomic locations published in Bejerano et al, [1] using hg38 genome
+coordinates lifted over from the provided hg19 coordinates. We found that some TUCRs are
+exonic and are contained within an exon of the “host” gene. Others are contained within an intron
+instead. Some TUCRs straddle a region that spans exonic and intronic regions of the host gene
+(exonic/intronic), and others are not contained within a known genetic element at all (intergenic)
+(Supplementary Figure 1B). We manually annotated each TUCR using a combination of UCSC
+Genome Browser tracks, [29, 30] Quinlan Laboratory’s bedtools, [31, 32] and TUCR genomic
+locations lifted over to hg38 from hg19. [1] We therefore updated the initial annotations by
+Bejerano et al, 2004 [1] and subsequently updated annotations by Calin et al, 2007 [4] to now
+include 45 exonic, 231 intronic, 68 intronic/exonic, and 137 intergenic TUCRs (Supplementary
+Figure 1C). Intragenic TUCRs (exonic, intronic, and exonic/intronic) tend to congregate in protein
+coding genes, while intergenic TUCRs likely represent independent and potentially novel
+transcripts. (Supplementary Figure 1D). There were no annotated TUCRs on chromosome 21
+(chr21), the Y chromosome (chrY) or in the mitochondrial DNA (chrM) as previously described by
+Bejerano et al [1] and Calin et al [4] (Supplementary Figure 1E). Detailed TUCR annotation
+information for all 481 TUCRs is provided in the supplementary materials (Supplementary Table
+1).
+
+We also investigated TUCR transcription levels in comparison to transcription levels of known
+protein-coding and non-coding genes, in gliomas, as this has not been done. [56] To accomplish
+this, we first analyzed their spatial associations with markers for active chromatin (H3K4me3),
+active enhancers (H3K27ac), lncRNA transcription (RNA Pol.II) and open chromatin (ATAC-Seq).
+[56] We determined the significance of the spatial relationships between these marks and TUCRs
+utilizing publicly available U87 glioma cell CHIP- and ATAC-Seq datasets. Then, we compared
+the data to TUCR intervals that were randomly shuffled to create a negative control, other classes
+of non-coding RNAs, and TUCRs subset by genomic annotation (Supplementary Figure 2A). [56]
+We found that TUCRs displayed a significant enrichment for all transcriptional activity markers
+over expected and compared to control. Expected values are the chi-squared test’s predicted
+number of overlaps. The above data show that TUCRs are distributed throughout the genome,
+resistant to variation, and actively transcribed in U87 GBM cells. [56]
 
 ##TUCRs are highly expressed in GBM and LGG tumors. 
-TUCR expression has not been characterized in GBM or LGG before.  We performed the first comprehensive analysis of TUCR expression in these cancers by comparing GBM (n = 166) and LGG (n = 505) tumor samples from the Cancer Genome Atlas (TCGA) [33] to their normal brain cortex counterparts in TCGA (n = 5) and the Genotype-Tissue Expression Database (GTEx, n = 255). [34] We first analyzed absolute TUCR expression, as measured by transcripts-per-kilobase million (TPM).  The absolute expression, in GBM, of all TUCRs was compared to the expression of lncRNAs, coding genes, antisense RNAs, and small noncoding RNAs (< 200 nt length), and the expression of TUCRs separated by genomic annotation into exonic, intronic, exonic/intronic, and intergenic. (Supplementary Figure 3A) All gene annotations were obtained using the CHESS gene catalog, which contains most Refseq and Ensembl genes, while also including a series of understudied novel genes.[35] Highly expressed genes are visualized via heatmap (>=10 tpm, red) along with moderately (>=1 tpm, white) and lowly expressed genes (<1 tpm, blue).  These analyses were repeated in LGG (Supplementary Figure 3B).  The data show that intragenic TUCRs are expressed at magnitudes that are like those of protein coding genes in both GBM and LGG, while intergenic TUCRs demonstrate expression levels that are closer to those of lncRNAs.
+TUCR expression has not been characterized in GBM or LGG before. We performed the first
+comprehensive analysis of TUCR expression in these cancers by comparing GBM (n = 166) and
+LGG (n = 504) tumor samples from the Cancer Genome Atlas (TCGA) [33] to their normal brain
+cortex counterparts in TCGA (n = 5) and the Genotype-Tissue Expression Database (GTEx, n =
+255). [34] We first analyzed absolute TUCR expression, as measured by transcripts-per-kilobase
  
-## TUCRs are deregulated in gliomas, and deregulation is associated with clinical outcomes. 
-We analyzed TCGA tumor data and GTEx normal brain cortex data and found that in addition to being highly expressed in gliomas, TUCRs are highly deregulated in GBM and LGG as compared to normal brain cortex.  Of the 481 annotated TUCRs, we identified 87 that were upregulated and 67 that were downregulated in GBM (Figure 1A). We also identified 59 TUCRs that were upregulated and 53 TUCRs that were downregulated in LGG. (Figure 1B). Of the 154 deregulated TUCRs in GBM, 86 were also deregulated in LGG, a 56% overlap (Figure 1C). Notably, there are multiple deregulated TUCRs across all annotation categories (Supplementary Figure 4A).
+million (TPM). The absolute expression, in GBM, of all TUCRs was compared to the expression
+of lncRNAs, coding genes, antisense RNAs, and small noncoding RNAs (< 200 nt length), and
+the expression of TUCRs separated by genomic annotation into exonic, intronic, exonic/intronic,
+and intergenic (Supplementary Figure 3A). All gene annotations were obtained using the CHESS
+gene catalog, which contains most Refseq and Ensembl genes, while also including a series of
+understudied novel genes.[35] Highly expressed genes are visualized via heatmap (>=10 TPM,
+red) along with moderately (>=1 TPM, white) and lowly expressed genes (<1 TPM, blue). These
+analyses were repeated in LGG (Supplementary Figure 3B). The data show that intragenic
+TUCRs are highly expressed to a similar or greater degree as those of protein coding genes, in
+both GBM and LGG. These TUCRs may be an integral part of their “host genes,” while intergenic
+TUCRs demonstrate expression levels that are closer to those of lncRNAs and may instead
+represent novel transcripts of their own.
 
-We then sought to determine whether deregulation of TUCR expression correlates with patient outcomes in LGG and GBM.  For each of the 481 TUCRs, we generated a Kaplan-Meier plot tracking differences in survival for high expressing (upper quartile) and low expressing (lower quartile) tumor groups.  Of the TUCRs that are expressed in GBM TCGA RNA-Seq data, only 4 were correlated with survival in a statistically significant manner in both of our workflows (p <= 0.05, Figure 1D, left panel). We considered that this low prevalence of survival associated TUCRs in GBM was due to the short overall survival of GBM patients (~15 months). We also studied survival differences in LGG patients, as they have a longer median survival (~84 months).  Of the TUCRs that are expressed in LGG TCGA RNA-Seq data, 93 were correlated with survival in both of our workflows (Figure 1D). We have highlighted two TUCRs that represent a statistically significant correlation with good (uc.338, Figure 2E) or poor (uc.75, Figure 2F) prognosis using both methods.  When separated by annotation category, intragenic TUCR deregulation has a greater association with patient outcomes than intergenic TUCR deregulation (Supplementary Figure 4B). Since IDH mutation status could potentially serve as a positive confounding variable, we separated our samples into IDH WT and MUT cohorts (Supplementary Figure 5A) and again considered TUCR expression (Supplementary Figure 5B) and survival (Supplementary Figure 5C).  Aggregating samples by IDH mutation status had a minimal effect on the number of deregulated TUCRs and was more likely to diminish the likelihood that a TUCR correlates with patient outcomes, rather than enhancing it. Expression, deregulation, and survival analyses were performed on all 481 TUCRs. Detailed results for individual TUCRs can be found as supplementary materials (Supplementary Figures 6).
+## TUCRs are deregulated in gliomas, and deregulation is associated with clinical outcomes. 
+We analyzed TCGA tumor data and GTEx normal brain cortex data and found that in addition to
+being highly expressed in gliomas, TUCRs are highly deregulated in GBM and LGG as compared
+to normal brain cortex. As IDH-mutation status can be a confounding variable, we separated TCGA LGG samples into IDH wild-type (n = 382) and IDH1-mutant (n = 122) cohorts while removing all IDH1-mutant samples from the GBM (n = 8) cohort (Supplementary Figure 4). Of the 481 annotated TUCRs, we identified 95 that were upregulated and 69 that were downregulated in GBM (Figure 1A). We also identified 83 TUCRs that were upregulated and 50 TUCRs that were downregulated in IDH1-WT LGG (Figure 1B) and 53 upregulated and 70 downregulated in IDH1-mutant LGG (Figure 1C). The fact that there were many TUCRs that were differentially expressed in both IDH1-wildtype and -mutant LGG samples indicates that TUCRs are expressed and deregulated in an IDH1-independent manner. Of the 164 deregulated TUCRs in GBM, 59 were also deregulated in LGG, a 36% overlap (Figure 1D). Notably, there are multiple deregulated TUCRs across all TUCR annotation categories (Supplementary Figure 5A).
+
+We then sought to determine whether deregulation of TUCR expression correlates with patient
+outcomes in LGG-IDH-WT, LGG-IDH-MUT, and GBM (IDH-WT). For each of the 481 TUCRs, we generated a Kaplan-Meier (KM) plot tracking differences in survival for high expressing (upper quartile) and low expressing (lower quartile) tumor groups. We have highlighted two TUCRs that represent a statistically significant correlation with good (uc.75, Figure 1E) or poor (uc.132, Figure 1F) prognosis using both methods. The Bonferroni hypothesis adjusted p-value of the difference between groups was used for the determination of statistical significance. To further assess TUCR survival, we performed a separate workflow calculating the cox coefficient of the proportional hazard (CPH) of each TUCR, again assessing for statistical significance. Of the TUCRs that are expressed in GBM TCGA RNA-Seq data, relatively few were correlated with survival in a hypothesis adjusted, statistically significant, manner in our CPH workflow (FDR <= 0.05, Figure 1G). We considered that this low prevalence of survival associated TUCRs in GBM was due to the poor overall survival of GBM patients (~15 months). We also studied survival differences in LGG patients, separated in IDH1-WT and IDH-MUT cohorts, as LGGs collectively have a longer median survival (~84 months). Numerous TUCRs associated with survival both negatively and positively in LGG-WT and LGG-MUT (Figure 1H,I).  While IDH1 mutation status can have an effect on patient prognosis, with IDH1-mutant patients generally having better overall survival, numerous TUCRs associate with survival both negatively and positively in both LGG-WT and LGG-MUT patient samples, indicating that the association of TUCRs with survival is not dependent on the IDH mutational status of the tumor. 
+
+When separated by annotation category, intragenic TUCR deregulation has a greater association with patient outcomes than intergenic TUCR deregulation (Supplementary Figure 5B).  Detailed results for individual TUCRs can be found as supplementary materials (Supplementary Figures 6 and 7, TUCR Database).
 
 ## TUCRs are coregulated with genes that have known functions. 
-We predicted TUCR function by identifying coregulated genes with known functions via weighted gene co-expression network analysis (WGCNA).[36] We aggregated the 42,644 genes in our dataset into 60 colored modules based on clustered gene ontology (GO) terms.  Each of these modules contains genes with known functions, such as RNA binding, cell signaling, immune response, metabolic response, etc.  These modules can also be used to identify genes that associate with clinical traits, such as the tumor tissue-type (Figure 1G).   The data can also be used to predict gene function for novel genes.  To do this, we aggregated all 481 TUCRs into our modules.  We identified TUCRs that correlate with each of the 60 modules, with some having positive correlations and others negative.  For example, TUCRs that exhibit a positive correlation with the #004C54 “midnight green” module (Supplementary Figure 7) could have a promoting effect on nucleic acid binding and regulation, while those that are negatively correlated with the #F4a460 module (Supplementary Figure 8) may have a negative effect on G-protein coupled receptor and metabolic functions.  Since many different TUCRs show associations with different modules, and every module has at least one TUCR that is associated with it, these results suggest that TUCRs may have a broad range of potential functions in GBM and LGG (Figure 1H).  WGCNA analyses were performed on all 481 TUCRs. Detailed results for individual TUCRs can be found as supplementary materials (Supplementary Figures 6).
- 
+We predicted TUCR functions by identifying coregulated genes with known functions via weighted
+gene co-expression network analysis (WGCNA).[36] We aggregated the 42,644 genes (Figure
+1J) in our dataset into 46 colored modules based on clustered gene ontology (GO) terms. Each
+of these modules contains genes with known functions, such as RNA binding, cell signaling,
+immune response, metabolic response, etc. The data can also be used to predict gene function
+for novel genes, such as the TUCRs, by associating them with these genes that have known
+functions, as these associated genes are likely to share a function with the TUCR that they are
+associated with.  To do this, we aggregated all 481 TUCRs into our modules.  We identified
+TUCRs that correlate with each of the 46 modules, with some having positive correlations and
+others negative. (Supplementary Table 4) For example, TUCRs that exhibit a positive correlation with the #004C54 “midnight green” module (Supplementary Figure 8) could have a promoting effect on nucleic acid binding and regulation, while those that are negatively correlated with the #0000FF module (Supplementary Figure 9) may have a negative effect on ion channel signaling.  Since many different TUCRs show associations with different modules, and every module has at least one
+TUCR that is associated with it, these results suggest that TUCRs have a broad range of potential
+functions in GBM and LGG (Figure 1K). WGCNA analyses were performed on all 481 TUCRs.
+Detailed results for individual TUCRs can be found as supplementary materials (Supplementary
+Figures 6 and 7, TUCR Database).
+
 ## Figure 1.
 
 ```{r figure1_dircreate}
@@ -838,7 +900,7 @@ ggsave(file=paste(outputdir,"/Figure1/figure1c_old.png",sep=""),
 
 ```
 
-### Methodology: Survival Analysis, Figures 1E, 1F, and 1G
+### Methodology: Survival Analysis, Figures 1E and 1F
 
 Completing survival analysis for TUCRs
 
@@ -1018,7 +1080,7 @@ km_TUCRs <- cbind(posdata,km_countdata)
 
 km_TUCRs <- km_TUCRs %>%
   gather(key = "id", value = "count",-TUCR,-median,-n75,-n25) %>%
-  mutate(group = ifelse(count>=n75,"high",ifelse(count<=n25,"low",NA))) %>%
+  mutate(group = ifelse(count>=n75,"low",ifelse(count<=n25,"high",NA))) %>%
   distinct %>%
   dplyr::select(TUCR,median,id,group) %>%
   left_join(clinical2,by="id") %>%
@@ -1153,6 +1215,7 @@ if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep="")))
 
 if(!is.na(filterannot)){
   survcounts <- mergedcounts %>%
+    #filter(tag.x == filterannot & annot.x != "random" | id == "CASZ1___chr1:10636602-10796676:-")
     filter(tag.x == filterannot & annot.x != "random")
   
 }else{
@@ -1235,6 +1298,7 @@ for(x in 1:nrow(count_vm)){
   out.tab <- rbind(out.tab,cx)
 }
 
+out.tab$estimate <- -out.tab$estimate
 surv_TUCR <- cbind(posdata,out.tab)
 surv_TUCR <- surv_TUCR %>% dplyr::select(-term)
 
@@ -1261,7 +1325,7 @@ km_TUCRs <- cbind(posdata1,km_countdata)
 
 km_TUCRs <- km_TUCRs %>%
   gather(key = "id", value = "count",-TUCR,-median,-n75,-n25) %>%
-  mutate(group = ifelse(count>=n75,"high",ifelse(count<=n25,"low",NA))) %>%
+  mutate(group = ifelse(count>=n75,"low",ifelse(count<=n25,"high",NA))) %>%
   distinct %>%
   dplyr::select(TUCR,median,id,group) %>%
   left_join(clinical2,by="id") %>%
@@ -1332,6 +1396,7 @@ for(x in 1:nrow(count_vm)){
   cx <- tidy(cx)
   out.tab <- rbind(out.tab,cx)
 }
+out.tab$estimate <- -out.tab$estimate
 
 surv_TUCR <- cbind(posdata,out.tab)
 surv_TUCR <- surv_TUCR %>% dplyr::select(-term)
@@ -1359,7 +1424,7 @@ km_TUCRs <- cbind(posdata1,km_countdata)
 
 km_TUCRs <- km_TUCRs %>%
   gather(key = "id", value = "count",-TUCR,-median,-n75,-n25) %>%
-  mutate(group = ifelse(count>=n75,"high",ifelse(count<=n25,"low",NA))) %>%
+  mutate(group = ifelse(count>=n75,"low",ifelse(count<=n25,"high",NA))) %>%
   distinct %>%
   dplyr::select(TUCR,median,id,group) %>%
   left_join(clinical2_wt,by="id") %>%
@@ -1399,13 +1464,30 @@ for(i in 1:length(TUCRids)){
  p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
  ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
  
- if(TUCRsurv == "uc.132"){
+  if(TUCRsurv == "uc.75"){
     ggsave(file=paste(outputdir,"/Figure1/figure1e.png",sep = ""), device="png", plot=p)
  }
- if(TUCRsurv == "uc.75"){
+ 
+ if(TUCRsurv == "uc.132"){
     ggsave(file=paste(outputdir,"/Figure1/figure1f.png",sep = ""), device="png", plot=p)
  }
  
+ if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
+ }
+ 
+ if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure7_Supplementary/",sep=""))
+}
+ 
+ if(TUCRsurv == "uc.2"){
+    ggsave(file=paste(outputdir,"/Figure6_supplementary/supplementary_figure6g.png",sep = ""), device="png", plot=p)
+ }
+ 
+ if(TUCRsurv == "uc.15"){
+    ggsave(file=paste(outputdir,"/Figure7_supplementary/supplementary_figure7g.png",sep = ""), device="png", plot=p)
+ }
+
   p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
    ## we are selecting three columns here and adding uc.id in next step making four columns for each uc.id 
@@ -1435,6 +1517,7 @@ for(x in 1:nrow(count_vm)){
   cx <- tidy(cx)
   out.tab <- rbind(out.tab,cx)
 }
+out.tab$estimate <- -out.tab$estimate
 
 surv_TUCR <- cbind(posdata,out.tab)
 surv_TUCR <- surv_TUCR %>% dplyr::select(-term)
@@ -1457,7 +1540,7 @@ km_TUCRs <- cbind(posdata,km_countdata)
 
 km_TUCRs <- km_TUCRs %>%
   gather(key = "id", value = "count",-TUCR,-median,-n75,-n25) %>%
-  mutate(group = ifelse(count>=n75,"high",ifelse(count<=n25,"low",NA))) %>%
+  mutate(group = ifelse(count>=n75,"low",ifelse(count<=n25,"high",NA))) %>%
   distinct %>%
   dplyr::select(TUCR,median,id,group) %>%
   left_join(clinical2_mut,by="id") %>%
@@ -1497,6 +1580,23 @@ for(i in 1:length(TUCRids)){
 
  p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
  ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
+ 
+  if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
+ }
+ 
+ if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure7_Supplementary/",sep=""))
+}
+ 
+ if(TUCRsurv == "uc.2"){
+    ggsave(file=paste(outputdir,"/Figure6_supplementary/supplementary_figure6h.png",sep = ""), device="png", plot=p)
+ }
+ 
+ if(TUCRsurv == "uc.15"){
+    ggsave(file=paste(outputdir,"/Figure7_supplementary/supplementary_figure7h.png",sep = ""), device="png", plot=p)
+ }
+ 
   p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
    ## we are selecting three columns here and adding uc.id in next step making four columns for each uc.id 
@@ -2942,19 +3042,79 @@ volcanoplot_expression(res_TUCR,
 
 
 ## TUCR, uc.110, is highly upregulated in gliomas and is predicted to bind nucleic acids. 
-The expression and deregulation of intergenic TUCRs is of particular interest as they may represent novel lncRNAs due to their similar expression levels, genomic location, and lack of coding potential.[2] These TUCRs are also easier to study experimentally; they are often thousands of kilobases (kb) from the nearest protein-coding gene and likely function in a manner that is independent of a “host gene”.  Because of this, we focused on intergenic TUCRs for our experimental studies.  Of the deregulated intergenic TUCRs in GBM and in LGG (Figure 1i), we found that uc.110 is the most upregulated as compared to normal brain; 30-fold in GBM and 61.4-fold in LGG (Figure 2A).  It has near binary expression; it is rarely expressed at all in normal brain but is very highly expressed in GBM and LGG (Figure 2B).  Due to its high expression, we hypothesized that this TUCR is functioning as a tumor enhancer.  
+We utilized the expression and survival analyses to identify potentially important TUCRs in the
+context of gliomas. Of note, deregulated intergenic TUCRs may represent novel lncRNAs due to
+their similar expression levels, genomic location, and lack of coding potential.[2] These TUCRs
+are also easier to study experimentally; they are often thousands of kilobases (kb) from the
+nearest protein-coding gene and likely function in a manner that is independent of a “host gene”.
+Because of this, we focused on intergenic TUCRs for our experimental studies. Of the deregulated intergenic TUCRs in GBM and in LGG (Figure 1L). We found that uc.110 is the most
+upregulated as compared to normal brain; 21-fold in GBM and 53-fold in LGG (Figure 2A-2B).
+It has near binary expression; it is rarely expressed at all in normal brain but is very highly
+expressed in GBM and LGG (Figure 2C-2D). It does not appear to have a correlation with patient outcomes. (TUCR Database, uc.110).  Despite this, due to its high deregulation, we hypothesized that
+this TUCR is functioning as a tumor promoter, as many known GBM driver genes also have weak or insignificant correlations with patient outcomes (Supplementary Table 5).
 
-Since many TUCRs exist as a part of a larger transcript [2], we first determined the sequence of the uc.110 full transcript.  We utilized machine learning and de novo transcript reassembly using TCGA and GTEx RNA-seq data to reconstruct RNA-Seq transcripts in the absence of a reference genome (Supplementary Figure 9A). [35] We identified a 2,158 nucleotide (nt) long RNA molecule that contains the 243 nucleotide (nt) uc.110 ultraconserved sequence (Figure 2C) as a novel transcript.  We confirmed the existence of this transcript experimentally using PCR amplifications and sequencing (Supplementary Figure 9B).   
+Since many TUCRs exist as a part of a larger transcript [2], we first determined the sequence of
+the uc.110 full transcript. We utilized machine learning and de novo transcript reassembly using
+TCGA and GTEx RNA-seq data to reconstruct RNA-Seq transcripts in the absence of a reference
+genome (Supplementary Figure 10A). [35] We identified a 2,158 nucleotide (nt) long RNA
+molecule that contains the 243 nucleotide (nt) uc.110 ultraconserved sequence (Figure 2E) as a
+novel transcript. We confirmed the existence of this transcript experimentally using PCR
+amplifications and sequencing (Supplementary Figure 10B).
 
-After identifying the sequence for the full uc.110 transcript (Supplementary Figure 9C) and using qPCR to confirm its independence from its “host” gene, GBX2 (Supplementary Figure 9D-9E), as previously published by Mestdagh et al, we utilized our WGCNA workflow to identify genes and modules (Figure 2D) that are significant to this transcript.  Of note, one of the top modules for uc.110 by module association is the #004C54 module, which represents genes that are involved in nucleic acid and protein binding (Supplementary Figure 7). This is a published function for some TUCRs. [2] Genes that are members of these modules are positively coregulated with uc.110 (Figure 2E).  Based on these findings, we hypothesized that uc.110 may be operating as a tumor enhancing RNA-binding molecule.  We also performed similar analyses for all 481 TUCRs to identify potential functional roles for each TUCR in gliomas. Examples of an tumor enhancing TUCR (uc.2, Supplementary Figures 6-2) and a tumor suppressor TUCR (uc.15, Supplementary Figure 6-15) are depicted in this manuscript, while the rest of the 481 TUCRs are provided as supplementary materials (Supplementary Figures 6)
-
-#uc.110 has tumor enhancing effects in GBM. 
-To determine the function of uc.110 in GBM, we first used qPCR to investigate the expression of uc.110 using RNA in our banked tumor samples compared to normal brain cortex and cell lines compared to normal human astrocytes.  We independently confirmed the results from our TCGA analysis showing uc.110 is highly upregulated in GBM tumors (Figure 3A, 3B).  We then designed two siRNAs that target separate regions on the uc.110 RNA, one that begins at nucleotide 96/243 (si-uc.110-1) and one that begins at nucleotide 195/243 (si-uc.110-2), as well as a scrambled control (si-SCR) (Supplementary Figure 10A).  We generated stable A172 and U251 GBM cell lines that express uc.110 (LV-uc.110) or the empty expression vector (LV-pCDH).  We subjected these cell lines to siRNA transfection and assessed the effects on cell counting, survival and invasion assays (Supplementary Figure 10B). We used qPCR to show that uc.110 is generally, though not uniformly, upregulated in GBM cells (Supplementary Figure 10C,10D,10E).  Based on these data, we prioritized the use of cell lines that overexpress uc.110 (A172, U251) for knockdown experiments, and cells that express low levels of uc.110 (U87, GSC-28) for overexpression experiments. We confirmed that siRNA targeting of uc.110 lead to knockdown of uc.110 expression in A172 and U251 cells. (Figure 3C) We also confirmed that LV-uc.110 overexpresses uc.110, and that this overexpression rescues uc.110 bioavailability in A172 and U251 cells (Figure 3C).  
+After identifying the sequence for the full uc.110 transcript (Supplementary Figure 10C), we used
+qPCR to confirm its independence from its closest protein coding gene, GBX2. We found that
+knock-down of uc.110 with two different siRNAs did not alter the expression of GBX2 in GBM cell
+lines, thus demonstrating that uc.110 and GBX2 are two separate transcripts (Supplementary
+Figure 10D-10E). Based on the work by Mestdagh et al [56], we utilized our WGCNA workflow to
+identify genes and modules (Figure 2F) that are significant to this transcript. Of note, one of the
+top modules for uc.110 by module association is the #004C54 module, which represents genes
+that are involved in nucleic acid and protein binding (Supplementary Figure 8). Genes that are
+members of these modules are positively coregulated with uc.110 (Figure 2G). Based on these
+findings, we hypothesized that uc.110 may be operating as a tumor promoting RNA-binding
+molecule. We also performed similar analyses for all 481 TUCRs to identify potential functional
  
-Next, we performed cell counting assays [20, 37-39] to determine the effects of uc.110 knockdown and rescue on cell accumulation.  When we reduced uc.110 expression, we reduced cell accumulation in A172 and U251 cells (Figure 3D).  When we rescue uc.110 bioavailability, the cell accumulation phenotype is restored in A172 and U251 cells (Figure 3E).  We then used AlamarBlue [40, 41] to measure cell viability. When we reduce uc.110 expression, A172 and U251 cell viability is reduced.  We were able to rescue this phenotype by increasing uc.110 bioavailability (Figure 3F). We observed a similar phenotype in a glioma stem cell line that overexpresses uc.110 (GSC-34, Figure 3G).  
- 
-We then investigated the invasive potential of uc.110 using a transwell invasion assay. [42-44] Knockdown of uc.110 reduced A172 and U251 cell invasion through a collagen IV matrix (Figure 3H).  When uc.110 bioavailability was increased, a partial recovery of the phenotype is observed (Supplementary Figure 10F). Lastly, we overexpressed uc.110 in U87 and GSC-28 cells (Figure 
-3i) and determined that this leads to increased cell accumulation compared to the empty vector after 7 days (Figure 3J) in U87 and GSC-28 cells. These data show that uc.110 has tumor enhancing effects in GBM cells and stem cells. 
+roles for each TUCR in gliomas. Examples of a tumor promoting TUCR (uc.2, Supplementary
+Figure 6, TUCR Database) and a tumor suppressive TUCR (uc.15, Supplementary Figure 7,
+TUCR Database) are depicted in this manuscript, while the rest of the 481 TUCRs are shown in
+the supplementary materials (TUCR Database).
+
+
+#uc.110 has tumor promoting effects in GBM.
+To determine the function of uc.110 in GBM, we first used qPCR to investigate the expression of
+uc.110 using RNA in our banked tumor samples compared to normal brain cortex and cell lines
+compared to normal human astrocytes. We independently confirmed the results from our TCGA
+analysis showing uc.110 is highly upregulated in GBM tumors (Figure 3A, 3B). We then designed
+two siRNAs that target separate regions on the uc.110 RNA, one that begins at nucleotide 96/243
+(si-uc.110-1) and one that begins at nucleotide 195/243 (si-uc.110-2), as well as a scrambled
+control (si-SCR) (Supplementary Figure 11A). We generated stable A172 and U251 GBM cell
+lines that express uc.110 (LV-uc.110) or the empty expression vector (LV-pCDH). We subjected
+these cell lines to siRNA transfection and assessed the effects on cell counting, survival and
+invasion assays (Supplementary Figure 11B). We used qPCR to show that uc.110 is generally,
+though not uniformly, upregulated in GBM cells (Supplementary Figure 11C,10D,10E). Based on
+these data, we prioritized the use of cell lines that overexpress uc.110 (A172, U251) for
+knockdown experiments, and cells that express lower levels of uc.110 (U87, GSC-28) for
+overexpression experiments. We confirmed that siRNA targeting of uc.110 lead to knockdown of
+uc.110 expression in A172 and U251 cells (Figure 3C). We also confirmed that LV-uc.110
+overexpresses uc.110, and that this overexpression rescues uc.110 bioavailability in A172 and
+U251 cells (Figure 3C).
+
+Next, we performed cell counting assays [20, 37-39] to determine the effects of uc.110 knockdown
+and rescue on cell accumulation. When we reduced uc.110 expression, we reduced 
+cell accumulation in A172 and U251 cells (Figure 3D). When we rescue uc.110 bioavailability, 
+the cell accumulation phenotype is restored in A172 and U251 cells (Figure 3E).  We then used
+Alamar Blue [40, 41] to measure cell viability. When we reduce uc.110 expression, A172 and
+U251 cell viability is reduced.  We were able to rescue this phenotype by increasing uc.110
+bioavailability (Figure 3F). We observed a similar phenotype in a glioma stem cell line that
+overexpresses uc.110 (GSC-34, Figure 3G).
+
+We then investigated the invasive potential of uc.110 using a transwell invasion assay. [42-44]
+Knockdown of uc.110 reduced A172 and U251 cell invasion through a collagen IV matrix (Figure
+3H). When uc.110 bioavailability was increased, a partial recovery of the phenotype is observed
+(Supplementary Figure 11F). Lastly, we overexpressed uc.110 in U87 and GSC-28 cells (Figure 3i) 
+and determined that this leads to increased cell accumulation compared to the empty vector
+after 7 days (Figure 3J) in U87 and GSC-28 cells. These data show that uc.110 has tumor
+enhancing effects in GBM cells and stem cells.
+
 
 ## Figure 2. 
 
@@ -2964,7 +3124,15 @@ dir.create(paste(outputdir,"/Figure2/",sep=""))
 
 ```
   
-After determining that uc.110 displays a tumor enhancer phenotype in vitro, we sought to determine whether this effect is recapitulated in vivo.  U251 GBM cells were transfected with si-uc.110-1 or si-uc.110-2.  After 2 days, these cells were implanted into immunodeficient mice using intracranial injection (Supplementary Figure 11A). [37, 38, 45, 46] Tumor growth was monitored by MRI and mouse survival was observed over a period of 70 days.  Mice that were xenografted with U251 cells that were transfected with si-uc.110-1 and si-uc.110-2 expression developed smaller tumors, as depicted, and quantified by MRI (Figure 4A, 4B). The mice that received si-uc.110 also displayed better overall survival than mice that received scrambled control siRNA cells (Figure 4C). a 
+After determining that uc.110 displays a tumor promoting phenotype in vitro, we sought to
+determine whether this effect is recapitulated in vivo. U251 GBM cells were transfected with si-
+uc.110-1 or si-uc.110-2. After 2 days, these cells were implanted into immunodeficient mice using
+intracranial injection (Supplementary Figure 12A). [37, 38, 45, 46] Tumor growth was monitored
+by MRI and mouse survival was observed over a period of 70 days. Mice that were xenografted
+with U251 cells that were transfected with si-uc.110-1 and si-uc.110-2 expression developed
+smaller tumors, as depicted, and quantified by MRI (Figure 4A, 4B). The mice that received si-
+uc.110 also displayed better overall survival than mice that received scrambled control siRNA
+cells (Figure 4C).
 
 ### Figure 2A
 
@@ -3148,7 +3316,7 @@ fc.dotplot <- fc.dotplot %>%
 fc.dotplot2 <- fc.dotplot %>%
   filter(str_detect(id.x,"uc.110"))
 
-i <- 1
+i <- 177
 
 for(i in 1:length(unique(fc.dotplot$id.x))){
   
@@ -3207,7 +3375,7 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
   labs(y="Z-Score", x = "Tissue Type") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=6, color=paper_blue, fill=paper_blue)
 
-#ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)}
+ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)
 
 if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
  dir.create(paste(outputdir,"/Figure2/",sep=""))
@@ -3219,14 +3387,14 @@ if(!dir.exists(paste(outputdir,"/Figure6_supplementary/",sep=""))){
  dir.create(paste(outputdir,"/Figure6_supplementary/",sep=""))
 }
 
-if(TUCRname == "uc.2"){ggsave(p2,file=paste(outputdir,"/Figure6_supplementary/supplementary_figure6b.png",sep = ""),height=7,width=5)}
+if(TUCRname == "uc.2"){ggsave(p2,file=paste(outputdir,"/Figure6_supplementary/supplementary_figure6a.png",sep = ""),height=7,width=5)}
 
 
 if(!dir.exists(paste(outputdir,"/Figure7_supplementary/",sep=""))){
  dir.create(paste(outputdir,"/Figure7_supplementary/",sep=""))
 }
 
-if(TUCRname == "uc.15"){ggsave(p2,file=paste(outputdir,"/Figure7_supplementary/supplementary_figure7b.png",sep = ""),height=7,width=5)}}#}
+if(TUCRname == "uc.15"){ggsave(p2,file=paste(outputdir,"/Figure7_supplementary/supplementary_figure7a.png",sep = ""),height=7,width=5)}}#}
 
 ```
 
@@ -4545,7 +4713,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_6_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_6_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_6.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -4599,7 +4767,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_5_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_5_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_5.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -4653,7 +4821,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_4_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_4_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_4.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -4707,7 +4875,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_1_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_1_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_1.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -4761,7 +4929,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_2_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_2_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_2.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -4815,7 +4983,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_3_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_3_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_3.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -5161,9 +5329,9 @@ ggsave(file=paste(outputdir,"/Figure3/Figure3h.png",sep=""),
 
 ```
 
-### Figure 3i
+### Figure 3I
 
-```{r 3i}
+```{r figure_3i}
 
 data <- read_csv("Inputs/Figure3/Figure3i_input.csv")
 
@@ -5198,9 +5366,9 @@ ggsave(file=paste("Outputs/Figure3/Figure3i.png",sep=""),
 
 ```
 
-### Figure 3j
+### Figure 3J
 
-```{r 3j}
+```{r figure_3j}
 
 data <- read_csv("./Inputs/Figure3/Figure3j_input.csv")
 
@@ -5257,11 +5425,42 @@ if(!file.exists(paste(outputdir,"/Figure4/","Figure4abc.png",sep=""))){
 ```
 
 ## uc.110 regulates the expression of the Wnt pathway member, Membrane Frizzled Related Protein (MFRP). 
-LncRNAs can have various functions that depend on their subcellular localization.  Nuclear lncRNAs are usually involved in transcriptional regulation, while cytosolic lncRNAs are usually involved in translational and spatial regulation. [2] We fractioned four GBM cell lines (A172, U251, U87, U1242) into nuclear and cytosolic fractions.  When compared to nuclear (U44, U48) and cytosolic (GADPH, PPIA) controls, uc.110 appears to be localized to both the nucleus (mainly in U87, U251, and U1242 cells), and the cytoplasm (mainly in A172 cells) (Supplementary Figure 
-10G). We then performed RNA-Seq on A172 cells that had been transfected with si-SCR, si-uc.110-1, or si-uc.110-2 for 48 hrs. and found several genes that are deregulated when uc.110 expression is downregulated (Figure 5A). To identify genes that are particularly related to uc.110 function, we focused on genes that demonstrated coregulation with uc.110 in our WGCNA analysis (Figure 2E). Of particular interest was the membrane frizzled related protein, also known as MFRP. [47, 48] MFRP serves as a shuttle for the Wnt-ligand, and functions as an activator of the Wnt-signaling pathway.  This gene was the only gene in our analysis that correlated with uc.110 expression, was upregulated in GBM tumors, and downregulated when uc.110 is knocked down in A172 cells, suggesting MFRP coregulation with uc.110. (Figure 5B). 
+LncRNAs can have various functions that depend on their subcellular localization. Nuclear
+lncRNAs are usually involved in transcriptional regulation, while cytosolic lncRNAs are usually
+involved in translational and spatial regulation. [2] We fractioned four GBM cell lines (A172, U251,
+U87, U1242) into nuclear and cytosolic fractions. When compared to nuclear (U44, U48) and
+cytosolic (GADPH, PPIA) controls, uc.110 appears to be localized to both the nucleus (mainly in
+U87, U251, and U1242 cells), and the cytoplasm (mainly in A172 cells) (Supplementary Figure
+11G). We then performed RNA-Seq on A172 cells that had been transfected with si-SCR, si-
+uc.110-1, or si-uc.110-2 for 48 hrs. and found several genes that are deregulated when uc.110
+expression is downregulated (Figure 5A). To identify genes that are particularly related to uc.110
+function, we focused on genes that demonstrated coregulation with uc.110 in our WGCNA
+analysis (Figure 2F). Of particular interest was the membrane frizzled related protein, also known
+as MFRP. [47, 48] MFRP serves as a shuttle for the Wnt-ligand, and functions as an activator of
+the Wnt-signaling pathway. This gene was the only gene in our analysis that correlated with
+uc.110 expression, was upregulated in GBM tumors, and downregulated when uc.110 is knocked
+down in A172 cells, suggesting MFRP coregulation with uc.110. (Figure 5B). Notably, there is
+currently no literature on uc.110 in gliomas, no published literature on its relationship with MFRP,
+and no published literature on TUCR associations with MFRP.
 
 ## uc.110 sponges the tumor suppressor microRNA miR-544 to increase the bioavailability of MFRP and WNT activity in GBM. 
-One common lncRNA mechanism of action is as a miRNA sponge, acting as a binding competitor for various miRNAs and therefore increasing the bioavailability of those miRNAs’ targets. [2, 49, 52-53] Based on the WGCNA data that we generated above, we hypothesized that uc.110 may function by sponging miRNAs away from MFRP transcripts, as their expression relationship is consistent with such an interaction. We hypothesized that a tumor suppressor miRNA can successfully target and suppress MFRP in the normal brain (Supplementary Figure 13A).  This leads to downstream activation of Wnt target genes involved in biological processes such as cell accumulation, invasion, and stem cell differentiation (Supplementary Figure 13B).  We further hypothesized that in glioma tumors, uc.110 is activated and acts as a binding competitor for this miRNA (Supplementary Figure 13C), increasing the bioavailability of MFRP and increasing Wnt pathway signaling (Supplementary Figure 13D). To identify candidate miRNAs that are consistent with the afore mentioned hypothesis, we screened public databases and published literature for GBM tumor suppressor miRNAs that are predicted to bind to both uc.110 and MFRP. The only miRNA that fulfilled these criteria was miR-544.  We first investigated the functional effects of miR-544 in GBM cells. Transfection of miR-544 into U251, A172, and T98G GBM cell lines reduced cell accumulation after 5 days (Figure 5C).  Expression of both uc.110 and MFRP was statistically significantly reduced when A172 cells transfected with miR-544 or si-uc.110 (Figure 5D). U251 cells demonstrated a similar reduction in expression for both genes, but to a statistically insignificant degree. To further test the hypotheses, we asked if miR-544 targets both uc.110 and MFRP, and if this binding affects Wnt signaling. To determine whether MFRP and uc.110 are direct targets of miR-544, we constructed luciferase reporter vectors by inserting the uc.110 ultraconserved region and MFRP 3’UTR downstream of hRluc followed by Synthetic Poly(A) using psiCHECK-2 backbone vector (Promega) (Figure 6A,6B). We first measured target binding by transfecting the reporter constructs followed by transfection with miR-544 or miR-SCR (control) in GBM cells. Ectopic expression of miR-544 significantly decreased luciferase activity compared to miR-SCR (Figure 6D, left panel and figure 6E, left panel).   These binding sites for miR-544 were predicted via computational algorithms and validated via sequencing. We then mutated the binding sites for MFRP and uc.110 (Supplementary Figure 12, Figure 6C) and assessed signal strength again.  The data showed that luciferase activity was not significantly altered in mutant-reporter-vectors transfected cells (Figure 6D, right panel and Figure 6E, right panel), indicating that miR-544 binds to both uc.110 and MFRP in GBM cells, and that this binding is lost when the miRNA binding sites are mutated.
+One common lncRNA mechanism of action is as a miRNA sponge, acting as a binding competitor
+for various miRNAs and therefore increasing the bioavailability of those miRNAs’ targets. [2, 49,
+52-53] Based on the WGCNA data that we generated above, we hypothesized that uc.110 may
+function by sponging miRNAs away from MFRP transcripts, as their expression relationship is
+consistent with such an interaction. We hypothesized that a tumor suppressor miRNA can
+successfully target and suppress MFRP in the normal brain (Supplementary Figure 14A). This
+leads to downstream activation of Wnt target genes involved in biological processes such as cell
+accumulation, invasion, and stem cell differentiation (Supplementary Figure 14B). 
+
+We further hypothesized that in glioma tumors, uc.110 is activated and acts as a binding competitor for this miRNA (Supplementary Figure 14C), increasing the bioavailability of MFRP and increasing Wnt pathway signaling (Supplementary Figure 14D). To identify candidate miRNAs that are consistent with the afore mentioned hypothesis, we screened public databases and published literature for
+GBM tumor suppressor miRNAs that are predicted to bind to both uc.110 and MFRP. The only
+miRNA that fulfilled these criteria was miR-544. We first investigated the functional effects of miR-
+544 in GBM cells. Transfection of miR-544 into U251, A172, and T98G GBM cell lines reduced
+cell accumulation after 5 days (Figure 5C). The use of an additional GBM cell line, T98G, for these experiments was to further validate its previously published role as a tumor suppressing miRNA. Expression of both uc.110 and MFRP was statistically significantly reduced when A172 cells transfected with miR-544 or si-uc.110 (Figure 5D). U251 cells demonstrated a similar reduction in expression for both genes, but the reduction was not statistically significant. 
+
+To further test the hypotheses, we asked if miR-544 targets both uc.110 and MFRP, and if this binding affects Wnt signaling. To determine whether MFRP and uc.110 are direct targets of miR-544, we constructed luciferase reporter vectors by inserting the uc.110 ultraconserved region and MFRP 3’UTR downstream of hRluc followed by Synthetic Poly(A) using psiCHECK-2 backbone vector (Promega) (Figure 6A,6B). We first measured target binding by transfecting the reporter constructs followed by transfection with miR-544 or miR-SCR (control) in GBM cells. Ectopic expression of miR-544 significantly decreased luciferase activity compared to miR-SCR (Figure 6D, left panel and figure 6E, left panel). These binding sites for miR-544 were predicted via computational algorithms and validated via sequencing. We then mutated the binding sites for MFRP and uc.110 (Supplementary Figure 13, Figure 6C) and assessed signal strength again. The data showed that luciferase activity was not significantly altered in mutant-reporter-vectors transfected cells (Figure 6D, right panel and Figure 6E, right panel), indicating that miR-544 binds to both uc.110 and MFRP in GBM cells, and that this binding is lost when the miRNA binding sites are mutated.
+
 
   
 ## Figure 5
@@ -5595,7 +5794,23 @@ ggsave(file=paste(outputdir,"/Figure5/Figure5d.png",sep=""),
 
 ```
 
-Lastly, we asked if uc.110 expression alters Wnt pathway activity. To answer this question, we studied one of the most established downstream targets of Wnt-signaling, the T cell factor/lymphoid enhancer factor family (TCF/LEF).  When Wnt-signaling is activated, TCF/LEF is produced downstream and activates Wnt-signaling target genes.  Therefore, TCF/LEF activity can be used as a proxy for pathway activity and can be measured with a TCF/LEF luciferase reporter assay. (Figure 6F).  The activity of this reporter can be regulated by either directly reducing Wnt bioavailability with miR-544 or indirectly by targeting uc.110 with siRNA.  If upstream Wnt signaling is reduced, the luciferase construct will bind fewer activators and exhibit decreased signal.  Likewise, we would expect that overexpression of uc.110 would rescue the bioavailability of MFRP and consequently also downstream activation of the TCF/LEF construct.  We found that transfection of A172 and U251 cells with si-uc.110 and miR-544 reduced reporter activity in A172 (Figure 6G) and U251 (Figure 6H) cells, and that this effect can be rescued via uc.110 overexpression. These data taken in conjunction provide strong support for a miRNA sponge model for the uc.110 tumor enhancer. Altogether, the above data demonstrate an important role for uc.110 in regulating the Wnt pathway in GBM by sponging the Wnt inhibitory miRNA miR-544 (model shown in Supplementary Figure 13).   
+Lastly, we asked if uc.110 expression alters Wnt pathway activity. To answer this question, we
+studied one of the most established downstream targets of Wnt-signaling, the T cell
+factor/lymphoid enhancer factor family (TCF/LEF). When Wnt-signaling is activated, TCF/LEF is
+produced downstream and activates Wnt-signaling target genes. Therefore, TCF/LEF activity can
+be used as a proxy for pathway activity and can be measured with a TCF/LEF luciferase reporter
+assay. [57-58] (Figure 6F) The activity of this reporter can be regulated by either directly reducing
+Wnt bioavailability with miR-544 or indirectly by targeting uc.110 with siRNA. If upstream Wnt
+signaling is reduced, the luciferase construct will bind fewer activators and exhibit decreased
+signal. Likewise, we would expect that overexpression of uc.110 would rescue the bioavailability
+of MFRP and consequently also downstream activation of the TCF/LEF construct. We found that
+transfection of A172 and U251 cells with si-uc.110 and miR-544 reduced reporter activity in A172
+(Figure 6G) and U251 (Figure 6H) cells, and that this effect can be rescued via uc.110
+overexpression. These data taken in conjunction provide strong support for a miRNA sponge
+model for the uc.110 tumor enhancer. Altogether, the above data demonstrate an important role
+for uc.110 in regulating the Wnt pathway in GBM by sponging the Wnt inhibitory miRNA miR-544
+(model shown in Supplementary Figure 14).
+
 
 ## Figure 6
 
@@ -5696,14 +5911,56 @@ ggsave(file=paste(outputdir,"/Figure6/Figure6gh.png",sep=""),
 ```
 
 #DISCUSSION   
-This study investigated Transcribed Ultraconserved Regions (TUCRs), a set that might contain long noncoding RNA sequences that are fully conserved across human, mouse, and rat genomes. These TUCRs are distinct due to their exceptional conservation, which often signifies functional importance. Despite their potential significance, TUCRs have been minimally explored, especially in relation to cancer. For example, while a PubMed search of TUCR, UCR, or “ultraconserved”
-And Cancer reveals more than 69 publications.  Other classes of RNA, such as MicroRNAs (miRNAs) contain over 12,000 publications in cancer. Even single protein coding genes, such as TP53/p53, contain over 24,000 publications in cancer. [2] Of note, the findings of this study represent the first of their kind on TUCRs in gliomas. They contribute critical new insights into an uncharted area of glioma biology, while also providing a novel framework for studying TUCRs in other cancers and other diseases, where they are also understudied.   
- 
-We confirmed that TUCRs are located across the genome, resistant to variation, and actively transcribed. We manually annotated each as either exonic, intronic, exonic/intronic, or intergenic. We identified distinct signatures for intergenic and intragenic (exonic, intronic, exonic/intronic) RNAs.  Intragenic TUCRs are expressed at a level that is most like coding genes, while intergenic TUCRs more closely resemble lncRNAs. We then performed the first analysis of TUCR expression in gliomas and found that the majority of TUCRs are deregulated >= 2-fold in GBM and LGG, with a 56% overlap.  This shows that TUCRs are not only expressed, but also frequently dysregulated in gliomas compared to normal brain tissue.  This is critical, as their high degree of conservation and dysregulation suggests that they may serve critical biological functions. We then extended our analysis to TUCR correlation with patient survival. In GBM, the extremely short survival times (15 months) limit the detection of significant correlations. However, patients with LGG live substantially longer (84 months), and therefore more TUCRs are associated with patient outcomes in this disease, suggesting a potential impact on glioma patients' prognoses and indicating possible novel biomarkers. Another facet of our research involved predicting the functions and mechanisms of action of TUCRs in gliomas. We studied this for the first time in gliomas WGCNA workflows to cluster TUCRs and provide functional predictions based on shared functions between coregulated genes.  This approach identifies a wide range of potential functions for TUCRs, encompassing activities such as nucleic acid binding regulation, stem cell differentiation, organ development, immune response, and cell signaling. 
- 
-We found intergenic TUCRs to be of notable interest because they resemble lncRNAs but are much more highly conserved and experience less sequence variation. Notably, these TUCRs do not overlap with known genes, suggesting they might represent novel lncRNAs.  Of these TUCRs, uc.110 is the most upregulated in both GBM and LGG.  Knocking down uc.110 reduces cancer cell characteristics in vitro and in vivo and improves survival in mouse models. On the other hand, increasing uc.110 expression increases malignancy in cells that do not express it, further indicating its potential tumor enhancing role. We explored uc.110's function via WGCNA, revealing its membership in modules associated with tumor enhancing nucleic acid binding. We integrated these data with transcriptome deregulation data (RNA-Seq) post-uc.110 knockdown, revealing a close relationship between uc.110 and the oncogenic membrane frizzled-related protein (MFRP). This protein is involved in activating the Wnt-signaling pathway, impacting cell proliferation, invasion, migration, and stem cell differentiation. From these data we hypothesized that uc.110 might sponge tumor suppressor miRNAs from MFRP, enhancing Wnt signaling activation.  Accordingly, we demonstrated that one mechanism of action for the uc.110 tumor enhancer is as a miRNA sponge for miR-544, therefore increasing the bioavailability of MFRP.  This is a novel interaction between all three genes, as while the miRNA sponge model is well established for TUCRs, the published literature on the role of miR-544 and its effects on MFRP alone is non-existent, and likewise there is no published literature considering uc.110’s role in potentially mediating this interaction as a sponge. We also note that this is a likely cytosolic function for uc.110, as although miRNAs may target nuclear genes during cell division, the sponging model is generally considered to be a cytosolic function.  Per the same WGCNA analysis, it is entirely possible that uc.110 has a separate nuclear factor, perhaps in transcription factor binding (Figure 3, Supplementary Figure 7). This is a role that we anticipate exploring in future experiments.
- 
-In conclusion, our results suggest that TUCRs are an important class of regulatory RNAs.  They are more highly conserved than typical genes and more resistant to variation, which suggests biological importance.  They are perturbed in gliomas, and this perturbation is associated with clinical outcomes.  Our predicted functions reveal that TUCRs are widely involved in cancer-related biological processes.  Some TUCRs previously thought to be intergenic may represent previously undiscovered genes.  Our findings also identify and characterize uc.110 as a new tumor enhancer and likely oncogene in gliomas.  Each of the experiments performed in our study represents the first of its kind in gliomas.  We have developed, adapted, and presented novel methods for studying TUCRs that can be used in other cancers and other diseases, where TUCRs remain very understudied. These methods and the data derived from them represent a “TUCR database” that will serve the scientific community in future TUCR studies in gliomas and other diseases, where they remain unstudied or understudied.  	
+This study investigated Transcribed Ultraconserved Regions (TUCRs), a set of transcripts that
+might contain long noncoding RNA sequences that are fully conserved across human, mouse, and
+rat genomes. These TUCRs are distinct due to their exceptional conservation, which often signifies
+functional importance. Despite their potential significance, TUCRs have been minimally explored,
+especially in relation to cancer. In fact, a PubMed search of TUCR, UCR, or “ultraconserved” and
+Cancer reveals only ~ 70 publications in cancers but none in gliomas. Other classes of RNA, such
+as MicroRNAs (miRNAs) contain over 12,000 publications in cancer. Even single protein coding
+genes, such as TP53/p53, contain over 24,000 publications in cancer. [2] Of note, the findings of
+this study represent the first of their kind on TUCRs in gliomas. They contribute critical new insights
+into an uncharted area of glioma biology, while also providing a novel framework for studying
+TUCRs in other cancers and other diseases, where they are also understudied.
+
+We confirmed that TUCRs are located across the genome, and showed that they are resistant to
+variation, and actively transcribed in U87 GBM Cells. We manually annotated each as either exonic, intronic, exonic/intronic, or intergenic. We identified distinct signatures for intergenic and intragenic (exonic, intronic, exonic/intronic) RNAs. Intragenic TUCRs are expressed at a level that is most like coding genes, and may be coded as part of their host gene transcripts, as they are less likely
+to be host gene independent. [56] Intergenic TUCRs, on the other hand, more closely resemble
+lncRNAs in terms of expression and may represent novel transcripts of their own, as they exist
+outside of their nearest gene. 
+
+We then performed the first analysis of TUCR expression in gliomas and found that the majority of TUCRs are deregulated >= 2-fold in GBM and LGG, with a 36% overlap. This shows that TUCRs are not only expressed, but also frequently dysregulated in gliomas compared to normal brain tissue. This is critical, as their high degree of conservation and dysregulation suggests that they may serve critical biological functions. For example, TUCRs that are associated with the critical exon 2 of various Hox genes, such as uc.212 (HOXA2) and uc.151 (HOXC10) are highly upregulated in gliomas, but it is unclear whether these genes are independent of their host transcripts. We then extended our analysis to TUCR correlation with patient survival. In GBM, the extremely short survival times (15 months) limit the detection of significant correlations. However, patients with LGG live substantially longer (84 months), and therefore more TUCRs are associated with patient outcomes in this disease, suggesting a potential impact on glioma patients' prognoses and indicating possible novel biomarkers.  Additionally, we found many TUCRs that were deregulated across annotation status and IDH1-status, which suggests that, annotation status may have an effect on absolute TUCR expression, neither of these additional factors had a substantial effect on TUCR deregulation or association with patient outcomes.
+
+Another facet of our research involved predicting the functions and mechanisms of action of TUCRs in gliomas. We studied this for the first time in gliomas WGCNA workflows to cluster TUCRs and
+provide functional predictions based on shared functions between coregulated genes. This approach identifies a wide range of potential functions for TUCRs, encompassing activities such
+as nucleic acid binding regulation, stem cell differentiation, organ development, immune
+response, and cell signaling.  This analysis focused on the associations of individual TUCRs with the functional modules, but it would also be worth studying these TUCRs as clusters of coregulated genes, perhaps through a high throughput single-cell approach.
+
+We found intergenic TUCRs to be of notable interest because they resemble lncRNAs but are
+much more highly conserved and experience less sequence variation. Notably, these TUCRs do not overlap with known genes, suggesting they might represent novel lncRNAs. Of these TUCRs,
+uc.110 is the most upregulated in both GBM and LGG. Knocking down uc.110 reduces cancer
+cell characteristics in vitro and in vivo and improves survival in mouse models. On the other hand,
+increasing uc.110 expression increases malignancy in cells that do not express it, further
+indicating its potential tumor promoting role. We explored uc.110's function via WGCNA, revealing
+its membership in modules associated with tumor enhancing nucleic acid binding. We integrated
+these data with transcriptome deregulation data (RNA-Seq) post-uc.110 knockdown, revealing a
+close relationship between uc.110 and the oncogenic membrane frizzled-related protein (MFRP).
+This protein is involved in activating the Wnt-signaling pathway, impacting cell proliferation,
+invasion, migration, and stem cell differentiation. Aberrant expression of Wnt-signaling is demonstrated in gliomas. [59-60] Therefore, we hypothesized that uc.110 might sponge tumor suppressor miRNAs from MFRP, enhancing Wnt signaling activation. Accordingly, we demonstrated that one mechanism of action for the uc.110 tumor promoter is as a miRNA sponge for miR-544, therefore increasing the bioavailability of MFRP. This is a novel interaction between all three genes as the published literature on the role of miR-544 and its effects on MFRP alone is non-existent, and likewise there is no published literature considering uc.110’s role in potentially mediating this interaction as a sponge. We also note that this is a likely cytosolic function for uc.110, as although miRNAs may target nuclear genes during cell division, the sponging model is generally considered to be a cytosolic event.  Per the same WGCNA analysis, it is entirely possible that uc.110 has a separate nuclear function, perhaps in transcription factor binding (Figure 3, Supplementary Figure 8). This is a known function for lncRNAs, and uc.110 could therefore be operating in a similar way. We anticipate exploring this in future work, especially as uc.110 is shown to localize to the nucleus in some GBM cell lines. (Supplementary Figure 11G)
+
+In conclusion, our results suggest that TUCRs are an important class of regulatory RNAs. They
+are more highly conserved than typical genes and more resistant to variation, which suggests
+biological importance. They are perturbed in gliomas, and this perturbation is associated with
+clinical outcomes.  Our predicted functions reveal that TUCRs are widely involved in cancer-
+related biological processes. Some TUCRs previously thought to be intergenic may represent
+previously undiscovered genes.  Our findings also identify and characterize uc.110 as a new
+tumor enhancer and likely oncogene in gliomas. Each of the experiments performed in our study
+represents the first of its kind in gliomas. We have developed, adapted, and presented novel
+methods for studying TUCRs that can be used in other cancers and other diseases, where TUCRs
+remain very understudied. These methods and the data derived from them represent a “TUCR
+database” that will serve the scientific community in future TUCR studies in gliomas and other
+diseases, where they remain unstudied or understudied.
+ 	
 
 # SUPPLEMENTARY DATA 
 
@@ -6769,11 +7026,102 @@ if(!dir.exists(paste(outputdir,"/Figure4_Supplementary/",sep=""))){
 
 ### Supplementary Figure 4A
 
-Identifying differentially expressed TUCRs with DESeq2
-
-```{r supplementary_figure4_DESeq2_TUCRs_continued}
+```{r, supplementary_figure4a}
 
 ## read data
+
+
+gbm_metadatafile <- paste("Inputs/general_files/sequencingfiles/GBM/GBM_tcga_metadata.csv",sep="")
+
+lgg_metadatafile <- paste("Inputs/general_files/sequencingfiles/LGG/LGG_tcga_metadata.csv",sep="")
+
+cortex_metadatafile <- paste("Inputs/general_files/sequencingfiles/cortex/cortex_gtex_metadata.csv",sep="")
+
+
+## Merge Data
+
+
+#if(!is.na(cortex_countfile)){ 
+  gbm_metadata <- 
+  read_csv(file = gbm_metadatafile)
+  
+  lgg_metadata <- 
+  read_csv(file = lgg_metadatafile)
+  
+  cortex_metadata <- 
+  read_csv(file = cortex_metadatafile)
+  
+
+
+Figure_XA_input_LGG <- lgg_metadata %>% mutate(disease = "LGG")
+
+Figure_XA_input_GBM <- gbm_metadata %>% mutate(disease = "GBM")
+
+Figure_XA_input_cortex <- cortex_metadata %>% mutate(disease = "NBC")
+
+Figure_XA_input <- rbind(Figure_XA_input_GBM,Figure_XA_input_LGG,Figure_XA_input_cortex)
+
+Figure_XA_input <- Figure_XA_input %>%
+  filter(IDH1status != "normal") %>%
+  group_by(disease,IDH1status) %>%
+  dplyr::summarize(Sample_Type = paste(disease,IDH1status,sep=" "), n = n()) %>%
+  distinct() %>%
+  ungroup() %>%
+  dplyr::group_by(disease) %>%
+  dplyr::mutate(sum = sum(n,na.rm=TRUE),prop = sprintf("%.3f", round(n/sum,3)))
+
+
+
+p <- ggplot(Figure_XA_input, aes(x=2,y=as.numeric(prop),fill=Sample_Type))          + 
+  geom_bar(
+    stat="identity",#colour="black", 
+    width = 1)                                                          +
+  geom_text(
+    aes(y = as.numeric(prop), label = prop), 
+    color = "black",size=5)                                                    + 
+  coord_polar("y", start=0)                                             + 
+  scale_fill_manual(values=c(paper_green,paper_blue,paper_red))  + 
+  ggtitle(paste("IDH1 Status"))                               + 
+  guides(colour = guide_legend(override.aes = list(size=8))) +
+        theme(plot.title = element_text(size = 12.5),
+              axis.title = element_blank(),
+              axis.text.y = element_blank(),
+              axis.text.x = element_blank(),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+panel.background = element_blank(), axis.line = element_blank(),legend.position="bottom",legend.title=element_blank(),
+legend.text = element_text(size = 12.5),
+axis.ticks = element_blank(), 
+      legend.box.spacing = unit(0, "pt"),
+legend.margin=margin(0,0,0,0),
+strip.background = element_rect(fill="white"),
+strip.text = element_blank(),
+panel.spacing = unit(-2, "lines")) +
+  xlim(0.5, 2.5) +
+  facet_wrap(~disease)
+
+ggsave(file=paste(outputdir,"/Figure4_Supplementary/supplementary_figure4a.png",sep=""),
+       plot = print(p),
+       width = 6, 
+       height = 4, 
+       dpi = 600)
+
+```
+
+## Supplementary Figure 5
+
+```{r supplementary_Figure5_dircreate}
+
+if(!dir.exists(paste(outputdir,"/Figure5_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure5_Supplementary/",sep=""))
+}
+
+```
+
+### Supplementary Figure 5A
+
+Identifying differentially expressed TUCRs with DESeq2
+
+```{r supplementary_figure5_DESeq2}
 
 ## read data
 
@@ -6833,9 +7181,14 @@ cortex_seqdepthfile <- paste("Inputs/general_files/sequencingfiles/cortex/cortex
   
   
   gbm_metadata <- rbind(gbm_metadata,cortex_metadata)
+  
   gbm_metadata <- gbm_metadata[gbm_metadata$IDH1status %in% c("normal","WT"),]
   
   lgg_metadata <- rbind(lgg_metadata,cortex_metadata)
+  
+  lgg_metadata_wt<-lgg_metadata[lgg_metadata$IDH1status %in% c("normal","WT"),]
+
+  lgg_metadata_mut<-lgg_metadata[lgg_metadata$IDH1status %in% c("normal","MUT"),]
   
   rm(cortex_metadata)
   
@@ -6879,23 +7232,41 @@ lgg_mergedcounts_deseq2 <- lgg_mergedcounts %>%
 gbm_mergedcounts_deseq2_countsonly <- 
   gbm_mergedcounts_deseq2[,9:ncol(gbm_mergedcounts_deseq2)]
 
+gbm_mergedcounts_deseq2_countsonly <- gbm_mergedcounts_deseq2_countsonly[,gbm_metadata$survid]
+
+lgg_mergedcounts_deseq2_countsonly <- 
+  lgg_mergedcounts_deseq2[,9:ncol(lgg_mergedcounts_deseq2)]
+
+lgg_mergedcounts_deseq2_countsonly_wt<-lgg_mergedcounts_deseq2_countsonly[,lgg_metadata_wt$survid]
+
+lgg_mergedcounts_deseq2_countsonly_mut<-lgg_mergedcounts_deseq2_countsonly[,lgg_metadata_mut$survid]
+
 rownames(gbm_mergedcounts_deseq2_countsonly) <- 
   gbm_mergedcounts_deseq2$id
+
+rownames(lgg_mergedcounts_deseq2_countsonly_mut) <- 
+  lgg_mergedcounts_deseq2$id
+
+rownames(lgg_mergedcounts_deseq2_countsonly_wt) <- 
+  lgg_mergedcounts_deseq2$id
 
 rownames(lgg_mergedcounts_deseq2_countsonly) <- 
   lgg_mergedcounts_deseq2$id
 
-gbm_mergedcounts_deseq2_info <- 
-  gbm_mergedcounts_deseq2[,1:8]
+#gbm_mergedcounts_deseq2_info <- 
+#  gbm_mergedcounts_deseq2[,1:8]
 
-lgg_mergedcounts_deseq2_info <- 
-  lgg_mergedcounts_deseq2[,1:8]
+#lgg_mergedcounts_deseq2_info <- 
+#  lgg_mergedcounts_deseq2[,1:8]
 
-gbm_mergedcounts_deseq2_info$length <- 
-  (gbm_mergedcounts_deseq2$end - gbm_mergedcounts_deseq2$start)/1000
+#gbm_mergedcounts_deseq2_info$length <- 
+#  (gbm_mergedcounts_deseq2$end - gbm_mergedcounts_deseq2$start)/1000
 
-lgg_mergedcounts_deseq2_info$length <- 
-  (lgg_mergedcounts_deseq2$end - lgg_mergedcounts_deseq2$start)/1000
+#lgg_mergedcounts_deseq2_info$length <- 
+#  (lgg_mergedcounts_deseq2$end - lgg_mergedcounts_deseq2$start)/1000
+
+## GBM
+
 
 dds <- 
   DESeqDataSetFromMatrix(countData = gbm_mergedcounts_deseq2_countsonly,
@@ -6927,6 +7298,8 @@ if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep="")))
 
 write_csv(res, file = paste(outputdir,"/TUCR_Database/SummaryTables/GBM/GBM_DESeq2_allTUCRs.csv",sep=""))
 
+## LGG
+
 dds <- 
   DESeqDataSetFromMatrix(countData = lgg_mergedcounts_deseq2_countsonly,
                               colData = lgg_metadata,
@@ -6955,9 +7328,69 @@ if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep="")))
 
 write_csv(res, file = paste(outputdir,"/TUCR_Database/SummaryTables/LGG/LGG_DESeq2_allTUCRs.csv",sep=""))
 
+## LGG_MUT
+
+dds <- 
+  DESeqDataSetFromMatrix(countData = lgg_mergedcounts_deseq2_countsonly_mut,
+                              colData = lgg_metadata_mut,
+                              design = ~dex)
+  
+dds <- 
+  DESeq(dds)
+
+res <- 
+  results(dds, tidy=TRUE)
+
+res <- 
+  as_tibble(res)
+
+
+disease <- "LGG_MUT"
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))
+}
+
+
+write_csv(res, file = paste(outputdir,"/TUCR_Database/SummaryTables/LGG_MUT/LGG_MUT_DESeq2_allTUCRs.csv",sep=""))
+
+## LGG_WT
+
+dds <- 
+  DESeqDataSetFromMatrix(countData = lgg_mergedcounts_deseq2_countsonly_wt,
+                              colData = lgg_metadata_wt,
+                              design = ~dex)
+  
+dds <- 
+  DESeq(dds)
+
+res <- 
+  results(dds, tidy=TRUE)
+
+res <- 
+  as_tibble(res)
+
+
+disease <- "LGG_WT"
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))
+}
+
+
+write_csv(res, file = paste(outputdir,"/TUCR_Database/SummaryTables/LGG_WT/LGG_WT_DESeq2_allTUCRs.csv",sep=""))
+
 ```
 
-```{r supplementary_figure4_volcanoplotfunction_expressiona}
+```{r supplementary_figure5_volcanoplotfunction_expressiona}
 
 ### Volcano plot
 
@@ -7065,7 +7498,7 @@ ggsave(plot = print(p),filename = output, width = width, height = height, dpi = 
 
 ```
 
-```{r supplementary_figure4ab}
+```{r supplementary_figure5ab}
 
 res_TUCR_LGG <- read_csv(paste(outputdir,"/TUCR_Database/SummaryTables/LGG/LGG_DESeq2_allTUCRs.csv",sep=""),col_names = TRUE)
 
@@ -7093,7 +7526,7 @@ res_TUCR <- rbind(res_TUCR_GBM_2,res_TUCR_LGG_2)
 
 volcanoplot_expression(res_TUCR,
                          genes = "all",
-                         output = paste(outputdir,"/Figure4_supplementary/supplementary_figure4a.png",sep=""),
+                         output = paste(outputdir,"/Figure5_supplementary/supplementary_figure5a.png",sep=""),
                          height = 9, 
                          width = 16, 
                          dpi = 600,
@@ -7101,11 +7534,11 @@ volcanoplot_expression(res_TUCR,
 
 ```
 
-### Supplementary Figure 4B
+### Supplementary Figure 5B
 
 Completing survival analysis for TUCRs
 
-```{r supplementary_figure4b_methods,eval=FALSE}
+```{r supplementary_figure5b_methods,eval=FALSE}
 
 disease <- "GBM"
 
@@ -7328,7 +7761,7 @@ write_csv(ptable,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",dis
 
 ```
 
-```{r supplementary_figure4b_LGG}
+```{r supplementary_figure5b_LGG}
 
 disease <- "LGG"
 
@@ -7553,7 +7986,7 @@ write_csv(ptable,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",dis
 
 Writing a script to generate a volcano plot for survival
 
-```{r supplementary_figure4b_volcanosurv}
+```{r supplementary_figure5b_volcanosurv}
 
 ### Volcano plot
 
@@ -7600,7 +8033,7 @@ if(repel==TRUE){p <- ggplot(vres) +
 panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="top",legend.title=element_blank(),
 legend.text=element_text(size=10)) +
         geom_text_repel(aes(x=estimate, y=-log10(as.numeric(p.value)),label = gene),force=50) +
-        facet_wrap(~disease.y+annot.x,scales="free",ncol=4)
+        facet_wrap(~disease.y+annot.x,scales="free",ncol=3)
 }else{
   p <- ggplot(vres) +
         geom_point(aes(x=estimate, y=-log10(as.numeric(p.value)),col=color)) +
@@ -7618,12 +8051,12 @@ legend.text=element_text(size=10)) +
 panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="top",legend.title=element_blank(),
 legend.text=element_text(size=10))}
 ggsave(output, width = width, height = height, dpi = dpi) +
-        facet_wrap(~disease.y+annot.x,scales="free",ncol=4)
+        facet_wrap(~disease.y+annot.x,scales="free",ncol=3)
 }
 
 ```
 
-```{r supplementary_figure4b}
+```{r supplementary_figure5b}
 
 genes <- ""
 
@@ -7706,109 +8139,25 @@ for (i in 1:length(res_surv_sum2$alias)){
 
 res_surv_sum3 <- res_surv_sum
 
-volcanosurv(res_surv_sum3, genes = "",output = paste(outputdir,"/Figure4_Supplementary/supplementary_figure4b.png",sep=""))
+volcanosurv(res_surv_sum3, genes = "",output = paste(outputdir,"/Figure5_Supplementary/supplementary_figure5b.png",sep=""))
 
 ```
 
-## Supplementary Figure 5
+## Supplementary Figure 6
 
-```{r supplementary_Figure5_dircreate}
+```{r supplementary_Figure6_dircreate}
 
-if(!dir.exists(paste(outputdir,"/Figure5_Supplementary/",sep=""))){
-  dir.create(paste(outputdir,"/Figure5_Supplementary/",sep=""))
+if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
 }
-
-```
-
-
-## Supplementary Figure 5A
-
-```{r, supplementary_figure5a}
-
-## read data
-
-
-gbm_metadatafile <- paste("Inputs/general_files/sequencingfiles/GBM/GBM_tcga_metadata.csv",sep="")
-
-lgg_metadatafile <- paste("Inputs/general_files/sequencingfiles/LGG/LGG_tcga_metadata.csv",sep="")
-
-cortex_metadatafile <- paste("Inputs/general_files/sequencingfiles/cortex/cortex_gtex_metadata.csv",sep="")
-
-
-## Merge Data
-
-
-#if(!is.na(cortex_countfile)){ 
-  gbm_metadata <- 
-  read_csv(file = gbm_metadatafile)
-  
-  lgg_metadata <- 
-  read_csv(file = lgg_metadatafile)
-  
-  cortex_metadata <- 
-  read_csv(file = cortex_metadatafile)
-  
-
-
-Figure_XA_input_LGG <- lgg_metadata %>% mutate(disease = "LGG")
-
-Figure_XA_input_GBM <- gbm_metadata %>% mutate(disease = "GBM")
-
-Figure_XA_input_cortex <- cortex_metadata %>% mutate(disease = "NBC")
-
-Figure_XA_input <- rbind(Figure_XA_input_GBM,Figure_XA_input_LGG,Figure_XA_input_cortex)
-
-Figure_XA_input <- Figure_XA_input %>%
-  filter(IDH1status != "normal") %>%
-  group_by(disease,IDH1status) %>%
-  dplyr::summarize(Sample_Type = paste(disease,IDH1status,sep=" "), n = n()) %>%
-  distinct() %>%
-  ungroup() %>%
-  dplyr::group_by(disease) %>%
-  dplyr::mutate(sum = sum(n,na.rm=TRUE),prop = sprintf("%.3f", round(n/sum,3)))
-
-
-
-p <- ggplot(Figure_XA_input, aes(x=2,y=as.numeric(prop),fill=Sample_Type))          + 
-  geom_bar(
-    stat="identity",#colour="black", 
-    width = 1)                                                          +
-  geom_text(
-    aes(y = as.numeric(prop), label = prop), 
-    color = "black",size=5)                                                    + 
-  coord_polar("y", start=0)                                             + 
-  scale_fill_manual(values=c(paper_green,paper_blue,paper_red))  + 
-  ggtitle(paste("IDH1 Status"))                               + 
-  guides(colour = guide_legend(override.aes = list(size=8))) +
-        theme(plot.title = element_text(size = 12.5),
-              axis.title = element_blank(),
-              axis.text.y = element_blank(),
-              axis.text.x = element_blank(),
-              #panel.grid = element_line(color = "lightgray",size = 0.75),
-panel.background = element_blank(), axis.line = element_blank(),legend.position="bottom",legend.title=element_blank(),
-legend.text = element_text(size = 12.5),
-axis.ticks = element_blank(), 
-      legend.box.spacing = unit(0, "pt"),
-legend.margin=margin(0,0,0,0),
-strip.background = element_rect(fill="white"),
-strip.text = element_blank(),
-panel.spacing = unit(-2, "lines")) +
-  xlim(0.5, 2.5) +
-  facet_wrap(~disease)
-
-ggsave(file=paste(outputdir,"/Figure5_Supplementary/supplementary_figure5a.png",sep=""),
-       plot = print(p),
-       width = 6, 
-       height = 4, 
-       dpi = 600)
 
 ```
 
 ### Supplementary Figure 6A
 
-Generate FC Plots for each TUCR (GBM)
+Generate FC Box Plots for each TUCR
 
-```{r Supplementary_Figure6a,eval=FALSE}
+```{r supplementary_figure6a_boxplot_TUCRs,eval=FALSE}
 
 disease <- "GBM"
 
@@ -7861,12 +8210,16 @@ if(!is.na(n_countfile)){
   
   rm(n_seqdepth)
   
+  metadata<-metadata[metadata$IDH1status %in% c("normal","WT"),]
+  
 }else{
     mergedcounts <- read.table(t_countfile,header = TRUE)
 
     metadata <- read.csv(file = t_metadatafile)
     
     seqdepth <- read.csv(file = t_seqdepthfile)
+    
+    metadata<-metadata[metadata$IDH1status %in% c("normal","WT"),]
 }
 
 if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
@@ -7889,7 +8242,7 @@ if(!is.na(filterannot)){
 posdata <- mergedcounts_trimmed[,1:8] %>%
   dplyr::select("chrom" = chrom.x,"start" = start.x,"end" = end.x,"strand"=strand.x,id,"alias"=alias.x,"tag"=tag.x,"annot" = annot.x)
 
-mergedcounts_trimmed <- mergedcounts_trimmed[,9:length(colnames(mergedcounts_trimmed))]
+mergedcounts_trimmed <- mergedcounts_trimmed[,metadata$survid]
 
 match_colnames <- match(as.character(colnames(mergedcounts_trimmed)),as.character(metadata$survid))
 
@@ -7976,10 +8329,13 @@ fc.dotplot <- fc.dotplot %>%
   mutate(DESeq2 = ifelse(dex=="normal",0,log2FoldChange)) %>%
   mutate(fill = ifelse(DESeq2 >= 1,paper_red,
                 ifelse(DESeq2 <= -1,paper_green,paper_gray))) %>%
-  dplyr::select(-Sample,-Key,-id.y,-string,-log2FoldChange) %>%
+  dplyr::select(-id.y,-log2FoldChange) %>%
   filter(!is.na(dex))
 
-i <- 1
+fc.dotplot2 <- fc.dotplot %>%
+  filter(str_detect(id.x,"uc.110"))
+
+i <- 177
 
 for(i in 1:length(unique(fc.dotplot$id.x))){
   
@@ -7998,7 +8354,8 @@ if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))){
   dir.create(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))
 }
 
-if(file.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = ""))){}else{
+#if(file.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = ""))){}else{
+
 
 padj.DESeq2 <- fc.dotplot2 %>%
   filter(dex == "tumor") %>%
@@ -8016,87 +8373,55 @@ fc.dotplot3 <- fc.dotplot2 %>%
   dplyr::select(dex,DESeq2,fill) %>%
   distinct()
 
-p2 <- ggplot(data = fc.dotplot2,aes(x=IDH1status, y=ZScore,fill=fill)) +
+p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
   geom_boxplot(outlier.color="white") +
   #geom_bar(colour="black",stat="identity") +
   scale_fill_identity() +
   #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
-  geom_jitter(data = fc.dotplot2, aes(x=IDH1status, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  ggtitle(paste0(disease,"\n","FC_wt = ",round(foldchange.DESeq2_wt,2),"\n","FDR_wt = ",padj.DESeq2_wt,"\n","FC_mut = ",round(foldchange.DESeq2_mut,2),"\n","FDR_mut = ",padj.DESeq2_mut)) +
-  #ggtitle(paste0(disease,"\n")) +
+  geom_jitter(data = fc.dotplot2, aes(x=dex, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
+  ggtitle(paste0(disease,"\n","FC = ",round(foldchange.DESeq2,2),"\n","FDR = ",padj.DESeq2)) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
         axis.line = element_line(colour = "black"),
-        plot.title = element_text(size = rel(1.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        axis.title = element_text(size = rel(1.2), face="bold"),
+        plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.6), face="bold"),
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
               #panel.grid = element_line(color = "lightgray",size = 0.75),
         legend.position="none",
         legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
-  labs(y="Z-Score", x = "IDH1 status") +
+  labs(y="Z-Score", x = "Tissue Type") +
   stat_summary(fun.y=mean, geom="point", shape=20, size=6, color=paper_blue, fill=paper_blue)
 
-ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)}}
+ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)
+
+if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
+ dir.create(paste(outputdir,"/Figure2/",sep=""))
+}
+
+if(TUCRname == "uc.110"){ggsave(p2,file=paste(outputdir,"/Figure2/figure2a.png",sep = ""),height=7,width=5)}
+
+if(!dir.exists(paste(outputdir,"/Figure6_supplementary/",sep=""))){
+ dir.create(paste(outputdir,"/Figure6_supplementary/",sep=""))
+}
+
+if(TUCRname == "uc.2"){ggsave(p2,file=paste(outputdir,"/Figure6_supplementary/supplementary_figure6a.png",sep = ""),height=7,width=5)}
 
 
-if(file.exists(paste(outputdir,"/Figure6_Supplementary/figure6a_supplementary.png",sep = ""))){}else{
+if(!dir.exists(paste(outputdir,"/Figure7_supplementary/",sep=""))){
+ dir.create(paste(outputdir,"/Figure7_supplementary/",sep=""))
+}
 
-fc.dotplot2 <- fc.dotplot %>%
-  filter(str_detect(id.x,"uc.2_"))
-
-
-print("uc.2")
-TUCRname <- "uc.2"
-
-padj.DESeq2 <- fc.dotplot2 %>%
-  filter(dex == "tumor") %>%
-  dplyr::select(padj)
-
-padj.DESeq2 <- formatC(padj.DESeq2[[1]][1], format = "e", digits = 2)
-
-foldchange.DESeq2 <- fc.dotplot2 %>%
-  filter(dex == "tumor") %>%
-  dplyr::select(DESeq2)
-
-foldchange.DESeq2 <- round(foldchange.DESeq2[1,1],2)
-
-fc.dotplot3 <- fc.dotplot2 %>%
-  dplyr::select(dex,DESeq2,fill) %>%
-  distinct()
-
-p2 <- ggplot(data = fc.dotplot2,aes(x=IDH1status, y=ZScore,fill=fill)) +
-  geom_boxplot(outlier.color="white") +
-  #geom_bar(colour="black",stat="identity") +
-  scale_fill_identity() +
-  #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
-  geom_jitter(data = fc.dotplot2, aes(x=IDH1status, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  ggtitle(paste0(disease,"\n","FC_wt = ",round(foldchange.DESeq2_wt,2),"\n","FDR_wt = ",padj.DESeq2_wt,"\n","FC_mut = ",round(foldchange.DESeq2_mut,2),"\n","FDR_mut = ",padj.DESeq2_mut)) +
-  #ggtitle(paste0(disease,"\n")) +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"),
-        plot.title = element_text(size = rel(1.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        axis.title = element_text(size = rel(1.2), face="bold"),
-        axis.text.y = element_text(size = rel(2.2)),
-        axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
-              #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="none",
-        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
-  labs(y="Z-Score", x = "IDH1 status") +
-  stat_summary(fun.y=mean, geom="point", shape=20, size=6, color=paper_blue, fill=paper_blue)
-
-ggsave(p2,file=paste(outputdir,"/Figure6_Supplementary/figure6a_supplementary.png",sep = ""),height=7,width=5)}
+if(TUCRname == "uc.15"){ggsave(p2,file=paste(outputdir,"/Figure7_supplementary/supplementary_figure7a.png",sep = ""),height=7,width=5)}}#}
 
 ```
 
 ### Supplementary Figure 6B
 
-Generate FC Plots for each TUCR (LGG)
+Generate FC Box Plots for each TUCR
 
-```{r Supplementary_Figure6b,eval=FALSE}
+```{r supplementary_figure6b_boxplot_TUCRs,eval=FALSE}
 
 disease <- "LGG"
 
@@ -8104,7 +8429,7 @@ normal <- "cortex"
 
 figureorder <- 2
 
-## read data
+# read data
 
 t_countfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_mergedcounts.txt",sep="")
 
@@ -8118,7 +8443,7 @@ t_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",di
 
 n_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_seqdepth_counts.csv",sep="")
 
-## Merge Data
+# Merge Data
 
 if(!is.na(n_countfile)){
   mergedcounts <- read.table(t_countfile,header = TRUE)
@@ -8177,28 +8502,62 @@ if(!is.na(filterannot)){
 posdata <- mergedcounts_trimmed[,1:8] %>%
   dplyr::select("chrom" = chrom.x,"start" = start.x,"end" = end.x,"strand"=strand.x,id,"alias"=alias.x,"tag"=tag.x,"annot" = annot.x)
 
-mergedcounts_trimmed <- mergedcounts_trimmed[,9:length(colnames(mergedcounts_trimmed))]
-
-match_colnames <- match(as.character(colnames(mergedcounts_trimmed)),as.character(metadata$survid))
+mergedcounts_trimmed <- mergedcounts_trimmed[,metadata$survid]
 
 mergedcounts_trimmed <- as.matrix(mergedcounts_trimmed)
 rownames(mergedcounts_trimmed) <- posdata$alias
 
+# LGG_WT
+
+metadata_wt <-metadata[metadata$IDH1status %in% c("normal","WT"),]
+                      
+mergedcounts_trimmed_wt<-mergedcounts_trimmed[,metadata_wt$survid]
+
+#match_colnames <- match(as.character(colnames(mergedcounts_trimmed)),as.character(metadata$survid))
+
 dds <- 
-  DESeqDataSetFromMatrix(countData = mergedcounts_trimmed,
-                              colData = metadata,
+  DESeqDataSetFromMatrix(countData = mergedcounts_trimmed_wt,
+                              colData = metadata_wt,
                               design = ~dex)
-  
+
 dds <- 
   DESeq(dds)
 
 res <- 
   results(dds, tidy=TRUE)
 
-res <- 
+res_wt <- 
   as_tibble(res)
 
-colnames(res)[1] <- "alias"
+colnames(res_wt)[1] <- "alias"
+
+# LGG_MUT
+
+metadata_mut <-metadata[metadata$IDH1status %in% c("normal","WT"),]
+                      
+mergedcounts_trimmed_mut<-mergedcounts_trimmed[,metadata_mut$survid]
+
+match_colnames <- match(as.character(colnames(mergedcounts_trimmed)),as.character(metadata$survid))
+
+mergedcounts_trimmed <- as.matrix(mergedcounts_trimmed)
+rownames(mergedcounts_trimmed) <- posdata$alias
+
+
+dds <- 
+  DESeqDataSetFromMatrix(countData = mergedcounts_trimmed_mut,
+                              colData = metadata_mut,
+                              design = ~dex)
+
+dds <- 
+  DESeq(dds)
+
+res <- 
+  results(dds, tidy=TRUE)
+
+res_mut <- 
+  as_tibble(res)
+
+colnames(res_mut)[1] <- "alias"
 
 #variablename <- which(as.character(colnames(tablename) %in% as.character(row.names(table2name))))
 
@@ -8243,7 +8602,7 @@ z_rna <- scal(count_vm,count_vm[,n_index])
 
 z_rna2 <- cbind(posdata,z_rna)
 
-write.csv(as.data.frame(z_rna2),file=paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_zscores_allTUCRs.csv",sep=""),row.names=F)
+#write.csv(as.data.frame(z_rna2),file=paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_zscores_allTUCRs.csv",sep=""),row.names=F)
 
 fc_counts <- cbind(posdata,z_rna) %>%
   dplyr::select(-chrom,-start,-end,-strand)
@@ -8259,14 +8618,37 @@ fc.dotplot <- fc_counts %>%
   #                          tolower(paste("GTEX",substr(string, 1, 20),sep="")))) %>%
   left_join(metadata,by="survid")
 
-fc.dotplot <- fc.dotplot %>%
-  left_join(res,by="alias") %>%
-  mutate(DESeq2 = ifelse(dex=="normal",0,log2FoldChange)) %>%
-  mutate(fill = ifelse(DESeq2 >= 1,paper_red,
-                ifelse(DESeq2 <= -1,paper_green,paper_gray))) %>%
-  dplyr::select(-Sample,-Key,-id.y,-string,-log2FoldChange) %>%
-  filter(!is.na(dex))
+  fc.dotplot <- fc.dotplot %>%
+  left_join(res_wt,by="alias") %>%
+  mutate(DESeq2_wt = ifelse(dex=="normal",0,log2FoldChange)) %>%
+  mutate(padj_wt=padj) %>% 
+  mutate(fill_wt = ifelse(DESeq2_wt >= 1,paper_red,
+                ifelse(DESeq2_wt <= -1,paper_green,paper_gray))) %>%
+  dplyr::select(-id.y,-log2FoldChange,-lfcSE,-stat,-padj,-baseMean,-pvalue)
+  
 
+## we adressed na values while joining metadata and zscore values 
+## so removed filter(!is.na(dex)) from above step
+
+## Adding lgg_mut vs normal deseq2 foldchange and padj values to the main dataset
+  
+  fc.dotplot <- fc.dotplot %>%
+  left_join(res_mut,by="alias") %>%
+  mutate(DESeq2_mut = ifelse(dex=="normal",0,log2FoldChange)) %>%
+  mutate(padj_mut=padj) %>% 
+  mutate(fill_mut = ifelse(DESeq2_mut >= 1,paper_pink,
+                ifelse(DESeq2_mut <= -1,paper_blue,paper_gray))) %>%
+  dplyr::select(-log2FoldChange,-lfcSE,-stat)
+  
+  
+## combine DeSeq2_wt and DeSeq2_mut in to DeSeq2 using ifelse
+## combine padj_wt and padj_mut in to padj column using if else
+
+  fc.dotplot <- fc.dotplot %>%
+    mutate(DESeq= ifelse(IDH1status=="MUT",DESeq2_mut,DESeq2_wt)) %>%
+    mutate(padj=ifelse(IDH1status=="MUT",padj_mut,padj_wt)) %>% 
+    mutate(fill= ifelse(IDH1status=="MUT",fill_mut,fill_wt)) 
+  
 i <- 1
 
 for(i in 1:length(unique(fc.dotplot$id.x))){
@@ -8276,83 +8658,52 @@ filterdotplot <- as.character(unique(fc.dotplot$id.x[i]))
 print(i)
 
 fc.dotplot2 <- fc.dotplot %>%
-  filter(id.x == filterdotplot)
+filter(id.x == filterdotplot)
 
-
-print(fc.dotplot2$alias[1])
 TUCRname <- fc.dotplot2$alias[1]
 
 if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))){
-  dir.create(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))
+ dir.create(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))
 }
 
-if(file.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = ""))){}else{
-
-padj.DESeq2 <- fc.dotplot2 %>%
-  filter(dex == "tumor") %>%
-  dplyr::select(padj)
-
-padj.DESeq2 <- formatC(padj.DESeq2[[1]][1], format = "e", digits = 2)
-
-foldchange.DESeq2 <- fc.dotplot2 %>%
-  filter(dex == "tumor") %>%
-  dplyr::select(DESeq2)
-
-foldchange.DESeq2 <- round(foldchange.DESeq2[1,1],2)
-
-fc.dotplot3 <- fc.dotplot2 %>%
-  dplyr::select(dex,DESeq2,fill) %>%
-  distinct()
-
-p2 <- ggplot(data = fc.dotplot2,aes(x=IDH1status, y=ZScore,fill=fill)) +
-  geom_boxplot(outlier.color="white") +
-  #geom_bar(colour="black",stat="identity") +
-  scale_fill_identity() +
-  #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
-  geom_jitter(data = fc.dotplot2, aes(x=IDH1status, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  ggtitle(paste0(disease,"\n","FC_wt = ",round(foldchange.DESeq2_wt,2),"\n","FDR_wt = ",padj.DESeq2_wt,"\n","FC_mut = ",round(foldchange.DESeq2_mut,2),"\n","FDR_mut = ",padj.DESeq2_mut)) +
-  #ggtitle(paste0(disease,"\n")) +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"),
-        plot.title = element_text(size = rel(1.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        axis.title = element_text(size = rel(1.2), face="bold"),
-        axis.text.y = element_text(size = rel(2.2)),
-        axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
-              #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="none",
-        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
-  labs(y="Z-Score", x = "IDH1 status") +
-  stat_summary(fun.y=mean, geom="point", shape=20, size=6, color=paper_blue, fill=paper_blue)
-
-ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)}}
+#if(file.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = ""))){}else{
 
 
-if(file.exists(paste(outputdir,"/Figure6_Supplementary/figure6b_supplementary.png",sep = ""))){}else{
+## padj.DESeq2 for LGG wt type
+padj.DESeq2_wt <- fc.dotplot2 %>%
+  filter(IDH1status == "WT") %>%
+  dplyr::select(padj_wt)
 
-fc.dotplot2 <- fc.dotplot %>%
-  filter(str_detect(id.x,"uc.2_"))
+padj.DESeq2_wt <- formatC(padj.DESeq2_wt[[1]][1], format = "e", digits = 2)
+
+## padj.DESeq2 for LGG mut type
+padj.DESeq2_mut <- fc.dotplot2 %>%
+  filter(IDH1status == "MUT") %>%
+  dplyr::select(padj_mut)
+
+padj.DESeq2_mut <- formatC(padj.DESeq2_mut[[1]][1], format = "e", digits = 2)
 
 
-print("uc.2")
-TUCRname <- "uc.2"
+foldchange.DESeq2_wt <- fc.dotplot2 %>%
+  filter(IDH1status == "WT") %>%
+  dplyr::select(DESeq2_wt)
 
-padj.DESeq2 <- fc.dotplot2 %>%
-  filter(dex == "tumor") %>%
-  dplyr::select(padj)
+foldchange.DESeq2_wt <- round(foldchange.DESeq2_wt[1,1],2)
 
-padj.DESeq2 <- formatC(padj.DESeq2[[1]][1], format = "e", digits = 2)
+foldchange.DESeq2_mut <- fc.dotplot2 %>%
+  filter(IDH1status == "MUT") %>%
+  dplyr::select(DESeq2_mut)
 
-foldchange.DESeq2 <- fc.dotplot2 %>%
-  filter(dex == "tumor") %>%
-  dplyr::select(DESeq2)
+foldchange.DESeq2_mut <- round(foldchange.DESeq2_mut[1,1],2)
 
-foldchange.DESeq2 <- round(foldchange.DESeq2[1,1],2)
 
-fc.dotplot3 <- fc.dotplot2 %>%
-  dplyr::select(dex,DESeq2,fill) %>%
-  distinct()
+#fc.dotplot3 <- fc.dotplot2 %>%
+  #dplyr::select(IDH1status,DESeq,fill) %>%
+  #distinct()
+
+## ordering levels of IDH status (Normal,WT,MUT)
+
+fc.dotplot2$IDH1status<-factor(fc.dotplot2$IDH1status,levels=c("normal","WT","MUT"))
 
 p2 <- ggplot(data = fc.dotplot2,aes(x=IDH1status, y=ZScore,fill=fill)) +
   geom_boxplot(outlier.color="white") +
@@ -8360,13 +8711,13 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=IDH1status, y=ZScore,fill=fill)) +
   scale_fill_identity() +
   #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
   geom_jitter(data = fc.dotplot2, aes(x=IDH1status, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  ggtitle(paste0(disease,"\n","FC_wt = ",round(foldchange.DESeq2_wt,2),"\n","FDR_wt = ",padj.DESeq2_wt,"\n","FC_mut = ",round(foldchange.DESeq2_mut,2),"\n","FDR_mut = ",padj.DESeq2_mut)) +
+  ggtitle(paste0(disease,"\n","FC_wt = ",round(foldchange.DESeq2_wt,2),"\n","FDR_wt = ",padj.DESeq2_wt)) +
   #ggtitle(paste0(disease,"\n")) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
         axis.line = element_line(colour = "black"),
-        plot.title = element_text(size = rel(1.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        plot.title = element_text(size = rel(2.1), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
         axis.title = element_text(size = rel(1.2), face="bold"),
         axis.text.y = element_text(size = rel(2.2)),
         axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
@@ -8374,25 +8725,49 @@ p2 <- ggplot(data = fc.dotplot2,aes(x=IDH1status, y=ZScore,fill=fill)) +
         legend.position="none",
         legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
   labs(y="Z-Score", x = "IDH1 status") +
-  stat_summary(fun.y=mean, geom="point", shape=20, size=6, color=paper_blue, fill=paper_blue)
+  stat_summary(fun.y=mean, geom="point", shape=20, size=6, color=paper_blue, fill=paper_blue) 
 
-ggsave(p2,file=paste(outputdir,"/Figure6_Supplementary/figure6b_supplementary.png",sep = ""),height=7,width=5)}
+#ggsave(p2,file=paste(outputdir,"/Figure2/figure2b.png",sep = ""),height=7,width=5)
+
+p2
+  
+ggsave(p2,file=(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = "")),height=7,width=5)
+
+if(!dir.exists(paste(outputdir,"/Figure2/",sep=""))){
+ dir.create(paste(outputdir,"/Figure2/",sep=""))
+}
+
+if(TUCRname == "uc.110"){ggsave(p2,file=paste(outputdir,"/Figure2/figure2b.png",sep = ""),height=7,width=5)}
+
+if(!dir.exists(paste(outputdir,"/Figure6_supplementary/",sep=""))){
+ dir.create(paste(outputdir,"/Figure6_supplementary/",sep=""))
+}
+
+if(TUCRname == "uc.2"){ggsave(p2,file=paste(outputdir,"/Figure6_supplementary/supplementary_figure6b.png",sep = ""),height=7,width=5)}
+
+
+if(!dir.exists(paste(outputdir,"/Figure7_supplementary/",sep=""))){
+ dir.create(paste(outputdir,"/Figure7_supplementary/",sep=""))
+}
+
+if(TUCRname == "uc.15"){ggsave(p2,file=paste(outputdir,"/Figure7_supplementary/supplementary_figure7b.png",sep = ""),height=7,width=5)}}#}
+
 
 ```
 
-### Supplementary Figure 6E
+### Supplementary Figure 6C
 
-Generate tpm Box Plots for each TUCR (GBM)
+Generate tpm Box Plots for each TUCR
 
-```{r Supplementary_Figure6E,eval=FALSE}
+```{r supplementary_figure6C_boxplot_TUCRs,eval=FALSE}
 
 disease <- "GBM"
 
 normal <- "cortex"
 
-figureorder <- 5
+figureorder <- 3
 
-## read data
+# read data
 
 t_countfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_mergedcounts.txt",sep="")
 
@@ -8406,7 +8781,7 @@ t_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",di
 
 n_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_seqdepth_counts.csv",sep="")
 
-## Merge Data
+# Merge Data
 
 if(!is.na(n_countfile)){
   mergedcounts <- read.table(t_countfile,header = TRUE)
@@ -8437,12 +8812,16 @@ if(!is.na(n_countfile)){
   
   rm(n_seqdepth)
   
+  metadata<-metadata[metadata$IDH1status %in% c("normal","WT"),]
+  
 }else{
     mergedcounts <- read.table(t_countfile,header = TRUE)
 
     metadata <- read.csv(file = t_metadatafile)
     
     seqdepth <- read.csv(file = t_seqdepthfile)
+    
+    metadata<-metadata[metadata$IDH1status %in% c("normal","WT"),]
 }
 
 if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
@@ -8471,7 +8850,7 @@ tpmcounts.info <- tpmcounts %>%
   dplyr::select("chrom" = chrom.x,"start" = start.x,"end" = end.x,"strand"=strand.x,id,"alias"=alias.x,"tag"=tag.x,"annot" = annot.x,length)
 
 tpmcounts <- tpmcounts %>%
-  dplyr::select(-chrom.x,-start.x,-end.x,-id,-strand.x,-tag.x,-annot.x,-alias.x,-length)
+  dplyr::select(-chrom.x,-start.x,-end.x,-id,-strand.x,-tag.x,-annot.x,-alias.x)
   
 rownames(tpmcounts) <- as.character(tpmcounts.info$id)
 
@@ -8510,12 +8889,12 @@ tpm.median.write <- tpmcounts.info %>%
 
 write.csv(tpm.median.write,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_median_tpm_allTUCRs.csv",sep=""),row.names=F)
   
-#tpm.dotplot <- tpm.df2[,9:ncol(tpm.df2)]
-
+tpm.dotplot <- tpm.df2[,metadata$survid]
 TUCRids <- as.character(tpm.df2$id)
 annot <- as.character(tpm.df2$annot)
 length <- as.character(tpm.df2$length)
 tpm.dotplot <- cbind(TUCRids,annot,length,tpm.dotplot)
+
 tpm.dotplot <- tpm.dotplot %>% 
   gather(key = "survid", value = "TPM",-TUCRids,-annot,-length,-length) %>%
   #mutate(Key = gsub("[.]","-",Sample)) %>%
@@ -8533,24 +8912,23 @@ median(tpm.dotplot$TPM,na.rm=TRUE)
 
 i <- 1
 for(i in 1:length(TUCRids)){
-#TUCR <- "uc.110"
+TUCR <- "uc.110"
 TUCR <- tpm.df2$id[i]
 TUCRname <- as.character(tpm.df2$alias[i])
-print(i)
-print(TUCRname)
+#print(i)
+#print(TUCRname)
 if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))){
   dir.create(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))
 }
-if(file.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_tpm_boxplot.png",sep = ""))){}else{
+#if(file.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_tpm_boxplot.png",sep = ""))){}else{
 tpm.dotplot2 <- tpm.dotplot %>% dplyr::filter(TUCRids == TUCR)
-tpm.dotplot2 <- tpm.dotplot2[!duplicated(tpm.dotplot2$survid),]
 
-p<- ggplot(tpm.dotplot2, aes(x=IDH1status, y=TPM)) +
+p<- ggplot(tpm.dotplot2, aes(x=dex, y=TPM)) +
   geom_boxplot(outlier.color="white") +
   #geom_violin(trim = FALSE)+
   #geom_point(pch=21, size=1.5) +
   geom_jitter(binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  #ggtitle(paste(tpmethod," expression of ",TUCR)) +
+  ggtitle(paste(tpmethod," expression of ",TUCR)) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -8566,63 +8944,36 @@ p<- ggplot(tpm.dotplot2, aes(x=IDH1status, y=TPM)) +
         labs(y=paste(ifelse((tpmethod=="tpm"|tpmethod=="TPM"),
                       "Transcripts per kilobase million (TPM)",
                       "Reads per kilobase million (tpm)")),
-        x = "IDH1 type",title=disease) +
-  stat_summary(fun.y=mean, geom="point", shape=20, size=6, color=paper_blue, fill=paper_blue)
-  
+        x = "Sample",title=disease) +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
+
 ggsave(p,file=paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_tpm_boxplot.png",sep = ""),height=7,width=5)
-}}
 
-TUCR <- "uc.2"
-TUCRname <- "uc.2"
-print(i)
-print(TUCRname)
-if(file.exists(paste(outputdir,"/Figure6_Supplementary/figure6e_supplementary.png",sep = ""))){}else{
-tpm.dotplot2 <- tpm.dotplot %>% dplyr::filter(str_detect(TUCRids,"uc.2_"))
-tpm.dotplot2 <- tpm.dotplot2[!duplicated(tpm.dotplot2$survid),]
+if(TUCRname == "uc.110"){ggsave(p,file=paste(outputdir,"/Figure2/figure2c.png",sep = ""),height=7,width=5)}
 
-p<- ggplot(tpm.dotplot2, aes(x=IDH1status, y=TPM)) +
-  geom_boxplot(outlier.color="white") +
-  #geom_violin(trim = FALSE)+
-  #geom_point(pch=21, size=1.5) +
-  geom_jitter(binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  #ggtitle(paste(tpmethod," expression of ",TUCR)) +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"),
-        plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        axis.title = element_text(size = rel(1.6), face="bold"),
-        axis.text.y = element_text(size = rel(2.2)),
-        axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
-              #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="none",
-        legend.title=element_blank(),
-        legend.text=element_blank()) +
-        labs(y=paste(ifelse((tpmethod=="tpm"|tpmethod=="TPM"),
-                      "Transcripts per kilobase million (TPM)",
-                      "Reads per kilobase million (tpm)")),
-        x = "IDH1 type",title=disease) +
-  stat_summary(fun.y=mean, geom="point", shape=20, size=6, color=paper_blue, fill=paper_blue)
-  
-ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/figure6e_supplementary.png",sep = ""),height=7,width=5)
+if(TUCRname == "uc.2"){ggsave(p,file=paste(outputdir,"/Figure6_supplementary/supplementary_figure6c.png",sep = ""),height=7,width=5)}
 
-}
+if(TUCRname == "uc.15"){ggsave(p,file=paste(outputdir,"/Figure7_supplementary/supplementary_figure7c.png",sep = ""),height=7,width=5)}
+
+}#}
+
+
 
 ```
 
-### Supplementary Figure 6F
+### Supplementary Figure 6D
 
 Generate tpm Box Plots for each TUCR
 
-```{r Supplementary_Figure6F,eval=FALSE}
+```{r supplementary_figure6d_boxplot_TUCRs,eval=FALSE}
 
 disease <- "LGG"
 
 normal <- "cortex"
 
-figureorder <- 6
+figureorder <- 4
 
-## read data
+# read data
 
 t_countfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_mergedcounts.txt",sep="")
 
@@ -8636,7 +8987,7 @@ t_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",di
 
 n_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_seqdepth_counts.csv",sep="")
 
-## Merge Data
+# Merge Data
 
 if(!is.na(n_countfile)){
   mergedcounts <- read.table(t_countfile,header = TRUE)
@@ -8741,15 +9092,17 @@ tpm.median.write <- tpmcounts.info %>%
   left_join(tpm.median.write,by="id")
 
 write.csv(tpm.median.write,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_median_tpm_allTUCRs.csv",sep=""),row.names=F)
-  
-#tpm.dotplot <- tpm.df2[,9:ncol(tpm.df2)]
 
+tpm.dotplot <- tpm.df2[,9:ncol(tpm.df2)]
 TUCRids <- as.character(tpm.df2$id)
 annot <- as.character(tpm.df2$annot)
 length <- as.character(tpm.df2$length)
 tpm.dotplot <- cbind(TUCRids,annot,length,tpm.dotplot)
+
+tpm.dotplot<-tpm.dotplot[,c(1,2,3,5:768)]
 tpm.dotplot <- tpm.dotplot %>% 
-  gather(key = "survid", value = "TPM",-TUCRids,-annot,-length,-length) %>%
+  gather(key = "survid", value = "TPM",-TUCRids,-annot,-length) %>%
+  #gather(key = "Sample", value = "TPM",-TUCRids,-annot,-length) %>%
   #mutate(Key = gsub("[.]","-",Sample)) %>%
   #  mutate(string = ifelse(str_detect(Key,"TCGA"),
   #                         sub(".*TCGA", "", Key),
@@ -8773,10 +9126,10 @@ print(TUCRname)
 if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))){
   dir.create(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))
 }
-if(file.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_tpm_boxplot.png",sep = ""))){}else{
+#if(file.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_tpm_boxplot.png",sep = ""))){}else{
 tpm.dotplot2 <- tpm.dotplot %>% dplyr::filter(TUCRids == TUCR)
-tpm.dotplot2 <- tpm.dotplot2[!duplicated(tpm.dotplot2$survid),]
 
+tpm.dotplot2$IDH1status<-factor(tpm.dotplot2$IDH1status,levels=c("normal","WT","MUT"))
 p<- ggplot(tpm.dotplot2, aes(x=IDH1status, y=TPM)) +
   geom_boxplot(outlier.color="white") +
   #geom_violin(trim = FALSE)+
@@ -8798,53 +9151,23 @@ p<- ggplot(tpm.dotplot2, aes(x=IDH1status, y=TPM)) +
         labs(y=paste(ifelse((tpmethod=="tpm"|tpmethod=="TPM"),
                       "Transcripts per kilobase million (TPM)",
                       "Reads per kilobase million (tpm)")),
-        x = "IDH1 type",title=disease) +
+        x = "IDH1 status",title=disease) +
   stat_summary(fun.y=mean, geom="point", shape=20, size=6, color=paper_blue, fill=paper_blue)
-  
+
 ggsave(p,file=paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_tpm_boxplot.png",sep = ""),height=7,width=5)
-}}
 
-TUCR <- "uc.2"
-TUCRname <- "uc.2"
-print(i)
-print(TUCRname)
-if(file.exists(paste(outputdir,"/Figure6_Supplementary/figure6f_supplementary.png",sep = ""))){}else{
-tpm.dotplot2 <- tpm.dotplot %>% dplyr::filter(str_detect(TUCRids,"uc.2_"))
-tpm.dotplot2 <- tpm.dotplot2[!duplicated(tpm.dotplot2$survid),]
+if(TUCRname == "uc.110"){ggsave(p,file=paste(outputdir,"/Figure2/figure2d.png",sep = ""),height=7,width=5)}
 
-p<- ggplot(tpm.dotplot2, aes(x=IDH1status, y=TPM)) +
-  geom_boxplot(outlier.color="white") +
-  #geom_violin(trim = FALSE)+
-  #geom_point(pch=21, size=1.5) +
-  geom_jitter(binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
-  #ggtitle(paste(tpmethod," expression of ",TUCR)) +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"),
-        plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        axis.title = element_text(size = rel(1.6), face="bold"),
-        axis.text.y = element_text(size = rel(2.2)),
-        axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
-              #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="none",
-        legend.title=element_blank(),
-        legend.text=element_blank()) +
-        labs(y=paste(ifelse((tpmethod=="tpm"|tpmethod=="TPM"),
-                      "Transcripts per kilobase million (TPM)",
-                      "Reads per kilobase million (tpm)")),
-        x = "IDH1 type",title=disease) +
-  stat_summary(fun.y=mean, geom="point", shape=20, size=6, color=paper_blue, fill=paper_blue)
-  
-ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/figure6f_supplementary.png",sep = ""),height=7,width=5)
+if(TUCRname == "uc.2"){ggsave(p,file=paste(outputdir,"/Figure6_supplementary/supplementary_figure6d.png",sep = ""),height=7,width=5)}
 
-}
+if(TUCRname == "uc.15"){ggsave(p,file=paste(outputdir,"/Figure7_supplementary/supplementary_figure7d.png",sep = ""),height=7,width=5)}
+}#}
 
 ```
 
-### Supplementary Figure 6J and 6K
+### Supplementary Figure 6E and 6F
 
-```{r supplementary_figure_6jk_relatingmodules_1,eval=FALSE}
+```{r Supplementary_Figure_6ef_relatingmodules_1,eval=FALSE}
 
 # Load the WGCNA package
 library(WGCNA)
@@ -8861,7 +9184,7 @@ lnames
 ```
 filter out modules that are particularly large. 
 
-```{r supplementary_figure_6jk_relatingmodules_2,fig.width = 3, fig.height = 7,eval=FALSE}
+```{r Supplementary_Figure_6ef_relatingmodules_2,fig.width = 3, fig.height = 7,eval=FALSE}
 
 # Define numbers of genes and samples
 nGenes = ncol(datExpr)
@@ -8877,7 +9200,7 @@ moduleTraitPvalue = corPvalueStudent(moduleTraitCor, nSamples)
 
 ```
 
-```{r supplementary_figure_6jk_relatingmodules_3,eval=FALSE}
+```{r Supplementary_Figure_6ef_relatingmodules_3,eval=FALSE}
 
 geneModuleMembership = as.data.frame(cor(datExpr, MEs, use = "p"))
 MMPvalue = as.data.frame(corPvalueStudent(as.matrix(geneModuleMembership), nSamples))
@@ -8946,7 +9269,7 @@ names(MMPvalue2) = paste("p.MM", modNames, sep="")
 
 ```
 
-```{r supplementary_figure_6jk_Figure1h_mainheatmap,eval=FALSE}
+```{r Supplementary_Figure_6ef_Figure1h_mainheatmap,eval=FALSE}
 
 load(file="./Inputs/general_files/wgcnafiles/allprelims.Rdata")
 
@@ -9034,7 +9357,7 @@ p
 ggsave(p,file=paste(outputdir,"/Figure1/figure1h.png",sep=""), width = 7, height = 3, dpi = 600)
 ```
 
-```{r supplementary_figure_6jk__allgoterms,eval=FALSE}
+```{r Supplementary_Figure_6ef__allgoterms,eval=FALSE}
 
 if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
   dir.create(paste(outputdir,"/TUCR_Database/",sep=""))
@@ -9166,7 +9489,7 @@ ggsave(plot = print(p),paste(outputdir,"/Figure9_Supplementary/supplementary_fig
 
 ```
 
-```{r supplementary_figure_6jk_relatingmodules_5,fig.height=7,fig.width=3,eval=FALSE}
+```{r Supplementary_Figure_6ef_relatingmodules_5,fig.height=7,fig.width=3,eval=FALSE}
 
 ####Trait Heatmaps
 
@@ -9376,7 +9699,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_6_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_6_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_6.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -9430,7 +9753,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_5_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_5_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_5.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -9484,7 +9807,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_4_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_4_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_4.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -9538,7 +9861,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_1_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_1_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_1.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -9592,7 +9915,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_2_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_2_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_2.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -9646,7 +9969,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_3_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_3_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_3.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -9665,17 +9988,17 @@ if(trait_id == "uc.110"){
 
 ``` 
 
-### Supplementary Figure 6G
+### Supplementary Figure 6G and 6H
 
 Completing survival analysis for TUCRs
 
-```{r Figure6e_supplementary,eval=FALSE}
+```{r Figure6gh_GBM,eval=FALSE}
 
 disease <- "GBM"
 
 normal <- "cortex"
 
-figureorder <- 6
+figureorder <- 5
 
 ## read data
 
@@ -9730,17 +10053,17 @@ if(!is.na(n_countfile)){
     seqdepth <- read.csv(file = t_seqdepthfile)
 }
 
-if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
-  dir.create(paste(outputdir,"/TUCR_Database/",sep=""))
-}
+#if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
+#  dir.create(paste(outputdir,"/TUCR_Database/",sep=""))
+#}
 
-if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
-  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
-}
+#if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+#  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+#}
 
-if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))){
-  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))
-}
+#if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))){
+#  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))
+#}
 
 if(!is.na(filterannot)){
   survcounts <- mergedcounts %>%
@@ -9762,7 +10085,11 @@ match_colnames <- match(as.character(colnames(survcounts)),as.character(metadata
 survcounts <- as.matrix(survcounts)
 
 n_index <- which(as.character(metadata$dex) %in% "normal")
-t_index <- which(as.character(metadata$dex) %in% "tumor")
+
+## modifying this command to only subset with IDH status WT for GBM
+#t_index <- which(as.character(metadata$dex) %in% "tumor")
+
+t_index <- which(as.character(metadata$IDH1status) %in% "WT")
 
 vm <- function(x){
   #x <- mergedcounts
@@ -9824,7 +10151,6 @@ surv_TUCR <- surv_TUCR %>% dplyr::select(-term)
 
 write_csv(surv_TUCR,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_coxph_allTUCRs.csv",sep=""))
 
-if(makekpmplots == TRUE){
 
 km_countdata <- z_rna
 colnames(km_countdata) <- metadata$id[t_index]
@@ -9842,7 +10168,7 @@ km_TUCRs <- cbind(posdata,km_countdata)
 
 km_TUCRs <- km_TUCRs %>%
   gather(key = "id", value = "count",-TUCR,-median,-n75,-n25) %>%
-  mutate(group = ifelse(count>=n75,"high",ifelse(count<=n25,"low",NA))) %>%
+  mutate(group = ifelse(count>=n75,"low",ifelse(count<=n25,"high",NA))) %>%
   distinct %>%
   dplyr::select(TUCR,median,id,group) %>%
   left_join(clinical2,by="id") %>%
@@ -9851,10 +10177,10 @@ km_TUCRs <- km_TUCRs %>%
 TUCRids <- as.character(posdata$TUCR)
 i <- 1
 
-ptable <- data.frame(matrix(ncol=4,nrow=0, dimnames=list(NULL, c("TUCR","method","pvalue","padj"))))
+ptable <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("TUCR","pvalue","method"))))
 
 for(i in 1:length(TUCRids)){
-  print(i)
+ print(i)
   print(TUCRids[i])
   
   skip_to_next <- FALSE
@@ -9862,58 +10188,47 @@ for(i in 1:length(TUCRids)){
   if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRsurv,sep=""))){
   dir.create(paste(outputdir,"/TUCR_Database/",TUCRsurv,sep=""))
   } 
-  
+  #TUCRsurv<-"uc.1"
   #TUCR <- "uc.1"
   kmdata <- km_TUCRs %>%
-    dplyr::filter(TUCR == TUCRsurv) %>%
-    dplyr::select(TUCR,id,group,time,status) 
+   dplyr::filter(TUCR == TUCRsurv) %>%
+   dplyr::select(TUCR,id,group,time,status) 
   fit <- tryCatch(survfit(Surv(time, status) ~ group, data = kmdata),
-                error = function(e) { skip_to_next <<- TRUE})
+               error = function(e) { skip_to_next <<- TRUE})
   p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE),
-                error = function(e) { skip_to_next <<- TRUE})
+               error = function(e) { skip_to_next <<- TRUE})
   #p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
                 
   if(skip_to_next == TRUE) { 
-    rbinder <- cbind(as.character(TUCRsurv),NA,NA)
-    ptable[i,] <- rbinder
-}else{
+   rbinder <- cbind(as.character(TUCRsurv),NA,NA)
+    ptable[i,] <- rbinder } else{
   grid.draw.ggsurvplot <- function(x){
   survminer:::print.ggsurvplot(x, newpage = FALSE)
-}
+  }
+ p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
  ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
   p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
-    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
-    dplyr::select(method,pval,padj)
+   dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+   ## we are selecting three columns here and adding uc.id in next step making four columns for each uc.id 
+   ## Above ptable was initiated with only three columns (TUCR,pvalue,method) 
+   ## Warning in `[<-.data.frame`(`*tmp*`, i, , value = list(`as.character(TUCRsurv)` = "uc.272",  :
+   ## provided 4 variables to replace 3 variables
+   ## modifying below line to select only two columns (pval,method) matching above ptable initiation and if condition.   
+   #dplyr::select(method,pval,padj)
+    dplyr::select(pval,method)
   rbinder <- cbind(as.character(TUCRsurv),p2value)
   ptable[i,] <- rbinder
-   }}
+   } 
 
-write_csv(ptable,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_kpm_allTUCRs.csv",sep=""))}
-
-TUCRsurv <- "uc.2"
-kmdata <- km_TUCRs %>%
-    dplyr::filter(TUCR == TUCRsurv) %>%
-    dplyr::select(TUCR,id,group,time,status) 
-  fit <- tryCatch(survfit(Surv(time, status) ~ group, data = kmdata),
-                error = function(e) { skip_to_next <<- TRUE})
-  p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE),
-                error = function(e) { skip_to_next <<- TRUE})
-  #p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
-                
-  if(skip_to_next == TRUE) { 
-    rbinder <- cbind(as.character(TUCRsurv),NA,NA)
-    ptable[i,] <- rbinder
-}else{
-  grid.draw.ggsurvplot <- function(x){
-  survminer:::print.ggsurvplot(x, newpage = FALSE)
 }
- ggsave(file=paste(outputdir,"/Figure6_Supplementary/figure6g_supplementary.png",sep = ""), device="png", plot=p)}
+
+write_csv(ptable,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_kpm_allTUCRs.csv",sep=""))
 
 ```
 
-### Supplementary Figure 6H
+## Figures 6G and 6H
 
-```{r Figure6f_supplementary,eval=FALSE}
+```{r Figure6gh_LGG_figure,eval=FALSE}
 
 disease <- "LGG"
 
@@ -9988,6 +10303,7 @@ if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep="")))
 
 if(!is.na(filterannot)){
   survcounts <- mergedcounts %>%
+    #filter(tag.x == filterannot & annot.x != "random" | id == "CASZ1___chr1:10636602-10796676:-")
     filter(tag.x == filterannot & annot.x != "random")
   
 }else{
@@ -10039,7 +10355,6 @@ scal <- function(x,y){
 z_rna <- scal(count_vm[,t_index],count_vm[,n_index])
 rownames(z_rna) <- posdata[,4]
 
-#clinical <- read.table("./Inputs/general_files/survivalfiles/GBM.clin.merged.txt",header = TRUE)
 clinical <- read.table("./Inputs/general_files/survivalfiles/glioma3.clin.merged.txt",header = TRUE)
 
 clinical$time <- as.numeric(clinical$time)
@@ -10049,11 +10364,19 @@ clinical <- clinical %>%
 
 clinical2 <- metadata %>% left_join(clinical,by = "barcode")
 
+## 
+clinical2_mut<-clinical2[clinical2$IDH1status=="MUT",]
+z_rna_mut<-z_rna[,clinical2_mut$id]
+clinical2_wt<-clinical2[clinical2$IDH1status=="WT",]
+z_rna_wt<-z_rna[,clinical2_wt$id]
 # Sum(clinical$patient %in% colnames(z_rna))
 
 ind_tum <- which(unique(colnames(z_rna)) %in% clinical2$id)
+
+## to get index of tumor samples in clinical2 dataset and it has IDH1 status
 ind_clin <- which(clinical2$id %in% colnames(z_rna))
 
+## this is for LGG wt type 
 out.tab <- c()
 for(x in 1:nrow(count_vm)){
   ind_gene <- x
@@ -10063,15 +10386,234 @@ for(x in 1:nrow(count_vm)){
   out.tab <- rbind(out.tab,cx)
 }
 
+out.tab$estimate <- -out.tab$estimate
 surv_TUCR <- cbind(posdata,out.tab)
 surv_TUCR <- surv_TUCR %>% dplyr::select(-term)
 
 write_csv(surv_TUCR,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_coxph_allTUCRs.csv",sep=""))
 
-if(makekpmplots == TRUE){
-
 km_countdata <- z_rna
-colnames(km_countdata) <- metadata$id[t_index]
+#colnames(km_countdata) <- metadata$id[t_index]
+
+## rowmedians considering all LGG samples count matrix
+## copying posdata in to posdata for ptable as in this we are selecting few columns and we need initial posdata dataset for LGG mut cox analysis
+posdata1<-posdata
+
+posdata1$median <- rowMedians(survcounts)
+
+#km_countdata2 <- km_countdata[,complete.cases(clinical2)]
+
+probs <- c(0.25,0.5,0.75)
+q <- rowQuantiles(km_countdata, probs = probs)
+posdata1$n25 <- q[,1]
+posdata1$n75 <- q[,3]
+posdata1 <- posdata1 %>%
+  dplyr::select("TUCR"=alias.x,median,n25,n75)
+km_TUCRs <- cbind(posdata1,km_countdata) 
+
+km_TUCRs <- km_TUCRs %>%
+  gather(key = "id", value = "count",-TUCR,-median,-n75,-n25) %>%
+  mutate(group = ifelse(count>=n75,"low",ifelse(count<=n25,"high",NA))) %>%
+  distinct %>%
+  dplyr::select(TUCR,median,id,group) %>%
+  left_join(clinical2,by="id") %>%
+  dplyr::filter(median != 0)
+
+TUCRids <- as.character(posdata1$TUCR)
+i <- 1
+
+ptable <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("TUCR","pvalue","method"))))
+
+for(i in 1:length(TUCRids)){
+  print(i)
+  print(TUCRids[i])
+  
+  skip_to_next <- FALSE
+  TUCRsurv <- as.character(TUCRids[i])
+  if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRsurv,sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/",TUCRsurv,sep=""))
+  } 
+  #TUCRsurv<-"uc.1"
+  #TUCR <- "uc.1"
+  kmdata <- km_TUCRs %>%
+   dplyr::filter(TUCR == TUCRsurv) %>%
+   dplyr::select(TUCR,id,group,time,status) 
+  fit <- tryCatch(survfit(Surv(time, status) ~ group, data = kmdata),
+               error = function(e) { skip_to_next <<- TRUE})
+  p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE),
+               error = function(e) { skip_to_next <<- TRUE})
+  #p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
+                
+  if(skip_to_next == TRUE) { 
+   rbinder <- cbind(as.character(TUCRsurv),NA,NA)
+    ptable[i,] <- rbinder } else{
+  grid.draw.ggsurvplot <- function(x){
+  survminer:::print.ggsurvplot(x, newpage = FALSE)
+  }
+ p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
+ ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
+ 
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
+   dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+   ## we are selecting three columns here and adding uc.id in next step making four columns for each uc.id 
+   ## Above ptable was initiated with only three columns (TUCR,pvalue,method) 
+   ## Warning in `[<-.data.frame`(`*tmp*`, i, , value = list(`as.character(TUCRsurv)` = "uc.272",  :
+   ## provided 4 variables to replace 3 variables
+   ## modifying below line to select only two columns (pval,method) matching above ptable initiation and if condition.   
+   #dplyr::select(method,pval,padj)
+    dplyr::select(pval,method)
+  rbinder <- cbind(as.character(TUCRsurv),p2value)
+  ptable[i,] <- rbinder
+   } 
+
+}
+
+write_csv(ptable,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_kpm_allTUCRs.csv",sep=""))
+
+### LGG-WT
+
+disease <- "LGG_WT"
+
+figureorder <- 7
+
+out.tab <- c()
+for(x in 1:nrow(count_vm)){
+   ind_gene <- x
+   s <- Surv(clinical2_wt$time,clinical2_wt$status)
+  cx <- coxph(formula = s ~ z_rna_wt[ind_gene,])
+  cx <- tidy(cx)
+  out.tab <- rbind(out.tab,cx)
+}
+out.tab$estimate <- -out.tab$estimate
+
+surv_TUCR <- cbind(posdata,out.tab)
+surv_TUCR <- surv_TUCR %>% dplyr::select(-term)
+
+write_csv(surv_TUCR,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_coxph_allTUCRs.csv",sep=""))
+
+km_countdata <- z_rna_wt
+#colnames(km_countdata) <- metadata$id[t_index]
+
+## rowmedians considering all LGG samples count matrix
+## copying posdata in to posdata for ptable as in this we are selecting few columns and we need initial posdata dataset for LGG mut cox analysis
+posdata1<-posdata
+
+posdata1$median <- rowMedians(survcounts)
+
+#km_countdata2 <- km_countdata[,complete.cases(clinical2)]
+
+probs <- c(0.25,0.5,0.75)
+q <- rowQuantiles(km_countdata, probs = probs)
+posdata1$n25 <- q[,1]
+posdata1$n75 <- q[,3]
+posdata1 <- posdata1 %>%
+  dplyr::select("TUCR"=alias.x,median,n25,n75)
+km_TUCRs <- cbind(posdata1,km_countdata) 
+
+km_TUCRs <- km_TUCRs %>%
+  gather(key = "id", value = "count",-TUCR,-median,-n75,-n25) %>%
+  mutate(group = ifelse(count>=n75,"low",ifelse(count<=n25,"high",NA))) %>%
+  distinct %>%
+  dplyr::select(TUCR,median,id,group) %>%
+  left_join(clinical2_wt,by="id") %>%
+  dplyr::filter(median != 0)
+
+TUCRids <- as.character(posdata1$TUCR)
+i <- 1
+
+ptable <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("TUCR","pvalue","method"))))
+
+for(i in 1:length(TUCRids)){
+  print(i)
+  print(TUCRids[i])
+  
+  skip_to_next <- FALSE
+  TUCRsurv <- as.character(TUCRids[i])
+  if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRsurv,sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/",TUCRsurv,sep=""))
+  } 
+  #TUCRsurv<-"uc.1"
+  #TUCR <- "uc.1"
+  kmdata <- km_TUCRs %>%
+   dplyr::filter(TUCR == TUCRsurv) %>%
+   dplyr::select(TUCR,id,group,time,status) 
+  fit <- tryCatch(survfit(Surv(time, status) ~ group, data = kmdata),
+               error = function(e) { skip_to_next <<- TRUE})
+  p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE),
+               error = function(e) { skip_to_next <<- TRUE})
+  #p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
+                
+  if(skip_to_next == TRUE) { 
+   rbinder <- cbind(as.character(TUCRsurv),NA,NA)
+    ptable[i,] <- rbinder } else{
+  grid.draw.ggsurvplot <- function(x){
+  survminer:::print.ggsurvplot(x, newpage = FALSE)
+  }
+ p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
+ ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
+ 
+  if(TUCRsurv == "uc.75"){
+    ggsave(file=paste(outputdir,"/Figure1/figure1e.png",sep = ""), device="png", plot=p)
+ }
+ 
+ if(TUCRsurv == "uc.132"){
+    ggsave(file=paste(outputdir,"/Figure1/figure1f.png",sep = ""), device="png", plot=p)
+ }
+ 
+ if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
+ }
+ 
+ if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure7_Supplementary/",sep=""))
+}
+ 
+ if(TUCRsurv == "uc.2"){
+    ggsave(file=paste(outputdir,"/Figure6_supplementary/supplementary_figure6g.png",sep = ""), device="png", plot=p)
+ }
+ 
+ if(TUCRsurv == "uc.15"){
+    ggsave(file=paste(outputdir,"/Figure7_supplementary/supplementary_figure7g.png",sep = ""), device="png", plot=p)
+ }
+
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
+   dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+   ## we are selecting three columns here and adding uc.id in next step making four columns for each uc.id 
+   ## Above ptable was initiated with only three columns (TUCR,pvalue,method) 
+   ## Warning in `[<-.data.frame`(`*tmp*`, i, , value = list(`as.character(TUCRsurv)` = "uc.272",  :
+   ## provided 4 variables to replace 3 variables
+   ## modifying below line to select only two columns (pval,method) matching above ptable initiation and if condition.   
+   #dplyr::select(method,pval,padj)
+    dplyr::select(pval,method)
+  rbinder <- cbind(as.character(TUCRsurv),p2value)
+  ptable[i,] <- rbinder
+   } 
+
+}
+
+write_csv(ptable,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_kpm_allTUCRs.csv",sep=""))
+## this is for LGG mut type
+disease<-"LGG_MUT"
+
+figureorder <- 8
+
+out.tab <- c()
+for(x in 1:nrow(count_vm)){
+   ind_gene <- x
+   s <- Surv(clinical2_mut$time,clinical2_mut$status)
+  cx <- coxph(formula = s ~ z_rna_mut[ind_gene,])
+  cx <- tidy(cx)
+  out.tab <- rbind(out.tab,cx)
+}
+out.tab$estimate <- -out.tab$estimate
+
+surv_TUCR <- cbind(posdata,out.tab)
+surv_TUCR <- surv_TUCR %>% dplyr::select(-term)
+
+write_csv(surv_TUCR,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_coxph_allTUCRs.csv",sep=""))
+
+km_countdata <- z_rna_mut
+#colnames(km_countdata) <- metadata$id[t_index]
 posdata$median <- rowMedians(survcounts)
 
 #km_countdata2 <- km_countdata[,complete.cases(clinical2)]
@@ -10086,16 +10628,16 @@ km_TUCRs <- cbind(posdata,km_countdata)
 
 km_TUCRs <- km_TUCRs %>%
   gather(key = "id", value = "count",-TUCR,-median,-n75,-n25) %>%
-  mutate(group = ifelse(count>=n75,"high",ifelse(count<=n25,"low",NA))) %>%
+  mutate(group = ifelse(count>=n75,"low",ifelse(count<=n25,"high",NA))) %>%
   distinct %>%
   dplyr::select(TUCR,median,id,group) %>%
-  left_join(clinical2,by="id") %>%
+  left_join(clinical2_mut,by="id") %>%
   dplyr::filter(median != 0)
 
 TUCRids <- as.character(posdata$TUCR)
 i <- 1
 
-ptable <- data.frame(matrix(ncol=4,nrow=0, dimnames=list(NULL, c("TUCR","method","pvalue","padj"))))
+ptable <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("TUCR","pvalue","method"))))
 
 for(i in 1:length(TUCRids)){
   print(i)
@@ -10106,52 +10648,59 @@ for(i in 1:length(TUCRids)){
   if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRsurv,sep=""))){
   dir.create(paste(outputdir,"/TUCR_Database/",TUCRsurv,sep=""))
   } 
-  
+  #TUCRsurv<-"uc.1"
   #TUCR <- "uc.1"
   kmdata <- km_TUCRs %>%
-    dplyr::filter(TUCR == TUCRsurv) %>%
-    dplyr::select(TUCR,id,group,time,status) 
+   dplyr::filter(TUCR == TUCRsurv) %>%
+   dplyr::select(TUCR,id,group,time,status) 
   fit <- tryCatch(survfit(Surv(time, status) ~ group, data = kmdata),
-                error = function(e) { skip_to_next <<- TRUE})
+               error = function(e) { skip_to_next <<- TRUE})
   p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE),
-                error = function(e) { skip_to_next <<- TRUE})
+               error = function(e) { skip_to_next <<- TRUE})
   #p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
                 
   if(skip_to_next == TRUE) { 
-    rbinder <- cbind(as.character(TUCRsurv),NA,NA)
-    ptable[i,] <- rbinder
-}else{
+   rbinder <- cbind(as.character(TUCRsurv),NA,NA)
+    ptable[i,] <- rbinder } else{
   grid.draw.ggsurvplot <- function(x){
   survminer:::print.ggsurvplot(x, newpage = FALSE)
-}
+  }
+
+ p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
  ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
+ 
+  if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
+ }
+ 
+ if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure7_Supplementary/",sep=""))
+}
+ 
+ if(TUCRsurv == "uc.2"){
+    ggsave(file=paste(outputdir,"/Figure6_supplementary/supplementary_figure6h.png",sep = ""), device="png", plot=p)
+ }
+ 
+ if(TUCRsurv == "uc.15"){
+    ggsave(file=paste(outputdir,"/Figure7_supplementary/supplementary_figure7h.png",sep = ""), device="png", plot=p)
+ }
+ 
   p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
-    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
-    dplyr::select(method,pval,padj)
+   dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+   ## we are selecting three columns here and adding uc.id in next step making four columns for each uc.id 
+   ## Above ptable was initiated with only three columns (TUCR,pvalue,method) 
+   ## Warning in `[<-.data.frame`(`*tmp*`, i, , value = list(`as.character(TUCRsurv)` = "uc.272",  :
+   ## provided 4 variables to replace 3 variables
+   ## modifying below line to select only two columns (pval,method) matching above ptable initiation and if condition.   
+   #dplyr::select(method,pval,padj)
+    dplyr::select(pval,method)
   rbinder <- cbind(as.character(TUCRsurv),p2value)
   ptable[i,] <- rbinder
-   }}
+    } 
 
-write_csv(ptable,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_kpm_allTUCRs.csv",sep=""))}
-
-TUCRsurv <- "uc.2"
-kmdata <- km_TUCRs %>%
-    dplyr::filter(TUCR == TUCRsurv) %>%
-    dplyr::select(TUCR,id,group,time,status) 
-  fit <- tryCatch(survfit(Surv(time, status) ~ group, data = kmdata),
-                error = function(e) { skip_to_next <<- TRUE})
-  p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE),
-                error = function(e) { skip_to_next <<- TRUE})
-  #p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
-                
-  if(skip_to_next == TRUE) { 
-    rbinder <- cbind(as.character(TUCRsurv),NA,NA)
-    ptable[i,] <- rbinder
-}else{
-  grid.draw.ggsurvplot <- function(x){
-  survminer:::print.ggsurvplot(x, newpage = FALSE)
 }
- ggsave(file=paste(outputdir,"/Figure6_Supplementary/figure6h_supplementary.png",sep = ""), device="png", plot=p)}
+
+write_csv(ptable,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_kpm_allTUCRs.csv",sep=""))
 
 ```
  
@@ -11203,9 +11752,9 @@ ggsave(p,file=paste(outputdir,"/Figure7_Supplementary/figure7d_supplementary.png
 
 ```
 
-### Supplementary Figure 7J and 7K
+### Supplementary Figure 7E and 7F
 
-```{r Supplementary_Figure_7jk_relatingmodules_1,eval=FALSE}
+```{r Supplementary_Figure_7ef_relatingmodules_1,eval=FALSE}
 
 # Load the WGCNA package
 library(WGCNA)
@@ -11222,7 +11771,7 @@ lnames
 ```
 filter out modules that are particularly large. 
 
-```{r Supplementary_Figure_7jk_relatingmodules_2,fig.width = 3, fig.height = 7,eval=FALSE}
+```{r Supplementary_Figure_7ef_relatingmodules_2,fig.width = 3, fig.height = 7,eval=FALSE}
 
 # Define numbers of genes and samples
 nGenes = ncol(datExpr)
@@ -11238,7 +11787,7 @@ moduleTraitPvalue = corPvalueStudent(moduleTraitCor, nSamples)
 
 ```
 
-```{r Supplementary_Figure_7jk_relatingmodules_3,eval=FALSE}
+```{r Supplementary_Figure_7ef_relatingmodules_3,eval=FALSE}
 
 geneModuleMembership = as.data.frame(cor(datExpr, MEs, use = "p"))
 MMPvalue = as.data.frame(corPvalueStudent(as.matrix(geneModuleMembership), nSamples))
@@ -11307,7 +11856,7 @@ names(MMPvalue2) = paste("p.MM", modNames, sep="")
 
 ```
 
-```{r Supplementary_Figure_7jk_Figure1h_mainheatmap,eval=FALSE}
+```{r Supplementary_Figure_7ef_Figure1h_mainheatmap,eval=FALSE}
 
 load(file="./Inputs/general_files/wgcnafiles/allprelims.Rdata")
 
@@ -11395,7 +11944,7 @@ p
 ggsave(p,file=paste(outputdir,"/Figure1/figure1h.png",sep=""), width = 7, height = 3, dpi = 600)
 ```
 
-```{r Supplementary_Figure_7jk_allgoterms,eval=FALSE}
+```{r Supplementary_Figure_7ef_allgoterms,eval=FALSE}
 
 if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
   dir.create(paste(outputdir,"/TUCR_Database/",sep=""))
@@ -11527,7 +12076,7 @@ ggsave(plot = print(p),paste(outputdir,"/Figure9_Supplementary/supplementary_fig
 
 ```
 
-```{r Supplementary_Figure_7jk_relatingmodules_5,fig.height=7,fig.width=3,eval=FALSE}
+```{r Supplementary_Figure_7ef_relatingmodules_5,fig.height=7,fig.width=3,eval=FALSE}
 
 ####Trait Heatmaps
 
@@ -11737,7 +12286,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_6_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_6_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_6.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -11791,7 +12340,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_5_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_5_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_5.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -11845,7 +12394,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_4_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_4_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_4.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -11899,7 +12448,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_1_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_1_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_1.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -11953,7 +12502,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_2_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_2_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_2.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -12007,7 +12556,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
 
-ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/8_3_",trait_id,"_",module,".png",sep=""),height=5,width=5)
+ggsave(plot = print(p),paste(outputdir,"/TUCR_Database/",trait_id,"/10_3_",trait_id,"_",module,".png",sep=""),height=5,width=5)
 
 if(trait_id == "uc.2"){
   ggsave(p,file=paste(outputdir,"/Figure6_Supplementary/supplementary_figure6f_3.png",sep=""), width = 5, height = 5, dpi = 600)
@@ -12026,17 +12575,17 @@ if(trait_id == "uc.110"){
 
 ```
 
-### Supplementary Figure 7G
+### Supplementary Figure 7G and 7H
 
 Completing survival analysis for TUCRs
 
-```{r Figure7e_supplementary,eval=FALSE}
+```{r Figure7gh_GBM}
 
 disease <- "GBM"
 
 normal <- "cortex"
 
-figureorder <- 6
+figureorder <- 5
 
 ## read data
 
@@ -12091,17 +12640,17 @@ if(!is.na(n_countfile)){
     seqdepth <- read.csv(file = t_seqdepthfile)
 }
 
-if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
-  dir.create(paste(outputdir,"/TUCR_Database/",sep=""))
-}
+#if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
+#  dir.create(paste(outputdir,"/TUCR_Database/",sep=""))
+#}
 
-if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
-  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
-}
+#if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+#  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+#}
 
-if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))){
-  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))
-}
+#if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))){
+#  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))
+#}
 
 if(!is.na(filterannot)){
   survcounts <- mergedcounts %>%
@@ -12123,7 +12672,11 @@ match_colnames <- match(as.character(colnames(survcounts)),as.character(metadata
 survcounts <- as.matrix(survcounts)
 
 n_index <- which(as.character(metadata$dex) %in% "normal")
-t_index <- which(as.character(metadata$dex) %in% "tumor")
+
+## modifying this command to only subset with IDH status WT for GBM
+#t_index <- which(as.character(metadata$dex) %in% "tumor")
+
+t_index <- which(as.character(metadata$IDH1status) %in% "WT")
 
 vm <- function(x){
   #x <- mergedcounts
@@ -12185,7 +12738,6 @@ surv_TUCR <- surv_TUCR %>% dplyr::select(-term)
 
 write_csv(surv_TUCR,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_coxph_allTUCRs.csv",sep=""))
 
-if(makekpmplots == TRUE){
 
 km_countdata <- z_rna
 colnames(km_countdata) <- metadata$id[t_index]
@@ -12203,7 +12755,7 @@ km_TUCRs <- cbind(posdata,km_countdata)
 
 km_TUCRs <- km_TUCRs %>%
   gather(key = "id", value = "count",-TUCR,-median,-n75,-n25) %>%
-  mutate(group = ifelse(count>=n75,"high",ifelse(count<=n25,"low",NA))) %>%
+  mutate(group = ifelse(count>=n75,"low",ifelse(count<=n25,"high",NA))) %>%
   distinct %>%
   dplyr::select(TUCR,median,id,group) %>%
   left_join(clinical2,by="id") %>%
@@ -12212,10 +12764,10 @@ km_TUCRs <- km_TUCRs %>%
 TUCRids <- as.character(posdata$TUCR)
 i <- 1
 
-ptable <- data.frame(matrix(ncol=4,nrow=0, dimnames=list(NULL, c("TUCR","method","pvalue","padj"))))
+ptable <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("TUCR","pvalue","method"))))
 
 for(i in 1:length(TUCRids)){
-  print(i)
+ print(i)
   print(TUCRids[i])
   
   skip_to_next <- FALSE
@@ -12223,58 +12775,47 @@ for(i in 1:length(TUCRids)){
   if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRsurv,sep=""))){
   dir.create(paste(outputdir,"/TUCR_Database/",TUCRsurv,sep=""))
   } 
-  
+  #TUCRsurv<-"uc.1"
   #TUCR <- "uc.1"
   kmdata <- km_TUCRs %>%
-    dplyr::filter(TUCR == TUCRsurv) %>%
-    dplyr::select(TUCR,id,group,time,status) 
+   dplyr::filter(TUCR == TUCRsurv) %>%
+   dplyr::select(TUCR,id,group,time,status) 
   fit <- tryCatch(survfit(Surv(time, status) ~ group, data = kmdata),
-                error = function(e) { skip_to_next <<- TRUE})
+               error = function(e) { skip_to_next <<- TRUE})
   p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE),
-                error = function(e) { skip_to_next <<- TRUE})
+               error = function(e) { skip_to_next <<- TRUE})
   #p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
                 
   if(skip_to_next == TRUE) { 
-    rbinder <- cbind(as.character(TUCRsurv),NA,NA)
-    ptable[i,] <- rbinder
-}else{
+   rbinder <- cbind(as.character(TUCRsurv),NA,NA)
+    ptable[i,] <- rbinder } else{
   grid.draw.ggsurvplot <- function(x){
   survminer:::print.ggsurvplot(x, newpage = FALSE)
-}
+  }
+ p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
  ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
   p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
-    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
-    dplyr::select(method,pval,padj)
+   dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+   ## we are selecting three columns here and adding uc.id in next step making four columns for each uc.id 
+   ## Above ptable was initiated with only three columns (TUCR,pvalue,method) 
+   ## Warning in `[<-.data.frame`(`*tmp*`, i, , value = list(`as.character(TUCRsurv)` = "uc.272",  :
+   ## provided 4 variables to replace 3 variables
+   ## modifying below line to select only two columns (pval,method) matching above ptable initiation and if condition.   
+   #dplyr::select(method,pval,padj)
+    dplyr::select(pval,method)
   rbinder <- cbind(as.character(TUCRsurv),p2value)
   ptable[i,] <- rbinder
-   }}
+   } 
 
-write_csv(ptable,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_kpm_allTUCRs.csv",sep=""))}
-
-TUCRsurv <- "uc.15"
-kmdata <- km_TUCRs %>%
-    dplyr::filter(TUCR == TUCRsurv) %>%
-    dplyr::select(TUCR,id,group,time,status) 
-  fit <- tryCatch(survfit(Surv(time, status) ~ group, data = kmdata),
-                error = function(e) { skip_to_next <<- TRUE})
-  p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE),
-                error = function(e) { skip_to_next <<- TRUE})
-  #p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
-                
-  if(skip_to_next == TRUE) { 
-    rbinder <- cbind(as.character(TUCRsurv),NA,NA)
-    ptable[i,] <- rbinder
-}else{
-  grid.draw.ggsurvplot <- function(x){
-  survminer:::print.ggsurvplot(x, newpage = FALSE)
 }
- ggsave(file=paste(outputdir,"/Figure7_Supplementary/figure7g_supplementary.png",sep = ""), device="png", plot=p)}
+
+write_csv(ptable,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_kpm_allTUCRs.csv",sep=""))
 
 ```
 
-### Supplementary Figure 7H
+## Figures 7G and 7H
 
-```{r Figure7f_supplementary,eval=FALSE}
+```{r Figure7gh_LGG}
 
 disease <- "LGG"
 
@@ -12349,6 +12890,7 @@ if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep="")))
 
 if(!is.na(filterannot)){
   survcounts <- mergedcounts %>%
+    #filter(tag.x == filterannot & annot.x != "random" | id == "CASZ1___chr1:10636602-10796676:-")
     filter(tag.x == filterannot & annot.x != "random")
   
 }else{
@@ -12400,7 +12942,6 @@ scal <- function(x,y){
 z_rna <- scal(count_vm[,t_index],count_vm[,n_index])
 rownames(z_rna) <- posdata[,4]
 
-#clinical <- read.table("./Inputs/general_files/survivalfiles/GBM.clin.merged.txt",header = TRUE)
 clinical <- read.table("./Inputs/general_files/survivalfiles/glioma3.clin.merged.txt",header = TRUE)
 
 clinical$time <- as.numeric(clinical$time)
@@ -12410,11 +12951,19 @@ clinical <- clinical %>%
 
 clinical2 <- metadata %>% left_join(clinical,by = "barcode")
 
+## 
+clinical2_mut<-clinical2[clinical2$IDH1status=="MUT",]
+z_rna_mut<-z_rna[,clinical2_mut$id]
+clinical2_wt<-clinical2[clinical2$IDH1status=="WT",]
+z_rna_wt<-z_rna[,clinical2_wt$id]
 # Sum(clinical$patient %in% colnames(z_rna))
 
 ind_tum <- which(unique(colnames(z_rna)) %in% clinical2$id)
+
+## to get index of tumor samples in clinical2 dataset and it has IDH1 status
 ind_clin <- which(clinical2$id %in% colnames(z_rna))
 
+## this is for LGG wt type 
 out.tab <- c()
 for(x in 1:nrow(count_vm)){
   ind_gene <- x
@@ -12424,15 +12973,234 @@ for(x in 1:nrow(count_vm)){
   out.tab <- rbind(out.tab,cx)
 }
 
+out.tab$estimate <- -out.tab$estimate
 surv_TUCR <- cbind(posdata,out.tab)
 surv_TUCR <- surv_TUCR %>% dplyr::select(-term)
 
 write_csv(surv_TUCR,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_coxph_allTUCRs.csv",sep=""))
 
-if(makekpmplots == TRUE){
-
 km_countdata <- z_rna
-colnames(km_countdata) <- metadata$id[t_index]
+#colnames(km_countdata) <- metadata$id[t_index]
+
+## rowmedians considering all LGG samples count matrix
+## copying posdata in to posdata for ptable as in this we are selecting few columns and we need initial posdata dataset for LGG mut cox analysis
+posdata1<-posdata
+
+posdata1$median <- rowMedians(survcounts)
+
+#km_countdata2 <- km_countdata[,complete.cases(clinical2)]
+
+probs <- c(0.25,0.5,0.75)
+q <- rowQuantiles(km_countdata, probs = probs)
+posdata1$n25 <- q[,1]
+posdata1$n75 <- q[,3]
+posdata1 <- posdata1 %>%
+  dplyr::select("TUCR"=alias.x,median,n25,n75)
+km_TUCRs <- cbind(posdata1,km_countdata) 
+
+km_TUCRs <- km_TUCRs %>%
+  gather(key = "id", value = "count",-TUCR,-median,-n75,-n25) %>%
+  mutate(group = ifelse(count>=n75,"low",ifelse(count<=n25,"high",NA))) %>%
+  distinct %>%
+  dplyr::select(TUCR,median,id,group) %>%
+  left_join(clinical2,by="id") %>%
+  dplyr::filter(median != 0)
+
+TUCRids <- as.character(posdata1$TUCR)
+i <- 1
+
+ptable <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("TUCR","pvalue","method"))))
+
+for(i in 1:length(TUCRids)){
+  print(i)
+  print(TUCRids[i])
+  
+  skip_to_next <- FALSE
+  TUCRsurv <- as.character(TUCRids[i])
+  if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRsurv,sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/",TUCRsurv,sep=""))
+  } 
+  #TUCRsurv<-"uc.1"
+  #TUCR <- "uc.1"
+  kmdata <- km_TUCRs %>%
+   dplyr::filter(TUCR == TUCRsurv) %>%
+   dplyr::select(TUCR,id,group,time,status) 
+  fit <- tryCatch(survfit(Surv(time, status) ~ group, data = kmdata),
+               error = function(e) { skip_to_next <<- TRUE})
+  p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE),
+               error = function(e) { skip_to_next <<- TRUE})
+  #p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
+                
+  if(skip_to_next == TRUE) { 
+   rbinder <- cbind(as.character(TUCRsurv),NA,NA)
+    ptable[i,] <- rbinder } else{
+  grid.draw.ggsurvplot <- function(x){
+  survminer:::print.ggsurvplot(x, newpage = FALSE)
+  }
+ p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
+ ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
+ 
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
+   dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+   ## we are selecting three columns here and adding uc.id in next step making four columns for each uc.id 
+   ## Above ptable was initiated with only three columns (TUCR,pvalue,method) 
+   ## Warning in `[<-.data.frame`(`*tmp*`, i, , value = list(`as.character(TUCRsurv)` = "uc.272",  :
+   ## provided 4 variables to replace 3 variables
+   ## modifying below line to select only two columns (pval,method) matching above ptable initiation and if condition.   
+   #dplyr::select(method,pval,padj)
+    dplyr::select(pval,method)
+  rbinder <- cbind(as.character(TUCRsurv),p2value)
+  ptable[i,] <- rbinder
+   } 
+
+}
+
+write_csv(ptable,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_kpm_allTUCRs.csv",sep=""))
+
+### LGG-WT
+
+disease <- "LGG_WT"
+
+figureorder <- 7
+
+out.tab <- c()
+for(x in 1:nrow(count_vm)){
+   ind_gene <- x
+   s <- Surv(clinical2_wt$time,clinical2_wt$status)
+  cx <- coxph(formula = s ~ z_rna_wt[ind_gene,])
+  cx <- tidy(cx)
+  out.tab <- rbind(out.tab,cx)
+}
+out.tab$estimate <- -out.tab$estimate
+
+surv_TUCR <- cbind(posdata,out.tab)
+surv_TUCR <- surv_TUCR %>% dplyr::select(-term)
+
+write_csv(surv_TUCR,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_coxph_allTUCRs.csv",sep=""))
+
+km_countdata <- z_rna_wt
+#colnames(km_countdata) <- metadata$id[t_index]
+
+## rowmedians considering all LGG samples count matrix
+## copying posdata in to posdata for ptable as in this we are selecting few columns and we need initial posdata dataset for LGG mut cox analysis
+posdata1<-posdata
+
+posdata1$median <- rowMedians(survcounts)
+
+#km_countdata2 <- km_countdata[,complete.cases(clinical2)]
+
+probs <- c(0.25,0.5,0.75)
+q <- rowQuantiles(km_countdata, probs = probs)
+posdata1$n25 <- q[,1]
+posdata1$n75 <- q[,3]
+posdata1 <- posdata1 %>%
+  dplyr::select("TUCR"=alias.x,median,n25,n75)
+km_TUCRs <- cbind(posdata1,km_countdata) 
+
+km_TUCRs <- km_TUCRs %>%
+  gather(key = "id", value = "count",-TUCR,-median,-n75,-n25) %>%
+  mutate(group = ifelse(count>=n75,"low",ifelse(count<=n25,"high",NA))) %>%
+  distinct %>%
+  dplyr::select(TUCR,median,id,group) %>%
+  left_join(clinical2_wt,by="id") %>%
+  dplyr::filter(median != 0)
+
+TUCRids <- as.character(posdata1$TUCR)
+i <- 1
+
+ptable <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("TUCR","pvalue","method"))))
+
+for(i in 1:length(TUCRids)){
+  print(i)
+  print(TUCRids[i])
+  
+  skip_to_next <- FALSE
+  TUCRsurv <- as.character(TUCRids[i])
+  if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRsurv,sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/",TUCRsurv,sep=""))
+  } 
+  #TUCRsurv<-"uc.1"
+  #TUCR <- "uc.1"
+  kmdata <- km_TUCRs %>%
+   dplyr::filter(TUCR == TUCRsurv) %>%
+   dplyr::select(TUCR,id,group,time,status) 
+  fit <- tryCatch(survfit(Surv(time, status) ~ group, data = kmdata),
+               error = function(e) { skip_to_next <<- TRUE})
+  p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE),
+               error = function(e) { skip_to_next <<- TRUE})
+  #p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
+                
+  if(skip_to_next == TRUE) { 
+   rbinder <- cbind(as.character(TUCRsurv),NA,NA)
+    ptable[i,] <- rbinder } else{
+  grid.draw.ggsurvplot <- function(x){
+  survminer:::print.ggsurvplot(x, newpage = FALSE)
+  }
+ p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
+ ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
+ 
+  if(TUCRsurv == "uc.75"){
+    ggsave(file=paste(outputdir,"/Figure1/figure1e.png",sep = ""), device="png", plot=p)
+ }
+ 
+ if(TUCRsurv == "uc.132"){
+    ggsave(file=paste(outputdir,"/Figure1/figure1f.png",sep = ""), device="png", plot=p)
+ }
+ 
+ if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
+ }
+ 
+ if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure7_Supplementary/",sep=""))
+}
+ 
+ if(TUCRsurv == "uc.2"){
+    ggsave(file=paste(outputdir,"/Figure6_supplementary/supplementary_figure6g.png",sep = ""), device="png", plot=p)
+ }
+ 
+ if(TUCRsurv == "uc.15"){
+    ggsave(file=paste(outputdir,"/Figure7_supplementary/supplementary_figure7g.png",sep = ""), device="png", plot=p)
+ }
+
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
+   dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+   ## we are selecting three columns here and adding uc.id in next step making four columns for each uc.id 
+   ## Above ptable was initiated with only three columns (TUCR,pvalue,method) 
+   ## Warning in `[<-.data.frame`(`*tmp*`, i, , value = list(`as.character(TUCRsurv)` = "uc.272",  :
+   ## provided 4 variables to replace 3 variables
+   ## modifying below line to select only two columns (pval,method) matching above ptable initiation and if condition.   
+   #dplyr::select(method,pval,padj)
+    dplyr::select(pval,method)
+  rbinder <- cbind(as.character(TUCRsurv),p2value)
+  ptable[i,] <- rbinder
+   } 
+
+}
+
+write_csv(ptable,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_kpm_allTUCRs.csv",sep=""))
+## this is for LGG mut type
+disease<-"LGG_MUT"
+
+figureorder <- 8
+
+out.tab <- c()
+for(x in 1:nrow(count_vm)){
+   ind_gene <- x
+   s <- Surv(clinical2_mut$time,clinical2_mut$status)
+  cx <- coxph(formula = s ~ z_rna_mut[ind_gene,])
+  cx <- tidy(cx)
+  out.tab <- rbind(out.tab,cx)
+}
+out.tab$estimate <- -out.tab$estimate
+
+surv_TUCR <- cbind(posdata,out.tab)
+surv_TUCR <- surv_TUCR %>% dplyr::select(-term)
+
+write_csv(surv_TUCR,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_coxph_allTUCRs.csv",sep=""))
+
+km_countdata <- z_rna_mut
+#colnames(km_countdata) <- metadata$id[t_index]
 posdata$median <- rowMedians(survcounts)
 
 #km_countdata2 <- km_countdata[,complete.cases(clinical2)]
@@ -12447,16 +13215,16 @@ km_TUCRs <- cbind(posdata,km_countdata)
 
 km_TUCRs <- km_TUCRs %>%
   gather(key = "id", value = "count",-TUCR,-median,-n75,-n25) %>%
-  mutate(group = ifelse(count>=n75,"high",ifelse(count<=n25,"low",NA))) %>%
+  mutate(group = ifelse(count>=n75,"low",ifelse(count<=n25,"high",NA))) %>%
   distinct %>%
   dplyr::select(TUCR,median,id,group) %>%
-  left_join(clinical2,by="id") %>%
+  left_join(clinical2_mut,by="id") %>%
   dplyr::filter(median != 0)
 
 TUCRids <- as.character(posdata$TUCR)
 i <- 1
 
-ptable <- data.frame(matrix(ncol=4,nrow=0, dimnames=list(NULL, c("TUCR","method","pvalue","padj"))))
+ptable <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("TUCR","pvalue","method"))))
 
 for(i in 1:length(TUCRids)){
   print(i)
@@ -12467,52 +13235,59 @@ for(i in 1:length(TUCRids)){
   if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRsurv,sep=""))){
   dir.create(paste(outputdir,"/TUCR_Database/",TUCRsurv,sep=""))
   } 
-  
+  #TUCRsurv<-"uc.1"
   #TUCR <- "uc.1"
   kmdata <- km_TUCRs %>%
-    dplyr::filter(TUCR == TUCRsurv) %>%
-    dplyr::select(TUCR,id,group,time,status) 
+   dplyr::filter(TUCR == TUCRsurv) %>%
+   dplyr::select(TUCR,id,group,time,status) 
   fit <- tryCatch(survfit(Surv(time, status) ~ group, data = kmdata),
-                error = function(e) { skip_to_next <<- TRUE})
+               error = function(e) { skip_to_next <<- TRUE})
   p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE),
-                error = function(e) { skip_to_next <<- TRUE})
+               error = function(e) { skip_to_next <<- TRUE})
   #p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
                 
   if(skip_to_next == TRUE) { 
-    rbinder <- cbind(as.character(TUCRsurv),NA,NA)
-    ptable[i,] <- rbinder
-}else{
+   rbinder <- cbind(as.character(TUCRsurv),NA,NA)
+    ptable[i,] <- rbinder } else{
   grid.draw.ggsurvplot <- function(x){
   survminer:::print.ggsurvplot(x, newpage = FALSE)
-}
+  }
+
+ p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
  ggsave(file=paste(outputdir,"/TUCR_Database/",TUCRsurv,"/",figureorder,"_",TUCRsurv,"_",disease,"_kpmplot.png",sep = ""), device="png", plot=p)
+ 
+  if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
+ }
+ 
+ if(!dir.exists(paste(outputdir,"/Figure7_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure7_Supplementary/",sep=""))
+}
+ 
+ if(TUCRsurv == "uc.2"){
+    ggsave(file=paste(outputdir,"/Figure6_supplementary/supplementary_figure6h.png",sep = ""), device="png", plot=p)
+ }
+ 
+ if(TUCRsurv == "uc.15"){
+    ggsave(file=paste(outputdir,"/Figure7_supplementary/supplementary_figure7h.png",sep = ""), device="png", plot=p)
+ }
+ 
   p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
-    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
-    dplyr::select(method,pval,padj)
+   dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+   ## we are selecting three columns here and adding uc.id in next step making four columns for each uc.id 
+   ## Above ptable was initiated with only three columns (TUCR,pvalue,method) 
+   ## Warning in `[<-.data.frame`(`*tmp*`, i, , value = list(`as.character(TUCRsurv)` = "uc.272",  :
+   ## provided 4 variables to replace 3 variables
+   ## modifying below line to select only two columns (pval,method) matching above ptable initiation and if condition.   
+   #dplyr::select(method,pval,padj)
+    dplyr::select(pval,method)
   rbinder <- cbind(as.character(TUCRsurv),p2value)
   ptable[i,] <- rbinder
-   }}
+    } 
 
-write_csv(ptable,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_kpm_allTUCRs.csv",sep=""))}
-
-TUCRsurv <- "uc.15"
-kmdata <- km_TUCRs %>%
-    dplyr::filter(TUCR == TUCRsurv) %>%
-    dplyr::select(TUCR,id,group,time,status) 
-  fit <- tryCatch(survfit(Surv(time, status) ~ group, data = kmdata),
-                error = function(e) { skip_to_next <<- TRUE})
-  p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE),
-                error = function(e) { skip_to_next <<- TRUE})
-  #p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
-                
-  if(skip_to_next == TRUE) { 
-    rbinder <- cbind(as.character(TUCRsurv),NA,NA)
-    ptable[i,] <- rbinder
-}else{
-  grid.draw.ggsurvplot <- function(x){
-  survminer:::print.ggsurvplot(x, newpage = FALSE)
 }
- ggsave(file=paste(outputdir,"/Figure7_Supplementary/figure7h_supplementary.png",sep = ""), device="png", plot=p)}
+
+write_csv(ptable,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_kpm_allTUCRs.csv",sep=""))
 
 ```
 
