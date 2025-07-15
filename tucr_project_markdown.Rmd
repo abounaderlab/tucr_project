@@ -5105,7 +5105,8 @@ ggsave(file=paste(outputdir,"/Figure3/Figure3b.png",sep=""),
 ```{r Figure3c}
 
 data <- read_csv("./Inputs/Figure3/Figure3c_input.csv") %>% 
-  mutate(fillcolor = paste(Gene,Sample,sep=" "))
+  mutate(fillcolor = paste(Gene,Sample,sep=" ")) #%>%
+  #filter(Gene == "LV-pCDH")
 
 p <- ggplot(data,aes(x=reorder(Gene,order), y=FC,fill=reorder(Sample,order))) +
         geom_bar(stat="identity",position = "dodge") +
