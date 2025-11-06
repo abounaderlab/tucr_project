@@ -1,0 +1,447 @@
+---
+title: "Supplementary Figure 9"
+output: html_notebook
+---
+
+## Supplementary Figure 9 
+
+## Set parameters and install required programs
+```{r}
+## Variables
+
+outputdir <- "Outputs"
+
+filterannot <- "TUCR"
+
+makekpmplots <- TRUE
+
+tpmethod <- "TPM"
+
+repel <- TRUE
+```
+
+```{r}
+## Load Colors
+
+paper_black = "#000000"
+  
+paper_gold = "#EAA304"
+  
+paper_green2 = "#20C799"
+  
+paper_yellow = "#F0E442"
+  
+paper_blue = "#017DC3"
+  
+paper_lightblue = "#58AFE0"
+  
+paper_skyblue = "#A5DFFF"
+  
+paper_orange = "#D55E00"
+  
+paper_purple = "#8C004C"
+  
+paper_gray = "#CAC4C4"
+  
+paper_red = "#C30223"
+  
+paper_darkpink = "#DA7C8C"
+  
+paper_pink = "#FFCCD5"
+
+paper_green = "#54BB44"
+  
+paper_red2 = "#CA465C"
+  
+paper_turq = "#20C799"
+
+```
+
+```{r}
+## Load Programs
+
+if (!require("jsonlite")) install.packages("jsonlite")
+library("jsonlite")
+
+if (!require("tidyjson")) install.packages("tidyjson")
+library("tidyjson")
+
+if (!require("tidyverse")) install.packages("tidyverse")
+library("tidyverse")
+
+if (!require("ggplot2")) install.packages("ggplot2")
+library("ggplot2")
+
+if (!require("ggforce")) install.packages("ggforce")
+library("ggforce")
+
+if (!require("ggbreak")) install.packages("ggbreak")
+library("ggbreak")
+
+if (!require("ggrepel")) install.packages("ggrepel")
+library("ggrepel")
+
+if (!require("ggfortify")) install.packages("ggfortify")
+library("ggfortify")
+
+if (!require("ggdendro")) install.packages("ggdendro")
+library("ggdendro")
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
+library("DESeq2")
+
+if (!require("survival")) install.packages("survival")
+library("survival")
+
+if (!require("broom")) install.packages("broom")
+library("broom")
+
+if (!requireNamespace("limma", quietly = TRUE))BiocManager::install("limma")
+library("limma")
+
+if (!require("Tmisc")) install.packages("Tmisc")
+library("Tmisc")
+
+if (!require("survminer")) install.packages("survminer")
+library("survminer")
+
+if (!require("corrr")) install.packages("corrr")
+library("corrr")
+
+if (!require("here")) install.packages("here")
+library("here")
+
+if (!require("lessR")) install.packages("lessR")
+library("lessR")
+
+if (!require("splitstackshape")) install.packages("splitstackshape")
+library(splitstackshape)
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+
+if (!require('org.Hs.eg.db')) BiocManager::install('org.Hs.eg.db')
+library(org.Hs.eg.db)
+
+if (!require('GO.db')) BiocManager::install('GO.db')
+library(GO.db)
+
+if (!require('limma')) BiocManager::install('limma')
+library(limma)
+
+if (!require("ggthemes")) install.packages('ggthemes', dependencies = TRUE)
+library(ggthemes)
+
+if (!require("gplots")) 
+install.packages("gplots")
+library(gplots)
+
+if (!require("ggsignif")) 
+install.packages("ggsignif")
+library(ggsignif)
+
+if (!require("RColorBrewer")) 
+install.packages("RColorBrewer")
+library(RColorBrewer)
+
+if (!require("reshape2")) 
+install.packages("reshape2")
+library(reshape2)
+
+if (!require("gridExtra")) 
+install.packages("gridExtra")
+library(gridExtra)
+
+if (!require("dendextend")) 
+install.packages("dendextend")
+library(dendextend)
+
+if (!require("plyr")) 
+install.packages("plyr")
+library(plyr)
+
+if (!require("magick")) 
+install.packages("magick")
+library(magick)
+
+if (!require("png")) 
+install.packages("png")
+library(png)
+
+if (!require("scales")) 
+install.packages("scales")
+library(scales)
+
+if (!require("ggsci")) 
+install.packages("ggsci")
+library(ggsci)
+
+if (!require("stringi")) install.packages("stringi")
+  library(stringi)
+if (!require("stringr")) install.packages("stringr")
+  library(stringr)
+
+if (!require("impute")) BiocManager::install("impute")
+library(impute)
+
+if (!require("preprocessCore")) BiocManager::install("preprocessCore")
+library(preprocessCore)
+
+if (!require("Go.db")) BiocManager::install("GO.db")
+library(GO.db)
+
+
+if (!require("WGCNA")) install.packages("WGCNA")
+library(WGCNA)
+
+if (!require("umap")) install.packages("umap")
+library(umap)
+
+if (!require("igraph")) install.packages("igraph")
+library(igraph)
+
+if (!require("gtable")) install.packages("gtable")
+library(gtable)
+
+if(!dir.exists(outputdir)){
+  dir.create(outputdir)
+}
+
+knitr::opts_chunk$set(
+eval = FALSE,
+tidy = TRUE#,
+#	echo = TRUE,
+#	message = FALSE,
+#	warning = FALSE
+)
+
+```
+
+## Supplementary Figure 9
+
+### Supplementary Figure 9A, 9B, and 9F (images)
+
+```{r Supplementary_Figure9}
+
+if(!dir.exists(paste(outputdir,"/Figure9_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure9_Supplementary/",sep=""))
+}
+
+Figure_copy <- list.files("./Inputs/Figure9_Supplementary/pregenerated_figures/")
+
+if(!file.exists(paste(outputdir,"/Figure9_Supplementary/","supplementary_Figure9ab.png",sep=""))){
+  file.copy(paste0("./Inputs/Figure9_Supplementary/pregenerated_figures/",Figure_copy,sep=""),paste("./",outputdir,"/Figure9_Supplementary/",sep=""))
+}
+
+```
+
+### Supplementary Figure 9C
+
+### uc.110 expression in GBM Cell Lines
+
+```{r Supplementary_Figure9c}
+
+data <- read_csv("./Inputs/Figure9_Supplementary/supplementary_Figure9c_input.csv") 
+
+p <- ggplot(data,aes(x=reorder(Sample,Order), y=as.numeric(FoldChange),fill=Sample)) +
+        geom_bar(stat="identity"
+                 #,color="black"
+                   ) +
+        geom_errorbar(aes(ymax=FoldChange+stderr, ymin=FoldChange-stderr, width=.2)) +
+        geom_text(aes(y = FoldChange, label=pvalue,vjust=ifelse(FoldChange>0,0,1.75),hjust=0.5),color = "#000000",size=10) + 
+        scale_y_continuous(limits = c(-5,10),breaks= scales::pretty_breaks(n=15)) +
+        #geom_hline(yintercept = log10(5),linetype = 2,size=1.5) +
+        #geom_vline(xintercept = -0.65,linetype = 2,size=1.5) +
+        #geom_vline(xintercept = 0.65,linetype = 2,size=1.5) +
+        #scale_color_identity(guide = "legend", labels = cellfracdata$Fraction, breaks = cellfracdata$Fraction) +
+        labs(y = "log2(uc.110 FoldChange)",
+        x = "GBM Cell Line") +
+        #ylim(-5, 10) +
+        theme(plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+              axis.title = element_text(size = rel(1.6), face="bold"),
+              axis.text.y = element_text(size = rel(2.0), face="bold"),
+              axis.text.x = element_text(size = rel(2.0), face="bold",angle=90,vjust = 0.5, hjust=1),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
+legend.text=element_blank()) + 
+  coord_cartesian(clip = "off")
+
+p
+
+ggsave(file=paste(outputdir,"/Figure9_Supplementary/supplementary_Figure9c.png",sep=""),
+       plot = print(p),
+       height = 6,
+       width = 6,
+       dpi = 600)
+
+```
+
+### Supplementary Figure 9D
+
+### uc.110 expression in GBM Adherent Cell Lines (summarized)
+
+```{r Supplementary_Figure9d}
+
+data <- read_csv("./Inputs/Figure9_Supplementary/supplementary_Figure9d_input.csv") 
+
+p <- ggplot(data,aes(x=dex, y=FC,fill=Fill)) +
+  geom_boxplot(outlier.color="white") +
+  #geom_bar(colour="black",stat="identity") +
+  scale_fill_identity() +
+  #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
+  geom_jitter(data = data, aes(x=dex, y=FC),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.8), face="bold"),
+        axis.text.y = element_text(size = rel(2.5), face="bold"),
+        axis.text.x = element_text(size = rel(2.5), face="bold",angle=90,vjust = 0.5, hjust=1),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+        legend.position="none",
+        legend.title=element_blank(),
+        legend.text=element_blank()) +
+  labs(y="log2FoldChange", x = "Tissue Type") +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
+
+p
+
+ggsave(file=paste(outputdir,"/Figure9_Supplementary/supplementary_Figure9d.png",sep=""),
+       plot = print(p),
+       height = 7,
+       width = 4,
+       dpi = 600)
+
+```
+
+### Supplementary Figure 9E
+
+### uc.110 expression in GBM Stem Cell Lines (summarized)
+
+```{r Supplementary_Figure9e}
+
+data <- read_csv("./Inputs/Figure9_Supplementary/supplementary_Figure9e_input.csv") 
+
+p <- ggplot(data,aes(x=dex, y=FC,fill=Fill)) +
+  geom_boxplot(outlier.color="white") +
+  #geom_bar(colour="black",stat="identity") +
+  scale_fill_identity() +
+  #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
+  geom_jitter(data = data, aes(x=dex, y=FC),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.8), face="bold"),
+        axis.text.y = element_text(size = rel(2.5), face="bold"),
+        axis.text.x = element_text(size = rel(2.5), face="bold",angle=90,vjust = 0.5, hjust=1),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+        legend.position="none",
+        legend.title=element_blank(),
+        legend.text=element_blank()) +
+  labs(y="log2FoldChange", x = "Tissue Type") +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
+
+p
+
+ggsave(file=paste(outputdir,"/Figure9_Supplementary/supplementary_Figure9e.png",sep=""),
+       plot = print(p),
+       height = 7,
+       width = 4,
+       dpi = 600)
+
+```
+
+### Supplementary Figure 9F
+
+```{r Supplementary_Figure9f}
+
+data <- read_csv("./Inputs/Figure9_Supplementary/supplementary_Figure9f_input.csv") %>% 
+  mutate(fillcolor = paste(Gene,Sample,sep=" "))
+
+p <- ggplot(data,aes(x=reorder(Gene,order), y=FC,fill=reorder(Sample,order))) +
+        geom_bar(stat="identity",position = "dodge") +
+        geom_errorbar(aes(ymax=FC+stderr, ymin=FC-stderr, width=.2),position = position_dodge(0.9)) +
+        geom_text(aes(y = FC, label=pvalue,vjust=-0.25,hjust=0.5),color = "#000000",size=10,position = position_dodge(0.9)) + 
+        scale_fill_manual(values = c(paper_red,paper_green,paper_blue,paper_red,paper_green,paper_blue)) +
+        labs(y = "Relative invading cells",
+        x = "") +
+        #ylim(-5, 10) +
+        theme(plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+              axis.title = element_text(size = rel(1.6), face="bold"),
+              axis.text.y = element_text(size = rel(2.2), face="bold"),
+              axis.text.x = element_text(size = rel(2.2), face="bold",angle=90,vjust = 0.5, hjust=1),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="top",legend.title=element_blank(),
+legend.text=element_text(size=rel(2.0)),
+strip.text.x = element_text(size = rel(2.2)),
+strip.background = element_blank()) + 
+  coord_cartesian(clip = "off") +
+  facet_wrap(~CellLine)
+
+
+p
+
+ggsave(file=paste(outputdir,"/Figure9_Supplementary/supplementary_Figure9f.png",sep=""),
+       plot = print(p),
+       height = 6,
+       width = 6,
+       dpi = 600)
+
+```
+
+### Supplementary Figure 9G
+
+### Cell Fractionation Data
+
+```{r Supplementary_Figure9g}
+
+data <- read_csv("./Inputs/Figure9_Supplementary/supplementary_Figure9g_input.csv")
+
+p <- ggplot(data,aes(x=reorder(Sample,Order), y=Value,fill=Fraction)) +
+        geom_bar(stat="identity"
+                 #,color="black"
+                 ) +
+        geom_errorbar(aes(ymax=Ymax, ymin=Ymin, width=.2,vjust=0.5,hjust=1)) +
+        geom_text(aes(y = 1.02, label=pvalue),color = "black",size=10) + 
+        #geom_hline(yintercept = log10(5),linetype = 2,size=1.5) +
+        #geom_vline(xintercept = -0.65,linetype = 2,size=1.5) +
+        #geom_vline(xintercept = 0.65,linetype = 2,size=1.5) +
+        #scale_y_continuous(breaks = scales::pretty_breaks(n = 5)) +
+        scale_fill_manual(values = c(paper_red2,paper_turq)) +
+        #guides(colour = guide_legend(override.aes = list(size=10))) +
+        labs(y = "fraction of total RNA expression",
+        x = "Sample") +
+        theme(plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+              axis.title = element_text(size = rel(2.0), face="bold"),
+              axis.text.y = element_text(size = rel(2.0), face="bold"),
+              axis.text.x = element_text(size = rel(2.0), face="bold",angle=90,vjust = 0.5, hjust=1),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="top",legend.title=element_blank(),
+legend.text=element_text(size=20),
+strip.text.x = element_text(size = rel(1.6)),
+strip.background = element_blank()) + 
+  coord_cartesian(clip = "off") +
+  facet_wrap(~Gene, ncol=5)
+
+p
+
+ggsave(file=paste(outputdir,"/Figure9_Supplementary/supplementary_Figure9g.png",sep=""),
+       plot = print(p),
+       height = 6,
+       width = 6,
+       dpi = 600)
+
+```
+
+```{r}
+sessionInfo()
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
