@@ -1,0 +1,1276 @@
+---
+title: "Supplementary Figure 3"
+output: html_notebook
+---
+## Title : A comprehensive analysis of Transcribed Ultra Conserved Regions uncovers important regulatory functions of novel non coding transcripts in gliomas
+
+## Supplementary Figure 3
+
+## Set parameters and install required programs
+```{r}
+## Variables
+
+outputdir <- "Outputs"
+
+filterannot <- "TUCR"
+
+makekpmplots <- TRUE
+
+tpmethod <- "TPM"
+
+repel <- TRUE
+```
+
+```{r}
+## Load Colors
+
+paper_black = "#000000"
+  
+paper_gold = "#EAA304"
+  
+paper_green2 = "#20C799"
+  
+paper_yellow = "#F0E442"
+  
+paper_blue = "#017DC3"
+  
+paper_lightblue = "#58AFE0"
+  
+paper_skyblue = "#A5DFFF"
+  
+paper_orange = "#D55E00"
+  
+paper_purple = "#8C004C"
+  
+paper_gray = "#CAC4C4"
+  
+paper_red = "#C30223"
+  
+paper_darkpink = "#DA7C8C"
+  
+paper_pink = "#FFCCD5"
+
+paper_green = "#54BB44"
+  
+paper_red2 = "#CA465C"
+  
+paper_turq = "#20C799"
+
+```
+
+```{r}
+## Load Programs
+
+if (!require("jsonlite")) install.packages("jsonlite")
+library("jsonlite")
+
+if (!require("tidyjson")) install.packages("tidyjson")
+library("tidyjson")
+
+if (!require("tidyverse")) install.packages("tidyverse")
+library("tidyverse")
+
+if (!require("ggplot2")) install.packages("ggplot2")
+library("ggplot2")
+
+if (!require("ggforce")) install.packages("ggforce")
+library("ggforce")
+
+if (!require("ggbreak")) install.packages("ggbreak")
+library("ggbreak")
+
+if (!require("ggrepel")) install.packages("ggrepel")
+library("ggrepel")
+
+if (!require("ggfortify")) install.packages("ggfortify")
+library("ggfortify")
+
+if (!require("ggdendro")) install.packages("ggdendro")
+library("ggdendro")
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
+library("DESeq2")
+
+if (!require("survival")) install.packages("survival")
+library("survival")
+
+if (!require("broom")) install.packages("broom")
+library("broom")
+
+if (!requireNamespace("limma", quietly = TRUE))BiocManager::install("limma")
+library("limma")
+
+if (!require("Tmisc")) install.packages("Tmisc")
+library("Tmisc")
+
+if (!require("survminer")) install.packages("survminer")
+library("survminer")
+
+if (!require("corrr")) install.packages("corrr")
+library("corrr")
+
+if (!require("here")) install.packages("here")
+library("here")
+
+if (!require("lessR")) install.packages("lessR")
+library("lessR")
+
+if (!require("splitstackshape")) install.packages("splitstackshape")
+library(splitstackshape)
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+
+if (!require('org.Hs.eg.db')) BiocManager::install('org.Hs.eg.db')
+library(org.Hs.eg.db)
+
+if (!require('GO.db')) BiocManager::install('GO.db')
+library(GO.db)
+
+if (!require('limma')) BiocManager::install('limma')
+library(limma)
+
+if (!require("ggthemes")) install.packages('ggthemes', dependencies = TRUE)
+library(ggthemes)
+
+if (!require("gplots")) 
+install.packages("gplots")
+library(gplots)
+
+if (!require("ggsignif")) 
+install.packages("ggsignif")
+library(ggsignif)
+
+if (!require("RColorBrewer")) 
+install.packages("RColorBrewer")
+library(RColorBrewer)
+
+if (!require("reshape2")) 
+install.packages("reshape2")
+library(reshape2)
+
+if (!require("gridExtra")) 
+install.packages("gridExtra")
+library(gridExtra)
+
+if (!require("dendextend")) 
+install.packages("dendextend")
+library(dendextend)
+
+if (!require("plyr")) 
+install.packages("plyr")
+library(plyr)
+
+if (!require("magick")) 
+install.packages("magick")
+library(magick)
+
+if (!require("png")) 
+install.packages("png")
+library(png)
+
+if (!require("scales")) 
+install.packages("scales")
+library(scales)
+
+if (!require("ggsci")) 
+install.packages("ggsci")
+library(ggsci)
+
+if (!require("stringi")) install.packages("stringi")
+  library(stringi)
+if (!require("stringr")) install.packages("stringr")
+  library(stringr)
+
+if (!require("impute")) BiocManager::install("impute")
+library(impute)
+
+if (!require("preprocessCore")) BiocManager::install("preprocessCore")
+library(preprocessCore)
+
+if (!require("Go.db")) BiocManager::install("GO.db")
+library(GO.db)
+
+
+if (!require("WGCNA")) install.packages("WGCNA")
+library(WGCNA)
+
+if (!require("umap")) install.packages("umap")
+library(umap)
+
+if (!require("igraph")) install.packages("igraph")
+library(igraph)
+
+if (!require("gtable")) install.packages("gtable")
+library(gtable)
+
+if(!dir.exists(outputdir)){
+  dir.create(outputdir)
+}
+
+knitr::opts_chunk$set(
+eval = FALSE,
+tidy = TRUE#,
+#	echo = TRUE,
+#	message = FALSE,
+#	warning = FALSE
+)
+
+```
+
+## Supplementary Figure 3
+
+```{r supplementary_Figure3_dircreate}
+
+if(!dir.exists(paste(outputdir,"/Figure3_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure3_Supplementary/",sep=""))
+}
+
+```
+
+### Supplementary Figure 3A
+
+Identifying differentially expressed TUCRs with DESeq2
+
+```{r supplementary_Figure3_DESeq2}
+
+## read data
+
+gbm_countfile <- paste("Inputs/general_files/sequencingfiles/GBM/GBM_mergedcounts.txt",sep="")
+
+lgg_countfile <- paste("Inputs/general_files/sequencingfiles/LGG/LGG_mergedcounts.txt",sep="")
+
+cortex_countfile <- paste("Inputs/general_files/sequencingfiles/cortex/cortex_mergedcounts.txt",sep="")
+
+
+gbm_metadatafile <- paste("Inputs/general_files/sequencingfiles/GBM/GBM_tcga_metadata.csv",sep="")
+
+lgg_metadatafile <- paste("Inputs/general_files/sequencingfiles/LGG/LGG_tcga_metadata.csv",sep="")
+
+cortex_metadatafile <- paste("Inputs/general_files/sequencingfiles/cortex/cortex_gtex_metadata.csv",sep="")
+
+
+gbm_seqdepthfile <- paste("Inputs/general_files/sequencingfiles/GBM/GBM_seqdepth_counts.csv",sep="")
+
+lgg_seqdepthfile <- paste("Inputs/general_files/sequencingfiles/LGG/LGG_seqdepth_counts.csv",sep="")
+
+cortex_seqdepthfile <- paste("Inputs/general_files/sequencingfiles/cortex/cortex_seqdepth_counts.csv",sep="")
+
+
+## Merge Data
+
+
+#if(!is.na(cortex_countfile)){ 
+  gbm_metadata <- 
+  read_csv(file = gbm_metadatafile)
+  
+  lgg_metadata <- 
+  read_csv(file = lgg_metadatafile)
+  
+  cortex_metadata <- 
+  read_csv(file = cortex_metadatafile)
+  
+  
+  
+  
+  gbm_seqdepth <- read.csv(file = gbm_seqdepthfile)
+  
+  lgg_seqdepth <- read.csv(file = lgg_seqdepthfile)
+  
+  cortex_seqdepth <- read.csv(file = cortex_seqdepthfile)
+  
+  
+
+  gbm_mergedcounts <- read.table(gbm_countfile,header = TRUE)
+  
+  lgg_mergedcounts <- read.table(lgg_countfile,header = TRUE)
+  
+  cortex_normalcounts <- read.table(cortex_countfile,header = TRUE) 
+  
+  cortex_normalcounts <- cortex_normalcounts[,9:ncol(cortex_normalcounts)]
+  
+  
+  
+  gbm_metadata <- rbind(gbm_metadata,cortex_metadata)
+  
+  gbm_metadata <- gbm_metadata[gbm_metadata$IDH1status %in% c("normal","WT"),]
+  
+  lgg_metadata <- rbind(lgg_metadata,cortex_metadata)
+  
+  lgg_metadata_wt<-lgg_metadata[lgg_metadata$IDH1status %in% c("normal","WT"),]
+
+  lgg_metadata_mut<-lgg_metadata[lgg_metadata$IDH1status %in% c("normal","MUT"),]
+  
+  rm(cortex_metadata)
+  
+  
+  gbm_seqdepth <- rbind(gbm_seqdepth,cortex_seqdepth)
+  
+  lgg_seqdepth <- rbind(lgg_seqdepth,cortex_seqdepth)
+  
+  rm(cortex_seqdepth)
+
+  gbm_mergedcounts <- cbind(gbm_mergedcounts,cortex_normalcounts) %>%
+    distinct()
+  
+  lgg_mergedcounts <- cbind(lgg_mergedcounts,cortex_normalcounts) %>%
+    distinct()
+  
+  rm(cortex_normalcounts)
+  
+  
+  
+#}else{
+#    gbm_mergedcounts <- read.table(gbm_countfile,header = TRUE)
+    
+#    lgg_mergedcounts <- read.table(lgg_countfile,header = TRUE)
+
+#    gbm_metadata <- read_csv(file = gbm_metadatafile)
+    
+#    lgg_metadata <- read_csv(file = lgg__metadatafile)
+    
+#    gbm_seqdepth <- read.csv(file = gbm__seqdepthfile)
+    
+#    lgg_seqdepth <- read.csv(file = lgg__seqdepthfile)
+#}
+
+gbm_mergedcounts_deseq2 <- gbm_mergedcounts %>%
+    filter(tag == "TUCR" & annot != "random")
+
+lgg_mergedcounts_deseq2 <- lgg_mergedcounts %>%
+    filter(tag == "TUCR" & annot != "random")
+
+gbm_mergedcounts_deseq2_countsonly <- 
+  gbm_mergedcounts_deseq2[,9:ncol(gbm_mergedcounts_deseq2)]
+
+gbm_mergedcounts_deseq2_countsonly <- gbm_mergedcounts_deseq2_countsonly[,gbm_metadata$survid]
+
+lgg_mergedcounts_deseq2_countsonly <- 
+  lgg_mergedcounts_deseq2[,9:ncol(lgg_mergedcounts_deseq2)]
+
+lgg_mergedcounts_deseq2_countsonly_wt<-lgg_mergedcounts_deseq2_countsonly[,lgg_metadata_wt$survid]
+
+lgg_mergedcounts_deseq2_countsonly_mut<-lgg_mergedcounts_deseq2_countsonly[,lgg_metadata_mut$survid]
+
+rownames(gbm_mergedcounts_deseq2_countsonly) <- 
+  gbm_mergedcounts_deseq2$id
+
+rownames(lgg_mergedcounts_deseq2_countsonly_mut) <- 
+  lgg_mergedcounts_deseq2$id
+
+rownames(lgg_mergedcounts_deseq2_countsonly_wt) <- 
+  lgg_mergedcounts_deseq2$id
+
+rownames(lgg_mergedcounts_deseq2_countsonly) <- 
+  lgg_mergedcounts_deseq2$id
+
+#gbm_mergedcounts_deseq2_info <- 
+#  gbm_mergedcounts_deseq2[,1:8]
+
+#lgg_mergedcounts_deseq2_info <- 
+#  lgg_mergedcounts_deseq2[,1:8]
+
+#gbm_mergedcounts_deseq2_info$length <- 
+#  (gbm_mergedcounts_deseq2$end - gbm_mergedcounts_deseq2$start)/1000
+
+#lgg_mergedcounts_deseq2_info$length <- 
+#  (lgg_mergedcounts_deseq2$end - lgg_mergedcounts_deseq2$start)/1000
+
+## GBM
+
+
+dds <- 
+  DESeqDataSetFromMatrix(countData = gbm_mergedcounts_deseq2_countsonly,
+                              colData = gbm_metadata,
+                              design = ~dex)
+  
+dds <- 
+  DESeq(dds)
+
+res <- 
+  results(dds, tidy=TRUE)
+
+res <- 
+  as_tibble(res)
+
+disease <- "GBM"
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))
+}
+
+write_csv(res, file = paste(outputdir,"/TUCR_Database/SummaryTables/GBM/GBM_DESeq2_allTUCRs.csv",sep=""))
+
+## LGG
+
+dds <- 
+  DESeqDataSetFromMatrix(countData = lgg_mergedcounts_deseq2_countsonly,
+                              colData = lgg_metadata,
+                              design = ~dex)
+  
+dds <- 
+  DESeq(dds)
+
+res <- 
+  results(dds, tidy=TRUE)
+
+res <- 
+  as_tibble(res)
+
+
+disease <- "LGG"
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))
+}
+
+
+write_csv(res, file = paste(outputdir,"/TUCR_Database/SummaryTables/LGG/LGG_DESeq2_allTUCRs.csv",sep=""))
+
+## LGG_MUT
+
+dds <- 
+  DESeqDataSetFromMatrix(countData = lgg_mergedcounts_deseq2_countsonly_mut,
+                              colData = lgg_metadata_mut,
+                              design = ~dex)
+  
+dds <- 
+  DESeq(dds)
+
+res <- 
+  results(dds, tidy=TRUE)
+
+res <- 
+  as_tibble(res)
+
+
+disease <- "LGG_MUT"
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))
+}
+
+
+write_csv(res, file = paste(outputdir,"/TUCR_Database/SummaryTables/LGG_MUT/LGG_MUT_DESeq2_allTUCRs.csv",sep=""))
+
+## LGG_WT
+
+dds <- 
+  DESeqDataSetFromMatrix(countData = lgg_mergedcounts_deseq2_countsonly_wt,
+                              colData = lgg_metadata_wt,
+                              design = ~dex)
+  
+dds <- 
+  DESeq(dds)
+
+res <- 
+  results(dds, tidy=TRUE)
+
+res <- 
+  as_tibble(res)
+
+
+disease <- "LGG_WT"
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))
+}
+
+
+write_csv(res, file = paste(outputdir,"/TUCR_Database/SummaryTables/LGG_WT/LGG_WT_DESeq2_allTUCRs.csv",sep=""))
+
+```
+
+```{r supplementary_Figure3_volcanoplotfunction_expressiona}
+
+### Volcano plot
+
+volcanoplot_expression <- function (res,
+                         genes = "all",
+                         title = "Deregulated TUCRs in TCGA Gliomas", 
+                         output = "", 
+                         height = 7, 
+                         width = 14, 
+                         dpi = 600,
+                         annot_filter = ""){
+  #res <- res_TUCR
+  #genes <- "all"
+  #annot_filter = ""
+  #genes = c("uc.110")
+  #title = "Deregulated Genes"
+  
+  res <- res %>%
+  mutate(dereg = ifelse(log2FoldChange >=1, "upregulated",
+                    ifelse(log2FoldChange <=-1,"downregulated","unchanged")),
+         deregcount = ifelse(log2FoldChange >=1 & padj <= 0.05, 1,
+                    ifelse(log2FoldChange <=-1 & padj <= 0.05,-1,0))) %>%
+  dplyr::filter(padj != 0 | alias == "uc.110") %>%
+  dplyr::group_by(alias) %>%
+  dplyr::mutate(sum = sum(deregcount,na.rm=TRUE)) %>%
+  ungroup() %>%
+  dplyr::mutate(deregcategory = ifelse(sum == 2, "Up-Both",
+                                ifelse(sum == -2, "Down-Both",
+                                ifelse(sum == 1 & dereg == "upregulated" & disease == "GBM","Up-GBM",
+                                ifelse(sum == 1  & dereg == "upregulated" &  disease == "LGG", "Up-LGG",
+                                ifelse(sum == -1  & dereg == "downregulated" &  disease == "LGG", "Down-LGG",
+                                ifelse(sum == -1  & dereg == "downregulated" &  disease == "GBM", "Down-GBM","not deregulated")))))),
+                color = ifelse(sum == 2, paper_darkpink,
+                                ifelse(sum == -2, paper_lightblue,
+                                ifelse(sum == 1 & dereg == "upregulated" & disease == "GBM",paper_red,
+                                ifelse(sum == 1  & dereg == "upregulated" &  disease == "LGG", paper_pink,
+                                ifelse(sum == -1  & dereg == "downregulated" &  disease == "LGG", paper_skyblue,
+                                ifelse(sum == -1  & dereg == "downregulated" &  disease == "GBM", paper_blue,
+                                ifelse(disease == "GBM",paper_black,paper_gray))))))),
+                newdisease = ifelse(str_detect(deregcategory,"Both"),"BOTH",disease),
+                diseasefilter = ifelse((disease == "LGG" & newdisease == "BOTH"),0,1)) %>%
+    dplyr::filter(diseasefilter == 1)
+  
+  res_summary <- res %>%
+    group_by(color) %>%
+    dplyr::summarize(n = n())
+  
+if(annot_filter == ""){}else{
+  res %>%
+    filter(annot == annot_filter)
+}
+
+
+res_110_up <- res %>%
+   filter(color != paper_gray & color != paper_black & log2FoldChange > 0 | alias == "uc.110") %>%
+   dplyr::arrange(desc(log2FoldChange)) %>%
+   dplyr::group_by(disease) %>%
+   dplyr::mutate(order_rank= row_number()) %>%
+   mutate(maxrank = max(order_rank,na.rm=TRUE)) %>%
+   ungroup() %>%
+   filter(order_rank <= 5 | alias == "uc.110")
+
+res_110_down <- res %>%
+   filter(color != paper_gray & color != paper_black  & log2FoldChange < 0 | alias == "uc.110") %>%
+   dplyr::arrange(log2FoldChange) %>%
+   dplyr::group_by(disease) %>%
+   dplyr::mutate(order_rank= row_number()) %>%
+   mutate(maxrank = max(order_rank,na.rm=TRUE)) %>%
+   ungroup() %>%
+   filter(order_rank <= 5 | alias == "uc.110")
+  
+p <- ggplot(res) +
+        #geom_point(aes(x=log2FoldChange, y=-log10(pvalue),col=color)) +
+        #geom_hline(yintercept = 1.30,linetype = 2) +
+        geom_point(aes(x=log2FoldChange,y=-log10(padj),col=color)) +
+        geom_hline(yintercept = -log10(0.05),linetype = 2,size=0.5) +
+        geom_vline(xintercept = -1,linetype = 2,size=0.5) +
+        geom_vline(xintercept = 1,linetype = 2,size=0.5) +
+        scale_color_identity(guide = "deregcategory", labels = res$deregcategory, breaks = res$color) +
+        #ggtitle(title) +
+        guides(color = guide_legend(override.aes = list(size=5))) +
+        geom_text_repel(data= res_110_up,aes(x=log2FoldChange,y=-log10(padj),color=paper_black, label = res_110_up$alias, force=100,vjust=1.5,hjust=1.5)) +
+        geom_text_repel(data= res_110_down,aes(x=log2FoldChange,y=-log10(padj),color=paper_black, label = res_110_down$alias, force=50,vjust=1.5,hjust=1.5)) +
+        labs(x = "log2 fold change of TUCR in tumors",
+        #y = "-log10 adjusted p-value",
+        y = "-log10 of adjusted p-value",
+        color = "Legend") +
+        theme(plot.title = element_text(size = rel(2.0), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+              strip.background = element_rect(fill="white"),
+              axis.title = element_text(size = rel(1.4), face="bold"),
+              strip.text = element_text(size = rel(1.4), face="bold"),
+              axis.text = element_text(size = rel(1.0)),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
+legend.text=element_text(size=10)) +
+  coord_cartesian(clip = "off") + 
+  facet_wrap(~newdisease+annot,scales="free",ncol=4)
+
+p
+
+ggsave(plot = print(p),filename = output, width = width, height = height, dpi = 600)
+
+}
+
+
+```
+
+```{r supplementary_Figure3ab}
+
+res_TUCR_LGG <- read_csv(paste(outputdir,"/TUCR_Database/SummaryTables/LGG/LGG_DESeq2_allTUCRs.csv",sep=""),col_names = TRUE)
+
+res_TUCR_GBM <- read_csv(paste(outputdir,"/TUCR_Database/SummaryTables/GBM/GBM_DESeq2_allTUCRs.csv",sep=""),col_names = TRUE)
+
+tucr_annot <- read_delim("Inputs/general_files/bedfiles/hg38.ultraconserved.bed",col_names = TRUE,delim="\t") 
+
+res_TUCR_LGG_2 <- res_TUCR_LGG %>%
+  separate(row,into=c("alias","kibble"),sep="___") %>%
+  dplyr::select(-kibble) %>% 
+  left_join(tucr_annot,by="alias") %>%
+  filter(!is.na(chrom)) %>%
+  dplyr::select(alias,annot,log2FoldChange,padj) %>%
+  mutate(disease = "LGG")
+
+res_TUCR_GBM_2 <- res_TUCR_GBM %>%
+  separate(row,into=c("alias","kibble"),sep="___") %>%
+  dplyr::select(-kibble) %>% 
+  left_join(tucr_annot,by="alias") %>%
+  filter(!is.na(chrom)) %>%
+  dplyr::select(alias,annot,log2FoldChange,padj) %>%
+  mutate(disease = "GBM")
+
+res_TUCR <- rbind(res_TUCR_GBM_2,res_TUCR_LGG_2)
+
+```
+
+```{r,fig.width=16,fig.height=9}
+volcanoplot_expression(res_TUCR,
+                         genes = "all",
+                         output = paste(outputdir,"/Figure3_supplementary/supplementary_Figure3a.png",sep=""),
+                         height = 9, 
+                         width = 16, 
+                         dpi = 600,
+                         annot = "")
+```
+
+### Supplementary Figure 3B
+
+## Completing cox survival analysis for TUCRs
+
+```{r supplementary_Figure3b_methods,eval=FALSE}
+
+disease <- "GBM"
+
+normal <- "cortex"
+
+figureorder <- 5
+
+## read data
+
+t_countfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_mergedcounts.txt",sep="")
+
+n_countfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_mergedcounts.txt",sep="")
+
+t_metadatafile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_tcga_metadata.csv",sep="")
+
+n_metadatafile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_gtex_metadata.csv",sep="")
+
+t_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_seqdepth_counts.csv",sep="")
+
+n_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_seqdepth_counts.csv",sep="")
+
+## Merge Data
+
+if(!is.na(n_countfile)){
+  mergedcounts <- read.table(t_countfile,header = TRUE)
+  
+  normalcounts <- read.table(n_countfile,header = TRUE) 
+  
+  mergedcounts <- mergedcounts %>% left_join(normalcounts,by=c("id")) %>%
+    dplyr::select(-chrom.y,-start.y,-end.y,-strand.y,-tag.y,-annot.y,-alias.y) %>%
+    distinct()
+  
+  metadata <- 
+  read_csv(file = t_metadatafile)
+  
+  n_metadata <- 
+  read_csv(file = n_metadatafile)
+  
+  rm(normalcounts)
+  
+  metadata <- rbind(metadata,n_metadata)
+  
+  rm(n_metadata)
+  
+  seqdepth <- read.csv(file = t_seqdepthfile)
+  
+  n_seqdepth <- read.csv(file = n_seqdepthfile)
+  
+  seqdepth <- rbind(seqdepth,n_seqdepth)
+  
+  rm(n_seqdepth)
+  
+}else{
+    mergedcounts <- read.table(t_countfile,header = TRUE)
+
+    metadata <- read.csv(file = t_metadatafile)
+    
+    seqdepth <- read.csv(file = t_seqdepthfile)
+}
+
+#if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
+#  dir.create(paste(outputdir,"/TUCR_Database/",sep=""))
+#}
+
+#if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+#  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+#}
+
+#if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))){
+#  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))
+#}
+
+if(!is.na(filterannot)){
+  survcounts <- mergedcounts %>%
+    filter(tag.x == filterannot & annot.x != "random")
+  
+}else{
+  survcounts <- mergedcounts
+}
+
+posdata <- survcounts[,1:8]
+survcounts <- survcounts[,9:length(colnames(survcounts))]
+
+is.sequential <- function(x){
+  all(abs(diff(x)) == 1)
+} 
+
+match_colnames <- match(as.character(colnames(survcounts)),as.character(metadata$survid))
+
+survcounts <- as.matrix(survcounts)
+
+n_index <- which(as.character(metadata$dex) %in% "normal")
+
+## modifying this command to only subset with IDH status WT for GBM
+#t_index <- which(as.character(metadata$dex) %in% "tumor")
+
+t_index <- which(as.character(metadata$IDH1status) %in% "WT")
+
+vm <- function(x){
+  #x <- mergedcounts
+  cond <- factor(ifelse(seq(1,dim(x)[2],1) %in% t_index, 1,  0))
+  d <- model.matrix(~1+cond)
+  x <- t(apply(x,1,as.numeric))
+  ex <- voom(x,d,plot=F)
+  return(ex$E)
+}
+
+count_vm <- vm(survcounts)
+
+colnames(count_vm) <- metadata$id
+
+scal <- function(x,y){
+  mean_n <- rowMeans(y)  # mean of normal
+  sd_n <- apply(y,1,sd)  # SD of normal
+  # z score as (value - mean normal)/SD normal
+  res <- matrix(nrow=nrow(x), ncol=ncol(x))
+  colnames(res) <- colnames(x)
+  rownames(res) <- rownames(x)
+  for(i in 1:dim(x)[1]){
+    for(j in 1:dim(x)[2]){
+      res[i,j] <- (x[i,j]-mean_n[i])/sd_n[i]
+    }
+  }
+  return(res)
+}
+
+z_rna <- scal(count_vm[,t_index],count_vm[,n_index])
+rownames(z_rna) <- posdata[,4]
+
+#clinical <- read.table("./Inputs/general_files/survivalfiles/GBM.clin.merged.txt",header = TRUE)
+clinical <- read.table("./Inputs/general_files/survivalfiles/glioma3.clin.merged.txt",header = TRUE)
+
+clinical$time <- as.numeric(clinical$time)
+
+clinical <- clinical %>%
+  dplyr::select("barcode"=patient,time,status)
+
+clinical2 <- metadata %>% left_join(clinical,by = "barcode")
+
+# Sum(clinical$patient %in% colnames(z_rna))
+
+ind_tum <- which(unique(colnames(z_rna)) %in% clinical2$id)
+ind_clin <- which(clinical2$id %in% colnames(z_rna))
+
+out.tab <- c()
+for(x in 1:nrow(count_vm)){
+  ind_gene <- x
+  s <- Surv(clinical$time[ind_clin],clinical$status[ind_clin])
+  cx <- coxph(formula = s ~ z_rna[ind_gene,ind_tum])
+  cx <- tidy(cx)
+  out.tab <- rbind(out.tab,cx)
+}
+
+surv_TUCR <- cbind(posdata,out.tab)
+surv_TUCR <- surv_TUCR %>% dplyr::select(-term)
+
+write_csv(surv_TUCR,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_coxph_allTUCRs.csv",sep=""))
+
+
+km_countdata <- z_rna
+colnames(km_countdata) <- metadata$id[t_index]
+posdata$median <- rowMedians(survcounts)
+
+#km_countdata2 <- km_countdata[,complete.cases(clinical2)]
+
+probs <- c(0.25,0.5,0.75)
+q <- rowQuantiles(km_countdata, probs = probs)
+posdata$n25 <- q[,1]
+posdata$n75 <- q[,3]
+posdata <- posdata %>%
+  dplyr::select("TUCR"=alias.x,median,n25,n75)
+km_TUCRs <- cbind(posdata,km_countdata) 
+
+km_TUCRs <- km_TUCRs %>%
+  gather(key = "id", value = "count",-TUCR,-median,-n75,-n25) %>%
+  mutate(group = ifelse(count>=n75,"low",ifelse(count<=n25,"high",NA))) %>%
+  distinct %>%
+  dplyr::select(TUCR,median,id,group) %>%
+  left_join(clinical2,by="id") %>%
+  dplyr::filter(median != 0)
+
+TUCRids <- as.character(posdata$TUCR)
+i <- 1
+
+ptable <- data.frame(matrix(ncol=3,nrow=0, dimnames=list(NULL, c("TUCR","pvalue","method"))))
+
+for(i in 1:length(TUCRids)){
+ print(i)
+  print(TUCRids[i])
+  
+  skip_to_next <- FALSE
+  TUCRsurv <- as.character(TUCRids[i])
+  #TUCRsurv<-"uc.1"
+  #TUCR <- "uc.1"
+  kmdata <- km_TUCRs %>%
+   dplyr::filter(TUCR == TUCRsurv) %>%
+   dplyr::select(TUCR,id,group,time,status) 
+  fit <- tryCatch(survfit(Surv(time, status) ~ group, data = kmdata),
+               error = function(e) { skip_to_next <<- TRUE})
+  p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE),
+               error = function(e) { skip_to_next <<- TRUE})
+
+                
+  if(skip_to_next == TRUE) { 
+   rbinder <- cbind(as.character(TUCRsurv),NA,NA)
+    ptable[i,] <- rbinder } else{
+  grid.draw.ggsurvplot <- function(x){
+  survminer:::print.ggsurvplot(x, newpage = FALSE)
+  }
+ p <- ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE)
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
+   dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+   ## we are selecting three columns here and adding uc.id in next step making four columns for each uc.id 
+   ## Above ptable was initiated with only three columns (TUCR,pvalue,method) 
+   ## Warning in `[<-.data.frame`(`*tmp*`, i, , value = list(`as.character(TUCRsurv)` = "uc.272",  :
+   ## provided 4 variables to replace 3 variables
+   ## modifying below line to select only two columns (pval,method) matching above ptable initiation and if condition.   
+   #dplyr::select(method,pval,padj)
+    dplyr::select(pval,method)
+  rbinder <- cbind(as.character(TUCRsurv),p2value)
+  ptable[i,] <- rbinder
+   } 
+
+}
+
+write_csv(ptable,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_kpm_allTUCRs.csv",sep=""))
+
+```
+
+
+```{r supplementary_Figure3b_LGG}
+
+disease <- "LGG"
+
+normal <- "cortex"
+
+figureorder <- 6
+
+## read data
+
+t_countfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_mergedcounts.txt",sep="")
+
+n_countfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_mergedcounts.txt",sep="")
+
+t_metadatafile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_tcga_metadata.csv",sep="")
+
+n_metadatafile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_gtex_metadata.csv",sep="")
+
+t_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_seqdepth_counts.csv",sep="")
+
+n_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_seqdepth_counts.csv",sep="")
+
+## Merge Data
+
+if(!is.na(n_countfile)){
+  mergedcounts <- read.table(t_countfile,header = TRUE)
+  
+  normalcounts <- read.table(n_countfile,header = TRUE) 
+  
+  mergedcounts <- mergedcounts %>% left_join(normalcounts,by=c("id")) %>%
+    dplyr::select(-chrom.y,-start.y,-end.y,-strand.y,-tag.y,-annot.y,-alias.y) %>%
+    distinct()
+  
+  metadata <- 
+  read_csv(file = t_metadatafile)
+  
+  n_metadata <- 
+  read_csv(file = n_metadatafile)
+  
+  rm(normalcounts)
+  
+  metadata <- rbind(metadata,n_metadata)
+  
+  rm(n_metadata)
+  
+  seqdepth <- read.csv(file = t_seqdepthfile)
+  
+  n_seqdepth <- read.csv(file = n_seqdepthfile)
+  
+  seqdepth <- rbind(seqdepth,n_seqdepth)
+  
+  rm(n_seqdepth)
+  
+}else{
+    mergedcounts <- read.table(t_countfile,header = TRUE)
+
+    metadata <- read.csv(file = t_metadatafile)
+    
+    seqdepth <- read.csv(file = t_seqdepthfile)
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))
+}
+
+if(!is.na(filterannot)){
+  survcounts <- mergedcounts %>%
+    filter(tag.x == filterannot & annot.x != "random")
+  
+}else{
+  survcounts <- mergedcounts
+}
+
+posdata <- survcounts[,1:8]
+survcounts <- survcounts[,9:length(colnames(survcounts))]
+
+is.sequential <- function(x){
+  all(abs(diff(x)) == 1)
+} 
+
+match_colnames <- match(as.character(colnames(survcounts)),as.character(metadata$survid))
+
+survcounts <- as.matrix(survcounts)
+
+n_index <- which(as.character(metadata$dex) %in% "normal")
+t_index <- which(as.character(metadata$dex) %in% "tumor")
+
+vm <- function(x){
+  #x <- mergedcounts
+  cond <- factor(ifelse(seq(1,dim(x)[2],1) %in% t_index, 1,  0))
+  d <- model.matrix(~1+cond)
+  x <- t(apply(x,1,as.numeric))
+  ex <- voom(x,d,plot=F)
+  return(ex$E)
+}
+
+count_vm <- vm(survcounts)
+
+colnames(count_vm) <- metadata$id
+
+scal <- function(x,y){
+  mean_n <- rowMeans(y)  # mean of normal
+  sd_n <- apply(y,1,sd)  # SD of normal
+  # z score as (value - mean normal)/SD normal
+  res <- matrix(nrow=nrow(x), ncol=ncol(x))
+  colnames(res) <- colnames(x)
+  rownames(res) <- rownames(x)
+  for(i in 1:dim(x)[1]){
+    for(j in 1:dim(x)[2]){
+      res[i,j] <- (x[i,j]-mean_n[i])/sd_n[i]
+    }
+  }
+  return(res)
+}
+
+z_rna <- scal(count_vm[,t_index],count_vm[,n_index])
+rownames(z_rna) <- posdata[,4]
+
+#clinical <- read.table("./Inputs/general_files/survivalfiles/GBM.clin.merged.txt",header = TRUE)
+clinical <- read.table("./Inputs/general_files/survivalfiles/glioma3.clin.merged.txt",header = TRUE)
+
+clinical$time <- as.numeric(clinical$time)
+
+clinical <- clinical %>%
+  dplyr::select("barcode"=patient,time,status)
+
+clinical2 <- metadata %>% left_join(clinical,by = "barcode")
+
+# Sum(clinical$patient %in% colnames(z_rna))
+
+ind_tum <- which(unique(colnames(z_rna)) %in% clinical2$id)
+ind_clin <- which(clinical2$id %in% colnames(z_rna))
+
+out.tab <- c()
+for(x in 1:nrow(count_vm)){
+  ind_gene <- x
+  s <- Surv(clinical$time[ind_clin],clinical$status[ind_clin])
+  cx <- coxph(formula = s ~ z_rna[ind_gene,ind_tum])
+  cx <- tidy(cx)
+  out.tab <- rbind(out.tab,cx)
+}
+
+surv_TUCR <- cbind(posdata,out.tab)
+surv_TUCR <- surv_TUCR %>% dplyr::select(-term)
+
+write_csv(surv_TUCR,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_coxph_allTUCRs.csv",sep=""))
+
+if(makekpmplots == TRUE){
+
+km_countdata <- z_rna
+colnames(km_countdata) <- metadata$id[t_index]
+posdata$median <- rowMedians(survcounts)
+
+#km_countdata2 <- km_countdata[,complete.cases(clinical2)]
+
+probs <- c(0.25,0.5,0.75)
+q <- rowQuantiles(km_countdata, probs = probs)
+posdata$n25 <- q[,1]
+posdata$n75 <- q[,3]
+posdata <- posdata %>%
+  dplyr::select("TUCR"=alias.x,median,n25,n75)
+km_TUCRs <- cbind(posdata,km_countdata) 
+
+km_TUCRs <- km_TUCRs %>%
+  gather(key = "id", value = "count",-TUCR,-median,-n75,-n25) %>%
+  mutate(group = ifelse(count>=n75,"high",ifelse(count<=n25,"low",NA))) %>%
+  distinct %>%
+  dplyr::select(TUCR,median,id,group) %>%
+  left_join(clinical2,by="id") %>%
+  dplyr::filter(median != 0)
+
+TUCRids <- as.character(posdata$TUCR)
+i <- 1
+
+ptable <- data.frame(matrix(ncol=4,nrow=0, dimnames=list(NULL, c("TUCR","method","pvalue","padj"))))
+
+for(i in 1:length(TUCRids)){
+
+  skip_to_next <- FALSE
+  TUCRsurv <- as.character(TUCRids[i])
+  #TUCR <- "uc.1"
+  kmdata <- km_TUCRs %>%
+    dplyr::filter(TUCR == TUCRsurv) %>%
+    dplyr::select(TUCR,id,group,time,status) 
+  fit <- tryCatch(survfit(Surv(time, status) ~ group, data = kmdata),
+                error = function(e) { skip_to_next <<- TRUE})
+  p <- tryCatch(ggsurvplot(fit,data=kmdata,conf.int = TRUE,pval = TRUE,risk.table = TRUE),
+                error = function(e) { skip_to_next <<- TRUE})
+  if(skip_to_next == TRUE) { 
+    rbinder <- cbind(as.character(TUCRsurv),NA,NA,NA)
+    ptable[i,] <- rbinder
+}else{
+  grid.draw.ggsurvplot <- function(x){
+  survminer:::print.ggsurvplot(x, newpage = FALSE)
+}
+  p2value <- surv_pvalue(fit,  data = kmdata,method = "survdiff") %>%
+    dplyr::mutate(padj = p.adjust(pval, method = "bonferroni")) %>%
+    dplyr::select(method,pval,padj)
+  rbinder <- cbind(as.character(TUCRsurv),p2value)
+  ptable[i,] <- rbinder
+   }}
+
+write_csv(ptable,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_survival_kpm_allTUCRs.csv",sep=""))}
+
+```
+
+## Writing a script to generate a volcano plot for survival
+
+```{r supplementary_Figure3b_volcanosurv}
+
+### Volcano plot
+
+volcanosurv <- function (res,genes = "all",title = "TUCRs correlated with survival in gliomas", output = "glioma_results__survival_volcanoplot.png",width = 16, height = 6, dpi = 600){
+  #res <- res_surv
+  #genes = c("uc.110","uc.62")
+  #title = paste("TUCR correlation with patient survival in ",disease,sep="")
+  #output = paste(outputdir,"/intergenic_tucr_results_volcanosurv.png",sep="")
+  i <- 1
+  vres <- res %>%
+    filter(abs(estimate) <=1)
+  vres <- vres %>% mutate(gene="",Survival="",color="")
+  for (i in 1:length(vres$id)){
+  ifelse(is.na(vres$pvalue[i]),vres$pvalue[i] <- 1,vres$pvalue[i] <- vres$pvalue[i])
+    
+  ifelse(genes!="all",ifelse(!is.na(match(vres$id[i],genes)),vres$gene[i] <- as.character(vres$id[i]), ""),vres$gene[i] <- vres$id[i])
+  
+  ifelse((vres$pvalue[i] <0.05 & vres$p.value[i] <0.05 & vres$estimate[i] < -0),{vres$Survival[i] <- "Significant (Good Prognosis)";vres$color[i] <- print(paper_green);},
+  ifelse((vres$pvalue[i] <0.05 & vres$p.value[i] <0.05 & vres$estimate[i] > 0),{vres$Survival[i] <- "Significant (Poor Prognosis)";vres$color[i] <- print(paper_red);},
+  ifelse((vres$pvalue[i] >0.05 & vres$p.value[i] <0.05 & vres$estimate[i] < -0),{vres$Survival[i] <- "Significant (Good Prognosis)";vres$color[i] <- print(paper_green);},
+  ifelse((vres$pvalue[i] >0.05 & vres$p.value[i] <0.05 & vres$estimate[i] > 0),{vres$Survival[i] <- "Significant (Poor Prognosis)";vres$color[i] <- print(paper_red);},
+  ifelse((vres$pvalue[i] <0.05 & vres$p.value[i] >0.05),{vres$Survival[i] <- "Significant (KM)";vres$color[i] <- "black";},
+  ifelse({vres$Survival[i] <- "Not significant";vres$color[i] <- "lightgray";}))))))}
+  #{vres$Survival[i] <- "Not significant";vres$color[i] <- "lightgray";}))}
+  
+  vres <- vres %>%
+  arrange(desc(Survival))
+
+  
+  ## plot
+if(repel==TRUE){p <- ggplot(vres) +
+        geom_point(aes(x=estimate, y=-log10(as.numeric(p.value)),col=color)) +
+        scale_color_identity(guide = "legend", labels = vres$Survival, breaks = vres$color) +
+        ggtitle(title) +
+        labs(x = "Cox Estimated Proportional Hazard",
+        y = "-log10 P-Value (CH)",
+        color = "Legend")+
+        theme(plot.title = element_blank(),
+              strip.background = element_rect(fill="white"),
+              axis.title = element_text(size = rel(1.4), face="bold"),
+              strip.text = element_text(size = rel(1.4), face="bold"),
+              axis.text = element_text(size = rel(1.0)),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="top",legend.title=element_blank(),
+legend.text=element_text(size=10)) +
+        geom_text_repel(aes(x=estimate, y=-log10(as.numeric(p.value)),label = gene),force=50) +
+        facet_wrap(~disease.y+annot.x,scales="free",ncol=4)
+}else{
+  p <- ggplot(vres) +
+        geom_point(aes(x=estimate, y=-log10(as.numeric(p.value)),col=color)) +
+    scale_color_identity(guide = "legend", labels = vres$Survival, breaks = vres$color) +
+        + ggtitle(title) +
+        labs(x = "Cox Estimated Proportional Hazard",
+        y = "-log10 P-Value (CH)",
+        color = "Legend") +
+        theme(plot.title = element_blank(),
+              strip.background = element_rect(fill="white"),
+              axis.title = element_text(size = rel(1.4), face="bold"),
+              strip.text = element_text(size = rel(1.4), face="bold"),
+              axis.text = element_text(size = rel(1.0)),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="top",legend.title=element_blank(),
+legend.text=element_text(size=10))}
+ggsave(output, width = width, height = height, dpi = dpi) +
+        facet_wrap(~disease.y+annot.x,scales="free",ncol=4)
+
+p
+
+ggsave(plot = print(p),filename = output, width = width, height = height, dpi = 600)
+
+}
+
+
+```
+
+```{r supplementary_Figure3b}
+
+genes <- ""
+
+lgg_surv_TUCR <- read.csv(paste(outputdir,"/TUCR_Database/SummaryTables/LGG/LGG_survival_coxph_allTUCRs.csv",sep=""),header=TRUE) %>%
+  mutate(disease = "LGG")
+
+lgg_ptable <- read.csv(paste(outputdir,"/TUCR_Database/SummaryTables/LGG/LGG_survival_kpm_allTUCRs.csv",sep=""),header=TRUE) %>%
+  dplyr::select("id"=TUCR,pvalue,method) %>%
+  mutate(disease = "LGG")
+
+gbm_surv_TUCR <- read.csv(paste(outputdir,"/TUCR_Database/SummaryTables/GBM/GBM_survival_coxph_allTUCRs.csv",sep=""),header=TRUE) %>%
+  mutate(disease = "GBM")
+
+gbm_ptable <- read.csv(paste(outputdir,"/TUCR_Database/SummaryTables/GBM/GBM_survival_kpm_allTUCRs.csv",sep=""),header=TRUE) %>%
+  dplyr::select("id"=TUCR,pvalue,method) %>%
+  mutate(disease = "GBM")
+
+surv_TUCR <- rbind(gbm_surv_TUCR,lgg_surv_TUCR)
+
+ptable <- rbind(gbm_ptable,lgg_ptable)
+
+colnames(ptable) <- c("alias.x","pvalue","method","disease")
+
+res_surv <- inner_join(ptable,surv_TUCR,by="alias.x")
+
+res_surv_sum <- res_surv
+
+res_surv_sum <- res_surv_sum %>% mutate(gene="",Survival="",color="")
+
+annot_unique <- as.character(unique(res_surv_sum$annot))
+
+annotation <- "All"
+
+res_surv_sum2 <- res_surv_sum
+
+for (i in 1:length(res_surv_sum2$alias)){
+  #print(as.character(res_surv_sum2$alias.x[i]))
+  ifelse(is.na(res_surv_sum2$pvalue[i]),res_surv_sum2$pvalue[i] <- 1,res_surv_sum2$pvalue[i] 
+         <- res_surv_sum2$pvalue[i])
+    
+  ifelse(genes!="all",ifelse(!is.na(match(res_surv_sum2$alias[i],genes)),
+                             res_surv_sum2$gene[i] <- as.character(res_surv_sum2$alias[i]), ""),
+                                  res_surv_sum2$gene[i] <- res_surv_sum2$alias[i])
+  
+  ifelse((res_surv_sum2$pvalue[i] <0.05 & res_surv_sum2$p.value[i] <0.05 & 
+            res_surv_sum2$estimate[i] < 0),
+         {res_surv_sum2$Survival[i] <- "Significant (Both, Good Prognosis)";res_surv_sum2$color[i] <- print(paper_green);},
+  ifelse((res_surv_sum2$pvalue[i] <0.05 & res_surv_sum2$p.value[i] <0.05 &
+            res_surv_sum2$estimate[i] > 0),
+         {res_surv_sum2$Survival[i] <- "Significant (Both, Poor Prognosis)";res_surv_sum2$color[i] <- print(paper_red);},
+  ifelse((res_surv_sum2$pvalue[i] >0.05 & res_surv_sum2$p.value[i] <0.05 &
+            res_surv_sum2$estimate[i] < 0),
+         {res_surv_sum2$Survival[i] <- "Significant (CH, Good Prognosis)";res_surv_sum2$color[i] <- print(paper_green);},
+  ifelse((res_surv_sum2$pvalue[i] >0.05 & res_surv_sum2$p.value[i] <0.05 &
+            res_surv_sum2$estimate[i] > 0),
+         {res_surv_sum2$Survival[i] <- "Significant (CH, Poor Prognosis)";res_surv_sum2$color[i] <- print(paper_red);},
+  ifelse((res_surv_sum2$pvalue[i] <0.05 & res_surv_sum2$p.value[i] >0.05),
+         {res_surv_sum2$Survival[i] <- "Significant (KM)";res_surv_sum2$color[i] <- "black";},
+  {res_surv_sum2$Survival[i] <- "Not significant";res_surv_sum2$color[i] <- "lightgray";})))))}
+
+#res_surv_sum4 <- res_surv_sum2 %>%
+#  group_by(Survival) %>%
+#  dplyr::summarise(count = n(),color) %>%
+#  distinct() %>%
+#  arrange(desc(Survival))
+
+#write.csv(res_surv_sum4,file=paste(outputdir,"/SurvivalAnalysis/SummaryFigures/BarGraphs/",disease,"_",annotation,"_tucr_surv_table.csv",sep=""))
+
+#p <- ggplot(res_surv_sum4, aes(x=Survival,y=count,fill=color)) + geom_bar(stat="identity", width = 0.7) + 
+#  scale_fill_identity(guide = "legend", labels = res_surv_sum2$Survival, breaks = res_surv_sum2$color) + 
+#  labs(y = "# of TUCRs", fill = "Legend") + 
+#  theme(
+#plot.title = element_text(size=rel(1.5), face="bold",hjust = 0.5),
+#axis.title = element_text(size = rel(1.25), face="bold"),
+#panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+#panel.background = element_blank(), axis.line = element_line(colour = "black"),
+#axis.text.x = element_blank())
+
+#ggsave(file=paste(outputdir,"/SurvivalAnalysis/SummaryFigures/BarGraphs/",disease,"_",annotation,"_tucr_surv_bar.png",sep=""),plot = print(p), width = 5, height = 2.5, dpi = 600)
+
+res_surv_sum3 <- res_surv_sum
+
+
+
+```
+
+```{r}
+volcanosurv(res_surv_sum3, genes = "",output = paste(outputdir,"/Figure3_Supplementary/supplementary_Figure3b.png",sep=""),width = 16, height =6, dpi = 600)
+```
+
+```{r}
+sessionInfo()
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
