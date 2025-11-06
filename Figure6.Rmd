@@ -1,0 +1,541 @@
+---
+title: "Figure 6 related code"
+output: html_notebook
+---
+## Title : A comprehensive analysis of Transcribed Ultra Conserved Regions uncovers important regulatory functions of novel non coding transcripts in gliomas
+
+## Figure 6
+
+## Set parameters and install required programs
+```{r}
+## Variables
+
+outputdir <- "Outputs"
+
+filterannot <- "TUCR"
+
+makekpmplots <- TRUE
+
+tpmethod <- "TPM"
+
+repel <- TRUE
+```
+
+```{r}
+## Load Colors
+
+paper_black = "#000000"
+  
+paper_gold = "#EAA304"
+  
+paper_green2 = "#20C799"
+  
+paper_yellow = "#F0E442"
+  
+paper_blue = "#017DC3"
+  
+paper_lightblue = "#58AFE0"
+  
+paper_skyblue = "#A5DFFF"
+  
+paper_orange = "#D55E00"
+  
+paper_purple = "#8C004C"
+  
+paper_gray = "#CAC4C4"
+  
+paper_red = "#C30223"
+  
+paper_darkpink = "#DA7C8C"
+  
+paper_pink = "#FFCCD5"
+
+paper_green = "#54BB44"
+  
+paper_red2 = "#CA465C"
+  
+paper_turq = "#20C799"
+
+```
+
+```{r}
+## Load Programs
+
+if (!require("jsonlite")) install.packages("jsonlite")
+library("jsonlite")
+
+if (!require("tidyjson")) install.packages("tidyjson")
+library("tidyjson")
+
+if (!require("tidyverse")) install.packages("tidyverse")
+library("tidyverse")
+
+if (!require("ggplot2")) install.packages("ggplot2")
+library("ggplot2")
+
+if (!require("ggforce")) install.packages("ggforce")
+library("ggforce")
+
+if (!require("ggbreak")) install.packages("ggbreak")
+library("ggbreak")
+
+if (!require("ggrepel")) install.packages("ggrepel")
+library("ggrepel")
+
+if (!require("ggfortify")) install.packages("ggfortify")
+library("ggfortify")
+
+if (!require("ggdendro")) install.packages("ggdendro")
+library("ggdendro")
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
+library("DESeq2")
+
+if (!require("survival")) install.packages("survival")
+library("survival")
+
+if (!require("broom")) install.packages("broom")
+library("broom")
+
+if (!requireNamespace("limma", quietly = TRUE))BiocManager::install("limma")
+library("limma")
+
+if (!require("Tmisc")) install.packages("Tmisc")
+library("Tmisc")
+
+if (!require("survminer")) install.packages("survminer")
+library("survminer")
+
+if (!require("corrr")) install.packages("corrr")
+library("corrr")
+
+if (!require("here")) install.packages("here")
+library("here")
+
+if (!require("lessR")) install.packages("lessR")
+library("lessR")
+
+if (!require("splitstackshape")) install.packages("splitstackshape")
+library(splitstackshape)
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+
+if (!require('org.Hs.eg.db')) BiocManager::install('org.Hs.eg.db')
+library(org.Hs.eg.db)
+
+if (!require('GO.db')) BiocManager::install('GO.db')
+library(GO.db)
+
+if (!require('limma')) BiocManager::install('limma')
+library(limma)
+
+if (!require("ggthemes")) install.packages('ggthemes', dependencies = TRUE)
+library(ggthemes)
+
+if (!require("gplots")) 
+install.packages("gplots")
+library(gplots)
+
+if (!require("ggsignif")) 
+install.packages("ggsignif")
+library(ggsignif)
+
+if (!require("RColorBrewer")) 
+install.packages("RColorBrewer")
+library(RColorBrewer)
+
+if (!require("reshape2")) 
+install.packages("reshape2")
+library(reshape2)
+
+if (!require("gridExtra")) 
+install.packages("gridExtra")
+library(gridExtra)
+
+if (!require("dendextend")) 
+install.packages("dendextend")
+library(dendextend)
+
+if (!require("plyr")) 
+install.packages("plyr")
+library(plyr)
+
+if (!require("magick")) 
+install.packages("magick")
+library(magick)
+
+if (!require("png")) 
+install.packages("png")
+library(png)
+
+if (!require("scales")) 
+install.packages("scales")
+library(scales)
+
+if (!require("ggsci")) 
+install.packages("ggsci")
+library(ggsci)
+
+if (!require("stringi")) install.packages("stringi")
+  library(stringi)
+if (!require("stringr")) install.packages("stringr")
+  library(stringr)
+
+if (!require("impute")) BiocManager::install("impute")
+library(impute)
+
+if (!require("preprocessCore")) BiocManager::install("preprocessCore")
+library(preprocessCore)
+
+if (!require("Go.db")) BiocManager::install("GO.db")
+library(GO.db)
+
+
+if (!require("WGCNA")) install.packages("WGCNA")
+library(WGCNA)
+
+if (!require("umap")) install.packages("umap")
+library(umap)
+
+if (!require("igraph")) install.packages("igraph")
+library(igraph)
+
+if (!require("gtable")) install.packages("gtable")
+library(gtable)
+
+if(!dir.exists(outputdir)){
+  dir.create(outputdir)
+}
+
+knitr::opts_chunk$set(
+eval = FALSE,
+tidy = TRUE#,
+#	echo = TRUE,
+#	message = FALSE,
+#	warning = FALSE
+)
+
+```
+
+```{r dircreate_Figure6}
+
+dir.create(paste(outputdir,"/Figure6/",sep=""))
+
+```
+
+### Figure 6A and 6B
+## Preprocess data
+```{r Figure6ab_readdata}
+
+res_A172 <- read_csv(paste("./Inputs/Figure6/Figure6a_input.csv",sep=""))
+
+miR544 <- read_delim("./Inputs/Figure6/TargetScan8.0__miR-544a-5p.predicted_targets.txt",col_names=TRUE,delim="\t")
+
+res_miR544 <- res_A172 %>%
+  inner_join(miR544,by="Target gene") %>%
+  #left_join(cancermine,by="Target gene") %>%
+  # Filter(abs(log2FoldChange)>=0.65) %>%
+  #dplyr::select(`Target gene`,log2FoldChange,role) %>%
+  dplyr::select(`Target gene`,log2FoldChange,padj) %>%
+  mutate(mirna = "miR-544")
+
+if(!dir.exists(paste(outputdir,"/Supplementary_Table3/",sep=""))){
+  dir.create(paste(outputdir,"/Supplementary_Table3/",sep=""))
+}
+
+## read data
+
+gbm_countfile <- paste("Inputs/general_files/sequencingfiles/GBM/GBM_mergedcounts.txt",sep="")
+
+lgg_countfile <- paste("Inputs/general_files/sequencingfiles/LGG/LGG_mergedcounts.txt",sep="")
+
+cortex_countfile <- paste("Inputs/general_files/sequencingfiles/cortex/cortex_mergedcounts.txt",sep="")
+
+
+gbm_metadatafile <- paste("Inputs/general_files/sequencingfiles/GBM/GBM_tcga_metadata.csv",sep="")
+
+lgg_metadatafile <- paste("Inputs/general_files/sequencingfiles/LGG/LGG_tcga_metadata.csv",sep="")
+
+cortex_metadatafile <- paste("Inputs/general_files/sequencingfiles/cortex/cortex_gtex_metadata.csv",sep="")
+
+
+gbm_seqdepthfile <- paste("Inputs/general_files/sequencingfiles/GBM/GBM_seqdepth_counts.csv",sep="")
+
+lgg_seqdepthfile <- paste("Inputs/general_files/sequencingfiles/LGG/LGG_seqdepth_counts.csv",sep="")
+
+cortex_seqdepthfile <- paste("Inputs/general_files/sequencingfiles/cortex/cortex_seqdepth_counts.csv",sep="")
+
+
+## Merge Data
+
+
+if(!is.na(cortex_countfile)){
+  gbm_mergedcounts <- read.table(gbm_countfile,header = TRUE)
+  
+  cortex_normalcounts <- read.table(cortex_countfile,header = TRUE) 
+  
+  cortex_normalcounts <- cortex_normalcounts[,9:ncol(cortex_normalcounts)]
+  
+  gbm_mergedcounts <- cbind(gbm_mergedcounts,cortex_normalcounts) %>%
+    distinct()
+  
+  rm(cortex_normalcounts)
+  
+  gbm_metadata <- 
+  read_csv(file = gbm_metadatafile)
+  
+  cortex_metadata <- 
+  read_csv(file = cortex_metadatafile)
+  
+  gbm_metadata <- rbind(gbm_metadata,cortex_metadata)
+  gbm_metadata <- gbm_metadata[gbm_metadata$IDH1status %in% c("normal","WT"),]
+  
+  rm(cortex_metadata)
+  
+  gbm_seqdepth <- read.csv(file = gbm_seqdepthfile)
+  
+  cortex_seqdepth <- read.csv(file = cortex_seqdepthfile)
+  
+  gbm_seqdepth <- rbind(gbm_seqdepth,cortex_seqdepth)
+  
+  rm(cortex_seqdepth)
+  
+}else{
+    gbm_mergedcounts <- read.table(gbm_countfile,header = TRUE)
+
+    gbm_metadata <- read_csv(file = gbm_metadatafile)
+    
+    gbm_seqdepth <- read.csv(file = gbm__seqdepthfile)
+}
+
+gbm_mergedcounts_deseq2 <- gbm_mergedcounts 
+
+gbm_mergedcounts_deseq2_countsonly <- 
+  gbm_mergedcounts_deseq2[,9:ncol(gbm_mergedcounts_deseq2)]
+
+rownames(gbm_mergedcounts_deseq2_countsonly) <- 
+  gbm_mergedcounts_deseq2$id
+
+gbm_mergedcounts_deseq2_info <- 
+  gbm_mergedcounts_deseq2[,1:8]
+
+gbm_mergedcounts_deseq2_info$length <- 
+  (gbm_mergedcounts_deseq2$end - gbm_mergedcounts_deseq2$start)/1000
+
+dds <- 
+  DESeqDataSetFromMatrix(countData = gbm_mergedcounts_deseq2_countsonly,
+                              colData = gbm_metadata,
+                              design = ~dex)
+  
+dds <- 
+  DESeq(dds)
+
+res <- 
+  results(dds, tidy=TRUE)
+
+res <- 
+  as_tibble(res)
+
+res_combine <- res %>%
+  separate(row,into=c("Target gene","kibble"),sep="___") %>%
+  inner_join(res_miR544,by="Target gene") %>%
+  write_csv(paste(outputdir,"/Supplementary_Table3/supplementary_table3.csv",sep=""))
+
+```
+
+Find likely uc.110-miR regulated genes
+
+```{r Figure6ab_plot_deseq_miRs}
+
+### Volcano plot
+
+volcanoplot_mirna <- function (res,res2,
+                         title = "Deregulated and coregulated uc.110 genes are predicted to be miRNA targets", 
+                         output = "",
+                         output2 = "",
+                         height = 10, 
+                         width = 15, 
+                         dpi = 600){
+  
+  res <- res_combine %>% 
+    filter(!is.na(log2FoldChange.y)) %>%
+    mutate(color = ifelse(abs(log2FoldChange.x) >= 1 & abs(log2FoldChange.y) >= 1,"#9b00d2",
+                   ifelse(abs(log2FoldChange.x) >= 1,"pink",
+                   ifelse(abs(log2FoldChange.y) >= 1,"#b9d4ed","lightgray"
+                          ))),
+           order = ifelse(abs(log2FoldChange.x) >= 1 & abs(log2FoldChange.y) >= 1,1,
+                   ifelse(abs(log2FoldChange.x) >= 1,2,
+                   ifelse(abs(log2FoldChange.y),3,4
+                          ))),
+           newname = ifelse(`Target gene` == "MFRP","MFRP",""),
+           legend = ifelse(abs(log2FoldChange.x) >= 1 & abs(log2FoldChange.y) >= 1,">= 2-FC Both",
+                   ifelse(abs(log2FoldChange.x) >= 1,">= 2-FC A172s only",
+                   ifelse(abs(log2FoldChange.y) >= 1,">= 2-FC TCGA only","Neither"
+                          )))) %>%
+    arrange(order)
+    
+#p <- ggplot(res,aes(x=TUC110_rank, y=GBM_rank,label=label,color=color)) +
+p <- ggplot(res,aes(x=log2FoldChange.x, y=log2FoldChange.y)) +
+        geom_point(data = res,aes(x=log2FoldChange.x, y=log2FoldChange.y,color=color,size=20)) +
+        #geom_hline(yintercept = log10(5),linetype = 2,size=1.5) +
+        #geom_vline(xintercept = -0.65,linetype = 2,size=1.5) +
+        #geom_vline(xintercept = 0.65,linetype = 2,size=1.5) +
+        #scale_y_continuous(breaks = scales::pretty_breaks(n = 5)) +
+        scale_color_identity(guide = "legend", breaks = res$color, labels = res$legend) +
+        ggtitle("") +
+        guides(colour = guide_legend(override.aes = list(size=2.5))) +
+        labs(x = "Fold Change (TCGA GBM tumor v normal brain cortex)",
+        #y = "-log10 adjusted p-value",
+        y = "Fold Change (A172 si-uc.110 v si-SCR)") +
+        theme(plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+              axis.title = element_text(size = rel(2.0), face="bold"),
+              axis.text = element_text(size = rel(2.2), face="bold"),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="top",legend.title=element_blank(),
+legend.text=element_text(size=20)) + 
+  geom_label_repel(data = res,aes(x=log2FoldChange.x, y=log2FoldChange.y,label=newname),force=300,stat = "unique",min.segment.length = 0,size=rel(10.0)) 
+
+p
+
+ggsave(output, width = 10, height = 6, dpi = dpi)
+
+  res2 <- res2 %>% 
+    filter(log2FoldChange >= -5) %>%
+    mutate(color = ifelse(abs(log2FoldChange) >= 1 & pvalue <= 0.05,"#9b00d2",
+                   ifelse(abs(log2FoldChange) >= 1,"pink",
+                   ifelse(pvalue <= 0.05,"#b9d4ed","lightgray"
+                          ))),
+           order = ifelse(abs(log2FoldChange) >= 1 & pvalue <= 0.05,1,
+                   ifelse(abs(log2FoldChange) >= 1,2,
+                   ifelse(pvalue <= 0.05,3,4
+                          ))),
+           newname = ifelse(`Target gene` == "MFRP","MFRP",
+                            ifelse(`Target gene` == "LINC01038","LINC01038",
+                            ifelse(`Target gene` == "LINC01068","LINC01068",
+                            ifelse(`Target gene` == "LINC01643","LINC01643",
+                            ifelse(`Target gene` == "ST18","ST18",""))))),
+           legend = ifelse(abs(log2FoldChange) >= 1 & pvalue <= 0.05,">= 2 FC & 0.05 FDR",
+                   ifelse(abs(log2FoldChange) >= 1,">= 2 FC",
+                   ifelse(pvalue <= 0.05,"0.05 FDR","Neither"
+                          )))) %>%
+    filter(!is.na(legend)) %>%
+    arrange(order)
+  
+res3 <- res2 %>%
+  filter(`Target gene` == "MFRP")
+
+p <- ggplot(res2,aes(x=log2FoldChange, y=-log10(pvalue))) +
+        geom_point(data = res2,aes(x=log2FoldChange, y=-log10(pvalue),color=color)) +
+        scale_x_continuous(breaks=seq(-5,5,1)) +
+        scale_y_continuous(breaks=seq(0,15,3)) +
+        scale_color_identity(guide = "legend", breaks = res2$color, labels = res2$legend) +
+        ggtitle("") +
+        guides(colour = guide_legend(override.aes = list(size=2.5))) +
+        geom_hline(yintercept = 1.30,linetype = 2) +
+        geom_vline(xintercept = -1,linetype = 2) +
+        geom_vline(xintercept = 1,linetype = 2) +
+        labs(x = "Fold Change (A172 si-uc.110 vs si-SCR)",
+        #y = "-log10 adjusted p-value",
+        y = "-log10(padj)") +
+        theme(plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+              axis.title = element_text(size = rel(2.2), face="bold"),
+              axis.text = element_text(size = rel(2.2), face="bold"),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="top",legend.title=element_blank(),
+legend.text=element_text(size=rel(2.2))) + 
+  geom_label_repel(data = res3,aes(x=log2FoldChange, y=-log10(pvalue),label=newname),force=100,stat = "unique",min.segment.length = 0) 
+
+p
+
+ggsave(output2, width = 12, height = 8, dpi = dpi)
+}
+
+volcanoplot_mirna(res_combine,res_A172,output=paste(outputdir,"/Figure6/Figure6b.png",sep=""),output2=paste(outputdir,"/Figure6/Figure6a.png",sep=""))
+
+```
+
+### Figure 6C
+
+```{r Figure6c}
+
+data <- read_csv("./Inputs/Figure6/accum_miRNA2.csv")
+
+p <- ggplot(data,aes(x=reorder(Sample,order), y=FC,fill=reorder(Sample,order))) +
+        geom_bar(stat="identity",position = "dodge") +
+        geom_errorbar(aes(ymax=FC+stderr, ymin=FC-stderr, width=.2),position = position_dodge(0.9)) +
+        geom_text(aes(y = FC, label=pvalue,vjust=-1.5,hjust=0.5),color = "#000000",size=10,position = position_dodge(0.9)) + 
+        #scale_fill_manual(values = c("# F8766D","#0CB702","#619CFF","#D39200","#00C19F","#DB72FB")) +
+        scale_fill_manual(values = c(paper_red,paper_yellow)) +
+        labs(y = "Relative accumulated cells",
+        x = "") +
+        #ylim(-5, 10) +
+        theme(plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+              axis.title = element_text(size = rel(1.6), face="bold"),
+              axis.text.y = element_text(size = rel(2.2), face="bold"),
+              axis.text.x = element_text(size = rel(2.2), face="bold",angle=90,vjust = 0.5, hjust=1),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="top",legend.title=element_blank(),
+legend.text=element_text(size=rel(2.0)),
+strip.text.x = element_text(size = rel(2.2)),
+strip.background = element_blank()) + 
+  coord_cartesian(clip = "off") +
+  facet_wrap(~CellLine)
+
+
+p
+
+ggsave(file=paste(outputdir,"/Figure6/Figure6c.png",sep=""),
+       plot = print(p),
+       height = 6,
+       width = 6,
+       dpi = 600)
+
+```
+
+### Figure 6D
+
+```{r Figure6d,fig.width=15,fig.height=10}
+
+data <- read_csv("./Inputs/Figure6/qPCR_miRNA3.csv")
+
+p <- ggplot(data,aes(x=reorder(Sample,order), y=FC,fill=reorder(Sample,order))) +
+        geom_bar(stat="identity",position = "dodge") +
+        geom_errorbar(aes(ymax=FC+stderr, ymin=FC-stderr, width=.2),position = position_dodge(0.9)) +
+        geom_text(aes(y = FC+stderr+0.01, label=pvalue,vjust=-1,hjust=0.5),color = "#000000",size=10,position = position_dodge(0.9)) + 
+        scale_fill_manual(values = c(paper_red,paper_blue,paper_yellow)) +
+        labs(y = "Relative gene expression",
+        x = "") +
+        #ylim(-5, 10) +
+        theme(plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+              axis.title = element_text(size = rel(2), face="bold"),
+              axis.text.y = element_text(size = rel(2.2)),
+              axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
+legend.text=element_text(size=rel(2.0)),
+strip.text.x = element_text(size = rel(2.2)),
+strip.background = element_blank()) + 
+  coord_cartesian(clip = "off") +
+  facet_wrap(~CellLine+Gene,ncol=4)
+
+
+p
+
+ggsave(file=paste(outputdir,"/Figure6/Figure6d.png",sep=""),
+       plot = print(p),
+       height = 6,
+       width = 9,
+       dpi = 600)
+
+```
+
+```{r}
+sessionInfo()
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
