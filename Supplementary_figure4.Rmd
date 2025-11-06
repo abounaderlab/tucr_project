@@ -1,0 +1,1694 @@
+---
+title: "Supplementary Figure 4 related code"
+output: html_notebook
+---
+## Title : A comprehensive analysis of Transcribed Ultra Conserved Regions uncovers important regulatory functions of novel non coding transcripts in gliomas
+
+## Supplementary Figure 4
+
+### Set parameters and install required programs
+```{r}
+## Variables
+
+outputdir <- "Outputs"
+
+filterannot <- "TUCR"
+
+makekpmplots <- TRUE
+
+tpmethod <- "TPM"
+
+repel <- TRUE
+```
+
+```{r}
+## Load Colors
+
+paper_black = "#000000"
+  
+paper_gold = "#EAA304"
+  
+paper_green2 = "#20C799"
+  
+paper_yellow = "#F0E442"
+  
+paper_blue = "#017DC3"
+  
+paper_lightblue = "#58AFE0"
+  
+paper_skyblue = "#A5DFFF"
+  
+paper_orange = "#D55E00"
+  
+paper_purple = "#8C004C"
+  
+paper_gray = "#CAC4C4"
+  
+paper_red = "#C30223"
+  
+paper_darkpink = "#DA7C8C"
+  
+paper_pink = "#FFCCD5"
+
+paper_green = "#54BB44"
+  
+paper_red2 = "#CA465C"
+  
+paper_turq = "#20C799"
+
+```
+
+```{r}
+## Load Programs
+
+if (!require("jsonlite")) install.packages("jsonlite")
+library("jsonlite")
+
+if (!require("tidyjson")) install.packages("tidyjson")
+library("tidyjson")
+
+if (!require("tidyverse")) install.packages("tidyverse")
+library("tidyverse")
+
+if (!require("ggplot2")) install.packages("ggplot2")
+library("ggplot2")
+
+if (!require("ggforce")) install.packages("ggforce")
+library("ggforce")
+
+if (!require("ggbreak")) install.packages("ggbreak")
+library("ggbreak")
+
+if (!require("ggrepel")) install.packages("ggrepel")
+library("ggrepel")
+
+if (!require("ggfortify")) install.packages("ggfortify")
+library("ggfortify")
+
+if (!require("ggdendro")) install.packages("ggdendro")
+library("ggdendro")
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
+library("DESeq2")
+
+if (!require("survival")) install.packages("survival")
+library("survival")
+
+if (!require("broom")) install.packages("broom")
+library("broom")
+
+if (!requireNamespace("limma", quietly = TRUE))BiocManager::install("limma")
+library("limma")
+
+if (!require("Tmisc")) install.packages("Tmisc")
+library("Tmisc")
+
+if (!require("survminer")) install.packages("survminer")
+library("survminer")
+
+if (!require("corrr")) install.packages("corrr")
+library("corrr")
+
+if (!require("here")) install.packages("here")
+library("here")
+
+if (!require("lessR")) install.packages("lessR")
+library("lessR")
+
+if (!require("splitstackshape")) install.packages("splitstackshape")
+library(splitstackshape)
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+
+if (!require('org.Hs.eg.db')) BiocManager::install('org.Hs.eg.db')
+library(org.Hs.eg.db)
+
+if (!require('GO.db')) BiocManager::install('GO.db')
+library(GO.db)
+
+if (!require('limma')) BiocManager::install('limma')
+library(limma)
+
+if (!require("ggthemes")) install.packages('ggthemes', dependencies = TRUE)
+library(ggthemes)
+
+if (!require("gplots")) 
+install.packages("gplots")
+library(gplots)
+
+if (!require("ggsignif")) 
+install.packages("ggsignif")
+library(ggsignif)
+
+if (!require("RColorBrewer")) 
+install.packages("RColorBrewer")
+library(RColorBrewer)
+
+if (!require("reshape2")) 
+install.packages("reshape2")
+library(reshape2)
+
+if (!require("gridExtra")) 
+install.packages("gridExtra")
+library(gridExtra)
+
+if (!require("dendextend")) 
+install.packages("dendextend")
+library(dendextend)
+
+if (!require("plyr")) 
+install.packages("plyr")
+library(plyr)
+
+if (!require("magick")) 
+install.packages("magick")
+library(magick)
+
+if (!require("png")) 
+install.packages("png")
+library(png)
+
+if (!require("scales")) 
+install.packages("scales")
+library(scales)
+
+if (!require("ggsci")) 
+install.packages("ggsci")
+library(ggsci)
+
+if (!require("stringi")) install.packages("stringi")
+  library(stringi)
+if (!require("stringr")) install.packages("stringr")
+  library(stringr)
+
+if (!require("impute")) BiocManager::install("impute")
+library(impute)
+
+if (!require("preprocessCore")) BiocManager::install("preprocessCore")
+library(preprocessCore)
+
+if (!require("Go.db")) BiocManager::install("GO.db")
+library(GO.db)
+
+
+if (!require("WGCNA")) install.packages("WGCNA")
+library(WGCNA)
+
+if (!require("umap")) install.packages("umap")
+library(umap)
+
+if (!require("igraph")) install.packages("igraph")
+library(igraph)
+
+if (!require("gtable")) install.packages("gtable")
+library(gtable)
+
+if(!dir.exists(outputdir)){
+  dir.create(outputdir)
+}
+
+knitr::opts_chunk$set(
+eval = FALSE,
+tidy = TRUE#,
+#	echo = TRUE,
+#	message = FALSE,
+#	warning = FALSE
+)
+
+```
+
+## Supplementary Figure 4. 
+
+```{r dircreate_figure2}
+
+dir.create(paste(outputdir,"/Figure4_Supplementary/",sep=""))
+
+```
+
+### Supplementary Figure 4A
+
+Generate FC Plots for each TUCR (GBM)
+
+```{r Figure4a_boxplot_TUCRs}
+
+disease <- "GBM"
+
+normal <- "cortex"
+
+figureorder <- 1
+
+## read data
+
+t_countfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_mergedcounts.txt",sep="")
+
+n_countfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_mergedcounts.txt",sep="")
+
+t_metadatafile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_tcga_metadata.csv",sep="")
+
+n_metadatafile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_gtex_metadata.csv",sep="")
+
+t_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_seqdepth_counts.csv",sep="")
+
+n_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_seqdepth_counts.csv",sep="")
+
+## Merge Data
+
+if(!is.na(n_countfile)){
+  mergedcounts <- read.table(t_countfile,header = TRUE)
+  
+  normalcounts <- read.table(n_countfile,header = TRUE) 
+  
+  mergedcounts <- mergedcounts %>% left_join(normalcounts,by=c("id")) %>%
+    dplyr::select(-chrom.y,-start.y,-end.y,-strand.y,-tag.y,-annot.y,-alias.y) %>%
+    distinct()
+  
+  metadata <- 
+  read_csv(file = t_metadatafile)
+  
+  n_metadata <- 
+  read_csv(file = n_metadatafile)
+  
+  rm(normalcounts)
+  
+  metadata <- rbind(metadata,n_metadata)
+  
+  rm(n_metadata)
+  
+  seqdepth <- read.csv(file = t_seqdepthfile)
+  
+  n_seqdepth <- read.csv(file = n_seqdepthfile)
+  
+  seqdepth <- rbind(seqdepth,n_seqdepth)
+  
+  rm(n_seqdepth)
+  
+  metadata<-metadata[metadata$IDH1status %in% c("normal","WT"),]
+  
+}else{
+    mergedcounts <- read.table(t_countfile,header = TRUE)
+
+    metadata <- read.csv(file = t_metadatafile)
+    
+    seqdepth <- read.csv(file = t_seqdepthfile)
+    
+    metadata<-metadata[metadata$IDH1status %in% c("normal","WT"),]
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))
+}
+
+if(!is.na(filterannot)){
+  mergedcounts_trimmed <- mergedcounts %>%
+  filter(tag.x == filterannot & annot.x != "random")
+}
+
+posdata <- mergedcounts_trimmed[,1:8] %>%
+  dplyr::select("chrom" = chrom.x,"start" = start.x,"end" = end.x,"strand"=strand.x,id,"alias"=alias.x,"tag"=tag.x,"annot" = annot.x)
+
+mergedcounts_trimmed <- mergedcounts_trimmed[,metadata$survid]
+
+match_colnames <- match(as.character(colnames(mergedcounts_trimmed)),as.character(metadata$survid))
+
+mergedcounts_trimmed <- as.matrix(mergedcounts_trimmed)
+rownames(mergedcounts_trimmed) <- posdata$alias
+
+dds <- 
+  DESeqDataSetFromMatrix(countData = mergedcounts_trimmed,
+                              colData = metadata,
+                              design = ~dex)
+  
+dds <- 
+  DESeq(dds)
+
+res <- 
+  results(dds, tidy=TRUE)
+
+res <- 
+  as_tibble(res)
+
+colnames(res)[1] <- "alias"
+
+#variablename <- which(as.character(colnames(tablename) %in% as.character(row.names(table2name))))
+
+n_index <- which(as.character(metadata$dex) %in% "normal")
+t_index <- which(as.character(metadata$dex) %in% "tumor")
+
+vm <- function(x){
+  cond <- factor(ifelse(seq(1,dim(x)[2],1) %in% t_index, 1,  0))
+  d <- model.matrix(~1+cond)
+  x <- t(apply(x,1,as.numeric))
+  ex <- voom(x,d,plot=F)
+  return(ex$E)
+}
+
+count_vm <- vm(mergedcounts_trimmed)
+
+colnames(count_vm) <- colnames(mergedcounts_trimmed)
+
+#if(is.sequential(match_colnames)){
+#  print("metadata rows match countfile columns")
+#  colnames(count_vm) <- metadata$id
+#}else{
+#  "metadata rows do not match countfile columns"
+#}
+
+scal <- function(x,y){
+  median_n <- rowMedians(y)  # mean of normal
+  sd_n <- apply(y,1,sd)  # SD of normal
+  # z score as (value - mean normal)/SD normal
+  res <- matrix(nrow=nrow(x), ncol=ncol(x))
+  colnames(res) <- colnames(x)
+  rownames(res) <- rownames(x)
+  for(i in 1:dim(x)[1]){
+    for(j in 1:dim(x)[2]){
+      res[i,j] <- (x[i,j]-median_n[i])/sd_n[i]
+    }
+  }
+  return(res)
+}
+
+z_rna <- scal(count_vm,count_vm[,n_index])
+
+z_rna2 <- cbind(posdata,z_rna)
+
+write.csv(as.data.frame(z_rna2),file=paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_zscores_allTUCRs.csv",sep=""),row.names=F)
+
+fc_counts <- cbind(posdata,z_rna) %>%
+  dplyr::select(-chrom,-start,-end,-strand)
+
+fc.dotplot <- fc_counts %>% 
+  gather(key = "survid", value = "ZScore",-id,-alias,-tag,-annot) %>%
+  #mutate(Key = gsub("[.]","-",Sample)) %>%
+  #  mutate(string = ifelse(str_detect(Key,"TCGA"),
+  #                         sub(".*TCGA", "", Key),
+  #                         sub(".*GTEX", "", Key)),
+  #         barcode = ifelse(str_detect(Key,"TCGA"),
+  #                          tolower(paste("TCGA",substr(string, 1, 8),sep="")),
+  #                          tolower(paste("GTEX",substr(string, 1, 20),sep="")))) %>%
+  left_join(metadata,by="survid")
+
+fc.dotplot <- fc.dotplot %>%
+  left_join(res,by="alias") %>%
+  mutate(DESeq2 = ifelse(dex=="normal",0,log2FoldChange)) %>%
+  mutate(fill = ifelse(DESeq2 >= 1,paper_red,
+                ifelse(DESeq2 <= -1,paper_green,paper_gray))) %>%
+  dplyr::select(-id.y,-log2FoldChange) %>%
+  filter(!is.na(dex))
+
+fc.dotplot2 <- fc.dotplot %>%
+  filter(str_detect(id.x,"uc.110"))
+
+#i <- 177
+
+#for(i in 1:length(unique(fc.dotplot$id.x))){
+
+# specifiying uc.2 id in this list 
+
+#id_index<-match("uc.2___chr1:10672485-10672692:.",unique(fc.dotplot$id.x)) 
+
+filterdotplot <- "uc.2___chr1:10672485-10672692:."
+
+fc.dotplot2 <- fc.dotplot %>%
+  filter(id.x == filterdotplot)
+
+TUCRname <- fc.dotplot2$alias[1]
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))
+}
+
+#if(file.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_FC_plot.png",sep = ""))){}else{
+
+
+padj.DESeq2 <- fc.dotplot2 %>%
+  filter(dex == "tumor") %>%
+  dplyr::select(padj)
+
+padj.DESeq2 <- formatC(padj.DESeq2[[1]][1], format = "e", digits = 2)
+
+foldchange.DESeq2 <- fc.dotplot2 %>%
+  filter(dex == "tumor") %>%
+  dplyr::select(DESeq2)
+
+foldchange.DESeq2 <- round(foldchange.DESeq2[1,1],2)
+
+fc.dotplot3 <- fc.dotplot2 %>%
+  dplyr::select(dex,DESeq2,fill) %>%
+  distinct()
+
+p2 <- ggplot(data = fc.dotplot2,aes(x=dex, y=ZScore,fill=fill)) +
+  geom_boxplot(outlier.color="white") +
+  #geom_bar(colour="black",stat="identity") +
+  scale_fill_identity() +
+  #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
+  geom_jitter(data = fc.dotplot2, aes(x=dex, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
+  ggtitle(paste0(disease,"\n","FC = ",round(foldchange.DESeq2,2),"\n","FDR = ",padj.DESeq2)) +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.6), face="bold"),
+        axis.text.y = element_text(size = rel(2.2)),
+        axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+        legend.position="none",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
+  labs(y="Z-Score", x = "Tissue Type") +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=6, color=paper_blue, fill=paper_blue)
+
+if(!dir.exists(paste(outputdir,"/Figure4_supplementary/",sep=""))){
+ dir.create(paste(outputdir,"/Figure4_supplementary/",sep=""))
+}
+
+
+ggsave(p2,file=paste(outputdir,"/Figure4_supplementary/supplementary_Figure4a.png",sep = ""),height=7,width=5)
+
+
+```
+
+### Supplementary Figure 4B
+
+Generate FC Plots for each TUCR (LGG)
+
+```{r Figure2b_boxplot_TUCRs}
+
+disease <- "LGG"
+
+normal <- "cortex"
+
+figureorder <- 2
+
+# read data
+
+t_countfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_mergedcounts.txt",sep="")
+
+n_countfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_mergedcounts.txt",sep="")
+
+t_metadatafile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_tcga_metadata.csv",sep="")
+
+n_metadatafile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_gtex_metadata.csv",sep="")
+
+t_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_seqdepth_counts.csv",sep="")
+
+n_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_seqdepth_counts.csv",sep="")
+
+# Merge Data
+
+if(!is.na(n_countfile)){
+  mergedcounts <- read.table(t_countfile,header = TRUE)
+  
+  normalcounts <- read.table(n_countfile,header = TRUE) 
+  
+  mergedcounts <- mergedcounts %>% left_join(normalcounts,by=c("id")) %>%
+    dplyr::select(-chrom.y,-start.y,-end.y,-strand.y,-tag.y,-annot.y,-alias.y) %>%
+    distinct()
+  
+  metadata <- 
+  read_csv(file = t_metadatafile)
+  
+  n_metadata <- 
+  read_csv(file = n_metadatafile)
+  
+  rm(normalcounts)
+  
+  metadata <- rbind(metadata,n_metadata)
+  
+  rm(n_metadata)
+  
+  seqdepth <- read.csv(file = t_seqdepthfile)
+  
+  n_seqdepth <- read.csv(file = n_seqdepthfile)
+  
+  seqdepth <- rbind(seqdepth,n_seqdepth)
+  
+  rm(n_seqdepth)
+  
+}else{
+    mergedcounts <- read.table(t_countfile,header = TRUE)
+
+    metadata <- read.csv(file = t_metadatafile)
+    
+    seqdepth <- read.csv(file = t_seqdepthfile)
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,sep=""))
+}
+
+if(!is.na(filterannot)){
+  mergedcounts_trimmed <- mergedcounts %>%
+  filter(tag.x == filterannot & annot.x != "random")
+}
+
+posdata <- mergedcounts_trimmed[,1:8] %>%
+  dplyr::select("chrom" = chrom.x,"start" = start.x,"end" = end.x,"strand"=strand.x,id,"alias"=alias.x,"tag"=tag.x,"annot" = annot.x)
+
+mergedcounts_trimmed <- mergedcounts_trimmed[,metadata$survid]
+
+mergedcounts_trimmed <- as.matrix(mergedcounts_trimmed)
+rownames(mergedcounts_trimmed) <- posdata$alias
+
+# LGG_WT
+
+metadata_wt <-metadata[metadata$IDH1status %in% c("normal","WT"),]
+                      
+mergedcounts_trimmed_wt<-mergedcounts_trimmed[,metadata_wt$survid]
+
+#match_colnames <- match(as.character(colnames(mergedcounts_trimmed)),as.character(metadata$survid))
+
+dds <- 
+  DESeqDataSetFromMatrix(countData = mergedcounts_trimmed_wt,
+                              colData = metadata_wt,
+                              design = ~dex)
+
+dds <- 
+  DESeq(dds)
+
+res <- 
+  results(dds, tidy=TRUE)
+
+res_wt <- 
+  as_tibble(res)
+
+colnames(res_wt)[1] <- "alias"
+
+# LGG_MUT
+
+metadata_mut <-metadata[metadata$IDH1status %in% c("normal","WT"),]
+                      
+mergedcounts_trimmed_mut<-mergedcounts_trimmed[,metadata_mut$survid]
+
+match_colnames <- match(as.character(colnames(mergedcounts_trimmed)),as.character(metadata$survid))
+
+mergedcounts_trimmed <- as.matrix(mergedcounts_trimmed)
+rownames(mergedcounts_trimmed) <- posdata$alias
+
+
+dds <- 
+  DESeqDataSetFromMatrix(countData = mergedcounts_trimmed_mut,
+                              colData = metadata_mut,
+                              design = ~dex)
+
+dds <- 
+  DESeq(dds)
+
+res <- 
+  results(dds, tidy=TRUE)
+
+res_mut <- 
+  as_tibble(res)
+
+colnames(res_mut)[1] <- "alias"
+
+#variablename <- which(as.character(colnames(tablename) %in% as.character(row.names(table2name))))
+
+n_index <- which(as.character(metadata$dex) %in% "normal")
+t_index <- which(as.character(metadata$dex) %in% "tumor")
+
+vm <- function(x){
+  cond <- factor(ifelse(seq(1,dim(x)[2],1) %in% t_index, 1,  0))
+  d <- model.matrix(~1+cond)
+  x <- t(apply(x,1,as.numeric))
+  ex <- voom(x,d,plot=F)
+  return(ex$E)
+}
+
+count_vm <- vm(mergedcounts_trimmed)
+
+colnames(count_vm) <- colnames(mergedcounts_trimmed)
+
+#if(is.sequential(match_colnames)){
+#  print("metadata rows match countfile columns")
+#  colnames(count_vm) <- metadata$id
+#}else{
+#  "metadata rows do not match countfile columns"
+#}
+
+scal <- function(x,y){
+  median_n <- rowMedians(y)  # mean of normal
+  sd_n <- apply(y,1,sd)  # SD of normal
+  # z score as (value - mean normal)/SD normal
+  res <- matrix(nrow=nrow(x), ncol=ncol(x))
+  colnames(res) <- colnames(x)
+  rownames(res) <- rownames(x)
+  for(i in 1:dim(x)[1]){
+    for(j in 1:dim(x)[2]){
+      res[i,j] <- (x[i,j]-median_n[i])/sd_n[i]
+    }
+  }
+  return(res)
+}
+
+z_rna <- scal(count_vm,count_vm[,n_index])
+
+z_rna2 <- cbind(posdata,z_rna)
+
+#write.csv(as.data.frame(z_rna2),file=paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_zscores_allTUCRs.csv",sep=""),row.names=F)
+
+fc_counts <- cbind(posdata,z_rna) %>%
+  dplyr::select(-chrom,-start,-end,-strand)
+
+fc.dotplot <- fc_counts %>% 
+  gather(key = "survid", value = "ZScore",-id,-alias,-tag,-annot) %>%
+  #mutate(Key = gsub("[.]","-",Sample)) %>%
+  #  mutate(string = ifelse(str_detect(Key,"TCGA"),
+  #                         sub(".*TCGA", "", Key),
+  #                         sub(".*GTEX", "", Key)),
+  #         barcode = ifelse(str_detect(Key,"TCGA"),
+  #                          tolower(paste("TCGA",substr(string, 1, 8),sep="")),
+  #                          tolower(paste("GTEX",substr(string, 1, 20),sep="")))) %>%
+  left_join(metadata,by="survid")
+
+  fc.dotplot <- fc.dotplot %>%
+  left_join(res_wt,by="alias") %>%
+  mutate(DESeq2_wt = ifelse(dex=="normal",0,log2FoldChange)) %>%
+  mutate(padj_wt=padj) %>% 
+  mutate(fill_wt = ifelse(DESeq2_wt >= 1,paper_red,
+                ifelse(DESeq2_wt <= -1,paper_green,paper_gray))) %>%
+  dplyr::select(-id.y,-log2FoldChange,-lfcSE,-stat,-padj,-baseMean,-pvalue)
+  
+
+## we adressed na values while joining metadata and zscore values 
+## so removed filter(!is.na(dex)) from above step
+
+## Adding lgg_mut vs normal deseq2 foldchange and padj values to the main dataset
+  
+  fc.dotplot <- fc.dotplot %>%
+  left_join(res_mut,by="alias") %>%
+  mutate(DESeq2_mut = ifelse(dex=="normal",0,log2FoldChange)) %>%
+  mutate(padj_mut=padj) %>% 
+  mutate(fill_mut = ifelse(DESeq2_mut >= 1,paper_pink,
+                ifelse(DESeq2_mut <= -1,paper_blue,paper_gray))) %>%
+  dplyr::select(-log2FoldChange,-lfcSE,-stat)
+  
+  
+## combine DeSeq2_wt and DeSeq2_mut in to DeSeq2 using ifelse
+## combine padj_wt and padj_mut in to padj column using if else
+
+  fc.dotplot <- fc.dotplot %>%
+    mutate(DESeq= ifelse(IDH1status=="MUT",DESeq2_mut,DESeq2_wt)) %>%
+    mutate(padj=ifelse(IDH1status=="MUT",padj_mut,padj_wt)) %>% 
+    mutate(fill= ifelse(IDH1status=="MUT",fill_mut,fill_wt)) 
+  
+
+filterdotplot <- "uc.2___chr1:10672485-10672692:."
+
+fc.dotplot2 <- fc.dotplot %>%
+filter(id.x == filterdotplot)
+
+TUCRname <- fc.dotplot2$alias[1]
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))){
+ dir.create(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))
+}
+
+
+## padj.DESeq2 for LGG wt type
+padj.DESeq2_wt <- fc.dotplot2 %>%
+  filter(IDH1status == "WT") %>%
+  dplyr::select(padj_wt)
+
+padj.DESeq2_wt <- formatC(padj.DESeq2_wt[[1]][1], format = "e", digits = 2)
+
+## padj.DESeq2 for LGG mut type
+padj.DESeq2_mut <- fc.dotplot2 %>%
+  filter(IDH1status == "MUT") %>%
+  dplyr::select(padj_mut)
+
+padj.DESeq2_mut <- formatC(padj.DESeq2_mut[[1]][1], format = "e", digits = 2)
+
+
+foldchange.DESeq2_wt <- fc.dotplot2 %>%
+  filter(IDH1status == "WT") %>%
+  dplyr::select(DESeq2_wt)
+
+foldchange.DESeq2_wt <- round(foldchange.DESeq2_wt[1,1],2)
+
+foldchange.DESeq2_mut <- fc.dotplot2 %>%
+  filter(IDH1status == "MUT") %>%
+  dplyr::select(DESeq2_mut)
+
+foldchange.DESeq2_mut <- round(foldchange.DESeq2_mut[1,1],2)
+
+
+#fc.dotplot3 <- fc.dotplot2 %>%
+  #dplyr::select(IDH1status,DESeq,fill) %>%
+  #distinct()
+
+## ordering levels of IDH status (Normal,WT,MUT)
+
+fc.dotplot2$IDH1status<-factor(fc.dotplot2$IDH1status,levels=c("normal","WT","MUT"))
+
+p2 <- ggplot(data = fc.dotplot2,aes(x=IDH1status, y=ZScore,fill=fill)) +
+  geom_boxplot(outlier.color="white") +
+  #geom_bar(colour="black",stat="identity") +
+  scale_fill_identity() +
+  #scale_color_manual(values = c("black"="black","red"="red","green"="green")) +
+  geom_jitter(data = fc.dotplot2, aes(x=IDH1status, y=ZScore),binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
+  ggtitle(paste0(disease,"\n","FC_wt = ",round(foldchange.DESeq2_wt,2),"\n","FDR_wt = ",padj.DESeq2_wt)) +
+  #ggtitle(paste0(disease,"\n")) +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.title = element_text(size = rel(2.1), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.2), face="bold"),
+        axis.text.y = element_text(size = rel(2.2)),
+        axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+        legend.position="none",
+        legend.title=element_text(size = rel(1.6), hjust = 0.5, face="bold",margin=margin(0,0,0,0))) +
+  labs(y="Z-Score", x = "IDH1 status") +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=6, color=paper_blue, fill=paper_blue) 
+
+p2
+  
+ggsave(p2,file=paste(outputdir,"/Figure4_supplementary/supplementary_Figure4b.png",sep = ""),height=7,width=5)
+
+```
+### Supplementary Figure 4C
+
+## Generate tpm Box Plots for each TUCR (GBM)
+
+```{r Figure4C_boxplot_TUCRs}
+
+disease <- "GBM"
+
+normal <- "cortex"
+
+figureorder <- 3
+
+# read data
+
+t_countfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_mergedcounts.txt",sep="")
+
+n_countfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_mergedcounts.txt",sep="")
+
+t_metadatafile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_tcga_metadata.csv",sep="")
+
+n_metadatafile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_gtex_metadata.csv",sep="")
+
+t_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_seqdepth_counts.csv",sep="")
+
+n_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_seqdepth_counts.csv",sep="")
+
+# Merge Data
+
+if(!is.na(n_countfile)){
+  mergedcounts <- read.table(t_countfile,header = TRUE)
+  
+  normalcounts <- read.table(n_countfile,header = TRUE) 
+  
+  mergedcounts <- mergedcounts %>% left_join(normalcounts,by=c("id")) %>%
+    dplyr::select(-chrom.y,-start.y,-end.y,-strand.y,-tag.y,-annot.y,-alias.y) %>%
+    distinct()
+  
+  metadata <- 
+  read_csv(file = t_metadatafile)
+  
+  n_metadata <- 
+  read_csv(file = n_metadatafile)
+  
+  rm(normalcounts)
+  
+  metadata <- rbind(metadata,n_metadata)
+  
+  rm(n_metadata)
+  
+  seqdepth <- read.csv(file = t_seqdepthfile)
+  
+  n_seqdepth <- read.csv(file = n_seqdepthfile)
+  
+  seqdepth <- rbind(seqdepth,n_seqdepth)
+  
+  rm(n_seqdepth)
+  
+  metadata<-metadata[metadata$IDH1status %in% c("normal","WT"),]
+  
+}else{
+    mergedcounts <- read.table(t_countfile,header = TRUE)
+
+    metadata <- read.csv(file = t_metadatafile)
+    
+    seqdepth <- read.csv(file = t_seqdepthfile)
+    
+    metadata<-metadata[metadata$IDH1status %in% c("normal","WT"),]
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",sep=""))
+}
+
+#if(makeRPKboxplots == TRUE){
+  
+if(!is.na(filterannot)){
+  tpmcounts <- mergedcounts %>%
+  filter(tag.x == filterannot & annot.x != "random") %>%
+  mutate(length = end.x - start.x)
+}else{
+tpmcounts <- mergedcounts %>%
+  mutate(length = end.x - start.x)}
+
+tpmcounts.info <- tpmcounts %>%
+  dplyr::select("chrom" = chrom.x,"start" = start.x,"end" = end.x,"strand"=strand.x,id,"alias"=alias.x,"tag"=tag.x,"annot" = annot.x,length)
+
+tpmcounts <- tpmcounts %>%
+  dplyr::select(-chrom.x,-start.x,-end.x,-id,-strand.x,-tag.x,-annot.x,-alias.x)
+  
+rownames(tpmcounts) <- as.character(tpmcounts.info$id)
+
+genelength <- tpmcounts.info$length/1000
+
+seqdepth2 <- as.vector(seqdepth$counts)/1000000
+
+tpm <- function(counts,len,dep){
+  #x <- tpmcounts/genelength
+  #x2 <- t(t(x)/(seqdepth2))
+  x <- counts/len
+  return(t(t(x)/(dep)))
+}
+
+tpm.df <- tpm(tpmcounts,genelength,seqdepth2)
+
+tpm.df2 <- cbind(tpmcounts.info,tpm.df)
+
+tpm.median <- as.data.frame(tpm.df)
+tpm.median <- tpm.median %>% 
+  dplyr::summarize(median_tpm = rowMedians(tpm.df)) %>%
+  dplyr::mutate(countif = ifelse(median_tpm >=1,1,0),proportion = sum(countif,na.rm = TRUE)/n())
+tpm.median <- cbind(tpmcounts.info,tpm.median)
+tpm.median <- tpm.median %>% dplyr::select(id,median_tpm,countif,proportion)
+
+proportion.df <- round(as.numeric(tpm.median$proportion[1]),3)*100
+
+write.csv(tpm.df2,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_tpms_allTUCRs.csv",sep=""),row.names=F)
+
+tpm.median.write <- tpm.median[,-3]
+
+tpm.median.write <- tpm.median.write[,-3]
+
+tpm.median.write <- tpmcounts.info %>%
+  left_join(tpm.median.write,by="id")
+
+write.csv(tpm.median.write,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_median_tpm_allTUCRs.csv",sep=""),row.names=F)
+  
+tpm.dotplot <- tpm.df2[,metadata$survid]
+TUCRids <- as.character(tpm.df2$id)
+annot <- as.character(tpm.df2$annot)
+length <- as.character(tpm.df2$length)
+tpm.dotplot <- cbind(TUCRids,annot,length,tpm.dotplot)
+
+tpm.dotplot <- tpm.dotplot %>% 
+  gather(key = "survid", value = "TPM",-TUCRids,-annot,-length,-length) %>%
+  #mutate(Key = gsub("[.]","-",Sample)) %>%
+  #  mutate(string = ifelse(str_detect(Key,"TCGA"),
+  #                         sub(".*TCGA", "", Key),
+  #                         sub(".*GTEX", "", Key)),
+  #         barcode = ifelse(str_detect(Key,"TCGA"),
+  #                          tolower(paste("TCGA",substr(string, 1, 8),sep="")),
+  #                          tolower(paste("GTEX",substr(string, 1, 20),sep="")))) %>%
+  left_join(metadata,by="survid")
+
+tpm.dotplot <- tpm.dotplot[complete.cases(tpm.dotplot),]
+
+median(tpm.dotplot$TPM,na.rm=TRUE)
+
+TUCR <- "uc.2___chr1:10672485-10672692:."
+TUCRname <- "uc.2"
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))
+}
+
+tpm.dotplot2 <- tpm.dotplot %>% dplyr::filter(TUCRids == TUCR)
+
+p<- ggplot(tpm.dotplot2, aes(x=dex, y=TPM)) +
+  geom_boxplot(outlier.color="white") +
+  #geom_violin(trim = FALSE)+
+  #geom_point(pch=21, size=1.5) +
+  geom_jitter(binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
+  ggtitle(paste(tpmethod," expression of ",TUCR)) +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.6), face="bold"),
+        axis.text.y = element_text(size = rel(2.2)),
+        axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+        legend.position="none",
+        legend.title=element_blank(),
+        legend.text=element_blank()) +
+        labs(y=paste(ifelse((tpmethod=="tpm"|tpmethod=="TPM"),
+                      "Transcripts per kilobase million (TPM)",
+                      "Reads per kilobase million (tpm)")),
+        x = "Sample",title=disease) +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=10, color=paper_blue, fill=paper_blue)
+
+ggsave(p,file=paste(outputdir,"/Figure4_supplementary/supplementary_Figure4c.png",sep = ""),height=7,width=5)
+
+```
+
+### Supplementary Figure 4D
+
+## Generate tpm Box Plots for each TUCR
+## LGG
+```{r Section6D_boxplot_TUCRs}
+
+disease <- "LGG"
+
+normal <- "cortex"
+
+figureorder <- 4
+
+# read data
+
+t_countfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_mergedcounts.txt",sep="")
+
+n_countfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_mergedcounts.txt",sep="")
+
+t_metadatafile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_tcga_metadata.csv",sep="")
+
+n_metadatafile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_gtex_metadata.csv",sep="")
+
+t_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_seqdepth_counts.csv",sep="")
+
+n_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_seqdepth_counts.csv",sep="")
+
+# Merge Data
+
+if(!is.na(n_countfile)){
+  mergedcounts <- read.table(t_countfile,header = TRUE)
+  
+  normalcounts <- read.table(n_countfile,header = TRUE) 
+  
+  mergedcounts <- mergedcounts %>% left_join(normalcounts,by=c("id")) %>%
+    dplyr::select(-chrom.y,-start.y,-end.y,-strand.y,-tag.y,-annot.y,-alias.y) %>%
+    distinct()
+  
+  metadata <- 
+  read_csv(file = t_metadatafile)
+  
+  n_metadata <- 
+  read_csv(file = n_metadatafile)
+  
+  rm(normalcounts)
+  
+  metadata <- rbind(metadata,n_metadata)
+  
+  rm(n_metadata)
+  
+  seqdepth <- read.csv(file = t_seqdepthfile)
+  
+  n_seqdepth <- read.csv(file = n_seqdepthfile)
+  
+  seqdepth <- rbind(seqdepth,n_seqdepth)
+  
+  rm(n_seqdepth)
+  
+}else{
+    mergedcounts <- read.table(t_countfile,header = TRUE)
+
+    metadata <- read.csv(file = t_metadatafile)
+    
+    seqdepth <- read.csv(file = t_seqdepthfile)
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",sep=""))
+}
+
+#if(makeRPKboxplots == TRUE){
+  
+if(!is.na(filterannot)){
+  tpmcounts <- mergedcounts %>%
+  filter(tag.x == filterannot & annot.x != "random") %>%
+  mutate(length = end.x - start.x)
+}else{
+tpmcounts <- mergedcounts %>%
+  mutate(length = end.x - start.x)}
+
+tpmcounts.info <- tpmcounts %>%
+  dplyr::select("chrom" = chrom.x,"start" = start.x,"end" = end.x,"strand"=strand.x,id,"alias"=alias.x,"tag"=tag.x,"annot" = annot.x,length)
+
+tpmcounts <- tpmcounts %>%
+  dplyr::select(-chrom.x,-start.x,-end.x,-id,-strand.x,-tag.x,-annot.x,-alias.x,-length)
+  
+rownames(tpmcounts) <- as.character(tpmcounts.info$id)
+
+genelength <- tpmcounts.info$length/1000
+
+seqdepth2 <- as.vector(seqdepth$counts)/1000000
+
+tpm <- function(counts,len,dep){
+  #x <- tpmcounts/genelength
+  #x2 <- t(t(x)/(seqdepth2))
+  x <- counts/len
+  return(t(t(x)/(dep)))
+}
+
+tpm.df <- tpm(tpmcounts,genelength,seqdepth2)
+
+tpm.df2 <- cbind(tpmcounts.info,tpm.df)
+
+tpm.median <- as.data.frame(tpm.df)
+tpm.median <- tpm.median %>% 
+  dplyr::summarize(median_tpm = rowMedians(tpm.df)) %>%
+  dplyr::mutate(countif = ifelse(median_tpm >=1,1,0),proportion = sum(countif,na.rm = TRUE)/n())
+tpm.median <- cbind(tpmcounts.info,tpm.median)
+tpm.median <- tpm.median %>% dplyr::select(id,median_tpm,countif,proportion)
+
+proportion.df <- round(as.numeric(tpm.median$proportion[1]),3)*100
+
+tpm.df.write <- cbind(tpmcounts.info,tpm.df2)
+
+write.csv(tpm.df.write,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_tpms_allTUCRs.csv",sep=""),row.names=F)
+
+tpm.median.write <- tpm.median[,-3]
+
+tpm.median.write <- tpm.median.write[,-3]
+
+tpm.median.write <- tpmcounts.info %>%
+  left_join(tpm.median.write,by="id")
+
+write.csv(tpm.median.write,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_median_tpm_allTUCRs.csv",sep=""),row.names=F)
+
+tpm.dotplot <- tpm.df2[,9:ncol(tpm.df2)]
+TUCRids <- as.character(tpm.df2$id)
+annot <- as.character(tpm.df2$annot)
+length <- as.character(tpm.df2$length)
+tpm.dotplot <- cbind(TUCRids,annot,length,tpm.dotplot)
+
+tpm.dotplot<-tpm.dotplot[,c(1,2,3,5:768)]
+tpm.dotplot <- tpm.dotplot %>% 
+  gather(key = "survid", value = "TPM",-TUCRids,-annot,-length) %>%
+  #gather(key = "Sample", value = "TPM",-TUCRids,-annot,-length) %>%
+  #mutate(Key = gsub("[.]","-",Sample)) %>%
+  #  mutate(string = ifelse(str_detect(Key,"TCGA"),
+  #                         sub(".*TCGA", "", Key),
+  #                         sub(".*GTEX", "", Key)),
+  #         barcode = ifelse(str_detect(Key,"TCGA"),
+  #                          tolower(paste("TCGA",substr(string, 1, 8),sep="")),
+  #                          tolower(paste("GTEX",substr(string, 1, 20),sep="")))) %>%
+  left_join(metadata,by="survid")
+
+tpm.dotplot <- tpm.dotplot[complete.cases(tpm.dotplot),]
+
+median(tpm.dotplot$TPM,na.rm=TRUE)
+
+TUCR <- "uc.2___chr1:10672485-10672692:."
+TUCRname <- "uc.2"
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/",TUCRname,"/",sep=""))
+}
+#if(file.exists(paste(outputdir,"/TUCR_Database/",TUCRname,"/",figureorder,"_",TUCRname,"_",disease,"_tpm_boxplot.png",sep = ""))){}else{
+tpm.dotplot2 <- tpm.dotplot %>% dplyr::filter(TUCRids == TUCR)
+
+tpm.dotplot2$IDH1status<-factor(tpm.dotplot2$IDH1status,levels=c("normal","WT","MUT"))
+p<- ggplot(tpm.dotplot2, aes(x=IDH1status, y=TPM)) +
+  geom_boxplot(outlier.color="white") +
+  #geom_violin(trim = FALSE)+
+  #geom_point(pch=21, size=1.5) +
+  geom_jitter(binaxis='y', stackdir='center', stackratio=0.90, dotsize=0.30,fill="gray",width=0.2) +
+  #ggtitle(paste(tpmethod," expression of ",TUCR)) +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.6), face="bold"),
+        axis.text.y = element_text(size = rel(2.2)),
+        axis.text.x = element_text(size = rel(2.2),angle=90,vjust = 0.5, hjust=1),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+        legend.position="none",
+        legend.title=element_blank(),
+        legend.text=element_blank()) +
+        labs(y=paste(ifelse((tpmethod=="tpm"|tpmethod=="TPM"),
+                      "Transcripts per kilobase million (TPM)",
+                      "Reads per kilobase million (tpm)")),
+        x = "IDH1 status",title=disease) +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=6, color=paper_blue, fill=paper_blue)
+
+ggsave(p,file=paste(outputdir,"/Figure4_supplementary/supplementary_Figure4d.png",sep = ""),height=7,width=5)
+
+
+```
+
+## Code for generating WGCNA module data and saving as allprelims.Rdata 
+```{r Supplementary_Figure4ab_relatingmodules_1,eval=FALSE}
+
+# Load the WGCNA package
+library(WGCNA)
+# The following setting is important, do not omit.
+options(stringsAsFactors = FALSE)
+# Load the expression and trait data saved in the first part
+lnames = load(file = "./Inputs/general_files/wgcnafiles/TUCR-01-dataInput.RData")
+#The variable lnames contains the names of loaded variables.
+lnames
+# Load network data saved in the second part.
+lnames = load(file = "./Inputs/general_files/wgcnafiles/TUCR-02-networkConstruction-auto.RData")
+lnames
+
+```
+## filter out modules that are particularly large. 
+
+```{r Supplementary_Figure4ab_relatingmodules_2,fig.width = 3, fig.height = 7,eval=FALSE}
+
+# Define numbers of genes and samples
+nGenes = ncol(datExpr)
+nSamples = nrow(datExpr)
+# Recalculate MEs with color labels
+MEs0 = moduleEigengenes(datExpr, moduleColors)$eigengenes
+
+datExpr2 = as.data.frame(datExpr)
+MEs = orderMEs(MEs0)
+datTraits2 <- as.data.frame(datTraits2)
+moduleTraitCor = cor(MEs, datTraits2, use = "p")
+moduleTraitPvalue = corPvalueStudent(moduleTraitCor, nSamples)
+
+```
+
+```{r Supplementary_Figure4ab_relatingmodules_3,eval=FALSE}
+
+geneModuleMembership = as.data.frame(cor(datExpr, MEs, use = "p"))
+MMPvalue = as.data.frame(corPvalueStudent(as.matrix(geneModuleMembership), nSamples))
+
+allmodules <- as.data.frame(t(MMPvalue))
+#allmodules : 51 *42644
+allmodules2 <- allmodules %>%
+  dplyr::mutate(Module = row.names(allmodules)) %>%
+  gather(key = "Gene", value = "pvalue",-Module) %>%
+  group_by(Gene) %>%
+  mutate(maxmodule = min(pvalue,na.rm = TRUE)) %>%
+  filter(pvalue == maxmodule) %>%
+  group_by(Module) %>%
+  dplyr::summarize(n = n()) 
+
+allmodules3 <- allmodules2 %>%
+  mutate(q1 = quantile(allmodules2$n,0.25),q3 = quantile(allmodules2$n,0.75),q1minus = q1 - 1.5*(q3-q1),q3plus = q3 + 1.5*(q3-q1),outliercheck = ifelse(n >= q3plus | n <= q1minus,TRUE,FALSE)) 
+#%>%  filter(outliercheck == FALSE)
+
+#repeat{
+  
+n_count <- length(allmodules3$n)
+
+allmodules3 <- allmodules3 %>%
+  mutate(q1 = quantile(allmodules3$n,0.25),q3 = quantile(allmodules3$n,0.75),q1minus = q1 - 1.5*(q3-q1),q3plus = q3 + 1.5*(q3-q1),outliercheck = ifelse(n >= q3plus | n <= q1minus,TRUE,FALSE)) 
+#%>% filter(outliercheck == FALSE)
+
+#if(n_count == length(allmodules3$n)) break;
+
+#  }
+
+allmodules_check <- as.data.frame(as.character(allmodules3$Module)) %>%
+  dplyr::mutate(checker = TRUE)
+
+colnames(allmodules_check) <- c("Module","checker")
+
+boxplot(allmodules3$n,
+  ylab = "n"
+)
+
+moduleTraitCor2 <- as.data.frame(moduleTraitCor) %>%
+  mutate(Module = row.names(moduleTraitCor)) %>%
+  left_join(allmodules_check,by = "Module") %>%
+  filter(checker == TRUE)
+
+datTraits <- datTraits2
+
+geneModuleMembership = as.data.frame(cor(datExpr, MEs, use = "p"))
+
+match_modules <- match(as.character(allmodules_check$Module),colnames(geneModuleMembership))
+
+geneModuleMembership2 <- geneModuleMembership[,match_modules]
+
+modNames = substring(names(geneModuleMembership2), 3)
+
+MMPvalue = as.data.frame(corPvalueStudent(as.matrix(geneModuleMembership), nSamples))
+
+match_modules <- match(as.character(allmodules_check$Module),colnames(MMPvalue))
+
+MMPvalue2 = MMPvalue[,match_modules]
+
+names(geneModuleMembership2) = paste("MM", modNames, sep="")
+names(MMPvalue2) = paste("p.MM", modNames, sep="")
+
+# Save.image(file="./Inputs/general_files/wgcnafiles/allprelims.Rdata")
+
+```
+
+## Supplementary Figure 4 F
+```{r}
+####Trait Heatmaps
+## loading allprelims.Rdata containing moduleTraitCor2 
+load(file="./Inputs/general_files/wgcnafiles/allprelims.Rdata")
+
+figureorder <- 9
+
+#moduleTraitCor2 <- moduleTraitCor2 %>%
+#  dplyr::select(-disease)
+
+#h <- 183
+
+#for(h in 2:482){
+#skip_to_next <<- FALSE
+#print(h)
+#trait_id <- colnames(moduleTraitCor2)[h]
+
+trait_id<-"uc.2"
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/",trait_id,sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/",trait_id,sep=""))
+}
+
+datTraits <- as.data.frame(t(datTraits2)) %>%
+  mutate(rownames = row.names(t(datTraits2))) %>%
+  filter(rownames == trait_id) %>%
+  dplyr::select(-rownames) %>%
+  t()
+
+geneTraitSignificance = as.data.frame(cor(datExpr,datTraits, use = "p"))
+
+GSPvalue = as.data.frame(corPvalueStudent(as.matrix(geneTraitSignificance), nSamples))
+
+#names(geneTraitSignificance) = paste("GS.", names(weight), sep="")
+#names(GSPvalue) = paste("p.GS.", names(weight), sep="")
+
+moduleTraitCor_trait_id <- as.data.frame(moduleTraitCor2) %>%
+  dplyr::mutate(modules = str_remove(Module,"ME")) %>%
+  gather(key = "trait", value = "cor",-modules) %>%
+  dplyr::filter(trait == trait_id) %>%
+  dplyr::arrange(cor) %>%
+  dplyr::mutate(position = row_number())
+
+traitmodules <- geneModuleMembership2 %>%
+  dplyr::mutate(rownamer = row.names(geneModuleMembership2)) %>%
+  separate(rownamer,into=c("rownamer","kibble"),sep="___") %>%
+  dplyr::select(-kibble) %>%
+  dplyr::filter(rownamer==trait_id)
+
+traitmodules <- t(traitmodules)
+
+traitmodules <- as.data.frame(cbind(row.names(traitmodules),traitmodules))
+
+colnames(traitmodules) <- c("Module","ModuleMembership")
+
+traitpvalues <- MMPvalue2 %>%
+  dplyr::mutate(rownamer = row.names(MMPvalue2)) %>%
+  separate(rownamer,into=c("rownamer","kibble"),sep="___") %>%
+  dplyr::select(-kibble) %>%
+  dplyr::filter(rownamer==trait_id)
+
+traitpvalues <- t(traitpvalues)
+
+traitpvalues <- as.data.frame(cbind(paste("MM",str_remove(row.names(traitpvalues),"p.MM"),sep=""),traitpvalues))
+
+colnames(traitpvalues) <- c("Module","MMpvalue")
+traitmodules <- traitmodules %>%
+  left_join(allmodules_check, by= "Module") %>%
+  left_join(traitpvalues,"Module") %>%
+  # Filter(checker == TRUE) %>%
+  dplyr::mutate(moduleColors = str_remove(Module,"MM")) %>%
+  dplyr::filter(moduleColors != "rownamer")
+
+df_correlations <- data.frame(matrix(ncol=2,nrow=0, dimnames=list(NULL, c("module","cor"))))
+
+i <- 1
+
+for(i in 1:length(unique(traitmodules$moduleColors))){
+
+module = as.character(unique(traitmodules$moduleColors)[i])
+#module = "red"
+column = match(module, modNames)
+moduleGenes = traitmodules$moduleColors==module;
+correlation <- cor(abs(geneModuleMembership[moduleGenes, column]),
+                   abs(geneTraitSignificance[moduleGenes, 1]))
+
+rbinder <- c(module,correlation)
+df_correlations <- rbind(df_correlations,rbinder)
+
+
+}
+
+colnames(df_correlations) <- c("module","cor") 
+
+df_correlations <- as.data.frame(df_correlations) %>%
+  mutate(Module = paste("MM",module,sep=""))
+
+traitmodules2 <- traitmodules %>%
+  left_join(df_correlations,by = "Module") %>%
+  dplyr::select(module,cor,ModuleMembership,MMpvalue) %>%
+  dplyr::mutate(RankModule = percent_rank(1-as.numeric(ModuleMembership)),Rankcor = percent_rank(cor),MMpvalue2 = as.numeric(MMpvalue)) %>%
+  dplyr::group_by(module) %>%
+  dplyr::mutate(totalscore = sum(as.numeric(RankModule),as.numeric(Rankcor),na.rm=TRUE)) %>%
+  dplyr::ungroup() %>%
+  dplyr::arrange(as.numeric(cor)) %>%
+  dplyr::mutate(position = row_number(),cor = ifelse(MMpvalue2 >= 0.05,NA,cor))
+  
+
+p <- ggplot(data = traitmodules2,mapping = aes(x = as.character(trait_id),y = reorder(module,position), fill = as.numeric(cor))) +
+  geom_tile() +
+  scale_fill_gradient2(low = paper_blue,mid = "white",high = paper_red2,midpoint = 0) +
+  ylab("modules") +
+  xlab(trait_id) +
+  labs(fill = "cor") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.8), face="bold"),
+        axis.text.y = element_blank(),
+        axis.text.x = element_blank(),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+        legend.position="right",
+        legend.title=element_text(size = rel(2.5), face="bold"),
+        legend.text=element_text(size = rel(2.0), face="bold"), 
+        plot.margin = unit(c(0,0,0,0), "cm")) +
+        annotate(
+    geom = "point",
+    color = c(as.character(traitmodules2$module)),
+    y = traitmodules2$position, 
+    x = 0.5,
+    shape = 15, 
+    size = 5)
+
+p
+
+ggsave(p,file=paste(outputdir,"/Figure4_Supplementary/supplementary_Figure4e.png",sep=""), width = 3, height = 7, dpi = 600)
+
+
+####Trait Correlation Plots
+
+traitmodules3 <- traitmodules2 %>%
+  filter(as.numeric(MMpvalue) <= 0.05)
+
+
+
+i <- 1
+
+module = as.character(traitmodules3$module[i])
+print(i)
+print(paste(module))
+#module = "red"
+correlation <- round(as.numeric(traitmodules3$cor[i]),3)
+pvalue <- round(as.numeric(traitmodules3$MMpvalue[i]),6)
+column = match(module, modNames);
+moduleGenes = moduleColors==module; 
+sizeGrWindow(7, 7);
+par(mfrow = c(1,1));
+
+xvalues <- tryCatch(abs(geneModuleMembership[moduleGenes, column]),
+                error = function(e) { skip_to_next <<- TRUE}) 
+yvalues <- abs(geneTraitSignificance[moduleGenes, 1])
+ngenes <- length(xvalues)
+
+ggplot_df <- as.data.frame(cbind(xvalues,yvalues))
+
+p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
+  geom_point(size=5) +
+  scale_color_identity() +
+  xlab(paste("Module Membership in", module, "module")) +
+                   ylab("Gene significance for trait") +
+  ggtitle(paste(module,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.title = element_text(size = rel(1.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.4), face="bold"),
+        axis.text.y = element_text(size = rel(1.4), face="bold"),
+        axis.text.x = element_text(size = rel(1.4), face="bold"),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+        legend.position="right",
+        legend.title=element_blank(),
+        legend.text=element_blank(), 
+        plot.margin = unit(c(0,0,0,0), "cm"))
+
+ggsave(p,file=paste(outputdir,"/Figure4_Supplementary/supplementary_Figure4f_6.png",sep=""), width = 5, height = 5, dpi = 600)
+
+
+i <- 2
+
+module = as.character(traitmodules3$module[i])
+print(i)
+print(paste(module))
+#module = "red"
+correlation <- round(as.numeric(traitmodules3$cor[i]),3)
+pvalue <- round(as.numeric(traitmodules3$MMpvalue[i]),6)
+column = match(module, modNames);
+moduleGenes = moduleColors==module; 
+sizeGrWindow(7, 7);
+par(mfrow = c(1,1));
+
+xvalues <- tryCatch(abs(geneModuleMembership[moduleGenes, column]),
+                error = function(e) { skip_to_next <<- TRUE}) 
+yvalues <- abs(geneTraitSignificance[moduleGenes, 1])
+ngenes <- length(xvalues)
+
+ggplot_df <- as.data.frame(cbind(xvalues,yvalues))
+
+p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
+  geom_point(size=5) +
+  scale_color_identity() +
+  xlab(paste("Module Membership in", module, "module")) +
+                   ylab("Gene significance for trait") +
+  ggtitle(paste(module,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.title = element_text(size = rel(1.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.4), face="bold"),
+        axis.text.y = element_text(size = rel(1.4), face="bold"),
+        axis.text.x = element_text(size = rel(1.4), face="bold"),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+        legend.position="right",
+        legend.title=element_blank(),
+        legend.text=element_blank(), 
+        plot.margin = unit(c(0,0,0,0), "cm"))
+
+ggsave(p,file=paste(outputdir,"/Figure4_Supplementary/supplementary_Figure4f_5.png",sep=""), width = 5, height = 5, dpi = 600)
+
+
+i <- 3
+
+module = as.character(traitmodules3$module[i])
+print(i)
+print(paste(module))
+#module = "red"
+correlation <- round(as.numeric(traitmodules3$cor[i]),3)
+pvalue <- round(as.numeric(traitmodules3$MMpvalue[i]),6)
+column = match(module, modNames);
+moduleGenes = moduleColors==module; 
+sizeGrWindow(7, 7);
+par(mfrow = c(1,1));
+
+xvalues <- tryCatch(abs(geneModuleMembership[moduleGenes, column]),
+                error = function(e) { skip_to_next <<- TRUE}) 
+yvalues <- abs(geneTraitSignificance[moduleGenes, 1])
+ngenes <- length(xvalues)
+
+ggplot_df <- as.data.frame(cbind(xvalues,yvalues))
+
+p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
+  geom_point(size=5) +
+  scale_color_identity() +
+  xlab(paste("Module Membership in", module, "module")) +
+                   ylab("Gene significance for trait") +
+  ggtitle(paste(module,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.title = element_text(size = rel(1.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.4), face="bold"),
+        axis.text.y = element_text(size = rel(1.4), face="bold"),
+        axis.text.x = element_text(size = rel(1.4), face="bold"),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+        legend.position="right",
+        legend.title=element_blank(),
+        legend.text=element_blank(), 
+        plot.margin = unit(c(0,0,0,0), "cm"))
+
+ggsave(p,file=paste(outputdir,"/Figure4_Supplementary/supplementary_Figure4f_4.png",sep=""), width = 5, height = 5, dpi = 600)
+
+
+i <- length(traitmodules3$module)
+
+module = as.character(traitmodules3$module[i])
+print(i)
+print(paste(module))
+#module = "red"
+correlation <- round(as.numeric(traitmodules3$cor[i]),3)
+pvalue <- round(as.numeric(traitmodules3$MMpvalue[i]),6)
+column = match(module, modNames);
+moduleGenes = moduleColors==module; 
+sizeGrWindow(7, 7);
+par(mfrow = c(1,1));
+
+xvalues <- tryCatch(abs(geneModuleMembership[moduleGenes, column]),
+                error = function(e) { skip_to_next <<- TRUE}) 
+yvalues <- abs(geneTraitSignificance[moduleGenes, 1])
+ngenes <- length(xvalues)
+
+ggplot_df <- as.data.frame(cbind(xvalues,yvalues))
+
+p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
+  geom_point(size=5) +
+  scale_color_identity() +
+  xlab(paste("Module Membership in", module, "module")) +
+                   ylab("Gene significance for trait") +
+  ggtitle(paste(module,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.title = element_text(size = rel(1.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.4), face="bold"),
+        axis.text.y = element_text(size = rel(1.4), face="bold"),
+        axis.text.x = element_text(size = rel(1.4), face="bold"),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+        legend.position="right",
+        legend.title=element_blank(),
+        legend.text=element_blank(), 
+        plot.margin = unit(c(0,0,0,0), "cm"))
+
+ggsave(p,file=paste(outputdir,"/Figure4_Supplementary/supplementary_Figure4f_1.png",sep=""), width = 5, height = 5, dpi = 600)
+
+i <- length(traitmodules3$module)-1
+
+module = as.character(traitmodules3$module[i])
+print(i)
+print(paste(module))
+#module = "red"
+correlation <- round(as.numeric(traitmodules3$cor[i]),3)
+pvalue <- round(as.numeric(traitmodules3$MMpvalue[i]),6)
+column = match(module, modNames);
+moduleGenes = moduleColors==module; 
+sizeGrWindow(7, 7);
+par(mfrow = c(1,1));
+
+xvalues <- tryCatch(abs(geneModuleMembership[moduleGenes, column]),
+                error = function(e) { skip_to_next <<- TRUE}) 
+yvalues <- abs(geneTraitSignificance[moduleGenes, 1])
+ngenes <- length(xvalues)
+
+ggplot_df <- as.data.frame(cbind(xvalues,yvalues))
+
+p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
+  geom_point(size=5) +
+  scale_color_identity() +
+  xlab(paste("Module Membership in", module, "module")) +
+                   ylab("Gene significance for trait") +
+  ggtitle(paste(module,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.title = element_text(size = rel(1.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.4), face="bold"),
+        axis.text.y = element_text(size = rel(1.4), face="bold"),
+        axis.text.x = element_text(size = rel(1.4), face="bold"),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+        legend.position="right",
+        legend.title=element_blank(),
+        legend.text=element_blank(), 
+        plot.margin = unit(c(0,0,0,0), "cm"))
+
+ggsave(p,file=paste(outputdir,"/Figure4_Supplementary/supplementary_Figure4f_2.png",sep=""), width = 5, height = 5, dpi = 600)
+
+
+i <- length(traitmodules3$module)-2
+
+module = as.character(traitmodules3$module[i])
+print(i)
+print(paste(module))
+#module = "red"
+correlation <- round(as.numeric(traitmodules3$cor[i]),3)
+pvalue <- round(as.numeric(traitmodules3$MMpvalue[i]),6)
+column = match(module, modNames);
+moduleGenes = moduleColors==module; 
+sizeGrWindow(7, 7);
+par(mfrow = c(1,1));
+
+xvalues <- tryCatch(abs(geneModuleMembership[moduleGenes, column]),
+                error = function(e) { skip_to_next <<- TRUE}) 
+yvalues <- abs(geneTraitSignificance[moduleGenes, 1])
+ngenes <- length(xvalues)
+
+ggplot_df <- as.data.frame(cbind(xvalues,yvalues))
+
+p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
+  geom_point(size=5) +
+  scale_color_identity() +
+  xlab(paste("Module Membership in", module, "module")) +
+                   ylab("Gene significance for trait") +
+  ggtitle(paste(module,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.title = element_text(size = rel(1.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.4), face="bold"),
+        axis.text.y = element_text(size = rel(1.4), face="bold"),
+        axis.text.x = element_text(size = rel(1.4), face="bold"),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+        legend.position="right",
+        legend.title=element_blank(),
+        legend.text=element_blank(), 
+        plot.margin = unit(c(0,0,0,0), "cm"))
+
+ggsave(p,file=paste(outputdir,"/Figure4_Supplementary/supplementary_Figure4f_3.png",sep=""), width = 5, height = 5, dpi = 600)
+
+
+```
+
+```{r}
+sessionInfo()
+```
+
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
