@@ -1,0 +1,331 @@
+---
+title: "Supplementary Figure 2"
+output: html_notebook
+---
+
+## Title : A comprehensive analysis of Transcribed Ultra Conserved Regions uncovers important regulatory functions of novel non coding transcripts in gliomas
+
+## Supplementary Figure 2
+
+## Set parameters and install required programs
+```{r}
+## Variables
+
+outputdir <- "Outputs"
+
+filterannot <- "TUCR"
+
+makekpmplots <- TRUE
+
+tpmethod <- "TPM"
+
+repel <- TRUE
+```
+
+```{r}
+## Load Colors
+
+paper_black = "#000000"
+  
+paper_gold = "#EAA304"
+  
+paper_green2 = "#20C799"
+  
+paper_yellow = "#F0E442"
+  
+paper_blue = "#017DC3"
+  
+paper_lightblue = "#58AFE0"
+  
+paper_skyblue = "#A5DFFF"
+  
+paper_orange = "#D55E00"
+  
+paper_purple = "#8C004C"
+  
+paper_gray = "#CAC4C4"
+  
+paper_red = "#C30223"
+  
+paper_darkpink = "#DA7C8C"
+  
+paper_pink = "#FFCCD5"
+
+paper_green = "#54BB44"
+  
+paper_red2 = "#CA465C"
+  
+paper_turq = "#20C799"
+
+```
+
+```{r}
+## Load Programs
+
+if (!require("jsonlite")) install.packages("jsonlite")
+library("jsonlite")
+
+if (!require("tidyjson")) install.packages("tidyjson")
+library("tidyjson")
+
+if (!require("tidyverse")) install.packages("tidyverse")
+library("tidyverse")
+
+if (!require("ggplot2")) install.packages("ggplot2")
+library("ggplot2")
+
+if (!require("ggforce")) install.packages("ggforce")
+library("ggforce")
+
+if (!require("ggbreak")) install.packages("ggbreak")
+library("ggbreak")
+
+if (!require("ggrepel")) install.packages("ggrepel")
+library("ggrepel")
+
+if (!require("ggfortify")) install.packages("ggfortify")
+library("ggfortify")
+
+if (!require("ggdendro")) install.packages("ggdendro")
+library("ggdendro")
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
+library("DESeq2")
+
+if (!require("survival")) install.packages("survival")
+library("survival")
+
+if (!require("broom")) install.packages("broom")
+library("broom")
+
+if (!requireNamespace("limma", quietly = TRUE))BiocManager::install("limma")
+library("limma")
+
+if (!require("Tmisc")) install.packages("Tmisc")
+library("Tmisc")
+
+if (!require("survminer")) install.packages("survminer")
+library("survminer")
+
+if (!require("corrr")) install.packages("corrr")
+library("corrr")
+
+if (!require("here")) install.packages("here")
+library("here")
+
+if (!require("lessR")) install.packages("lessR")
+library("lessR")
+
+if (!require("splitstackshape")) install.packages("splitstackshape")
+library(splitstackshape)
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+
+if (!require('org.Hs.eg.db')) BiocManager::install('org.Hs.eg.db')
+library(org.Hs.eg.db)
+
+if (!require('GO.db')) BiocManager::install('GO.db')
+library(GO.db)
+
+if (!require('limma')) BiocManager::install('limma')
+library(limma)
+
+if (!require("ggthemes")) install.packages('ggthemes', dependencies = TRUE)
+library(ggthemes)
+
+if (!require("gplots")) 
+install.packages("gplots")
+library(gplots)
+
+if (!require("ggsignif")) 
+install.packages("ggsignif")
+library(ggsignif)
+
+if (!require("RColorBrewer")) 
+install.packages("RColorBrewer")
+library(RColorBrewer)
+
+if (!require("reshape2")) 
+install.packages("reshape2")
+library(reshape2)
+
+if (!require("gridExtra")) 
+install.packages("gridExtra")
+library(gridExtra)
+
+if (!require("dendextend")) 
+install.packages("dendextend")
+library(dendextend)
+
+if (!require("plyr")) 
+install.packages("plyr")
+library(plyr)
+
+if (!require("magick")) 
+install.packages("magick")
+library(magick)
+
+if (!require("png")) 
+install.packages("png")
+library(png)
+
+if (!require("scales")) 
+install.packages("scales")
+library(scales)
+
+if (!require("ggsci")) 
+install.packages("ggsci")
+library(ggsci)
+
+if (!require("stringi")) install.packages("stringi")
+  library(stringi)
+if (!require("stringr")) install.packages("stringr")
+  library(stringr)
+
+if (!require("impute")) BiocManager::install("impute")
+library(impute)
+
+if (!require("preprocessCore")) BiocManager::install("preprocessCore")
+library(preprocessCore)
+
+if (!require("Go.db")) BiocManager::install("GO.db")
+library(GO.db)
+
+
+if (!require("WGCNA")) install.packages("WGCNA")
+library(WGCNA)
+
+if (!require("umap")) install.packages("umap")
+library(umap)
+
+if (!require("igraph")) install.packages("igraph")
+library(igraph)
+
+if (!require("gtable")) install.packages("gtable")
+library(gtable)
+
+if(!dir.exists(outputdir)){
+  dir.create(outputdir)
+}
+
+knitr::opts_chunk$set(
+eval = FALSE,
+tidy = TRUE#,
+#	echo = TRUE,
+#	message = FALSE,
+#	warning = FALSE
+)
+
+```
+
+```{r supplementary_Figure2_dircreate}
+
+if(!dir.exists(paste(outputdir,"/Figure2_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure2_Supplementary/",sep=""))
+}
+
+```
+
+### Supplementary Figure 2A
+
+```{r, supplementary_Figure2a}
+
+## read data
+
+
+gbm_metadatafile <- paste("./Inputs/general_files/sequencingfiles/GBM/GBM_tcga_metadata.csv",sep="")
+
+lgg_metadatafile <- paste("./Inputs/general_files/sequencingfiles/LGG/LGG_tcga_metadata.csv",sep="")
+
+cortex_metadatafile <- paste("./Inputs/general_files/sequencingfiles/cortex/cortex_gtex_metadata.csv",sep="")
+
+
+## Merge Data
+
+
+#if(!is.na(cortex_countfile)){ 
+  gbm_metadata <- 
+  read_csv(file = gbm_metadatafile)
+  
+  lgg_metadata <- 
+  read_csv(file = lgg_metadatafile)
+  
+  cortex_metadata <- 
+  read_csv(file = cortex_metadatafile)
+  
+  
+Figure_XA_input_LGG <- lgg_metadata  %>%
+  mutate(disease = "LGG")  %>%
+  filter (!IDH1status=="normal")
+
+Figure_XA_input_GBM <- gbm_metadata %>% 
+  mutate(disease = "GBM") %>%
+  filter (!IDH1status=="normal")
+
+Figure_XA_input_cortex <- cortex_metadata %>% 
+  mutate(disease = "NBC")
+
+Figure_XA_input <- rbind(Figure_XA_input_GBM,Figure_XA_input_LGG,Figure_XA_input_cortex)
+
+Figure_XA_input <- Figure_XA_input %>%
+  group_by(disease,IDH1status) %>%
+  dplyr::summarize(Sample_Type = paste(disease,IDH1status,sep=" "), n = n()) %>%
+  distinct() %>%
+  ungroup() %>%
+  dplyr::group_by(disease) %>%
+  dplyr::mutate(sum = sum(n,na.rm=TRUE),prop = sprintf("%.3f", round(n/sum,3))) 
+
+
+
+p <- ggplot(Figure_XA_input, aes(x=2,y=as.numeric(prop),fill=Sample_Type))          + 
+  geom_bar(
+    stat="identity",#colour="black", 
+    width = 1)                                                          +
+  geom_text(
+    aes(y = as.numeric(prop), label = prop), 
+    color = "black",size=5)                                                    + 
+  coord_polar("y", start=0)                                             + 
+  scale_fill_manual(values=c(paper_blue,paper_red,paper_yellow,paper_green))  + 
+  ggtitle(paste("IDH1 Status"))  + 
+  guides(colour = guide_legend(override.aes = list(size=8))) +
+        theme(plot.title = element_text(size = 12.5),
+              axis.title = element_blank(),
+              axis.text.y = element_blank(),
+              axis.text.x = element_blank(),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+panel.background = element_blank(), axis.line = element_blank(),legend.position="bottom",legend.title=element_blank(),
+legend.text = element_text(size = 12.5),
+axis.ticks = element_blank(), 
+      legend.box.spacing = unit(0, "pt"),
+legend.margin=margin(0,0,0,0),
+strip.background = element_rect(fill="white"),
+strip.text = element_blank(),
+panel.spacing = unit(-2, "lines")) +
+  xlim(0.5, 2.5) +
+  facet_wrap(~disease)
+
+ggsave(file=paste(outputdir,"/Figure2_Supplementary/supplementary_Figure2a.png",sep=""),
+       plot = print(p),
+       width = 6, 
+       height = 4, 
+       dpi = 600)
+
+```
+
+```{r,fig.width=8,fig.height=4}
+
+p
+
+```
+
+
+```{r}
+sessionInfo()
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
