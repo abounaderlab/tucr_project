@@ -1,0 +1,278 @@
+---
+title: "Supplementary Figure 8"
+output: html_notebook
+---
+## Supplementary Figure 8
+
+## Set parameters and install required programs
+```{r}
+## Variables
+
+outputdir <- "Outputs"
+
+filterannot <- "TUCR"
+
+makekpmplots <- TRUE
+
+tpmethod <- "TPM"
+
+repel <- TRUE
+```
+
+```{r}
+## Load Colors
+
+paper_black = "#000000"
+  
+paper_gold = "#EAA304"
+  
+paper_green2 = "#20C799"
+  
+paper_yellow = "#F0E442"
+  
+paper_blue = "#017DC3"
+  
+paper_lightblue = "#58AFE0"
+  
+paper_skyblue = "#A5DFFF"
+  
+paper_orange = "#D55E00"
+  
+paper_purple = "#8C004C"
+  
+paper_gray = "#CAC4C4"
+  
+paper_red = "#C30223"
+  
+paper_darkpink = "#DA7C8C"
+  
+paper_pink = "#FFCCD5"
+
+paper_green = "#54BB44"
+  
+paper_red2 = "#CA465C"
+  
+paper_turq = "#20C799"
+
+```
+
+```{r}
+## Load Programs
+
+if (!require("jsonlite")) install.packages("jsonlite")
+library("jsonlite")
+
+if (!require("tidyjson")) install.packages("tidyjson")
+library("tidyjson")
+
+if (!require("tidyverse")) install.packages("tidyverse")
+library("tidyverse")
+
+if (!require("ggplot2")) install.packages("ggplot2")
+library("ggplot2")
+
+if (!require("ggforce")) install.packages("ggforce")
+library("ggforce")
+
+if (!require("ggbreak")) install.packages("ggbreak")
+library("ggbreak")
+
+if (!require("ggrepel")) install.packages("ggrepel")
+library("ggrepel")
+
+if (!require("ggfortify")) install.packages("ggfortify")
+library("ggfortify")
+
+if (!require("ggdendro")) install.packages("ggdendro")
+library("ggdendro")
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
+library("DESeq2")
+
+if (!require("survival")) install.packages("survival")
+library("survival")
+
+if (!require("broom")) install.packages("broom")
+library("broom")
+
+if (!requireNamespace("limma", quietly = TRUE))BiocManager::install("limma")
+library("limma")
+
+if (!require("Tmisc")) install.packages("Tmisc")
+library("Tmisc")
+
+if (!require("survminer")) install.packages("survminer")
+library("survminer")
+
+if (!require("corrr")) install.packages("corrr")
+library("corrr")
+
+if (!require("here")) install.packages("here")
+library("here")
+
+if (!require("lessR")) install.packages("lessR")
+library("lessR")
+
+if (!require("splitstackshape")) install.packages("splitstackshape")
+library(splitstackshape)
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+
+if (!require('org.Hs.eg.db')) BiocManager::install('org.Hs.eg.db')
+library(org.Hs.eg.db)
+
+if (!require('GO.db')) BiocManager::install('GO.db')
+library(GO.db)
+
+if (!require('limma')) BiocManager::install('limma')
+library(limma)
+
+if (!require("ggthemes")) install.packages('ggthemes', dependencies = TRUE)
+library(ggthemes)
+
+if (!require("gplots")) 
+install.packages("gplots")
+library(gplots)
+
+if (!require("ggsignif")) 
+install.packages("ggsignif")
+library(ggsignif)
+
+if (!require("RColorBrewer")) 
+install.packages("RColorBrewer")
+library(RColorBrewer)
+
+if (!require("reshape2")) 
+install.packages("reshape2")
+library(reshape2)
+
+if (!require("gridExtra")) 
+install.packages("gridExtra")
+library(gridExtra)
+
+if (!require("dendextend")) 
+install.packages("dendextend")
+library(dendextend)
+
+if (!require("plyr")) 
+install.packages("plyr")
+library(plyr)
+
+if (!require("magick")) 
+install.packages("magick")
+library(magick)
+
+if (!require("png")) 
+install.packages("png")
+library(png)
+
+if (!require("scales")) 
+install.packages("scales")
+library(scales)
+
+if (!require("ggsci")) 
+install.packages("ggsci")
+library(ggsci)
+
+if (!require("stringi")) install.packages("stringi")
+  library(stringi)
+if (!require("stringr")) install.packages("stringr")
+  library(stringr)
+
+if (!require("impute")) BiocManager::install("impute")
+library(impute)
+
+if (!require("preprocessCore")) BiocManager::install("preprocessCore")
+library(preprocessCore)
+
+if (!require("Go.db")) BiocManager::install("GO.db")
+library(GO.db)
+
+
+if (!require("WGCNA")) install.packages("WGCNA")
+library(WGCNA)
+
+if (!require("umap")) install.packages("umap")
+library(umap)
+
+if (!require("igraph")) install.packages("igraph")
+library(igraph)
+
+if (!require("gtable")) install.packages("gtable")
+library(gtable)
+
+if(!dir.exists(outputdir)){
+  dir.create(outputdir)
+}
+
+knitr::opts_chunk$set(
+eval = FALSE,
+tidy = TRUE#,
+#	echo = TRUE,
+#	message = FALSE,
+#	warning = FALSE
+)
+
+```
+
+### Supplementary Figure 8A, 8B, 8C, and 8E
+
+```{r Supplementary_Figure8}
+
+if(!dir.exists(paste(outputdir,"/Figure8_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure8_Supplementary/",sep=""))
+}
+
+Figure_copy <- list.files("./Inputs/Figure8_Supplementary/pregenerated_figures/")
+
+if(!file.exists(paste(outputdir,"/Figure8_Supplementary/","supplementary_Figure8a.png",sep=""))){
+  file.copy(paste0("./Inputs/Figure8_Supplementary/pregenerated_figures/",Figure_copy,sep=""),paste("./",outputdir,"/Figure8_Supplementary/",sep=""))
+}
+
+```
+
+### Supplementary Figure 8D
+
+```{r Supplementary_Figure8D}
+
+data <- read_csv("Inputs/Figure8_supplementary/supplementary_Figure8d_input.csv") 
+
+p <- ggplot(data,aes(x=reorder(Sample,order), y=FC,fill=reorder(Sample,order))) +
+        geom_bar(stat="identity",position = "dodge") +
+        geom_errorbar(aes(ymax=FC+stderr, ymin=FC-stderr, width=.2),position = position_dodge(0.9)) +
+        geom_text(aes(y = FC, label= pvalue,vjust=-1.5,hjust=0.5),color = "#000000",size=10,position = position_dodge(0.9)) + 
+        scale_fill_manual(values = c(paper_purple,paper_red,paper_gold,paper_green,paper_blue)) +
+        labs(y = "Relative GBX2 Expression",
+        x = "") +
+        #ylim(-5, 10) +
+        theme(plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+              axis.title = element_text(size = rel(1.6), face="bold"),
+              axis.text.y = element_text(size = rel(2.2), face="bold"),
+              axis.text.x = element_text(size = rel(2.2), face="bold",angle=90,vjust = 0.5, hjust=1),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+panel.background = element_blank(), axis.line = element_line(colour = "black"),legend.position="none",legend.title=element_blank(),
+legend.text=element_text(size=rel(2.0)),
+strip.text.x = element_text(size = rel(2.2)),
+strip.background = element_blank()) + 
+  facet_wrap(~CellLine,scales="free")
+
+p
+
+ggsave(file=paste(outputdir,"/Figure8_supplementary/supplementary_Figure8d.png",sep=""),
+       plot=print(p),
+       height = 9,
+       width = 5,
+       dpi = 600)
+
+```
+
+```{r}
+sessionInfo()
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
