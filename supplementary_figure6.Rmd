@@ -1,0 +1,666 @@
+---
+title: "Supplementary Figure 6"
+output: html_notebook
+---
+
+## Set parameters and install required programs
+```{r}
+## Variables
+
+outputdir <- "Outputs"
+
+filterannot <- "TUCR"
+
+makekpmplots <- TRUE
+
+tpmethod <- "TPM"
+
+repel <- TRUE
+```
+
+```{r}
+## Load Colors
+
+paper_black = "#000000"
+  
+paper_gold = "#EAA304"
+  
+paper_green2 = "#20C799"
+  
+paper_yellow = "#F0E442"
+  
+paper_blue = "#017DC3"
+  
+paper_lightblue = "#58AFE0"
+  
+paper_skyblue = "#A5DFFF"
+  
+paper_orange = "#D55E00"
+  
+paper_purple = "#8C004C"
+  
+paper_gray = "#CAC4C4"
+  
+paper_red = "#C30223"
+  
+paper_darkpink = "#DA7C8C"
+  
+paper_pink = "#FFCCD5"
+
+paper_green = "#54BB44"
+  
+paper_red2 = "#CA465C"
+  
+paper_turq = "#20C799"
+
+```
+
+```{r}
+## Load Programs
+
+if (!require("jsonlite")) install.packages("jsonlite")
+library("jsonlite")
+
+if (!require("tidyjson")) install.packages("tidyjson")
+library("tidyjson")
+
+if (!require("tidyverse")) install.packages("tidyverse")
+library("tidyverse")
+
+if (!require("ggplot2")) install.packages("ggplot2")
+library("ggplot2")
+
+if (!require("ggforce")) install.packages("ggforce")
+library("ggforce")
+
+if (!require("ggbreak")) install.packages("ggbreak")
+library("ggbreak")
+
+if (!require("ggrepel")) install.packages("ggrepel")
+library("ggrepel")
+
+if (!require("ggfortify")) install.packages("ggfortify")
+library("ggfortify")
+
+if (!require("ggdendro")) install.packages("ggdendro")
+library("ggdendro")
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
+library("DESeq2")
+
+if (!require("survival")) install.packages("survival")
+library("survival")
+
+if (!require("broom")) install.packages("broom")
+library("broom")
+
+if (!requireNamespace("limma", quietly = TRUE))BiocManager::install("limma")
+library("limma")
+
+if (!require("Tmisc")) install.packages("Tmisc")
+library("Tmisc")
+
+if (!require("survminer")) install.packages("survminer")
+library("survminer")
+
+if (!require("corrr")) install.packages("corrr")
+library("corrr")
+
+if (!require("here")) install.packages("here")
+library("here")
+
+if (!require("lessR")) install.packages("lessR")
+library("lessR")
+
+if (!require("splitstackshape")) install.packages("splitstackshape")
+library(splitstackshape)
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+
+if (!require('org.Hs.eg.db')) BiocManager::install('org.Hs.eg.db')
+library(org.Hs.eg.db)
+
+if (!require('GO.db')) BiocManager::install('GO.db')
+library(GO.db)
+
+if (!require('limma')) BiocManager::install('limma')
+library(limma)
+
+if (!require("ggthemes")) install.packages('ggthemes', dependencies = TRUE)
+library(ggthemes)
+
+if (!require("gplots")) 
+install.packages("gplots")
+library(gplots)
+
+if (!require("ggsignif")) 
+install.packages("ggsignif")
+library(ggsignif)
+
+if (!require("RColorBrewer")) 
+install.packages("RColorBrewer")
+library(RColorBrewer)
+
+if (!require("reshape2")) 
+install.packages("reshape2")
+library(reshape2)
+
+if (!require("gridExtra")) 
+install.packages("gridExtra")
+library(gridExtra)
+
+if (!require("dendextend")) 
+install.packages("dendextend")
+library(dendextend)
+
+if (!require("plyr")) 
+install.packages("plyr")
+library(plyr)
+
+if (!require("magick")) 
+install.packages("magick")
+library(magick)
+
+if (!require("png")) 
+install.packages("png")
+library(png)
+
+if (!require("scales")) 
+install.packages("scales")
+library(scales)
+
+if (!require("ggsci")) 
+install.packages("ggsci")
+library(ggsci)
+
+if (!require("stringi")) install.packages("stringi")
+  library(stringi)
+if (!require("stringr")) install.packages("stringr")
+  library(stringr)
+
+if (!require("impute")) BiocManager::install("impute")
+library(impute)
+
+if (!require("preprocessCore")) BiocManager::install("preprocessCore")
+library(preprocessCore)
+
+if (!require("Go.db")) BiocManager::install("GO.db")
+library(GO.db)
+
+
+if (!require("WGCNA")) install.packages("WGCNA")
+library(WGCNA)
+
+if (!require("umap")) install.packages("umap")
+library(umap)
+
+if (!require("igraph")) install.packages("igraph")
+library(igraph)
+
+if (!require("gtable")) install.packages("gtable")
+library(gtable)
+
+if(!dir.exists(outputdir)){
+  dir.create(outputdir)
+}
+
+knitr::opts_chunk$set(
+eval = FALSE,
+tidy = TRUE#,
+#	echo = TRUE,
+#	message = FALSE,
+#	warning = FALSE
+)
+
+```
+
+
+```{r supplementary_Figure6_dircreate}
+
+if(!dir.exists(paste(outputdir,"/Figure6_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure6_Supplementary/",sep=""))
+}
+
+```
+
+### Supplementary Figure 6A and 6B
+
+```{r Supplementary_Figure6ab_relatingmodules_1,eval=FALSE}
+
+# Load the WGCNA package
+library(WGCNA)
+# The following setting is important, do not omit.
+options(stringsAsFactors = FALSE)
+# Load the expression and trait data saved in the first part
+lnames = load(file = "./Inputs/general_files/wgcnafiles/TUCR-01-dataInput.RData")
+#The variable lnames contains the names of loaded variables.
+lnames
+# Load network data saved in the second part.
+lnames = load(file = "./Inputs/general_files/wgcnafiles/TUCR-02-networkConstruction-auto.RData")
+lnames
+
+```
+
+## filter out modules that are particularly large. 
+
+```{r Supplementary_Figure6ab_relatingmodules_2,fig.width = 3, fig.height = 7,eval=FALSE}
+
+# Define numbers of genes and samples
+nGenes = ncol(datExpr)
+nSamples = nrow(datExpr)
+# Recalculate MEs with color labels
+MEs0 = moduleEigengenes(datExpr, moduleColors)$eigengenes
+
+datExpr2 = as.data.frame(datExpr)
+MEs = orderMEs(MEs0)
+datTraits2 <- as.data.frame(datTraits2)
+moduleTraitCor = cor(MEs, datTraits2, use = "p")
+moduleTraitPvalue = corPvalueStudent(moduleTraitCor, nSamples)
+
+```
+
+```{r Supplementary_Figure6ab_relatingmodules_3,eval=FALSE}
+
+geneModuleMembership = as.data.frame(cor(datExpr, MEs, use = "p"))
+MMPvalue = as.data.frame(corPvalueStudent(as.matrix(geneModuleMembership), nSamples))
+
+allmodules <- as.data.frame(t(MMPvalue))
+#allmodules : 51 *42644
+allmodules2 <- allmodules %>%
+  dplyr::mutate(Module = row.names(allmodules)) %>%
+  gather(key = "Gene", value = "pvalue",-Module) %>%
+  group_by(Gene) %>%
+  mutate(maxmodule = min(pvalue,na.rm = TRUE)) %>%
+  filter(pvalue == maxmodule) %>%
+  group_by(Module) %>%
+  dplyr::summarize(n = n()) 
+
+allmodules3 <- allmodules2 %>%
+  mutate(q1 = quantile(allmodules2$n,0.25),q3 = quantile(allmodules2$n,0.75),q1minus = q1 - 1.5*(q3-q1),q3plus = q3 + 1.5*(q3-q1),outliercheck = ifelse(n >= q3plus | n <= q1minus,TRUE,FALSE)) 
+#%>%  filter(outliercheck == FALSE)
+
+#repeat{
+  
+n_count <- length(allmodules3$n)
+
+allmodules3 <- allmodules3 %>%
+  mutate(q1 = quantile(allmodules3$n,0.25),q3 = quantile(allmodules3$n,0.75),q1minus = q1 - 1.5*(q3-q1),q3plus = q3 + 1.5*(q3-q1),outliercheck = ifelse(n >= q3plus | n <= q1minus,TRUE,FALSE)) 
+#%>% filter(outliercheck == FALSE)
+
+#if(n_count == length(allmodules3$n)) break;
+
+#  }
+
+allmodules_check <- as.data.frame(as.character(allmodules3$Module)) %>%
+  dplyr::mutate(checker = TRUE)
+
+colnames(allmodules_check) <- c("Module","checker")
+
+boxplot(allmodules3$n,
+  ylab = "n"
+)
+
+moduleTraitCor2 <- as.data.frame(moduleTraitCor) %>%
+  mutate(Module = row.names(moduleTraitCor)) %>%
+  left_join(allmodules_check,by = "Module") %>%
+  filter(checker == TRUE)
+
+datTraits <- datTraits2
+
+geneModuleMembership = as.data.frame(cor(datExpr, MEs, use = "p"))
+
+match_modules <- match(as.character(allmodules_check$Module),colnames(geneModuleMembership))
+
+geneModuleMembership2 <- geneModuleMembership[,match_modules]
+
+modNames = substring(names(geneModuleMembership2), 3)
+
+MMPvalue = as.data.frame(corPvalueStudent(as.matrix(geneModuleMembership), nSamples))
+
+match_modules <- match(as.character(allmodules_check$Module),colnames(MMPvalue))
+
+MMPvalue2 = MMPvalue[,match_modules]
+
+names(geneModuleMembership2) = paste("MM", modNames, sep="")
+names(MMPvalue2) = paste("p.MM", modNames, sep="")
+
+# Save.image(file="./Inputs/general_files/wgcnafiles/allprelims.Rdata")
+
+```
+
+```{r Supplementary_Figure6abFigure1h_mainheatmap,eval=FALSE}
+
+load(file="./Inputs/general_files/wgcnafiles/allprelims.Rdata")
+
+datTraits2 <- datTraits2 %>%
+  dplyr::select(-disease)
+
+datTraits <- as.data.frame(t(datTraits2)) %>%
+  mutate(rownames = row.names(t(datTraits2))) %>%
+  # Filter(rownames == trait_id) %>%
+  dplyr::select(-rownames) %>%
+  t()
+
+hc.Traits <- hclust(dist(t(datTraits2)))
+
+clust_order_traits <- hc.Traits$order
+
+clust_positions <- as.data.frame(cbind(as.character(colnames(datTraits)[clust_order_traits]),as.numeric(clust_order_traits)))
+
+colnames(clust_positions) <- c("trait","clust_order")
+
+geneTraitSignificance <- as.data.frame(cor(datExpr,datTraits2, use = "p")) %>%
+  dplyr::select(-dex2,-p53status2)
+
+GSPvalue = as.data.frame(corPvalueStudent(as.matrix(geneTraitSignificance), nSamples))
+
+#names(geneTraitSignificance) = paste("GS.", names(weight), sep="")
+#names(GSPvalue) = paste("p.GS.", names(weight), sep="")
+
+moduleTraitCor_trait_id <- as.data.frame(moduleTraitCor2) %>%
+  mutate(modules = str_remove(Module,"ME")) %>%
+  gather(key = "trait", value = "cor",-modules,-Module,-checker,-p53status2,-dex2) %>%
+  # Filter(is.numeric(cor)) %>%
+  # Filter(trait == trait_id) %>%
+  dplyr::group_by(trait) %>%
+  arrange(desc(cor)) %>%
+  ungroup() %>%
+  dplyr::group_by(modules) %>%
+  dplyr::mutate(sumnumber = sum(cor,na.rm=T),
+         n = n(),
+         weight = sumnumber/n) %>%
+  ungroup() %>%
+  arrange(desc(weight))
+
+traitpositions <- moduleTraitCor_trait_id %>%
+  dplyr::select(modules) %>%
+  distinct() %>%
+  dplyr::mutate(position = row_number())
+
+moduleTraitCor_trait_id <- moduleTraitCor_trait_id %>%
+  left_join(traitpositions,by="modules") %>%
+  left_join(clust_positions,by="trait") 
+
+moduleTraitCor_trait_id <- moduleTraitCor_trait_id %>% 
+  mutate(clust_position_order = as.numeric(moduleTraitCor_trait_id$clust_order))
+
+p <- ggplot(data = moduleTraitCor_trait_id,mapping = aes(x = reorder(modules,position),y = reorder(trait,clust_position_order), fill = as.numeric(cor))) +
+  geom_tile() +
+  scale_fill_gradient2(low = paper_blue,mid = "white",high = paper_red2,midpoint = 0) +
+  ylab("TUCRs") +
+  xlab("Modules") +
+  labs(fill = "cor") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.8), face="bold"),
+        axis.text.y = element_blank(),
+        axis.text.x = element_blank(),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+        legend.position="right",
+        legend.title=element_text(size = rel(2.5), face="bold"),
+        legend.text=element_text(size = rel(2.0), face="bold"), 
+        plot.margin = unit(c(0,0,0,0), "cm")) +
+        annotate(
+    geom = "point",
+    color = c(as.character(moduleTraitCor_trait_id$modules)),
+    x = moduleTraitCor_trait_id$position, 
+    y = 0.5,
+    shape = 15, 
+    size = 5)
+
+p
+
+ggsave(p,file=paste(outputdir,"/Figure2/figure2F.png",sep=""), width = 7, height = 3, dpi = 600)
+```
+
+```{r}
+if(!dir.exists(paste(outputdir,"/TUCR_Database/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/",sep=""))
+}
+
+if(!dir.exists(paste(outputdir,"/TUCR_Database/SummaryTables/WGCNA/",sep=""))){
+  dir.create(paste(outputdir,"/TUCR_Database/SummaryTables/WGCNA/",sep=""))
+}
+```
+
+```{r}
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+
+if (!require('GO.db')) BiocManager::install('GO.db')
+library(GO.db)
+
+#if (!require('AnnotationDBI')) BiocManager::install('AnnotationDBI')
+#library(AnnotationDBI)
+
+if (!require('org.Hs.eg.db')) BiocManager::install('org.Hs.eg.db')
+library(org.Hs.eg.db)
+
+if (!require('limma')) BiocManager::install('limma')
+library(limma)
+
+```
+
+## Supplementary_Figure6a
+```{r Supplementary_Figure6a_allgoterms,eval=FALSE}
+
+#####GO-TERM ANALYSIS
+
+  module <- "#004C54"
+
+  column = match(module, modNames);
+  
+  moduleGenes = moduleColors==module;
+  
+  genelist <- geneTraitSignificance %>%
+    mutate(genenames = row.names(geneTraitSignificance))
+  
+  genelist2 <- as.data.frame(genelist[moduleGenes,])
+  
+  genelist2 <- genelist2 %>%
+    separate(genenames,into=c("Alias","kibble"),sep="___")
+ 
+  symbols <- as.character(genelist2$Alias)
+  
+  EntrezIDs <- mapIds(org.Hs.eg.db, symbols, 'ENTREZID', 'SYMBOL')
+  
+  allgenes <- cbind(symbols,EntrezIDs)
+  
+  ## to omit genes without matching ids, below command return a logical vector indicating which cases are complete, i.e., have no missing values
+  
+  allgenes <- allgenes[complete.cases(allgenes),]
+  
+```
+
+
+```{r}
+g <- goana(EntrezIDs)
+
+head(g)
+```
+
+
+
+```{r}
+## Biological process 
+
+g_bp <- g %>%
+    filter(Ont == "BP")
+##topGO Extracts top GO terms (default 20) from goana output 
+  topGO_bp <- topGO(g_bp) %>%
+    mutate(log10_p = -log10(P.DE),module=module,color="red") %>%
+    arrange(desc(log10_p))
+  
+  head(g_bp)
+  
+  dim(g_bp)
+  
+```
+
+
+```{r}
+
+g_mf <- g %>%
+    filter(Ont == "MF")
+##topGO Extracts top GO terms (default 20) from goana output 
+  topGO_mf <- topGO(g_mf) %>%
+    mutate(log10_p = -log10(P.DE),module=module,color="blue") %>%
+    arrange(desc(log10_p))
+  
+head(g_mf)
+
+```
+
+
+```{r}
+
+topGO_all <- rbind(topGO_bp,topGO_mf) %>%
+                       arrange(as.numeric(log10_p)) %>%
+                       dplyr::mutate(roworder = row_number()) %>%
+                       mutate(newTerm = substr(Term,1,80))
+
+head(topGO_all)
+
+```
+
+
+```{r,fig.width=16,fig.height=8}
+  
+  p <- ggplot(topGO_all,aes(x=reorder(newTerm,roworder),y=as.numeric(log10_p),fill=module,color=color)) +
+    geom_bar(stat="identity") + coord_flip() + scale_fill_identity() + scale_color_identity() + facet_wrap(~Ont,scales="free",ncol=1) + 
+    ggtitle(module) +
+    labs(x="Go Term", y = "-log10(p-value)") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.8), face="bold"),
+        axis.text.y = element_text(size = rel(1.4), face="bold"),
+        axis.text.x = element_text(size = rel(1.4), face="bold",angle=0,vjust = 0.5, hjust=1),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+        legend.position="none",
+        legend.title=element_blank(),
+        legend.text=element_blank(),
+        strip.text.x = element_text(size = rel(2.2)))
+  p
+  
+  
+ggsave(plot = print(p),paste(outputdir,"/Figure6_Supplementary/supplementary_Figure6a.png",sep=""),height=8,width=16)
+
+```
+
+## supplimentary Figure 6B 
+
+```{r Supplementary_Figure6b_allgoterms,eval=FALSE}
+
+#####GO-TERM ANALYSIS
+
+   module <- "#FFC0CB"
+  column = match(module, modNames);
+  moduleGenes = moduleColors==module;
+  
+  genelist2 <- as.data.frame(genelist[moduleGenes,])
+  
+  genelist2 <- genelist2 %>%
+    separate(genenames,into=c("Alias","kibble"),sep="___")
+ 
+  symbols <- as.character(genelist2$Alias)
+  
+  EntrezIDs <- mapIds(org.Hs.eg.db, symbols, 'ENTREZID', 'SYMBOL')
+  
+  allgenes <- cbind(symbols,EntrezIDs)
+  
+  ## to omit genes without matching ids, below command return a logical vector indicating which cases are complete, i.e., have no missing values
+  
+  allgenes <- allgenes[complete.cases(allgenes),]
+```
+
+```{r}
+g <- goana(EntrezIDs)
+
+head(g)
+```
+
+
+
+```{r}
+## Biological process 
+
+g_bp <- g %>%
+    filter(Ont == "BP")
+##topGO Extracts top GO terms (default 20) from goana output 
+  topGO_bp <- topGO(g_bp) %>%
+    mutate(log10_p = -log10(P.DE),module=module,color="red") %>%
+    arrange(desc(log10_p))
+  
+  head(g_bp)
+  dim(g_bp)
+```
+
+```{r}
+g_mf <- g %>%
+    filter(Ont == "MF")
+##topGO Extracts top GO terms (default 20) from goana output 
+  topGO_mf <- topGO(g_mf) %>%
+    mutate(log10_p = -log10(P.DE),module=module,color="blue") %>%
+    arrange(desc(log10_p))
+  
+head(g_mf)
+```
+```{r}
+
+topGO_all <- rbind(topGO_bp,topGO_mf) %>%
+                       arrange(as.numeric(log10_p)) %>%
+                       dplyr::mutate(roworder = row_number()) %>%
+                       mutate(newTerm = substr(Term,1,80))
+
+head(topGO_all)
+
+```
+
+
+```{r,fig.width=16,fig.height=8}
+  
+  p <- ggplot(topGO_all,aes(x=reorder(newTerm,roworder),y=as.numeric(log10_p),fill=module,color=color)) +
+    geom_bar(stat="identity") + coord_flip() + scale_fill_identity() + scale_color_identity() + facet_wrap(~Ont,scales="free",ncol=1) + 
+    ggtitle(module) +
+    labs(x="Go Term", y = "-log10(p-value)") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
+        axis.title = element_text(size = rel(1.8), face="bold"),
+        axis.text.y = element_text(size = rel(1.4), face="bold"),
+        axis.text.x = element_text(size = rel(1.4), face="bold",angle=0,vjust = 0.5, hjust=1),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+        legend.position="none",
+        legend.title=element_blank(),
+        legend.text=element_blank(),
+        strip.text.x = element_text(size = rel(2.2)))
+  p
+  
+  
+ggsave(plot = print(p),paste(outputdir,"/Figure6_Supplementary/supplementary_Figure6b.png",sep=""),height=8,width=16)
+
+```
+
+
+
+```{r}
+sessionInfo()
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
