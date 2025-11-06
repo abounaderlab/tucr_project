@@ -1,0 +1,660 @@
+---
+title: "Figure 1"
+output: html_notebook
+---
+
+## Title : A comprehensive analysis of Transcribed Ultra Conserved Regions uncovers important regulatory functions of novel non coding transcripts in gliomas
+
+## Figure 1
+
+## Set parameters and install required programs
+```{r}
+## Variables
+
+outputdir <- "Outputs"
+
+filterannot <- "TUCR"
+
+makekpmplots <- TRUE
+
+tpmethod <- "TPM"
+
+repel <- TRUE
+```
+
+```{r}
+## Load Colors
+
+paper_black = "#000000"
+  
+paper_gold = "#EAA304"
+  
+paper_green2 = "#20C799"
+  
+paper_yellow = "#F0E442"
+  
+paper_blue = "#017DC3"
+  
+paper_lightblue = "#58AFE0"
+  
+paper_skyblue = "#A5DFFF"
+  
+paper_orange = "#D55E00"
+  
+paper_purple = "#8C004C"
+  
+paper_gray = "#CAC4C4"
+  
+paper_red = "#C30223"
+  
+paper_darkpink = "#DA7C8C"
+  
+paper_pink = "#FFCCD5"
+
+paper_green = "#54BB44"
+  
+paper_red2 = "#CA465C"
+  
+paper_turq = "#20C799"
+
+```
+
+```{r}
+## Load Programs
+
+if (!require("jsonlite")) install.packages("jsonlite")
+library("jsonlite")
+
+if (!require("tidyjson")) install.packages("tidyjson")
+library("tidyjson")
+
+if (!require("tidyverse")) install.packages("tidyverse")
+library("tidyverse")
+
+if (!require("ggplot2")) install.packages("ggplot2")
+library("ggplot2")
+
+if (!require("ggforce")) install.packages("ggforce")
+library("ggforce")
+
+if (!require("ggbreak")) install.packages("ggbreak")
+library("ggbreak")
+
+if (!require("ggrepel")) install.packages("ggrepel")
+library("ggrepel")
+
+if (!require("ggfortify")) install.packages("ggfortify")
+library("ggfortify")
+
+if (!require("ggdendro")) install.packages("ggdendro")
+library("ggdendro")
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
+library("DESeq2")
+
+if (!require("survival")) install.packages("survival")
+library("survival")
+
+if (!require("broom")) install.packages("broom")
+library("broom")
+
+if (!requireNamespace("limma", quietly = TRUE))BiocManager::install("limma")
+library("limma")
+
+if (!require("Tmisc")) install.packages("Tmisc")
+library("Tmisc")
+
+if (!require("survminer")) install.packages("survminer")
+library("survminer")
+
+if (!require("corrr")) install.packages("corrr")
+library("corrr")
+
+if (!require("here")) install.packages("here")
+library("here")
+
+if (!require("lessR")) install.packages("lessR")
+library("lessR")
+
+if (!require("splitstackshape")) install.packages("splitstackshape")
+library(splitstackshape)
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+
+if (!require('org.Hs.eg.db')) BiocManager::install('org.Hs.eg.db')
+library(org.Hs.eg.db)
+
+if (!require('GO.db')) BiocManager::install('GO.db')
+library(GO.db)
+
+if (!require('limma')) BiocManager::install('limma')
+library(limma)
+
+if (!require("ggthemes")) install.packages('ggthemes', dependencies = TRUE)
+library(ggthemes)
+
+if (!require("gplots")) 
+install.packages("gplots")
+library(gplots)
+
+if (!require("ggsignif")) 
+install.packages("ggsignif")
+library(ggsignif)
+
+if (!require("RColorBrewer")) 
+install.packages("RColorBrewer")
+library(RColorBrewer)
+
+if (!require("reshape2")) 
+install.packages("reshape2")
+library(reshape2)
+
+if (!require("gridExtra")) 
+install.packages("gridExtra")
+library(gridExtra)
+
+if (!require("dendextend")) 
+install.packages("dendextend")
+library(dendextend)
+
+if (!require("plyr")) 
+install.packages("plyr")
+library(plyr)
+
+if (!require("magick")) 
+install.packages("magick")
+library(magick)
+
+if (!require("png")) 
+install.packages("png")
+library(png)
+
+if (!require("scales")) 
+install.packages("scales")
+library(scales)
+
+if (!require("ggsci")) 
+install.packages("ggsci")
+library(ggsci)
+
+if (!require("stringi")) install.packages("stringi")
+  library(stringi)
+if (!require("stringr")) install.packages("stringr")
+  library(stringr)
+
+if (!require("impute")) BiocManager::install("impute")
+library(impute)
+
+if (!require("preprocessCore")) BiocManager::install("preprocessCore")
+library(preprocessCore)
+
+if (!require("Go.db")) BiocManager::install("GO.db")
+library(GO.db)
+
+
+if (!require("WGCNA")) install.packages("WGCNA")
+library(WGCNA)
+
+if (!require("umap")) install.packages("umap")
+library(umap)
+
+if (!require("igraph")) install.packages("igraph")
+library(igraph)
+
+if (!require("gtable")) install.packages("gtable")
+library(gtable)
+
+if(!dir.exists(outputdir)){
+  dir.create(outputdir)
+}
+
+knitr::opts_chunk$set(
+eval = FALSE,
+tidy = TRUE#,
+#	echo = TRUE,
+#	message = FALSE,
+#	warning = FALSE
+)
+
+```
+
+## Figure 1
+
+## Plotting fisher test results. See Chromatin Landscaping methods for additional code.
+
+```{r}
+if(!dir.exists(paste(outputdir,"/Figure1/",sep=""))){dir.create(paste(outputdir,"/Figure1/",sep=""))}
+```
+
+```{r Figure1A_fisher_plot}
+
+filenames <- list.files("./Inputs/Figure1/fisher_test_results/")
+
+#header <- data.frame(matrix(ncol = 5, nrow = 0))
+header <- data.frame(matrix(ncol = 6, nrow = 0))
+                     
+i <- 1
+
+for(i in 1:length(filenames)){
+
+print(i)
+
+filename_n <- filenames[i]
+
+print(filename_n)
+
+annot <- str_match(filename_n,"\\s*(.*?)\\s*_genelist")[2]
+
+chip <- str_match(filename_n, "[.]\\s*(.*?)\\s*.fisher")[2]
+
+fisherdata <- readLines(paste("./Inputs/Figure1/fisher_test_results/",filename_n,sep=""))
+
+dat <- as.data.frame(rbind(fisherdata[9],fisherdata[10])) %>%
+  mutate(left = as.numeric(stri_extract_first_regex(V1, "[0-9]+")),
+         right = as.numeric(stri_extract_last_regex(V1, "[0-9]+"))) %>%
+  dplyr::select(-V1)
+
+rownames(dat) <- c("top","bottom")
+
+cont <- chisq.test(dat)$expected
+
+test <- fisher.test(dat)
+
+pvalue <- ifelse(round(test$p.value,20)<=0.05,"*","")
+
+rbinder <- cbind(filename_n,annot,chip,round(cont[1,1],0),dat[1,1],pvalue)
+
+header <- rbind(header,rbinder)}
+
+colnames(header) <- c("filename","annot","chip","expected","observed","pvalue")
+
+chromatindat <- header %>%
+  mutate(order = ifelse(annot == "allTUCR",1,
+         ifelse(annot == "exonic",2,
+         ifelse(annot == "exonic-intronic",3,
+         ifelse(annot == "intronic",4,
+         ifelse(annot == "intergenic",5,
+         ifelse(annot == "coding",6,
+         ifelse(annot == "lncRNA",7,
+         ifelse(annot == "antisense_RNA",8,
+         ifelse(annot == "misc_RNA",9,
+         ifelse(annot == "randomTUCR",10,NA))))))))))) %>%
+  gather(key = "test", value = "value",-filename,-annot,-chip,-pvalue,-order) %>%
+  mutate(pvalue = ifelse(test == "observed",pvalue,""),
+         fillcolor = ifelse(test == "expected",paper_red2,paper_turq)) %>%
+  arrange(order,test)
+
+chromatindat$chip <- factor(chromatindat$chip,      # Reordering group factor levels
+                         levels = c("pol2", "h3k4me3","ATAC","enhancers","h3k27ac"))
+
+chromatindat$test <- factor(chromatindat$test,      # Reordering group factor levels
+                         levels = c("expected","observed"))
+
+chromatindat$fillcolor <- factor(chromatindat$fillcolor,      # Reordering group factor levels
+                         levels = c(paper_red2,paper_turq))
+
+chromatindat$annot <- factor(chromatindat$annot,      # Reordering group factor levels
+                         levels = reorder(unique(chromatindat$annot),unique(chromatindat$order)))
+
+chromatindat <- chromatindat  %>% 
+  mutate(label_positions = as.numeric(value)+(as.numeric(value)*.05))
+  
+
+  p <- ggplot(chromatindat, aes(x=chip,y=as.numeric(value),fill=test))   +
+  geom_bar(stat="identity", 
+           #color = "black",
+           width=0.7,position="dodge") +
+  #geom_errorbar(aes(ymax=as.numeric(as.character(errorbar)), ymin=as.numeric(as.character(foldchange))), width=.2,
+  #               position=position_dodge(.9)) +
+  geom_text(data=chromatindat,aes(x=chip,y=as.numeric(label_positions),label = pvalue), position = position_dodge(width=0.8),color = "black",size = 15) +
+  #scale_fill_identity(guide = 'legend', breaks = levels(chromatindat$test)) +
+  #scale_fill_brewer(palette = "Spectral") +
+  scale_fill_manual(values = c(paper_red2,paper_turq)) +
+  #scale_y_continuous(expand=expansion(mult=c(0,0.15))) +
+  #geom_text(
+  #  aes(label=round(value,2)), 
+  #  vjust=1.6, 
+  #  color="black", 
+  #  size=rel(4))                                                      #+ 
+  #ggtitle(paste("TUCRs are enriched for \n RNA Pol.II, H3K4me3,"))  + 
+  xlab("Spatial Relationship")                                           + 
+  ylab("Number of overlaps")                                           +
+  #ggtitle(annot) +
+  theme(
+    #plot.title = element_text(
+    #  size=rel(1.5), 
+    #  face="bold",hjust = 0.5),
+    #plot.title = element_text(
+    #  size = rel(1.5),hjust=0.5, 
+    #  face="bold"),
+    strip.background = element_rect(fill="white"),
+    plot.title = element_text(size=rel(3.0), face="bold",hjust = 0.5),
+    axis.title = element_text(size = rel(3.0), face="bold"),
+    axis.text = element_text(size = rel(2.0),angle = -90),
+    strip.text = element_text(size = rel(3.0), face="bold"),
+    legend.title = element_blank(),
+    legend.position = "top",
+    legend.text = element_text(size = rel(4.0)),
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(), 
+    axis.line = element_line(colour = "black")) +
+    facet_wrap(~annot, scales = "free",ncol=5)
+
+ggsave(
+    file=paste(outputdir,"/Figure1/Figure1A.png",sep=""),
+    plot = print(p),
+    width = 25, 
+    height = 15, 
+    dpi = 600) 
+
+```
+
+```{r,fig.width=25,fig.height=15}
+print (p)
+```
+
+### Figure 1B
+
+```{r Figure1B_tpm_TUCRs}
+
+if(!dir.exists(paste(outputdir,"/Figure1/",sep=""))){
+  dir.create(paste(outputdir,"/Figure1/",sep=""))
+}
+
+disease <- "GBM"
+
+normal <- "cortex"
+
+## read data
+
+t_countfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_mergedcounts.txt",sep="")
+
+n_countfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_mergedcounts.txt",sep="")
+
+t_metadatafile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_tcga_metadata.csv",sep="")
+
+n_metadatafile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_gtex_metadata.csv",sep="")
+
+t_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_seqdepth_counts.csv",sep="")
+
+n_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_seqdepth_counts.csv",sep="")
+
+## Merge Data
+
+if(!is.na(n_countfile)){
+  mergedcounts <- read.table(t_countfile,header = TRUE)
+  
+  normalcounts <- read.table(n_countfile,header = TRUE) 
+  
+  mergedcounts <- mergedcounts %>% left_join(normalcounts,by=c("id")) %>%
+    dplyr::select(-chrom.y,-start.y,-end.y,-strand.y,-tag.y,-annot.y,-alias.y) %>%
+    distinct()
+  
+  metadata <- 
+  read_csv(file = t_metadatafile)
+  
+  n_metadata <- 
+  read_csv(file = n_metadatafile)
+  
+  rm(normalcounts)
+  
+  metadata <- rbind(metadata,n_metadata)
+  
+  rm(n_metadata)
+  
+  seqdepth <- read.csv(file = t_seqdepthfile)
+  
+  n_seqdepth <- read.csv(file = n_seqdepthfile)
+  
+  seqdepth <- rbind(seqdepth,n_seqdepth)
+  
+  rm(n_seqdepth)
+  
+}else{
+    mergedcounts <- read.table(t_countfile,header = TRUE)
+
+    metadata <- read.csv(file = t_metadatafile)
+    
+    seqdepth <- read.csv(file = t_seqdepthfile)
+}
+
+#if(!is.na(filterannot)){
+#  tpmcounts <- mergedcounts %>%
+#  filter(tag.x == filterannot) %>%
+#  mutate(length = end.x - start.x)
+#}else{
+tpmcounts <- mergedcounts %>%
+  mutate(length = end.x - start.x)#}
+
+tpmcounts.info <- tpmcounts %>%
+  dplyr::select("chrom" = chrom.x,"start" = start.x,"end" = end.x,"strand"=strand.x,id,"alias"=alias.x,"tag"=tag.x,"annot" = annot.x,length)
+
+tpmcounts <- tpmcounts %>%
+  dplyr::select(-chrom.x,-start.x,-end.x,-id,-strand.x,-tag.x,-annot.x,-alias.x,-length)
+  
+rownames(tpmcounts) <- as.character(tpmcounts.info$id)
+
+genelength <- tpmcounts.info$length/1000
+
+seqdepth2 <- as.vector(seqdepth$counts)/1000000
+
+tpm <- function(counts,len,dep){
+  #x <- tpmcounts/genelength
+  #x2 <- t(t(x)/(seqdepth2))
+  x <- counts/len
+  return(t(t(x)/(dep)))
+}
+
+tpm.df <- tpm(tpmcounts,genelength,seqdepth2)
+
+tpm.df2 <- cbind(tpmcounts.info,tpm.df)
+
+tpm.median <- as.data.frame(tpm.df)
+tpm.median <- tpm.median %>% 
+  dplyr::summarize(median_tpm = rowMedians(tpm.df)) %>%
+  dplyr::mutate(countif = ifelse(median_tpm >=1,1,0),proportion = sum(countif,na.rm = TRUE)/n())
+tpm.median <- cbind(tpmcounts.info,tpm.median)
+tpm.median <- tpm.median %>% dplyr::select(id,median_tpm,countif,proportion)
+
+proportion.df <- round(as.numeric(tpm.median$proportion[1]),3)*100
+
+#write.csv(tpm.df2,paste(outputdir,"/TUCR_Database/SummaryTables/gbm_tpms_allTUCRs.csv",sep=""))
+
+#write.csv(tpm.median,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_median_tpm_allTUCRs.csv",sep=""))
+
+heatmap.df <- as.data.frame(tpm.df) #%>%
+  #dplyr::select(-length)
+geneids <- tpm.df2 %>%
+  dplyr::select(id)
+annotids <- tpm.df2 %>%
+  dplyr::select(annot)
+#means <- apply(heatmap.df,1,mean)
+means <- apply(heatmap.df,1,median)
+
+heatmap.df2 <- as.data.frame(apply(heatmap.df,1:2,function(x) {ifelse(x>=10,10,x)}))
+heatmap.df2 <- cbind(geneids,means,annotids,heatmap.df2)
+
+heatmap.df2 <- heatmap.df2 %>% 
+  gather(key = "Sample", value = "tpm",-id,-means,-annot)
+
+heatmap.df2$annot <- factor(heatmap.df2$annot,      # Reordering group factor levels
+                         levels = c("protein_coding","lncRNA","antisense_RNA","misc_RNA","exonic","exonic_intronic","intronic","intergenic","random"))
+
+p <- ggplot(data = heatmap.df2,mapping = aes(x = Sample,y = reorder(id,means), fill = tpm)) +
+  geom_tile() +
+  #geom_boxplot() +
+  scale_fill_gradientn(colours = c(paper_blue, "white",paper_red2), values = c(0,0.1,1)) + 
+  #ggtitle(paste("All TUCRs (",proportion.df,"%)",sep="")) + xlab(paste("Samples (n = ",ncol(heatmap.df),")",sep="")) + 
+  ylab(paste("genes (n = ",nrow(heatmap.df),")",sep="")) +
+  theme(plot.title = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        strip.text = element_text(size=rel(1.5))) + 
+  facet_wrap(~annot,scales="free",ncol=9)
+
+
+
+ggsave(p,file=paste(outputdir,"/Figure1/Figure1B.png",sep=""), width = 20, height = 5, dpi = 600)
+
+tpm.TUCRs2 <- tpm.df2
+  
+#write.csv(tpm.TUCRs2,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"_tpm_TUCRs2.csv",sep=""))
+  
+
+```
+
+
+### Figure 1C
+
+```{r Figure1C_tpm_TUCRs}
+
+if(!dir.exists(paste(outputdir,"/Figure1/",sep=""))){
+  dir.create(paste(outputdir,"/Figure1/",sep=""))
+}
+
+disease <- "LGG"
+
+normal <- "cortex"
+
+## read data
+
+t_countfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_mergedcounts.txt",sep="")
+
+n_countfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_mergedcounts.txt",sep="")
+
+t_metadatafile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_tcga_metadata.csv",sep="")
+
+n_metadatafile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_gtex_metadata.csv",sep="")
+
+t_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",disease,"/",disease,"_seqdepth_counts.csv",sep="")
+
+n_seqdepthfile <- paste("./Inputs/general_files/sequencingfiles/",normal,"/",normal,"_seqdepth_counts.csv",sep="")
+
+## Merge Data
+
+if(!is.na(n_countfile)){
+  mergedcounts <- read.table(t_countfile,header = TRUE)
+  
+  normalcounts <- read.table(n_countfile,header = TRUE) 
+  
+  mergedcounts <- mergedcounts %>% left_join(normalcounts,by=c("id")) %>%
+    dplyr::select(-chrom.y,-start.y,-end.y,-strand.y,-tag.y,-annot.y,-alias.y) %>%
+    distinct()
+  
+  metadata <- 
+  read_csv(file = t_metadatafile)
+  
+  n_metadata <- 
+  read_csv(file = n_metadatafile)
+  
+  rm(normalcounts)
+  
+  metadata <- rbind(metadata,n_metadata)
+  
+  rm(n_metadata)
+  
+  seqdepth <- read.csv(file = t_seqdepthfile)
+  
+  n_seqdepth <- read.csv(file = n_seqdepthfile)
+  
+  seqdepth <- rbind(seqdepth,n_seqdepth)
+  
+  rm(n_seqdepth)
+  
+}else{
+    mergedcounts <- read.table(t_countfile,header = TRUE)
+
+    metadata <- read.csv(file = t_metadatafile)
+    
+    seqdepth <- read.csv(file = t_seqdepthfile)
+}
+
+#if(!is.na(filterannot)){
+#  tpmcounts <- mergedcounts %>%
+#  filter(tag.x == filterannot) %>%
+#  mutate(length = end.x - start.x)
+#}else{
+tpmcounts <- mergedcounts %>%
+  mutate(length = end.x - start.x)#}
+
+tpmcounts.info <- tpmcounts %>%
+  dplyr::select("chrom" = chrom.x,"start" = start.x,"end" = end.x,"strand"=strand.x,id,"alias"=alias.x,"tag"=tag.x,"annot" = annot.x,length)
+
+tpmcounts <- tpmcounts %>%
+  dplyr::select(-chrom.x,-start.x,-end.x,-id,-strand.x,-tag.x,-annot.x,-alias.x,-length)
+  
+rownames(tpmcounts) <- as.character(tpmcounts.info$id)
+
+genelength <- tpmcounts.info$length/1000
+
+seqdepth2 <- as.vector(seqdepth$counts)/1000000
+
+tpm <- function(counts,len,dep){
+  #x <- tpmcounts/genelength
+  #x2 <- t(t(x)/(seqdepth2))
+  x <- counts/len
+  return(t(t(x)/(dep)))
+}
+
+tpm.df <- tpm(tpmcounts,genelength,seqdepth2)
+
+tpm.df2 <- cbind(tpmcounts.info,tpm.df)
+
+tpm.median <- as.data.frame(tpm.df)
+tpm.median <- tpm.median %>% 
+  dplyr::summarize(median_tpm = rowMedians(tpm.df)) %>%
+  dplyr::mutate(countif = ifelse(median_tpm >=1,1,0),proportion = sum(countif,na.rm = TRUE)/n())
+tpm.median <- cbind(tpmcounts.info,tpm.median)
+tpm.median <- tpm.median %>% dplyr::select(id,median_tpm,countif,proportion)
+
+proportion.df <- round(as.numeric(tpm.median$proportion[1]),3)*100
+
+#write.csv(tpm.df2,paste(outputdir,"/TUCR_Database/SummaryTables/gbm_tpms_allTUCRs.csv",sep=""))
+
+#write.csv(tpm.median,paste(outputdir,"/TUCR_Database/SummaryTables/",disease,"/",disease,"_median_tpm_allTUCRs.csv",sep=""))
+
+heatmap.df <- as.data.frame(tpm.df) #%>%
+  #dplyr::select(-length)
+geneids <- tpm.df2 %>%
+  dplyr::select(id)
+annotids <- tpm.df2 %>%
+  dplyr::select(annot)
+#means <- apply(heatmap.df,1,mean)
+means <- apply(heatmap.df,1,median)
+
+heatmap.df2 <- as.data.frame(apply(heatmap.df,1:2,function(x) {ifelse(x>=10,10,x)}))
+heatmap.df2 <- cbind(geneids,means,annotids,heatmap.df2)
+
+heatmap.df2 <- heatmap.df2 %>% 
+  gather(key = "Sample", value = "tpm",-id,-means,-annot)
+
+heatmap.df2$annot <- factor(heatmap.df2$annot,      # Reordering group factor levels
+                         levels = c("protein_coding","lncRNA","antisense_RNA","misc_RNA","exonic","exonic_intronic","intronic","intergenic","random"))
+
+p <- ggplot(data = heatmap.df2,mapping = aes(x = Sample,y = reorder(id,means), fill = tpm)) +
+  geom_tile() +
+  #geom_boxplot() +
+  scale_fill_gradientn(colours = c(paper_blue, "white",paper_red2), values = c(0,0.1,1)) + 
+  #ggtitle(paste("All TUCRs (",proportion.df,"%)",sep="")) + xlab(paste("Samples (n = ",ncol(heatmap.df),")",sep="")) + 
+  ylab(paste("genes (n = ",nrow(heatmap.df),")",sep="")) +
+  theme(plot.title = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        strip.text = element_text(size=rel(1.5))) + 
+  facet_wrap(~annot,scales="free",ncol=9)
+
+
+
+ggsave(p,file=paste(outputdir,"/Figure1/Figure1C.png",sep=""), width = 20, height = 5, dpi = 600)
+
+```
+
+
+```{r}
+sessionInfo()
+```
+
