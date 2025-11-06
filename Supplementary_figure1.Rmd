@@ -1,0 +1,496 @@
+---
+title: "Supplementary figure 1"
+output: html_notebook
+---
+
+## Title : A comprehensive analysis of Transcribed Ultra Conserved Regions uncovers important regulatory functions of novel non coding transcripts in gliomas
+
+## Supplementary Figure 1
+
+## Set parameters and install required programs
+```{r}
+## Variables
+
+outputdir <- "Outputs"
+
+filterannot <- "TUCR"
+
+makekpmplots <- TRUE
+
+tpmethod <- "TPM"
+
+repel <- TRUE
+```
+
+```{r}
+## Load Colors
+
+paper_black = "#000000"
+  
+paper_gold = "#EAA304"
+  
+paper_green2 = "#20C799"
+  
+paper_yellow = "#F0E442"
+  
+paper_blue = "#017DC3"
+  
+paper_lightblue = "#58AFE0"
+  
+paper_skyblue = "#A5DFFF"
+  
+paper_orange = "#D55E00"
+  
+paper_purple = "#8C004C"
+  
+paper_gray = "#CAC4C4"
+  
+paper_red = "#C30223"
+  
+paper_darkpink = "#DA7C8C"
+  
+paper_pink = "#FFCCD5"
+
+paper_green = "#54BB44"
+  
+paper_red2 = "#CA465C"
+  
+paper_turq = "#20C799"
+
+```
+
+```{r}
+## Load Programs
+
+if (!require("jsonlite")) install.packages("jsonlite")
+library("jsonlite")
+
+if (!require("tidyjson")) install.packages("tidyjson")
+library("tidyjson")
+
+if (!require("tidyverse")) install.packages("tidyverse")
+library("tidyverse")
+
+if (!require("ggplot2")) install.packages("ggplot2")
+library("ggplot2")
+
+if (!require("ggforce")) install.packages("ggforce")
+library("ggforce")
+
+if (!require("ggbreak")) install.packages("ggbreak")
+library("ggbreak")
+
+if (!require("ggrepel")) install.packages("ggrepel")
+library("ggrepel")
+
+if (!require("ggfortify")) install.packages("ggfortify")
+library("ggfortify")
+
+if (!require("ggdendro")) install.packages("ggdendro")
+library("ggdendro")
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+if (!requireNamespace("DESeq2", quietly = TRUE))BiocManager::install("DESeq2")
+library("DESeq2")
+
+if (!require("survival")) install.packages("survival")
+library("survival")
+
+if (!require("broom")) install.packages("broom")
+library("broom")
+
+if (!requireNamespace("limma", quietly = TRUE))BiocManager::install("limma")
+library("limma")
+
+if (!require("Tmisc")) install.packages("Tmisc")
+library("Tmisc")
+
+if (!require("survminer")) install.packages("survminer")
+library("survminer")
+
+if (!require("corrr")) install.packages("corrr")
+library("corrr")
+
+if (!require("here")) install.packages("here")
+library("here")
+
+if (!require("lessR")) install.packages("lessR")
+library("lessR")
+
+if (!require("splitstackshape")) install.packages("splitstackshape")
+library(splitstackshape)
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+
+if (!require('org.Hs.eg.db')) BiocManager::install('org.Hs.eg.db')
+library(org.Hs.eg.db)
+
+if (!require('GO.db')) BiocManager::install('GO.db')
+library(GO.db)
+
+if (!require('limma')) BiocManager::install('limma')
+library(limma)
+
+if (!require("ggthemes")) install.packages('ggthemes', dependencies = TRUE)
+library(ggthemes)
+
+if (!require("gplots")) 
+install.packages("gplots")
+library(gplots)
+
+if (!require("ggsignif")) 
+install.packages("ggsignif")
+library(ggsignif)
+
+if (!require("RColorBrewer")) 
+install.packages("RColorBrewer")
+library(RColorBrewer)
+
+if (!require("reshape2")) 
+install.packages("reshape2")
+library(reshape2)
+
+if (!require("gridExtra")) 
+install.packages("gridExtra")
+library(gridExtra)
+
+if (!require("dendextend")) 
+install.packages("dendextend")
+library(dendextend)
+
+if (!require("plyr")) 
+install.packages("plyr")
+library(plyr)
+
+if (!require("magick")) 
+install.packages("magick")
+library(magick)
+
+if (!require("png")) 
+install.packages("png")
+library(png)
+
+if (!require("scales")) 
+install.packages("scales")
+library(scales)
+
+if (!require("ggsci")) 
+install.packages("ggsci")
+library(ggsci)
+
+if (!require("stringi")) install.packages("stringi")
+  library(stringi)
+if (!require("stringr")) install.packages("stringr")
+  library(stringr)
+
+if (!require("impute")) BiocManager::install("impute")
+library(impute)
+
+if (!require("preprocessCore")) BiocManager::install("preprocessCore")
+library(preprocessCore)
+
+if (!require("Go.db")) BiocManager::install("GO.db")
+library(GO.db)
+
+
+if (!require("WGCNA")) install.packages("WGCNA")
+library(WGCNA)
+
+if (!require("umap")) install.packages("umap")
+library(umap)
+
+if (!require("igraph")) install.packages("igraph")
+library(igraph)
+
+if (!require("gtable")) install.packages("gtable")
+library(gtable)
+
+if(!dir.exists(outputdir)){
+  dir.create(outputdir)
+}
+
+knitr::opts_chunk$set(
+eval = FALSE,
+tidy = TRUE#,
+#	echo = TRUE,
+#	message = FALSE,
+#	warning = FALSE
+)
+
+```
+
+## Supplementary Figure 1. 
+### Supplementary Figure 1A and 1B
+
+
+```{r Supplementary_Figure1ab}
+
+if(!dir.exists(paste(outputdir,"/Figure1_Supplementary/",sep=""))){
+  dir.create(paste(outputdir,"/Figure1_Supplementary/",sep=""))
+}
+
+Figure1_supplementary_copy <- list.files("./Inputs/Figure1_Supplementary/pregenerated_figures/")
+
+if(!file.exists(paste(outputdir,"/Figure1_Supplementary/","supplementary_figure_1a.png",sep=""))){
+  file.copy(paste0("./Inputs/Figure1_Supplementary/pregenerated_figures/",Figure1_supplementary_copy,sep=""),paste("./",outputdir,"/Figure1_Supplementary/",sep=""))
+}
+
+```
+
+### Supplementary Figure 1C
+
+### TUCRs were then manually annotated, creating the "hg38.ultraconserved.bed" file provided in this repository.  As previously mentioned, we have identified 45 exonic, 231 intronic, 68 intronic/exonic, and 137 intergenic TUCRs. Figure 1c was generated using GGPlot2.
+
+### The following code chunk reads in the "hg38.ultraconserved.bed" file and compiles the relevant information into a proportion ring chart as depicted in Figure 1c, using GGPlot2. The results are placed in the output directory as defined by the variable outputdir, in the subfolder "Supplementary Figure 1."
+
+```{r Supplementary_Figure1c}
+
+tucrjoiner <- read.table("Inputs/general_files/bedfiles/hg38.ultraconserved.bed",header=TRUE) 
+
+supplementary_figure1c <- tucrjoiner %>%
+  dplyr::select(alias,annot) %>%
+  distinct() %>%
+  group_by(annot) %>%
+  dplyr::summarise(count = n()) %>%
+  mutate(percent = count/sum(count)) %>%
+  arrange(desc(count)) %>%
+#Determine label positions
+  mutate(lab.ypos = cumsum(count) - 0.5*count)
+
+# Set factor levels
+names(supplementary_figure1c)[names(supplementary_figure1c) == 'annot'] <- 
+  'Annotation'
+
+#Create Chart
+supplementary_figure1c <- ggplot(supplementary_figure1c, aes(x=2,y=count,fill=Annotation))          + 
+  geom_bar(
+    stat="identity",#colour="black", 
+    width = 1)                                                          +
+  geom_text(
+    aes(y = lab.ypos, label = count), 
+    color = "black",size=5)                                                    + 
+  coord_polar("y", start=0)                                             + 
+  scale_fill_manual(values=c(paper_red,paper_purple,paper_green,paper_blue))  + 
+  ggtitle(paste("TUCR Genomic Location"))                               + 
+  guides(colour = guide_legend(override.aes = list(size=10))) +
+        theme(plot.title = element_blank(),
+              axis.title = element_blank(),
+              axis.text.y = element_blank(),
+              axis.text.x = element_blank(),
+              #panel.grid = element_line(color = "lightgray",size = 0.75),
+panel.background = element_blank(), axis.line = element_blank(),legend.position="none",legend.title=element_blank(),
+legend.text = element_text(size = 15),
+axis.ticks = element_blank(), 
+      legend.box.spacing = unit(0, "pt"),
+legend.margin=margin(0,0,0,0)) +
+  xlim(0.5, 2.5)
+
+# Save Chart to output directory
+ggsave(file=paste(outputdir,"/Figure1_Supplementary/","supplementary_figure_1c.png",sep=""),
+       plot = print(supplementary_figure1c), 
+       dpi = 600,
+       height = 4.75,
+       width = 4.75)
+
+```
+
+Generate BED Files for each annotation category
+
+```{r Supplementary_Figure1_annot_bed, eval = FALSE}
+
+if(!dir.exists(paste(outputdir,"/BEDFiles_TUCR_annotations/",sep=""))){
+  dir.create(paste(outputdir,"/BEDFiles_TUCR_annotations/",sep=""))
+}
+
+tucr_annot <- read.table("Inputs/general_files/bedfiles/hg38.ultraconserved.bed",header=TRUE)
+write_delim(tucr_annot, file = paste(outputdir,"/BEDFiles_TUCR_annotations/alltucrs_hg38.ultraconserved.bed",sep=""),delim="\t")
+
+annotations <- unique(as.character(tucr_annot$annot))
+
+for(i in 1:length(annotations)){
+  filter_TUCR <- annotations[i]
+  tucr_annot2 <- tucr_annot %>%
+    filter(annot == filter_TUCR) %>%
+    write_delim(file = paste(outputdir,"/BEDFiles_TUCR_annotations/",filter_TUCR,"_hg38.ultraconserved.bed",sep=""),delim="\t")
+}
+
+```
+
+### Supplementary Figure 1D
+
+```{r Supplementary_Figure1d}
+
+expected_values <- read_delim("Inputs/general_files/bedfiles/allgenes.bed",delim="\t",col_names=FALSE) %>% 
+  filter(X7 != "TUCR") %>%
+  group_by(X8) %>%
+  dplyr::summarise(count = n()) %>%
+  mutate(percent = count/sum(count)) %>%
+  arrange(desc(count)) %>%
+#Determine label positions
+  mutate(lab.ypos = cumsum(count) - 0.5*count,Annotation = X8,test="expected") %>%
+  dplyr::select(Annotation,percent,test)
+
+tucrjoiner <- read.table("Inputs/Figure1_supplementary/TUCRhostgenes.bed",header=TRUE) 
+
+observed_values <- tucrjoiner %>% 
+  filter(tag_host != "TUCR") %>%
+  group_by(annot_host) %>%
+  dplyr::summarise(count = n()) %>%
+  mutate(percent = count/sum(count)) %>%
+  arrange(desc(count)) %>%
+#Determine label positions
+  mutate(lab.ypos = cumsum(count) - 0.5*count,test="observed") 
+
+# Set factor levels
+names(observed_values)[names(observed_values) == 'annot_host'] <- 
+  'Annotation'
+
+observed_values <- observed_values %>%
+  dplyr::select(Annotation,percent,test)
+
+supplementary_figure1d <- rbind(observed_values,expected_values) %>%
+  filter(Annotation != "misc_RNA") %>%
+  arrange(desc(test))
+
+supplementary_figure1d$test <- factor(supplementary_figure1d$test,      # Reordering group factor levels
+                         levels = c("expected","observed"))
+
+supplementary_figure1d <-   ggplot(supplementary_figure1d, aes(x=Annotation,y=as.numeric(percent),fill=test))   +
+  geom_bar(stat="identity", 
+           #color = "black",
+           width=0.7,position="dodge") +
+  
+  scale_fill_manual(values = c(paper_red2,paper_turq)) +
+  #scale_y_continuous(expand=expansion(mult=c(0,0.15))) +
+  #geom_text(
+  #  aes(label=round(value,2)), 
+  #  vjust=1.6, 
+  #  color="black", 
+  #  size=rel(4))                                                      #+ 
+  #ggtitle(paste("TUCRs are enriched for \n RNA Pol.II, H3K4me3,"))  + 
+  xlab("Host Gene Annotation")                                           + 
+  ylab("Proportion")                                           +
+  #ggtitle(annot) +
+  theme(
+    #plot.title = element_text(
+    #  size=rel(1.5), 
+    #  face="bold",hjust = 0.5),
+    #plot.title = element_text(
+    #  size = rel(1.5),hjust=0.5, 
+    #  face="bold"),
+    strip.background = element_rect(fill="white"),
+    plot.title = element_text(size=rel(3.0), face="bold",hjust = 0.5),
+    axis.title = element_text(size = rel(2.0), face="bold"),
+    axis.text = element_text(size = rel(2.0)),
+    axis.text.x = element_text(angle=45,vjust=0.5),
+    strip.text = element_text(size = rel(3.0), face="bold"),
+    legend.title = element_blank(),
+    legend.position = "top",
+    legend.text = element_text(size = rel(2.0)),
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(), 
+    axis.line = element_line(colour = "black")) 
+
+# Save Chart to output directory
+ggsave(file=paste(outputdir,"/Figure1_Supplementary/","supplementary_figure_1d.png",sep=""),
+       plot = print(supplementary_figure1d), 
+       dpi = 600,
+       height = 7,
+       width = 6)
+
+```
+
+### Supplementary Figure 1e
+
+```{r Supplementary_Figure1e}
+
+#Read in Data
+tucr_annot <- read.table("Inputs/general_files/bedfiles/hg38.ultraconserved.bed",header=TRUE) %>%
+  dplyr::select(chrom,start,end,alias,annot) %>%
+  mutate(chromosome=str_remove(chrom,"chr"),
+         chromnum=ifelse(chromosome=="X",23,
+                  ifelse(chromosome=="Y",24,
+                  ifelse(chromosome=="M",25,as.numeric(chromosome))))) %>%
+  dplyr::select(chrom,start,end,alias,annot,chromnum)
+
+hg38_chromsizes <- read.table("Inputs/Figure1_supplementary/hg38_chromsizes.txt") %>%
+  dplyr::select("chrom"=V1,"chromend"=V3,"chromnum"=V4)
+
+hg38_subtract <- read.table("Inputs/Figure1_supplementary/hg38_subtract.txt") %>%
+  mutate(row = "interval",annot = "not conserved") %>%
+  dplyr::select("chrom" = V1,"start" = V2, "end" = V3,"alias"=row,annot,"chromnum"=V4)
+  
+tucr_locations <- rbind(tucr_annot,hg38_subtract) %>%
+  dplyr::group_by(chrom) %>%
+  mutate(chromend = max(as.numeric(end),na.rm=TRUE)) %>%
+  ungroup() %>%
+  arrange(chromnum,start)
+
+chrom_order <- c("chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", 
+                 "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", 
+                 "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", 
+                 "chr22", "chrX", "chrY", "chrM")
+chrom_key <- setNames(object = as.character(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 
+                                              12, 13, 14, 15, 16, 17, 18, 19, 20, 
+                                              21, 22, 23, 24, 25)), 
+                      nm = chrom_order)
+chrom_key2 <- rev(chrom_key)
+chrom_order <- factor(x = chrom_order, levels = rev(chrom_order))
+
+tucr_annot[["annot"]] <- factor(x = tucr_annot[["annot"]], 
+                                      levels = c("exonic","intergenic","exonic_intronic","intronic"))
+
+tucr_annot <- tucr_annot %>%
+  mutate(test = ifelse(annot == "intronic",paper_blue,
+                ifelse(annot == "exonic",paper_red,
+                ifelse(annot == "intergenic",paper_green,paper_purple))))
+
+supplementary_figure1e <- ggplot() + 
+    # base rectangles for the chroms, with numeric value for each chrom on the x-axis\
+    geom_rect(data = hg38_chromsizes, aes(xmin = as.numeric(26-chromnum) - 0.3, 
+                                      xmax = as.numeric(26-chromnum) + 0.3, 
+                                      ymax = as.numeric(chromend), ymin = 0),color="black",fill="lightgray") +
+    geom_rect(data = tucr_annot, aes(xmin = as.numeric(26-chromnum) - 0.3, 
+                                      xmax = as.numeric(26-chromnum) + 0.3, 
+                                      ymax = as.numeric(end), ymin = as.numeric(start),color=test,fill=test)) +
+    scale_fill_identity() +
+    scale_color_identity() +
+        # rotate the plot 90 degrees
+    coord_flip() +
+    # black & white color theme 
+    theme(plot.title = element_blank(),
+      text = element_text(size = 20), 
+          axis.title = element_text(size = rel(1.5), face="bold"),
+          axis.text.y = element_text(colour = "black",size = rel(1.5)),
+          axis.text.x = element_text(colour = "black",size = rel(1.5)),
+          panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank(), 
+          panel.background = element_blank(),
+          legend.position="none",
+          legend.title=element_blank(),
+          legend.text=element_text(size=12.5)) +
+    # give the appearance of a discrete axis with chrom labels
+    scale_x_discrete(name = "chromosome", limits = rev(names(chrom_key))) +
+    scale_y_continuous(name = "region (bp)",labels = comma,position = "right") +
+    # add bands for centromeres
+    #scale_fill_manual(values = group.colors) +
+    ggtitle("TUCR Genomic Locations") 
+    # supress scientific notation on the y-axis
+
+ggsave(file=paste(outputdir,"/Figure1_Supplementary/","supplementary_figure_1e.png",sep=""),
+       plot = print(supplementary_figure1e),height=10,width=16, 
+       dpi = 600)
+
+```
+
+
+```{r}
+sessionInfo()
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
