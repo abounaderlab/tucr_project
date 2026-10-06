@@ -1376,49 +1376,106 @@ traitmodules2 <- traitmodules %>%
   dplyr::arrange(as.numeric(cor)) %>%
   dplyr::mutate(position = row_number(),cor = ifelse(MMpvalue2 >= 0.05,NA,cor))
   
+traitmodules2$position_label<-paste0("module",traitmodules2$position,"")
 
-p <- ggplot(data = traitmodules2,mapping = aes(x = as.character(trait_id),y = reorder(module,position), fill = as.numeric(cor))) +
+```
+
+
+```{r,fig.width = 3, fig.height = 7}
+y_labels <- traitmodules2 %>%
+  dplyr::distinct(module, position_label) %>%
+  tibble::deframe()
+
+p <- ggplot(
+  data = traitmodules2,
+  mapping = aes(
+    x = as.character(trait_id),
+    y = reorder(module, position),
+    fill = as.numeric(cor)
+  )
+) +
   geom_tile() +
-  scale_fill_gradient2(low = paper_blue,mid = "white",high = paper_red2,midpoint = 0) +
+
+  scale_fill_gradient2(
+    low = paper_blue,
+    mid = "white",
+    high = paper_red2,
+    midpoint = 0
+  ) +
+
+  # Add position_label as real y-axis labels
+  scale_y_discrete(labels = y_labels) +
+
   ylab("modules") +
   xlab(trait_id) +
   labs(fill = "cor") +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"),
-        plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        axis.title = element_text(size = rel(1.8), face="bold"),
-        axis.text.y = element_blank(),
-        axis.text.x = element_blank(),
-              #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="right",
-        legend.title=element_text(size = rel(2.5), face="bold"),
-        legend.text=element_text(size = rel(2.0), face="bold"), 
-        plot.margin = unit(c(0,0,0,0), "cm")) +
-        annotate(
+
+  theme(
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(), 
+    axis.line = element_line(colour = "black"),
+
+    plot.title = element_text(
+      size = rel(2.2),
+      hjust = 0.5,
+      face = "bold",
+      margin = margin(0,0,0,0)
+    ),
+
+    axis.title = element_text(
+      size = rel(1.8),
+      face = "bold"
+    ),
+
+    # position_label rendered as real axis text
+    axis.text.y = element_text(
+      size = 8,
+      hjust = 1
+    ),
+
+    axis.text.x = element_blank(),
+
+    legend.position = "right",
+    legend.title = element_text(
+      size = rel(2.5),
+      face = "bold"
+    ),
+    legend.text = element_text(
+      size = rel(2.0),
+      face = "bold"
+    ),
+
+    plot.margin = unit(c(0, 0, 0, 0.2), "cm")
+  ) +
+
+  # Existing colored squares, placed left of the axis text
+  annotate(
     geom = "point",
-    color = c(as.character(traitmodules2$module)),
-    y = traitmodules2$position, 
+    color = as.character(traitmodules2$module),
+    y = traitmodules2$position,
     x = 0.5,
-    shape = 15, 
-    size = 5)
+    shape = 15,
+    size = 5
+  ) +
+
+  coord_cartesian(clip = "off")
 
 p
 
 ggsave(p,file=paste(outputdir,"/Figure3/Figure3f.png",sep=""), width = 3, height = 7, dpi = 600)
+```
 
-
+```{r,fig.width=5,fig.height=5}
 ####Trait Correlation Plots
 
 traitmodules3 <- traitmodules2 %>%
   filter(as.numeric(MMpvalue) <= 0.05)
 
-
-
 i <- 1
 
 module = as.character(traitmodules3$module[i])
+module_label=traitmodules3$position_label[i]
 print(i)
 print(paste(module))
 #module = "red"
@@ -1439,9 +1496,9 @@ ggplot_df <- as.data.frame(cbind(xvalues,yvalues))
 p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
   geom_point(size=5) +
   scale_color_identity() +
-  xlab(paste("Module Membership in", module, "module")) +
+  xlab(paste("Module Membership in", module_label)) +
                    ylab("Gene significance for trait") +
-  ggtitle(paste(module,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
+  ggtitle(paste(module_label,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -1455,13 +1512,16 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.title=element_blank(),
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
-
+p
 ggsave(p,file=paste(outputdir,"/Figure3/Figure3g_6.png",sep=""), width = 5, height = 5, dpi = 600)
 
+```
 
+```{r,fig.width=5,fig.height=5}
 i <- 2
 
 module = as.character(traitmodules3$module[i])
+module_label=traitmodules3$position_label[i]
 print(i)
 print(paste(module))
 #module = "red"
@@ -1482,9 +1542,9 @@ ggplot_df <- as.data.frame(cbind(xvalues,yvalues))
 p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
   geom_point(size=5) +
   scale_color_identity() +
-  xlab(paste("Module Membership in", module, "module")) +
+  xlab(paste("Module Membership in", module_label)) +
                    ylab("Gene significance for trait") +
-  ggtitle(paste(module,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
+  ggtitle(paste(module_label,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -1498,13 +1558,16 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.title=element_blank(),
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
-
+p
 ggsave(p,file=paste(outputdir,"/Figure3/Figure3g_5.png",sep=""), width = 5, height = 5, dpi = 600)
 
+```
 
+```{r,fig.width=5,fig.height=5}
 i <- 3
 
 module = as.character(traitmodules3$module[i])
+module_label=traitmodules3$position_label[i]
 print(i)
 print(paste(module))
 #module = "red"
@@ -1525,9 +1588,9 @@ ggplot_df <- as.data.frame(cbind(xvalues,yvalues))
 p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
   geom_point(size=5) +
   scale_color_identity() +
-  xlab(paste("Module Membership in", module, "module")) +
+  xlab(paste("Module Membership in", module_label)) +
                    ylab("Gene significance for trait") +
-  ggtitle(paste(module,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
+  ggtitle(paste(module_label,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -1541,13 +1604,16 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.title=element_blank(),
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
-
+p
 ggsave(p,file=paste(outputdir,"/Figure3/Figure3g_4.png",sep=""), width = 5, height = 5, dpi = 600)
 
+```
 
+```{r,fig.width=5,fig.height=5}
 i <- length(traitmodules3$module)
 
 module = as.character(traitmodules3$module[i])
+module_label=traitmodules3$position_label[i]
 print(i)
 print(paste(module))
 #module = "red"
@@ -1568,9 +1634,9 @@ ggplot_df <- as.data.frame(cbind(xvalues,yvalues))
 p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
   geom_point(size=5) +
   scale_color_identity() +
-  xlab(paste("Module Membership in", module, "module")) +
+  xlab(paste("Module Membership in", module_label)) +
                    ylab("Gene significance for trait") +
-  ggtitle(paste(module,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
+  ggtitle(paste(module_label,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -1584,13 +1650,17 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.title=element_blank(),
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
-
+p
 ggsave(p,file=paste(outputdir,"/Figure3/Figure3g_1.png",sep=""), width = 5, height = 5, dpi = 600)
 
 
+```
+
+```{r,fig.width=5,fig.height=5}
 i <- length(traitmodules3$module)-1
 
 module = as.character(traitmodules3$module[i])
+module_label=traitmodules3$position_label[i]
 print(i)
 print(paste(module))
 #module = "red"
@@ -1611,9 +1681,9 @@ ggplot_df <- as.data.frame(cbind(xvalues,yvalues))
 p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
   geom_point(size=5) +
   scale_color_identity() +
-  xlab(paste("Module Membership in", module, "module")) +
+  xlab(paste("Module Membership in", module_label)) +
                    ylab("Gene significance for trait") +
-  ggtitle(paste(module,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
+  ggtitle(paste(module_label,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -1627,13 +1697,15 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.title=element_blank(),
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
-
+p
 ggsave(p,file=paste(outputdir,"/Figure3/Figure3g_2.png",sep=""), width = 5, height = 5, dpi = 600)
+```
 
-
+```{r,fig.width=5,fig.height=5}
 i <- length(traitmodules3$module)-2
 
 module = as.character(traitmodules3$module[i])
+module_label=traitmodules3$position_label[i]
 print(i)
 print(paste(module))
 #module = "red"
@@ -1654,9 +1726,9 @@ ggplot_df <- as.data.frame(cbind(xvalues,yvalues))
 p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
   geom_point(size=5) +
   scale_color_identity() +
-  xlab(paste("Module Membership in", module, "module")) +
+  xlab(paste("Module Membership in", module_label)) +
                    ylab("Gene significance for trait") +
-  ggtitle(paste(module,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
+  ggtitle(paste(module_label,"(n = ",ngenes,", cor = ",correlation,", p = ",pvalue,")",sep="")) +
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
@@ -1670,7 +1742,7 @@ p <- ggplot(ggplot_df,aes(xvalues,yvalues,color=module)) +
         legend.title=element_blank(),
         legend.text=element_blank(), 
         plot.margin = unit(c(0,0,0,0), "cm"))
-
+p
 ggsave(p,file=paste(outputdir,"/Figure3/Figure3g_3.png",sep=""), width = 5, height = 5, dpi = 600)
 
 ```
@@ -1678,11 +1750,3 @@ ggsave(p,file=paste(outputdir,"/Figure3/Figure3g_3.png",sep=""), width = 5, heig
 ```{r}
 sessionInfo()
 ```
-
-
-
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
-
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
-
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.

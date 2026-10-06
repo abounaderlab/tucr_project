@@ -1182,33 +1182,86 @@ moduleTraitCor_trait_id <- moduleTraitCor_trait_id %>%
 moduleTraitCor_trait_id <- moduleTraitCor_trait_id %>% 
   mutate(clust_position_order = as.numeric(moduleTraitCor_trait_id$clust_order))
 
-p <- ggplot(data = moduleTraitCor_trait_id,mapping = aes(x = reorder(modules,position),y = reorder(trait,clust_position_order), fill = as.numeric(cor))) +
+moduleTraitCor_trait_id$position_label<-paste0("module",moduleTraitCor_trait_id$position,"")
+
+x_labels <- moduleTraitCor_trait_id %>%
+  dplyr::distinct(modules, position_label) %>%
+  tibble::deframe()
+
+p <- ggplot(
+  data = moduleTraitCor_trait_id,
+  mapping = aes(
+    x = reorder(modules, position),
+    y = reorder(trait, clust_position_order),
+    fill = as.numeric(cor)
+  )
+) +
   geom_tile() +
-  scale_fill_gradient2(low = paper_blue,mid = "white",high = paper_red2,midpoint = 0) +
+  
+  scale_fill_gradient2(
+    low = paper_blue,
+    mid = "white",
+    high = paper_red2,
+    midpoint = 0
+  ) +
+
+  # Add position_label as x-axis labels
+  scale_x_discrete(labels = x_labels) +
+  
   ylab("TUCRs") +
   xlab("Modules") +
   labs(fill = "cor") +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"),
-        plot.title = element_text(size = rel(2.2), hjust = 0.5, face="bold",margin=margin(0,0,0,0)),
-        axis.title = element_text(size = rel(1.8), face="bold"),
-        axis.text.y = element_blank(),
-        axis.text.x = element_blank(),
-              #panel.grid = element_line(color = "lightgray",size = 0.75),
-        legend.position="right",
-        legend.title=element_text(size = rel(2.5), face="bold"),
-        legend.text=element_text(size = rel(2.0), face="bold"), 
-        plot.margin = unit(c(0,0,0,0), "cm")) +
-        annotate(
-    geom = "point",
-    color = c(as.character(moduleTraitCor_trait_id$modules)),
-    x = moduleTraitCor_trait_id$position, 
-    y = 0.5,
-    shape = 15, 
-    size = 5)
+  
+  theme(
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(), 
+    axis.line = element_line(colour = "black"),
 
+    plot.title = element_text(
+      size = rel(2.2),
+      hjust = 0.5,
+      face = "bold",
+      margin = margin(0,0,0,0)
+    ),
+
+    axis.title = element_text(
+      size = rel(1.8),
+      face = "bold"
+    ),
+
+    axis.text.y = element_blank(),
+
+    # position_label at 45 degrees
+    axis.text.x = element_text(
+      size = 8,
+      angle = 45,
+      hjust = 1,
+      vjust = 1
+    ),
+
+    legend.position = "right",
+    legend.title = element_text(
+      size = rel(2.5),
+      face = "bold"
+    ),
+    legend.text = element_text(
+      size = rel(2.0),
+      face = "bold"
+    ),
+
+    plot.margin = unit(c(0, 0, 0.2, 0), "cm")
+  ) +
+
+  # Existing colored squares
+  annotate(
+    geom = "point",
+    color = as.character(moduleTraitCor_trait_id$modules),
+    x = moduleTraitCor_trait_id$position,
+    y = 0.5,
+    shape = 15,
+    size = 5
+  )
 p
 
 ggsave(p,file=paste(outputdir,"/Figure2/Figure2f.png",sep=""), width = 7, height = 5, dpi = 600)
